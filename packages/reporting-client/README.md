@@ -7,7 +7,7 @@ This library provides a simple and typed interface to interact with the Matomo A
 ## Installation
 
 ```bash
-npm install @mj-kiwi/matomo-reporting-client
+npm install @mj-kiwi/reporting-client
 ```
 
 ## Usage
