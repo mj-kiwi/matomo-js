@@ -40,8 +40,8 @@ jobs:
       - name: Sets the base and head SHAs for the nx affected commands in CI
         uses: nrwl/nx-set-shas@v4
 
-      - name: Build affected libs
-        run: npx nx affected -t build
+      - name: Test and build affected libs
+        run: npx nx affected -t test build
 
         # We need to set github email and name as nx release will
         # create new tag with version and create new github release

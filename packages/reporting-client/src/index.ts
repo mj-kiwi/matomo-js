@@ -17,6 +17,7 @@ export { CoreReportingClient } from './modules/core.js';
 export { ApiModule } from './modules/api.js';
 export { SitesManagerModule } from './modules/sites-manager.js';
 export { AbTestingModule } from './modules/ab-testing.js';
+export { ActionsModule } from './modules/actions.js';
 
 // Default export
 import { ReportingClient } from './reporting-client.js';

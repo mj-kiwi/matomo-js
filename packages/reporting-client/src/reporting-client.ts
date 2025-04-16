@@ -8,6 +8,7 @@ import { CoreReportingClient, ReportingClientOptions } from './modules/core.js';
 import { ApiModule } from './modules/api.js';
 import { SitesManagerModule } from './modules/sites-manager.js';
 import { AbTestingModule } from './modules/ab-testing.js';
+import { ActionsModule } from './modules/actions.js';
 
 export type { ReportingClientOptions, RequestParams } from './modules/core.js';
 
@@ -16,6 +17,7 @@ export class ReportingClient {
   public api: ApiModule;
   public abTesting: AbTestingModule;
   public sitesManager: SitesManagerModule;
+  public actions: ActionsModule;
 
   /**
    * Create a new Matomo Reporting API client
@@ -27,5 +29,6 @@ export class ReportingClient {
     this.api = new ApiModule(this.core);
     this.abTesting = new AbTestingModule(this.core);
     this.sitesManager = new SitesManagerModule(this.core);
+    this.actions = new ActionsModule(this.core);
   }
 }
