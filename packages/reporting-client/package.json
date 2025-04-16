@@ -10,6 +10,9 @@
     "name": "MJ Kiwi",
     "email": "me@mj.kiwi"
   },
+  "repository": {
+    "url": "https://github.com/mj-kiwi/matomo-js"
+  },
   "exports": {
     ".": {
       "types": "./index.d.ts",

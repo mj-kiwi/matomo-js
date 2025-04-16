@@ -2,6 +2,11 @@
 
 A TypeScript client library for the [Matomo Reporting API](https://developer.matomo.org/api-reference/reporting-api).
 
+[![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Matomo](https://img.shields.io/badge/-Matomo-3152A0?style=flat-square&logo=matomo&logoColor=white)](https://matomo.org/)
+[![Analytics](https://img.shields.io/badge/-Analytics-00A98F?style=flat-square&logo=google-analytics&logoColor=white)](https://matomo.org/)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 This library provides a simple and typed interface to interact with the Matomo Analytics Reporting API, allowing you to fetch analytics data from your Matomo instance.
 
 ## Installation
@@ -15,7 +20,7 @@ npm install @mj-kiwi/reporting-client
 ### Basic Usage
 
 ```typescript
-import { ReportingClient } from '@mj-kiwi/matomo-reporting-client';
+import { ReportingClient } from '@mj-kiwi/reporting-client';
 
 // Create a new client
 const client = new ReportingClient({
