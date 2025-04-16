@@ -1,0 +1,52 @@
+# Name of the workflow
+name: Publish
+
+# Rules that triggers the workflows
+on:
+  release:
+    types:
+      - created
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Additional steps to get a version and package name from a tag
+      # it will not be used in this example, but might be useful for some
+      # customization (like additional release of the package, or some external notifications)
+      - name: Get Version
+        run: |
+          TAG_NAME=${{github.event.release.tag_name}}
+          echo "PACKAGE_NAME=$(echo $TAG_NAME | cut -d "@" -f 1)" >> $GITHUB_ENV
+          echo "APP_VERSION=$(echo $TAG_NAME | cut -d "@" -f 2)" >> $GITHUB_ENV
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          # Here we can setup some private registry url like nexus / jFrog,
+          # you can skip this parameter if you are using custom .npmrc file
+          registry-url: https://registry.npmjs.org/
+        env:
+          # Your personal npm access token: https://docs.npmjs.com/creating-and-viewing-access-tokens
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          # We need to set provenance to true in order to generate provenance statement
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Install dependencies
+        run: npm ci
+        # We are triggering nx release publish in --dry-run mode in order to not actually publish
+        # any package to npm registry, but only see what steps will be taken - this is set for tests only.
+        # You can remove this flag once you will be ready to publish to npm registry.
+      - name: Publish packages
+        run: |
+          git config --global user.email "me@mj.kiwi"
+          git config --global user.name "MJ Kiwi"
+          npx nx release publish --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          # We need to set provenance to true in order to generate provenance statement
+          NPM_CONFIG_PROVENANCE: true

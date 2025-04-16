@@ -1,17 +1,20 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
+import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../node_modules/.vite/reporting-client',
+  cacheDir: '../../node_modules/.vite/reporting-client',
   plugins: [
+    nxCopyAssetsPlugin(['package.json', 'LICENSE', 'README.md']),
     dts({
       entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
   ],
+  assetsInclude: ['./package.json', './LICENSE', './README.md'],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
@@ -19,7 +22,7 @@ export default defineConfig(() => ({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: './dist',
+    outDir: '../../dist/packages/reporting-client',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {

@@ -42,11 +42,29 @@
     }
   ],
   "release": {
+    "projects": ["packages/*"],
+    "projectsRelationship": "independent",
     "version": {
-      "preVersionCommand": "npx nx run-many -t build"
+      "preVersionCommand": "npx nx run-many -t build",
+      "conventionalCommits": true
+    },
+    "git": {
+      "commitMessage": "chore: updated version [no ci]"
+    },
+    "changelog": {
+      "projectChangelogs": {
+        "file": false,
+        "createRelease": "github"
+      }
     }
   },
   "targetDefaults": {
+    "nx-release-publish": {
+      "dependsOn": ["build"],
+      "options": {
+        "packageRoot": "dist/packages/{projectName}"
+      }
+    },
     "test": {
       "dependsOn": ["^build"]
     }
