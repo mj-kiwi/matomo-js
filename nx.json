@@ -56,7 +56,7 @@
       "automaticFromRef": true,
       "projectChangelogs": {
         "file": false,
-        "createRelease": "github"
+        "createRelease": false
       }
     }
   },
