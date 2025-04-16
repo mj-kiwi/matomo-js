@@ -31,8 +31,7 @@
     "vitest": "^3.0.0"
   },
   "workspaces": [
-    "packages/*",
-    "reporting-client"
+    "packages/*"
   ],
   "nx": {
     "includedScripts": [],

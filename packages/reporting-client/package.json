@@ -20,10 +20,6 @@
       "default": "./index.js"
     }
   },
-  "files": [
-    "dist",
-    "!**/*.tsbuildinfo"
-  ],
   "nx": {
     "name": "reporting-client"
   },
