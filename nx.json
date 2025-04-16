@@ -46,10 +46,11 @@
     "projectsRelationship": "independent",
     "version": {
       "preVersionCommand": "npx nx run-many -t build",
-      "conventionalCommits": true
-    },
-    "git": {
-      "commitMessage": "chore: updated version [no ci]"
+      "conventionalCommits": true,
+      "generatorOptions": {
+        "fallbackCurrentVersionResolver": "disk",
+        "commitMessage": "chore: updated version [no ci]"
+      }
     },
     "changelog": {
       "projectChangelogs": {
