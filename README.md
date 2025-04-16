@@ -1,90 +1,119 @@
-# MatomoJs
+# Matomo JS
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modern JavaScript/TypeScript client library for Matomo Analytics.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Overview
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This monorepo contains JavaScript/TypeScript libraries for interacting with Matomo Analytics. Built with TypeScript and structured as an Nx monorepo for optimal development experience.
 
-## Finish your CI setup
+## Packages
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/xoU30qNwrQ)
+### Reporting Client (`@mj-kiwi/matomo-reporting-client`)
 
+A TypeScript client for the Matomo Reporting API with strongly typed interfaces. This package provides a convenient way to interact with Matomo's Reporting API endpoints.
 
-## Generate a library
+#### Features
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+- Modern, Promise-based API
+- TypeScript support with full type definitions
+- Modular design for flexible usage
+- Tree-shakable (import only what you need)
+
+#### Available Modules
+
+- **Core** - Core reporting functionality
+- **API** - General API operations
+- **SitesManager** - Methods for managing sites
+- **AbTesting** - Methods for A/B testing features
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later recommended)
+- npm or yarn
+
+### Installation
+
+```bash
+# Install the reporting client
+npm install @mj-kiwi/matomo-reporting-client
+
+# Or with yarn
+yarn add @mj-kiwi/matomo-reporting-client
 ```
 
-## Run tasks
+### Basic Usage
 
-To build the library use:
+```typescript
+import { ReportingClient } from '@mj-kiwi/matomo-reporting-client';
 
-```sh
-npx nx build pkg1
+// Create a reporting client instance
+const client = new ReportingClient({
+  baseUrl: 'https://your-matomo-instance.com',
+  apiKey: 'your-api-key', // if using token-auth
+});
+
+// Fetch site analytics data
+const siteData = await client.core.getVisits({
+  idSite: 1,
+  period: 'day',
+  date: 'yesterday',
+});
+
+// Use individual modules directly if needed
+const { SitesManagerModule } = require('@mj-kiwi/matomo-reporting-client');
+const sitesManager = new SitesManagerModule({
+  baseUrl: 'https://your-matomo-instance.com',
+  apiKey: 'your-api-key',
+});
+
+const sites = await sitesManager.getAllSites();
 ```
 
-To run any task with Nx use:
+## Development
 
-```sh
-npx nx <target> <project-name>
+This project is built using Nx, a smart build framework for monorepos.
+
+### Setup Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/matomo-js.git
+cd matomo-js
+
+# Install dependencies
+npm install
+
+# Build all packages
+npx nx run-many -t build
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Running Tests
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+# Run tests for all packages
+npx nx run-many -t test
 
-## Versioning and releasing
+# Run tests for a specific package
+npx nx test reporting-client
 
-To version and release the library use
-
-```
-npx nx release
-```
-
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+# Run tests with UI
+npx nx test reporting-client --ui
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+### Local Development
 
-```sh
-npx nx sync:check
+You can use the local registry for testing:
+
+```bash
+# Start local registry
+npx nx run local-registry
+
+# In another terminal, publish to local registry
+npx nx run-many -t publish --local
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+## License
 
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+MIT
