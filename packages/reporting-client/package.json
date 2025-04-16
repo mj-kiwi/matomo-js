@@ -6,9 +6,11 @@
   "module": "./index.js",
   "types": "./index.d.ts",
   "license": "MIT",
-  "author": "MJ Kiwi <me@mj.kiwi>",
+  "author": {
+    "name": "MJ Kiwi",
+    "email": "me@mj.kiwi"
+  },
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "types": "./index.d.ts",
       "import": "./index.js",
