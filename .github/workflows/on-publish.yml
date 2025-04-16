@@ -6,6 +6,10 @@ on:
   release:
     types:
       - created
+
+permissions:
+  id-token: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
