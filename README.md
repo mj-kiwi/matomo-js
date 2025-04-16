@@ -8,7 +8,7 @@ This monorepo contains JavaScript/TypeScript libraries for interacting with Mato
 
 ## Packages
 
-### Reporting Client (`@mj-kiwi/matomo-reporting-client`)
+### Reporting Client (`@mj-kiwi/reporting-client`)
 
 A TypeScript client for the Matomo Reporting API with strongly typed interfaces. This package provides a convenient way to interact with Matomo's Reporting API endpoints.
 
@@ -37,16 +37,16 @@ A TypeScript client for the Matomo Reporting API with strongly typed interfaces.
 
 ```bash
 # Install the reporting client
-npm install @mj-kiwi/matomo-reporting-client
+npm install @mj-kiwi/reporting-client
 
 # Or with yarn
-yarn add @mj-kiwi/matomo-reporting-client
+yarn add @mj-kiwi/reporting-client
 ```
 
 ### Basic Usage
 
 ```typescript
-import { ReportingClient } from '@mj-kiwi/matomo-reporting-client';
+import { ReportingClient } from '@mj-kiwi/reporting-client';
 
 // Create a reporting client instance
 const client = new ReportingClient({
@@ -61,14 +61,7 @@ const siteData = await client.core.getVisits({
   date: 'yesterday',
 });
 
-// Use individual modules directly if needed
-const { SitesManagerModule } = require('@mj-kiwi/matomo-reporting-client');
-const sitesManager = new SitesManagerModule({
-  baseUrl: 'https://your-matomo-instance.com',
-  apiKey: 'your-api-key',
-});
 
-const sites = await sitesManager.getAllSites();
 ```
 
 ## Development
@@ -79,7 +72,7 @@ This project is built using Nx, a smart build framework for monorepos.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/matomo-js.git
+git clone https://github.com/mj-kiwi/matomo-js.git
 cd matomo-js
 
 # Install dependencies
@@ -96,8 +89,16 @@ npx nx run-many -t build
 npx nx run-many -t test
 
 # Run tests for a specific package
-npx nx test packages/reporting-client
+npx nx test reporting-client
 
+# Run a specific test file
+npx nx test reporting-client --testFile=tests/api.spec.ts
+
+# Run tests in watch mode
+npx nx test reporting-client --watch
+
+# Run tests with coverage
+npx nx test reporting-client --coverage
 ```
 
 ### Local Development
