@@ -1,9 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { CoreReportingClient, ReportingClientOptions } from './core.js';
+import {
+  CoreReportingClient,
+  ReportingClientOptions,
+} from '../src/modules/core.js';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
+const mocks = vi.hoisted(() => ({
+  get: vi.fn(),
+  //   create: vi.fn(),
+  //  post: vi.fn(),
+  // and any other request type you want to mock
+}));
+
 // Mock axios
-vi.mock('axios');
+vi.mock('axios', async (importActual) => {
+  const actual = await importActual<typeof import('axios')>();
+
+  const mockAxios = {
+    default: {
+      ...actual.default,
+      create: vi.fn(() => ({
+        ...actual.default.create(),
+        get: mocks.get,
+      })),
+    },
+  };
+
+  return mockAxios;
+});
 
 describe('CoreReportingClient', () => {
   let client: CoreReportingClient;
@@ -11,11 +35,9 @@ describe('CoreReportingClient', () => {
   let defaultOptions: ReportingClientOptions;
 
   beforeEach(() => {
+    vi.resetAllMocks();
     // Create a mock axios instance
-    mockAxiosInstance = {
-      get: vi.fn(),
-      create: vi.fn(),
-    } as unknown as AxiosInstance;
+    mockAxiosInstance = axios.create();
 
     // Setup default options
     defaultOptions = {
@@ -27,8 +49,6 @@ describe('CoreReportingClient', () => {
       timeout: 5000,
       axiosInstance: mockAxiosInstance,
     };
-
-    (axios.create as any).mockReturnValue(mockAxiosInstance);
 
     client = new CoreReportingClient(defaultOptions);
   });
@@ -223,7 +243,6 @@ describe('CoreReportingClient', () => {
     it('should handle axios errors', async () => {
       const axiosError = new Error('Network Error');
       (axiosError as any).isAxiosError = true;
-
       (mockAxiosInstance.get as any).mockRejectedValueOnce(axiosError);
 
       await expect(client.request('API.get')).rejects.toThrow(

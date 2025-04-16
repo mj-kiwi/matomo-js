@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ApiModule } from './api.js';
-import { CoreReportingClient } from './core.js';
+import { ApiModule } from '../src/modules/api.js';
+import { CoreReportingClient } from '../src/modules/core.js';
 
 // Mock CoreReportingClient
-vi.mock('./core.js', () => {
+vi.mock('../src/modules/core.js', () => {
   return {
     CoreReportingClient: vi.fn().mockImplementation(() => ({
       request: vi.fn(),

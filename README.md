@@ -96,10 +96,8 @@ npx nx run-many -t build
 npx nx run-many -t test
 
 # Run tests for a specific package
-npx nx test reporting-client
+npx nx test packages/reporting-client
 
-# Run tests with UI
-npx nx test reporting-client --ui
 ```
 
 ### Local Development
