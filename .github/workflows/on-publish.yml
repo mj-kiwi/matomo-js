@@ -38,14 +38,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        # We are triggering nx release publish in --dry-run mode in order to not actually publish
-        # any package to npm registry, but only see what steps will be taken - this is set for tests only.
-        # You can remove this flag once you will be ready to publish to npm registry.
+
       - name: Publish packages
         run: |
           git config --global user.email "me@mj.kiwi"
           git config --global user.name "MJ Kiwi"
-          npx nx release publish --dry-run
+          npx nx release publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
           # We need to set provenance to true in order to generate provenance statement

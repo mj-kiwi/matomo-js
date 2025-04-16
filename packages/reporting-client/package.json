@@ -5,6 +5,8 @@
   "main": "./index.js",
   "module": "./index.js",
   "types": "./index.d.ts",
+  "license": "MIT",
+  "author": "MJ Kiwi <me@mj.kiwi>",
   "exports": {
     "./package.json": "./package.json",
     ".": {
