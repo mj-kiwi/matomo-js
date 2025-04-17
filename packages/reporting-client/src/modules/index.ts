@@ -30,4 +30,7 @@ export * from './live.js';
 export * from './login.js';
 export * from './marketing-campaigns-reporting.js';
 export * from './media-analytics.js';
+export * from './scheduled-reports.js';
+export * from './search-engine-keywords-performance.js';
+export * from './segment-editor.js';
 export * from './sites-manager.js';

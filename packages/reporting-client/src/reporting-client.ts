@@ -42,6 +42,16 @@ import { MultiChannelConversionAttributionModule } from './modules/multi-channel
 import { MultiSitesModule } from './modules/multi-sites.js';
 import { OverlayModule } from './modules/overlay.js';
 import { PagePerformanceModule } from './modules/page-performance.js';
+// New module imports
+import { PrivacyManagerModule } from './modules/privacy-manager.js';
+import { ReferrersModule } from './modules/referrers.js';
+import { ResolutionModule } from './modules/resolution.js';
+import { RollUpReportingModule } from './modules/roll-up-reporting.js';
+import { ScheduledReportsModule } from './modules/scheduled-reports.js';
+import { SearchEngineKeywordsPerformanceModule } from './modules/search-engine-keywords-performance.js';
+import { SeoModule } from './modules/seo.js';
+import { SegmentEditorModule } from './modules/segment-editor.js';
+import { TagManagerModule } from './modules/tag-manager.js';
 
 export type { ReportingClientOptions, RequestParams } from './modules/core.js';
 
@@ -84,6 +94,16 @@ export class ReportingClient {
   public multiSites: MultiSitesModule;
   public overlay: OverlayModule;
   public pagePerformance: PagePerformanceModule;
+  // New module properties
+  public privacyManager: PrivacyManagerModule;
+  public referrers: ReferrersModule;
+  public resolution: ResolutionModule;
+  public rollUpReporting: RollUpReportingModule;
+  public scheduledReports: ScheduledReportsModule;
+  public searchEngineKeywordsPerformance: SearchEngineKeywordsPerformanceModule;
+  public seo: SeoModule;
+  public segmentEditor: SegmentEditorModule;
+  public tagManager: TagManagerModule;
 
   /**
    * Create a new Matomo Reporting API client
@@ -134,5 +154,17 @@ export class ReportingClient {
     this.multiSites = new MultiSitesModule(this.core);
     this.overlay = new OverlayModule(this.core);
     this.pagePerformance = new PagePerformanceModule(this.core);
+    // Initialize existing modules
+    this.privacyManager = new PrivacyManagerModule(this.core);
+    this.referrers = new ReferrersModule(this.core);
+    this.resolution = new ResolutionModule(this.core);
+    this.rollUpReporting = new RollUpReportingModule(this.core);
+    this.seo = new SeoModule(this.core);
+    // Initialize new modules
+    this.scheduledReports = new ScheduledReportsModule(this.core);
+    this.searchEngineKeywordsPerformance =
+      new SearchEngineKeywordsPerformanceModule(this.core);
+    this.segmentEditor = new SegmentEditorModule(this.core);
+    this.tagManager = new TagManagerModule(this.core);
   }
 }

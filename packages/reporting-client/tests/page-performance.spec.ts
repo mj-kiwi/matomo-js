@@ -32,13 +32,12 @@ describe('PagePerformanceModule', () => {
   describe('get', () => {
     it('should call the API with required parameters', async () => {
       const mockResponse = {
-        avg_time_network: 0.25,
-        avg_time_server: 0.1,
-        avg_time_transfer: 0.05,
-        avg_time_dom_processing: 0.4,
-        avg_time_dom_completion: 0.2,
-        avg_time_on_load: 0.1,
-        avg_page_load_time: 1.1,
+        network_time: 120,
+        server_time: 350,
+        transfer_time: 85,
+        dom_processing_time: 550,
+        dom_completion_time: 200,
+        on_load_time: 100,
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
@@ -48,35 +47,34 @@ describe('PagePerformanceModule', () => {
         idSite: 1,
         period: 'day',
         date: '2023-01-01',
-        segment: '',
+        segment: undefined,
       });
       expect(result).toEqual(mockResponse);
     });
 
     it('should call the API with segment parameter', async () => {
       const mockResponse = {
-        avg_time_network: 0.3,
-        avg_time_server: 0.15,
-        avg_time_transfer: 0.07,
-        avg_time_dom_processing: 0.5,
-        avg_time_dom_completion: 0.25,
-        avg_time_on_load: 0.12,
-        avg_page_load_time: 1.39,
+        network_time: 100,
+        server_time: 300,
+        transfer_time: 75,
+        dom_processing_time: 500,
+        dom_completion_time: 180,
+        on_load_time: 90,
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result = await pagePerformanceModule.get(
         1,
-        'month',
+        'day',
         '2023-01-01',
-        'deviceType==mobile'
+        'browserName==Chrome'
       );
 
       expect(mockClient.request).toHaveBeenCalledWith('PagePerformance.get', {
         idSite: 1,
-        period: 'month',
+        period: 'day',
         date: '2023-01-01',
-        segment: 'deviceType==mobile',
+        segment: 'browserName==Chrome',
       });
       expect(result).toEqual(mockResponse);
     });

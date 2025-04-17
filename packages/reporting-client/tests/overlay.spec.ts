@@ -30,10 +30,11 @@ describe('OverlayModule', () => {
   });
 
   describe('getTranslations', () => {
-    it('should call the API with idSite parameter', async () => {
+    it('should call the API with required parameters', async () => {
       const mockResponse = {
         General_Close: 'Close',
         General_Next: 'Next',
+        General_Previous: 'Previous',
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
@@ -52,13 +53,13 @@ describe('OverlayModule', () => {
   describe('getFollowingPages', () => {
     it('should call the API with required parameters', async () => {
       const mockResponse = [
-        { label: '/page1', nb_hits: 100 },
-        { label: '/page2', nb_hits: 50 },
+        { label: '/page1.html', visits: 42 },
+        { label: '/page2.html', visits: 21 },
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result = await overlayModule.getFollowingPages(
-        'https://example.org/home',
+        'https://example.com/',
         1,
         'day',
         '2023-01-01'
@@ -67,39 +68,39 @@ describe('OverlayModule', () => {
       expect(mockClient.request).toHaveBeenCalledWith(
         'Overlay.getFollowingPages',
         {
-          url: 'https://example.org/home',
+          url: 'https://example.com/',
           idSite: 1,
           period: 'day',
           date: '2023-01-01',
-          segment: '',
+          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
     });
 
-    it('should call the API with segment parameter', async () => {
+    it('should call the API with all parameters', async () => {
       const mockResponse = [
-        { label: '/page1', nb_hits: 50 },
-        { label: '/page2', nb_hits: 25 },
+        { label: '/page1.html', visits: 20 },
+        { label: '/page2.html', visits: 10 },
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result = await overlayModule.getFollowingPages(
-        'https://example.org/home',
+        'https://example.com/',
         1,
-        'week',
+        'day',
         '2023-01-01',
-        'deviceType==mobile'
+        'browserName==Chrome'
       );
 
       expect(mockClient.request).toHaveBeenCalledWith(
         'Overlay.getFollowingPages',
         {
-          url: 'https://example.org/home',
+          url: 'https://example.com/',
           idSite: 1,
-          period: 'week',
+          period: 'day',
           date: '2023-01-01',
-          segment: 'deviceType==mobile',
+          segment: 'browserName==Chrome',
         }
       );
       expect(result).toEqual(mockResponse);

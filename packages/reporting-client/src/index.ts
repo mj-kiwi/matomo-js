@@ -51,6 +51,12 @@ export { MultiChannelConversionAttributionModule } from './modules/multi-channel
 export { MultiSitesModule } from './modules/multi-sites.js';
 export { OverlayModule } from './modules/overlay.js';
 export { PagePerformanceModule } from './modules/page-performance.js';
+// New modules
+export { PrivacyManagerModule } from './modules/privacy-manager.js';
+export { ReferrersModule } from './modules/referrers.js';
+export { ResolutionModule } from './modules/resolution.js';
+export { RollUpReportingModule } from './modules/roll-up-reporting.js';
+export { SeoModule } from './modules/seo.js';
 
 // Default export
 import { ReportingClient } from './reporting-client.js';

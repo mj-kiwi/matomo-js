@@ -1,9 +1,9 @@
 /**
  * Overlay API Module
- * Provides methods for the Overlay visualization feature
+ * Provides access to page overlay features
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient } from './core.js';
 
 export class OverlayModule {
   /**
@@ -12,25 +12,20 @@ export class OverlayModule {
   constructor(private core: CoreReportingClient) {}
 
   /**
-   * Get the translations used by the Overlay
+   * Get translations for overlay
    *
    * @param idSite The ID of the site
    */
-  async getTranslations(
-    idSite: number | string
-  ): Promise<Record<string, string>> {
-    return this.core.request<Record<string, string>>(
-      'Overlay.getTranslations',
-      {
-        idSite,
-      }
-    );
+  async getTranslations(idSite: number | string): Promise<any> {
+    return this.core.request<any>('Overlay.getTranslations', {
+      idSite,
+    });
   }
 
   /**
-   * Get the pages that follow a given page in navigation paths
+   * Get following pages for a URL
    *
-   * @param url The URL to analyze
+   * @param url The URL to get following pages for
    * @param idSite The ID of the site
    * @param period The period to analyze
    * @param date The date to analyze
@@ -41,9 +36,9 @@ export class OverlayModule {
     idSite: number | string,
     period: string,
     date: string,
-    segment: string = ''
-  ): Promise<any[]> {
-    return this.core.request<any[]>('Overlay.getFollowingPages', {
+    segment?: string
+  ): Promise<any> {
+    return this.core.request<any>('Overlay.getFollowingPages', {
       url,
       idSite,
       period,

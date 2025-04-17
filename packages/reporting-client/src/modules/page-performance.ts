@@ -1,9 +1,9 @@
 /**
  * PagePerformance API Module
- * Provides methods for page performance metrics
+ * Provides access to page performance metrics
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient } from './core.js';
 
 export class PagePerformanceModule {
   /**
@@ -23,7 +23,7 @@ export class PagePerformanceModule {
     idSite: number | string,
     period: string,
     date: string,
-    segment: string = ''
+    segment?: string
   ): Promise<any> {
     return this.core.request<any>('PagePerformance.get', {
       idSite,

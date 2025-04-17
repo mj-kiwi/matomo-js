@@ -1379,6 +1379,433 @@ const performance = await client.pagePerformance.get(
 );
 ```
 
+### PrivacyManager Module
+
+The `privacyManager` module provides methods for managing privacy-related features:
+
+```typescript
+// Delete data subjects (visits)
+const result = await client.privacyManager.deleteDataSubjects([
+  { id: 123, visitorId: 'abc' }
+]);
+
+// Export data subjects (visits)
+const exportData = await client.privacyManager.exportDataSubjects([
+  { id: 123, visitorId: 'abc' }
+]);
+
+// Find data subjects based on a segment
+const subjects = await client.privacyManager.findDataSubjects(
+  1,                    // Site ID
+  'userId==abc123'      // Segment to search for
+);
+
+// Anonymize raw data
+const anonymized = await client.privacyManager.anonymizeSomeRawData(
+  [1, 2],               // Site IDs
+  '2023-01-01',         // Date to anonymize
+  '1',                  // Anonymize IP addresses
+  '1',                  // Anonymize location
+  '1',                  // Anonymize user IDs
+  ['user_id', 'config_id'], // Visit columns to unset
+  ['action_name'],      // Link visit action columns to unset
+  'password123'         // Password confirmation
+);
+
+// Get available visit columns that can be anonymized
+const visitColumns = await client.privacyManager.getAvailableVisitColumnsToAnonymize();
+
+// Get available link visit action columns that can be anonymized
+const actionColumns = await client.privacyManager.getAvailableLinkVisitActionColumnsToAnonymize();
+```
+
+### Referrers Module
+
+The `referrers` module provides methods for accessing reports about websites, search engines, keywords, and campaigns:
+
+```typescript
+// Get referrers overview data
+const overview = await client.referrers.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  'nb_visits,nb_uniq_visitors' // Columns (optional)
+);
+
+// Get referrer type data
+const types = await client.referrers.getReferrerType(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  'direct',             // Type of referrer (optional)
+  '',                   // Subtable ID (optional)
+  true                  // Expanded (optional)
+);
+
+// Get all referrers data
+const all = await client.referrers.getAll(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get keywords data
+const keywords = await client.referrers.getKeywords(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get search engines from a keyword
+const searchEngines = await client.referrers.getSearchEnginesFromKeywordId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Subtable ID
+  ''                    // Segment (optional)
+);
+
+// Get all search engines
+const engines = await client.referrers.getSearchEngines(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get keywords for a search engine
+const engineKeywords = await client.referrers.getKeywordsFromSearchEngineId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Subtable ID
+  ''                    // Segment (optional)
+);
+
+// Get all campaigns
+const campaigns = await client.referrers.getCampaigns(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true                  // Expanded (optional)
+);
+
+// Get keywords for a campaign
+const campaignKeywords = await client.referrers.getKeywordsFromCampaignId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Subtable ID
+  ''                    // Segment (optional)
+);
+
+// Get referring websites
+const websites = await client.referrers.getWebsites(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get URLs for a website referrer
+const urls = await client.referrers.getUrlsFromWebsiteId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Subtable ID
+  ''                    // Segment (optional)
+);
+
+// Get social network referrers
+const socials = await client.referrers.getSocials(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get URLs for a social network referrer
+const socialUrls = await client.referrers.getUrlsForSocial(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  5                     // Subtable ID (optional)
+);
+
+// Get number of distinct search engines
+const distinctEngines = await client.referrers.getNumberOfDistinctSearchEngines(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get number of distinct social networks
+const distinctSocials = await client.referrers.getNumberOfDistinctSocialNetworks(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get number of distinct keywords
+const distinctKeywords = await client.referrers.getNumberOfDistinctKeywords(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get number of distinct campaigns
+const distinctCampaigns = await client.referrers.getNumberOfDistinctCampaigns(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get number of distinct websites
+const distinctWebsites = await client.referrers.getNumberOfDistinctWebsites(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+
+// Get number of distinct website URLs
+const distinctUrls = await client.referrers.getNumberOfDistinctWebsitesUrls(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  ''                    // Segment (optional)
+);
+```
+
+### Resolution Module
+
+The `resolution` module provides methods for accessing screen resolution analytics:
+
+```typescript
+// Get screen resolution data
+const resolutions = await client.resolution.getResolution(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop' // Segment (optional)
+);
+
+// Get device configuration data
+const configurations = await client.resolution.getConfiguration(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop' // Segment (optional)
+);
+```
+
+### RollUpReporting Module
+
+The `rollUpReporting` module provides methods for managing roll-up reporting features:
+
+```typescript
+// Add a new roll-up site
+const newRollUp = await client.rollUpReporting.addRollUp(
+  'Combined Sites',     // Roll-up name
+  [1, 2, 3],            // Source site IDs
+  'UTC',                // Timezone
+  'USD'                 // Currency
+);
+
+// Update an existing roll-up site
+const updated = await client.rollUpReporting.updateRollUp(
+  10,                   // Roll-up site ID
+  'Updated Name',       // New name (optional)
+  [1, 2, 4],            // New source site IDs (optional)
+  'Europe/Berlin',      // New timezone (optional)
+  'EUR'                 // New currency (optional)
+);
+
+// Get all roll-ups
+const rollUps = await client.rollUpReporting.getRollUps();
+```
+
+### SEO Module
+
+The `seo` module provides methods for accessing SEO metrics for a specified URL:
+
+```typescript
+// Get SEO metrics for a URL
+const seoRank = await client.seo.getRank('https://example.com');
+```
+
+### ScheduledReports Module
+
+The `scheduledReports` module provides methods for managing scheduled email reports:
+
+```typescript
+// Add a new scheduled report
+const newReport = await client.scheduledReports.addReport(
+  1,                    // Site ID
+  'Weekly Overview',    // Report description
+  'week',               // Period
+  9,                    // Hour to send
+  'email',              // Report type
+  'pdf',                // Report format
+  ['Actions.getPageUrls', 'Referrers.getWebsites'], // Reports to include
+  { displayFormat: 'tables_only' } // Additional parameters
+);
+
+// Update an existing report
+await client.scheduledReports.updateReport(
+  1,                    // Report ID
+  1,                    // Site ID
+  'Updated Weekly Report', // New description
+  'month',              // New period
+  10,                   // New hour
+  'email',              // Report type
+  'html',               // New format
+  ['VisitsSummary.get'], // New reports to include
+  { displayFormat: 'tables_and_graphs' } // New parameters
+);
+
+// Delete a scheduled report
+await client.scheduledReports.deleteReport(1);
+
+// Get all scheduled reports
+const reports = await client.scheduledReports.getReports();
+
+// Get reports for a specific site
+const siteReports = await client.scheduledReports.getReports(1, 'week');
+
+// Generate a report immediately
+const report = await client.scheduledReports.generateReport(
+  1,                    // Report ID
+  '2023-05-01',         // Date for the report
+  'en',                 // Language
+  'download'            // Output type
+);
+
+// Send a report immediately
+await client.scheduledReports.sendReport(
+  1,                    // Report ID
+  'week',               // Period
+  '2023-05-01',         // Date
+  true                  // Force sending
+);
+```
+
+### SearchEngineKeywordsPerformance Module
+
+The `searchEngineKeywordsPerformance` module provides methods for accessing SEO search keywords and crawling data:
+
+```typescript
+// Get all search engine keywords
+const keywords = await client.searchEngineKeywordsPerformance.getKeywords(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Google search engine keywords
+const googleKeywords = await client.searchEngineKeywordsPerformance.getKeywordsGoogle(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Google Image search keywords
+const imageKeywords = await client.searchEngineKeywordsPerformance.getKeywordsGoogleImage(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Bing search engine keywords
+const bingKeywords = await client.searchEngineKeywordsPerformance.getKeywordsBing(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Yandex search engine keywords
+const yandexKeywords = await client.searchEngineKeywordsPerformance.getKeywordsYandex(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Bing crawling overview
+const bingCrawling = await client.searchEngineKeywordsPerformance.getCrawlingOverviewBing(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Yandex crawling overview
+const yandexCrawling = await client.searchEngineKeywordsPerformance.getCrawlingOverviewYandex(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get Bing crawling error examples
+const crawlingErrors = await client.searchEngineKeywordsPerformance.getCrawlingErrorExamplesBing(1);
+```
+
+### SegmentEditor Module
+
+The `segmentEditor` module provides methods for managing custom segments:
+
+```typescript
+// Check if the user can add new segments
+const canAdd = await client.segmentEditor.isUserCanAddNewSegment(1);
+
+// Add a new segment
+const segment = await client.segmentEditor.add(
+  'Mobile Users',       // Segment name
+  'deviceType==mobile', // Segment definition
+  1,                    // Site ID (optional)
+  true,                 // Auto archive (optional)
+  false                 // Enable for all users (optional)
+);
+
+// Update an existing segment
+await client.segmentEditor.update(
+  1,                    // Segment ID
+  'Mobile Users in US', // New name
+  'deviceType==mobile;countryCode==US', // New definition
+  1,                    // Site ID (optional)
+  true,                 // Auto archive (optional)
+  false                 // Enable for all users (optional)
+);
+
+// Delete a segment
+await client.segmentEditor.delete(1);
+
+// Get a specific segment
+const segmentDetails = await client.segmentEditor.get(1);
+
+// Get all segments
+const segments = await client.segmentEditor.getAll();
+
+// Get segments for a specific site
+const siteSegments = await client.segmentEditor.getAll(1);
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
