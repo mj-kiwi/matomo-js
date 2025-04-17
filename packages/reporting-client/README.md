@@ -12,157 +12,50 @@ This library provides a simple and typed interface to interact with the Matomo A
 ## Installation
 
 ```bash
-npm install @mj-kiwi/reporting-client
+npm install @matomo/reporting-client
 ```
 
 ## Usage
 
-### Basic Usage
-
 ```typescript
-import { ReportingClient } from '@mj-kiwi/reporting-client';
+import { ReportingClient } from '@matomo/reporting-client';
 
-// Create a new client
+// Create a client instance
 const client = new ReportingClient({
-  url: 'https://your-matomo-instance.com',
-  tokenAuth: 'your-auth-token', // Optional
-  idSite: 1                     // Default site ID
+  url: 'https://matomo.example.org',
+  tokenAuth: 'your_auth_token',
+  idSite: 1,
 });
 
-// Get the Matomo version
-const version = await client.api.getMatomoVersion();
-console.log(`Matomo version: ${version}`);
+// Use the client to fetch data
+async function getVisitorData() {
+  try {
+    const visitors = await client.api.get(1, 'day', 'yesterday');
+    console.log('Visitors yesterday:', visitors);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
-// Get visits summary
-const visitsSummary = await client.core.getVisitsSummary({
-  period: 'day',
-  date: 'yesterday'
-});
-console.log(`Visits yesterday: ${visitsSummary.nb_visits}`);
+getVisitorData();
 ```
 
-### Configuration Options
+## Client Configuration
+
+When creating a new instance of the `ReportingClient`, you can provide the following configuration options:
 
 ```typescript
 const client = new ReportingClient({
   // Required
-  url: 'https://your-matomo-instance.com',
+  url: 'https://matomo.example.org', // Matomo instance URL
   
   // Optional
-  tokenAuth: 'your-auth-token',   // Auth token for API access
-  idSite: 1,                      // Default site ID
-  format: 'json',                 // Response format (json, xml, csv, tsv, html, rss)
-  language: 'en',                 // Language for translations
-  timeout: 30000,                 // Request timeout in ms (default: 30000)
-});
-```
-
-### Available Methods
-
-The client provides many methods to interact with different aspects of the Matomo API:
-
-#### Core API Methods
-
-```typescript
-// Get Matomo version
-const version = await client.api.getMatomoVersion();
-
-// Get sites information
-const sites = await client.api.getSitesInfo();
-
-// Get API metadata
-const metadata = await client.api.getMetadata();
-
-// Get report metadata
-const reportMetadata = await client.api.getReportMetadata();
-```
-
-#### Visits and Traffic
-
-```typescript
-// Get visits summary
-const summary = await client.core.getVisitsSummary({
-  period: 'day',
-  date: 'yesterday'
-});
-
-// Get unique visitors
-const visitors = await client.core.getUniqueVisitors({
-  period: 'month',
-  date: 'last30'
-});
-
-// Get live visitor count
-const liveCount = await client.core.getLiveVisitorCount(1, 30); // Site ID 1, last 30 minutes
-```
-
-#### User Demographics and Devices
-
-```typescript
-// Get visitor countries
-const countries = await client.core.getUserCountry({
-  period: 'month',
-  date: 'last30'
-});
-
-// Get visitor devices
-const devices = await client.core.getUserDevices({
-  period: 'month',
-  date: 'last30'
-});
-
-// Get visitor browsers
-const browsers = await client.core.getUserBrowsers({
-  period: 'month',
-  date: 'last30'
-});
-```
-
-#### Content and Pages
-
-```typescript
-// Get page URLs
-const pageUrls = await client.core.getPageUrls({
-  period: 'month',
-  date: 'last30'
-});
-
-// Get page titles
-const pageTitles = await client.core.getPageTitles({
-  period: 'month',
-  date: 'last30'
-});
-```
-
-#### Advanced Usage: Bulk Requests
-
-You can make multiple API requests in a single HTTP call using `bulkRequest`:
-
-```typescript
-const results = await client.core.bulkRequest({
-  'VisitsSummary.get': {
-    period: 'day',
-    date: 'yesterday'
-  },
-  'UserCountry.getCountry': {
-    period: 'day',
-    date: 'yesterday'
-  }
-});
-
-console.log(results['VisitsSummary.get'].nb_visits);
-console.log(results['UserCountry.getCountry']);
-```
-
-### Custom API Requests
-
-If you need to access an API endpoint that doesn't have a dedicated method:
-
-```typescript
-const result = await client.core.request('CustomDimensions.getCustomDimension', {
-  idDimension: 1,
-  period: 'day',
-  date: 'yesterday'
+  tokenAuth: 'your_auth_token', // Auth token for authenticated API requests
+  idSite: 1, // Default site ID to use when not specified in requests
+  format: 'json', // Response format: 'json', 'xml', 'csv', 'tsv', 'html', 'rss', or 'original'
+  language: 'en', // Language for API responses
+  timeout: 30000, // Request timeout in milliseconds (default: 30000)
+  axiosInstance: customAxios, // Custom Axios instance for special configurations
 });
 ```
 
@@ -347,20 +240,10 @@ const annotationDetails = await client.annotations.get(1, 123);
 const allAnnotations = await client.annotations.getAll('1');
 
 // Get annotations filtered by date/period
-const filteredAnnotations = await client.annotations.getAll(
+const filteredAnnotations = await client.annotations.getAllByDate(
   '1',                // Site ID
-  '2023-05-01',       // Date
   'month',            // Period
-  3                   // Last N periods
-);
-
-// Get annotation counts for dates
-const annotationCounts = await client.annotations.getAnnotationCountForDates(
-  '1',                // Site ID
-  '2023-05-01,2023-05-31', // Date range
-  'day',              // Period
-  null,               // Last N (not used)
-  true                // Include annotation text
+  '2023-05-01'        // Date
 );
 ```
 
@@ -449,157 +332,82 @@ const disappearedCrashes = await client.crashAnalytics.getDisappearedCrashes(1, 
 const reappearedCrashes = await client.crashAnalytics.getReappearedCrashes(1, 'week', 'last7');
 
 // Get real-time crashes overview
-const liveOverview = await client.crashAnalytics.getLastCrashesOverview(1, '', 15); // Last 15 minutes
+const realtimeCrashes = await client.crashAnalytics.getRealTimeCrashesOverview(1, 30);
 
-// Get crashes by page URL
-const crashesByPageUrl = await client.crashAnalytics.getCrashesByPageUrl(1, 'day', 'yesterday');
+// Search crash messages for merging
+const searchResults = await client.crashAnalytics.searchCrashMessagesForMerge(1, 'TypeError');
 
-// Get crashes by source file
-const crashesBySource = await client.crashAnalytics.getCrashesBySource(1, 'day', 'yesterday');
+// Merge multiple crashes
+await client.crashAnalytics.mergeCrashes(1, 123, [456, 789]);
 
-// Get crashes by category
-const crashesByCategory = await client.crashAnalytics.getCrashesByCategory(1, 'day', 'yesterday');
-
-// Get first-party crashes
-const firstPartyCrashes = await client.crashAnalytics.getCrashesByFirstParty(1, 'day', 'yesterday');
-
-// Get third-party crashes
-const thirdPartyCrashes = await client.crashAnalytics.getCrashesByThirdParty(1, 'day', 'yesterday');
-
-// Get summary information about a specific crash
-const crashSummary = await client.crashAnalytics.getCrashSummary(1, 123);
-
-// Get visit context for a crash
-const visitContext = await client.crashAnalytics.getCrashVisitContext(
-  123,           // Crash ID
-  1,             // Site ID
-  'day',         // Period
-  'yesterday'    // Date
-);
-
-// Merge similar crashes into a crash group
-await client.crashAnalytics.mergeCrashes(1, [123, 124, 125]);
-
-// Unmerge a crash group
-await client.crashAnalytics.unmergeCrashGroup(1, 123);
-
-// Ignore a crash
-await client.crashAnalytics.setIgnoreCrash(1, 123, 1); // 1 = ignore, 0 = unignore
-
-// Get all ignored crashes
-const ignoredCrashes = await client.crashAnalytics.getIgnoredCrashes(1);
+// Delete a specific crash
+await client.crashAnalytics.deleteCrash(1, 123);
 ```
 
 ### Custom Alerts Module
 
-The `customAlerts` module provides methods for creating and managing custom alerts based on your analytics metrics:
+The `customAlerts` module provides methods for working with custom alert definitions:
 
 ```typescript
-// Get all alerts for a site
-const alerts = await client.customAlerts.getAlerts(1);
+// Get all alerts for a user
+const alerts = await client.customAlerts.getAlerts('mylogin', 1);
 
-// Get all alerts across multiple sites
-const multiSiteAlerts = await client.customAlerts.getAlerts([1, 2, 3]);
+// Get all alert types
+const types = await client.customAlerts.getTriggeredAlerts(1);
 
-// Get alerts for all sites (superuser only)
-const allAlerts = await client.customAlerts.getAlerts(1, 1);
-
-// Get details about a specific alert
-const alertDetails = await client.customAlerts.getAlert(123);
-
-// Get historical values for an alert
-const historicalValues = await client.customAlerts.getValuesForAlertInPast(123, 5); // Get last 5 periods
-
-// Create a new alert
-const newAlert = await client.customAlerts.addAlert(
-  'Traffic Spike Alert',        // Name
-  1,                            // Site ID
-  'day',                        // Period
-  true,                         // Email me
-  'team@example.com',           // Additional emails
-  '+123456789',                 // Phone numbers
-  'nb_visits',                  // Metric to monitor
-  'greater_than',               // Condition
-  500,                          // Threshold value
-  'previous',                   // Compare to
-  'VisitsSummary.get'           // Report
-);
-
-// Update an existing alert
-await client.customAlerts.editAlert(
-  123,                          // Alert ID
-  'Updated Traffic Alert',      // Name
-  1,                            // Site ID
-  'day',                        // Period
-  true,                         // Email me
-  'team@example.com',           // Additional emails
-  '+123456789',                 // Phone numbers
-  'nb_visits',                  // Metric
-  'greater_than',               // Condition
-  600,                          // New threshold
-  'previous',                   // Compare to
-  'VisitsSummary.get'           // Report
+// Add a new alert
+await client.customAlerts.addAlert(
+  'High Bounce Rate Alert',  // Alert name
+  1,                        // Site ID
+  'week',                   // Period
+  'bounce_rate',            // Metric
+  'greater_than',           // Comparison method
+  70,                       // Alert threshold value
+  ['myemail@example.com'],  // Report emails
+  ['sms:123456789']         // Phone numbers
 );
 
 // Delete an alert
 await client.customAlerts.deleteAlert(123);
-
-// Get triggered alerts
-const triggeredAlerts = await client.customAlerts.getTriggeredAlerts(1);
 ```
 
 ### Custom Dimensions Module
 
-The `customDimensions` module provides methods for managing and reporting on custom dimensions in your Matomo analytics:
+The `customDimensions` module provides methods for managing custom dimensions in Matomo:
 
 ```typescript
-// Get data for a specific custom dimension
-const dimensionData = await client.customDimensions.getCustomDimension(
-  1,                  // Dimension ID
-  2,                  // Site ID
-  'day',              // Period
-  'yesterday',        // Date
-  'country==FR'       // Optional segment
-);
-
-// Create a new custom dimension
-const newDimension = await client.customDimensions.configureNewCustomDimension(
-  1,                  // Site ID
-  'Purchase Value',   // Name
-  'visit',            // Scope (visit, action, conversion)
-  true,               // Active status
-  [                   // Extractions
-    { dimension: 'url', pattern: 'value=([^&]*)' }
-  ],
-  true                // Case sensitive
-);
-
-// Update an existing custom dimension
-await client.customDimensions.configureExistingCustomDimension(
-  3,                  // Dimension ID
-  1,                  // Site ID
-  'Purchase Value Updated',  // Name
-  true,               // Active status
-  [                   // Updated extractions
-    { dimension: 'url', pattern: 'value=([^&]*)' },
-    { dimension: 'urlparam', pattern: 'purchase_value' }
-  ]
-);
-
-// Get all configured custom dimensions for a site
+// Get all custom dimensions for a site
 const dimensions = await client.customDimensions.getConfiguredCustomDimensions(1);
 
-// Get custom dimensions with a specific scope
-const visitDimensions = await client.customDimensions.getConfiguredCustomDimensionsHavingScope(
-  1,                  // Site ID
-  'visit'             // Scope
+// Get custom dimension by scope
+const visitDimensions = await client.customDimensions.getConfiguredCustomDimensionsByScope(1, 'visit');
+
+// Get custom dimension values for a site
+const values = await client.customDimensions.getCustomDimension(
+  1,                   // Site ID
+  'day',               // Period
+  'yesterday',         // Date
+  1,                   // Custom dimension ID
+  'deviceType==desktop' // Optional segment
 );
 
-// Get all available scopes for custom dimensions
-const scopes = await client.customDimensions.getAvailableScopes(1);
+// Add a new custom dimension
+await client.customDimensions.configureNewCustomDimension(
+  1,                   // Site ID
+  'Member Status',     // Dimension name
+  'visit',             // Scope
+  true,                // Active
+  ['gold', 'silver', 'bronze'] // Optional case-insensitive extractable values
+);
 
-// Get all available extraction dimensions
-const extractionDimensions = await client.customDimensions.getAvailableExtractionDimensions();
+// Update a custom dimension
+await client.customDimensions.configureExistingCustomDimension(
+  1,                   // Site ID
+  1,                   // Dimension ID
+  'Updated Member Status', // New name
+  true,                // Active
+  ['platinum', 'gold', 'silver', 'bronze'] // Updated extractable values
+);
 ```
 
 ### Custom JS Tracker Module
@@ -686,30 +494,20 @@ const reportData = await client.customReports.getCustomReport(
 
 ### Custom Variables Module
 
-The `customVariables` module provides methods for working with custom variables in Matomo:
+The `customVariables` module provides methods for accessing custom variable data:
 
 ```typescript
-// Get custom variables report
-const variables = await client.customVariables.getCustomVariables(
+// Get custom variable data
+const customVars = await client.customVariables.getCustomVariables(
   1,                  // Site ID
-  'day',              // Period
-  'yesterday',        // Date
-  'country==FR',      // Optional segment
-  1,                  // Expanded
-  0                   // Flat
+  'month',            // Period
+  'last30',           // Date
+  '',                 // No segment
+  5                   // Optional subtable ID
 );
 
-// Get custom variable values for a specific variable
-const varValues = await client.customVariables.getCustomVariablesValuesFromNameId(
-  1,                  // Site ID
-  'day',              // Period
-  'yesterday',        // Date
-  3,                  // Subtable ID (variable ID)
-  'country==FR'       // Optional segment
-);
-
-// Get slot usage information
-const slotUsage = await client.customVariables.getUsagesOfSlots(1);
+// Get custom variable configuration
+const config = await client.customVariables.getConfiguredCustomVariables();
 ```
 
 ### Dashboard Module
@@ -739,15 +537,15 @@ await client.dashboard.resetDashboardLayout(5, 'user1');
 
 ### DevicePlugins Module
 
-The `devicePlugins` module provides methods for accessing reports about browser plugins:
+The `devicePlugins` module provides methods for accessing browser plugin statistics:
 
 ```typescript
-// Get plugin usage
-const pluginData = await client.devicePlugins.getPlugin(
+// Get plugin data
+const plugins = await client.devicePlugins.getPlugin(
   1,                  // Site ID
   'month',            // Period
   'last30',           // Date
-  'deviceType==desktop' // Optional segment
+  ''                  // No segment
 );
 ```
 
@@ -811,14 +609,6 @@ const browserVersions = await client.devicesDetection.getBrowserVersions(
   'last30',           // Date
   ''                  // No segment
 );
-
-// Get browser engines
-const browserEngines = await client.devicesDetection.getBrowserEngines(
-  1,                  // Site ID
-  'month',            // Period
-  'last30',           // Date
-  ''                  // No segment
-);
 ```
 
 ### Events Module
@@ -855,17 +645,8 @@ const names = await client.events.getName(
   'last30',           // Date
   '',                 // No segment
   '',                 // Not expanded
-  'eventAction',      // Secondary dimension
+  'eventCategory',    // Secondary dimension
   'flat'              // Flat format
-);
-
-// Get actions for a specific category
-const categoryActions = await client.events.getActionFromCategoryId(
-  1,                  // Site ID
-  'month',            // Period
-  'last30',           // Date
-  5,                  // Category subtable ID
-  ''                  // No segment
 );
 ```
 
@@ -892,14 +673,712 @@ await client.feedback.sendFeedbackForSurvey(
 await client.feedback.updateFeedbackReminderDate();
 ```
 
-## Building
+### Form Analytics Module
 
-Run `nx build reporting-client` to build the library.
+The `formAnalytics` module provides methods for managing forms and accessing form analytics data:
 
-## Running Unit Tests
+```typescript
+// Add a new form for tracking
+const newForm = await client.formAnalytics.addForm(
+  1,                    // Site ID
+  'Contact Form',       // Form name
+  'Main contact form',  // Description
+  'form[id=contact]',   // Match form rule
+  'page.url=contact',   // Match page rule
+  'form_submit',        // Conversion rule option
+  'thank-you'           // Conversion rule value
+);
 
-Run `nx test reporting-client` to execute the unit tests via [Vitest](https://vitest.dev/).
+// Get all forms for a site
+const forms = await client.formAnalytics.getForms(1);
+
+// Get entry fields report
+const entryFields = await client.formAnalytics.getEntryFields(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Form ID
+);
+
+// Get drop off fields report
+const dropOffFields = await client.formAnalytics.getDropOffFields(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Form ID
+);
+
+// Get field timings report
+const timings = await client.formAnalytics.getFieldTimings(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Form ID
+);
+
+// Get most popular forms in real time
+const popularForms = await client.formAnalytics.getCurrentMostPopularForms(
+  1,                    // Site ID
+  30,                   // Last minutes
+  10                    // Limit
+);
+```
+
+### Funnels Module
+
+The `funnels` module provides methods for creating, managing, and analyzing conversion funnels:
+
+```typescript
+// Get funnel metrics
+const metrics = await client.funnels.getMetrics(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Funnel ID
+);
+
+// Get funnel flow visualization data
+const funnelFlow = await client.funnels.getFunnelFlow(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Funnel ID
+);
+
+// Get funnel entries
+const entries = await client.funnels.getFunnelEntries(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  123                   // Funnel ID
+);
+
+// Set up a goal funnel
+await client.funnels.setGoalFunnel(
+  1,                    // Site ID
+  2,                    // Goal ID
+  true,                 // Is activated
+  [
+    { pattern: '/checkout/cart', pattern_type: 'contains' },
+    { pattern: '/checkout/shipping', pattern_type: 'contains' },
+    { pattern: '/checkout/payment', pattern_type: 'contains' }
+  ]                     // Funnel steps
+);
+
+// Get all activated funnels for a site
+const funnels = await client.funnels.getAllActivatedFunnelsForSite(1);
+```
+
+### Goals Module
+
+The `goals` module provides methods for managing goals and accessing goal metrics:
+
+```typescript
+// Get all goals for a site
+const goals = await client.goals.getGoals(1);
+
+// Get a specific goal
+const goal = await client.goals.getGoal(1, 2);
+
+// Add a new goal
+const newGoal = await client.goals.addGoal(
+  1,                    // Site ID
+  'Download Brochure',  // Goal name
+  'url',                // Match attribute (url, title, file, etc.)
+  '/downloads/brochure.pdf', // Pattern to match
+  'contains',           // Pattern type (contains, exact, regex, etc.)
+  false,                // Case sensitive
+  10.5                  // Goal revenue value
+);
+
+// Update a goal
+await client.goals.updateGoal(
+  1,                    // Site ID
+  2,                    // Goal ID
+  'Updated Goal Name',  // New name
+  'url',                // Match attribute
+  '/downloads/brochure-v2.pdf', // New pattern
+  'contains',           // Pattern type
+  false,                // Case sensitive
+  15.0                  // New revenue value
+);
+
+// Delete a goal
+await client.goals.deleteGoal(1, 2);
+
+// Get ecommerce items by SKU
+const skuItems = await client.goals.getItemsSku(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get abandoned cart items by name
+const abandonedItems = await client.goals.getItemsName(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  true                  // Abandoned carts flag
+);
+
+// Get goal conversion metrics
+const conversions = await client.goals.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop', // Segment
+  2                     // Goal ID
+);
+
+// Get days to conversion report
+const daysToConversion = await client.goals.getDaysToConversion(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+```
+
+### Heatmap Session Recording Module
+
+The `heatmapSessionRecording` module provides methods for managing and analyzing heatmaps and session recordings:
+
+```typescript
+// Add a new heatmap
+const heatmap = await client.heatmapSessionRecording.addHeatmap(
+  1,                    // Site ID
+  'Homepage Heatmap',   // Heatmap name
+  ['example.org'],      // Match page rules
+  '1000',               // Sample limit
+  '5',                  // Sample rate (%)
+  '.no-track'           // Excluded elements
+);
+
+// Get all heatmaps for a site
+const heatmaps = await client.heatmapSessionRecording.getHeatmaps(1);
+
+// Get a specific heatmap
+const singleHeatmap = await client.heatmapSessionRecording.getHeatmap(1, 123);
+
+// Add a new session recording
+const recording = await client.heatmapSessionRecording.addSessionRecording(
+  1,                    // Site ID
+  'Checkout Process',   // Recording name
+  ['checkout/*'],       // Match page rules
+  '1000',               // Sample limit
+  '10',                 // Sample rate (%)
+  '30',                 // Minimum session time (seconds)
+  true,                 // Requires activity
+  true                  // Capture keystrokes
+);
+
+// Get recorded sessions
+const sessions = await client.heatmapSessionRecording.getRecordedSessions(
+  1,                    // Site ID
+  'day',                // Period
+  'yesterday',          // Date
+  123                   // Session recording configuration ID
+);
+
+// Get recorded heatmap data
+const heatmapData = await client.heatmapSessionRecording.getRecordedHeatmap(
+  1,                    // Site ID
+  'day',                // Period
+  'yesterday',          // Date
+  123,                  // Heatmap configuration ID
+  'click',              // Heatmap type
+  'desktop'             // Device type
+);
+
+// Test if a URL matches page rules
+const matchResult = await client.heatmapSessionRecording.testUrlMatchPages(
+  'https://example.org/checkout',
+  ['checkout/*', 'order/*']
+);
+```
+
+### Image Graph Module
+
+The `imageGraph` module provides methods for generating static PNG graphs from Matomo reports:
+
+```typescript
+// Generate a line graph for visitors over time
+const evolutionGraph = await client.imageGraph.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'VisitsSummary',      // API module
+  'get',                // API action
+  'evolution',          // Graph type
+  '0',                  // Output type
+  'nb_visits',          // Columns to display
+  'Visits',             // Label
+  true,                 // Show legend
+  '800',                // Width
+  '400'                 // Height
+);
+
+// Generate a pie chart of device types
+const pieChart = await client.imageGraph.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'DevicesDetection',   // API module
+  'getType',            // API action
+  'pie',                // Graph type
+  '0',                  // Output type
+  '',                   // All columns
+  '',                   // Default labels
+  true,                 // Show legend
+  '600',                // Width
+  '300',                // Height
+  '10',                 // Font size
+  '9',                  // Legend font size
+  true,                 // Aliased (anti-aliased)
+  '',                   // No goal filter
+  'ff0000,00ff00,0000ff' // Custom colors
+);
+```
+
+### Insights Module
+
+The `insights` module provides methods for generating analytical insights about website data:
+
+```typescript
+// Check if insights can be generated for a period
+const canGenerate = await client.insights.canGenerateInsights('yesterday', 'day');
+
+// Get insights overview for a site
+const overview = await client.insights.getInsightsOverview(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get movers and shakers overview
+const moversShakers = await client.insights.getMoversAndShakersOverview(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get detailed insights for a specific report
+const reportInsights = await client.insights.getInsights(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'Actions.getPageUrls', // Report unique ID
+  '',                   // No segment
+  '5',                  // Limit increasers
+  '5',                  // Limit decreasers
+  '',                   // Filter by
+  '2',                  // Min impact percent
+  '20',                 // Min growth percent
+  '1',                  // Compare to X periods ago
+  'absolute'            // Order by
+);
+
+// Get movers and shakers for a specific report
+const moversShakersData = await client.insights.getMoversAndShakers(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'Actions.getPageUrls', // Report unique ID
+  '',                   // No segment
+  '1',                  // Compare to 1 period ago
+  '4',                  // Limit increasers
+  '4'                   // Limit decreasers
+);
+```
+
+### Languages Manager Module
+
+The `languagesManager` module provides methods for accessing translations and managing language preferences:
+
+```typescript
+// Check if a specific language is available
+const isAvailable = await client.languagesManager.isLanguageAvailable('fr');
+
+// Get all available language codes
+const languages = await client.languagesManager.getAvailableLanguages();
+
+// Get detailed information about available languages
+const languagesInfo = await client.languagesManager.getAvailableLanguagesInfo();
+
+// Get language names
+const languageNames = await client.languagesManager.getAvailableLanguageNames();
+
+// Get all translations for a specific language
+const translations = await client.languagesManager.getTranslationsForLanguage('fr');
+
+// Get language preference for a user
+const userLanguage = await client.languagesManager.getLanguageForUser('admin');
+
+// Set language preference for a user
+await client.languagesManager.setLanguageForUser('admin', 'es');
+
+// Check if a user uses 12-hour clock format
+const uses12Hour = await client.languagesManager.uses12HourClockForUser('admin');
+
+// Set 12-hour clock preference for a user
+await client.languagesManager.set12HourClockForUser('admin', true);
+```
+
+### Live Module
+
+The `live` module provides methods for accessing real-time visitor data and visit details:
+
+```typescript
+// Get visitor counters for the last 30 minutes
+const counters = await client.live.getCounters(
+  1,                    // Site ID
+  30                    // Last minutes
+);
+
+// Get visitor counters with additional parameters
+const filteredCounters = await client.live.getCounters(
+  1,                    // Site ID
+  30,                   // Last minutes
+  'deviceType==mobile', // Segment
+  ['visits', 'actions'], // Show columns
+  ['visitsConverted']   // Hide columns
+);
+
+// Check if visitor profiles are enabled
+const profilesEnabled = await client.live.isVisitorProfileEnabled(1);
+
+// Get detailed information about the latest visits
+const visitDetails = await client.live.getLastVisitsDetails(
+  1,                    // Site ID
+  'day',                // Period (optional)
+  'today',              // Date (optional)
+  '',                   // Segment (optional)
+  10                    // Number of visitors to fetch
+);
+
+// Get visitor profile information
+const profile = await client.live.getVisitorProfile(
+  1,                    // Site ID
+  'abc123',             // Visitor ID (optional)
+  '',                   // Segment (optional)
+  20                    // Limit visits (optional)
+);
+
+// Get the most recent visitor ID
+const visitorId = await client.live.getMostRecentVisitorId(1);
+
+// Get the timestamp of the most recent visit
+const lastVisitTime = await client.live.getMostRecentVisitsDateTime(1);
+```
+
+### Login Module
+
+The `login` module provides methods for managing login-related security features:
+
+```typescript
+// Unblock all IPs that were blocked due to brute force protection
+await client.login.unblockBruteForceIPs();
+```
+
+### Marketing Campaigns Reporting Module
+
+The `marketingCampaignsReporting` module provides methods for accessing marketing campaign analytics data:
+
+```typescript
+// Get campaign IDs
+const campaignIds = await client.marketingCampaignsReporting.getId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get campaign names
+const campaignNames = await client.marketingCampaignsReporting.getName(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get campaign keywords
+const keywords = await client.marketingCampaignsReporting.getKeyword(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get campaign sources
+const sources = await client.marketingCampaignsReporting.getSource(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get campaign mediums
+const mediums = await client.marketingCampaignsReporting.getMedium(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get campaign content
+const content = await client.marketingCampaignsReporting.getContent(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get campaign source/medium combinations
+const sourceMedium = await client.marketingCampaignsReporting.getSourceMedium(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  '',                   // Segment (optional)
+  true,                 // Expanded (optional)
+  false                 // Flat (optional)
+);
+
+// Get campaign names from a source/medium subtable
+const namesFromSource = await client.marketingCampaignsReporting.getNameFromSourceMediumId(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Subtable ID
+  ''                    // Segment (optional)
+);
+```
+
+### Media Analytics Module
+
+The `mediaAnalytics` module provides methods for accessing video and audio analytics data:
+
+```typescript
+// Check if there are any media analytics records
+const hasMedia = await client.mediaAnalytics.hasRecords(1);
+
+// Get overall media analytics data
+const mediaData = await client.mediaAnalytics.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get real-time media plays count
+const currentPlays = await client.mediaAnalytics.getCurrentNumPlays(
+  1,                    // Site ID
+  30                    // Last minutes
+);
+
+// Get real-time media watch time
+const timeSpent = await client.mediaAnalytics.getCurrentSumTimeSpent(
+  1,                    // Site ID
+  30                    // Last minutes
+);
+
+// Get most popular media in real time
+const popularMedia = await client.mediaAnalytics.getCurrentMostPlays(
+  1,                    // Site ID
+  30,                   // Last minutes
+  5,                    // Limit
+  'deviceType==desktop' // Segment (optional)
+);
+
+// Get video resources report
+const videoResources = await client.mediaAnalytics.getVideoResources(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get audio resources report
+const audioResources = await client.mediaAnalytics.getAudioResources(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get video titles report
+const videoTitles = await client.mediaAnalytics.getVideoTitles(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get audio titles report
+const audioTitles = await client.mediaAnalytics.getAudioTitles(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get video hours report (when videos are watched)
+const videoHours = await client.mediaAnalytics.getVideoHours(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get video resolutions report
+const resolutions = await client.mediaAnalytics.getVideoResolutions(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get media players report
+const players = await client.mediaAnalytics.getPlayers(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+```
+
+### MobileMessaging Module
+
+The `mobileMessaging` module provides methods for managing SMS API credentials, phone numbers, and sending SMS messages:
+
+```typescript
+// Check if SMS API credentials are provided
+const hasCredentials = await client.mobileMessaging.areSMSAPICredentialProvided();
+
+// Get the current SMS provider
+const provider = await client.mobileMessaging.getSMSProvider();
+
+// Set SMS API credentials
+const credentialsSet = await client.mobileMessaging.setSMSAPICredential(
+  'nexmo',                // Provider name
+  {                       // Provider credentials
+    apiKey: 'your-key',
+    apiSecret: 'your-secret'
+  }
+);
+
+// Add a phone number for verification
+const phoneAdded = await client.mobileMessaging.addPhoneNumber('+1234567890');
+
+// Resend verification code to a phone number
+const codeSent = await client.mobileMessaging.resendVerificationCode('+1234567890');
+
+// Get remaining SMS credit
+const credits = await client.mobileMessaging.getCreditLeft();
+
+// Get registered phone numbers
+const phoneNumbers = await client.mobileMessaging.getPhoneNumbers();
+
+// Remove a phone number
+const removed = await client.mobileMessaging.removePhoneNumber('+1234567890');
+
+// Validate a phone number with a verification code
+const validated = await client.mobileMessaging.validatePhoneNumber('+1234567890', '123456');
+
+// Delete SMS API credentials
+const deleted = await client.mobileMessaging.deleteSMSAPICredential();
+
+// Set delegated management
+await client.mobileMessaging.setDelegatedManagement(true);
+
+// Get delegated management status
+const delegationEnabled = await client.mobileMessaging.getDelegatedManagement();
+```
+
+### MultiChannelConversionAttribution Module
+
+The `multiChannelConversionAttribution` module provides methods for analyzing conversion attributions across multiple channels:
+
+```typescript
+// Enable attribution for a specific goal
+const enabled = await client.multiChannelConversionAttribution.setGoalAttribution(1, 5, true);
+
+// Check if a goal has attribution enabled
+const isEnabled = await client.multiChannelConversionAttribution.getGoalAttribution(1, 5);
+
+// Get channel attribution data for a specific goal
+const attributionData = await client.multiChannelConversionAttribution.getChannelAttribution(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  5,                    // Goal ID
+  '1',                  // Campaign dimension combination ID (optional)
+  'referrer==google',   // Segment (optional)
+  'true',               // Expanded (optional)
+  'false',              // Flat (optional)
+  ''                    // Subtable ID (optional)
+);
+
+// Get available campaign dimension combinations
+const dimensions = await client.multiChannelConversionAttribution.getAvailableCampaignDimensionCombinations();
+
+// Get all attribution goals for a site
+const goals = await client.multiChannelConversionAttribution.getSiteAttributionGoals(1);
+```
+
+### MultiSites Module
+
+The `multiSites` module provides methods for accessing metrics across multiple websites in the Matomo instance:
+
+```typescript
+// Get metrics for all sites
+const allSites = await client.multiSites.getAll(
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop', // Segment (optional)
+  true,                 // Enhanced metrics (optional)
+  'commerce',           // Pattern to filter sites (optional)
+  ['nb_visits', 'revenue'] // Columns to include (optional)
+);
+
+// Get metrics for a specific site
+const singleSite = await client.multiSites.getOne(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop', // Segment (optional)
+  true                  // Enhanced metrics (optional)
+);
+
+// Get metrics for all sites grouped by site groups
+const siteGroups = await client.multiSites.getAllWithGroups(
+  'month',              // Period (optional)
+  'last30',             // Date (optional)
+  'deviceType==desktop', // Segment (optional)
+  'commerce',           // Pattern to filter sites (optional)
+  10                    // Result limit (optional)
+);
+```
+
+### Overlay Module
+
+The `overlay` module provides methods for working with the Page Overlay visualization feature:
+
+```typescript
+// Get translations used by the Overlay
+const translations = await client.overlay.getTranslations(1);
+
+// Get pages that follow a given page in navigation paths
+const followingPages = await client.overlay.getFollowingPages(
+  'https://example.org/products',  // URL to analyze
+  1,                    // Site ID
+  'week',               // Period
+  'last7',              // Date
+  'deviceType==mobile'  // Segment (optional)
+);
+```
+
+### PagePerformance Module
+
+The `pagePerformance` module provides methods for analyzing page loading and rendering performance metrics:
+
+```typescript
+// Get page performance metrics
+const performance = await client.pagePerformance.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==desktop' // Segment (optional)
+);
+```
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

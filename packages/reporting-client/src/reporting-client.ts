@@ -21,6 +21,27 @@ import { CustomDimensionsModule } from './modules/custom-dimensions.js';
 import { CustomJsTrackerModule } from './modules/custom-js-tracker.js';
 import { CustomReportsModule } from './modules/custom-reports.js';
 import { CustomVariablesModule } from './modules/custom-variables.js';
+import { DashboardModule } from './modules/dashboard.js';
+import { DevicePluginsModule } from './modules/device-plugins.js';
+import { DevicesDetectionModule } from './modules/devices-detection.js';
+import { EventsModule } from './modules/events.js';
+import { FeedbackModule } from './modules/feedback.js';
+import { FormAnalyticsModule } from './modules/form-analytics.js';
+import { FunnelsModule } from './modules/funnels.js';
+import { GoalsModule } from './modules/goals.js';
+import { HeatmapSessionRecordingModule } from './modules/heatmap-session-recording.js';
+import { ImageGraphModule } from './modules/image-graph.js';
+import { InsightsModule } from './modules/insights.js';
+import { LanguagesManagerModule } from './modules/languages-manager.js';
+import { LiveModule } from './modules/live.js';
+import { LoginModule } from './modules/login.js';
+import { MarketingCampaignsReportingModule } from './modules/marketing-campaigns-reporting.js';
+import { MediaAnalyticsModule } from './modules/media-analytics.js';
+import { MobileMessagingModule } from './modules/mobile-messaging.js';
+import { MultiChannelConversionAttributionModule } from './modules/multi-channel-conversion-attribution.js';
+import { MultiSitesModule } from './modules/multi-sites.js';
+import { OverlayModule } from './modules/overlay.js';
+import { PagePerformanceModule } from './modules/page-performance.js';
 
 export type { ReportingClientOptions, RequestParams } from './modules/core.js';
 
@@ -42,6 +63,27 @@ export class ReportingClient {
   public customJsTracker: CustomJsTrackerModule;
   public customReports: CustomReportsModule;
   public customVariables: CustomVariablesModule;
+  public dashboard: DashboardModule;
+  public devicePlugins: DevicePluginsModule;
+  public devicesDetection: DevicesDetectionModule;
+  public events: EventsModule;
+  public feedback: FeedbackModule;
+  public formAnalytics: FormAnalyticsModule;
+  public funnels: FunnelsModule;
+  public goals: GoalsModule;
+  public heatmapSessionRecording: HeatmapSessionRecordingModule;
+  public imageGraph: ImageGraphModule;
+  public insights: InsightsModule;
+  public languagesManager: LanguagesManagerModule;
+  public live: LiveModule;
+  public login: LoginModule;
+  public marketingCampaignsReporting: MarketingCampaignsReportingModule;
+  public mediaAnalytics: MediaAnalyticsModule;
+  public mobileMessaging: MobileMessagingModule;
+  public multiChannelConversionAttribution: MultiChannelConversionAttributionModule;
+  public multiSites: MultiSitesModule;
+  public overlay: OverlayModule;
+  public pagePerformance: PagePerformanceModule;
 
   /**
    * Create a new Matomo Reporting API client
@@ -68,5 +110,29 @@ export class ReportingClient {
     this.customJsTracker = new CustomJsTrackerModule(this.core);
     this.customReports = new CustomReportsModule(this.core);
     this.customVariables = new CustomVariablesModule(this.core);
+    this.dashboard = new DashboardModule(this.core);
+    this.devicePlugins = new DevicePluginsModule(this.core);
+    this.devicesDetection = new DevicesDetectionModule(this.core);
+    this.events = new EventsModule(this.core);
+    this.feedback = new FeedbackModule(this.core);
+    this.formAnalytics = new FormAnalyticsModule(this.core);
+    this.funnels = new FunnelsModule(this.core);
+    this.goals = new GoalsModule(this.core);
+    this.heatmapSessionRecording = new HeatmapSessionRecordingModule(this.core);
+    this.imageGraph = new ImageGraphModule(this.core);
+    this.insights = new InsightsModule(this.core);
+    this.languagesManager = new LanguagesManagerModule(this.core);
+    this.live = new LiveModule(this.core);
+    this.login = new LoginModule(this.core);
+    this.marketingCampaignsReporting = new MarketingCampaignsReportingModule(
+      this.core
+    );
+    this.mediaAnalytics = new MediaAnalyticsModule(this.core);
+    this.mobileMessaging = new MobileMessagingModule(this.core);
+    this.multiChannelConversionAttribution =
+      new MultiChannelConversionAttributionModule(this.core);
+    this.multiSites = new MultiSitesModule(this.core);
+    this.overlay = new OverlayModule(this.core);
+    this.pagePerformance = new PagePerformanceModule(this.core);
   }
 }
