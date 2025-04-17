@@ -42,7 +42,6 @@ import { MultiChannelConversionAttributionModule } from './modules/multi-channel
 import { MultiSitesModule } from './modules/multi-sites.js';
 import { OverlayModule } from './modules/overlay.js';
 import { PagePerformanceModule } from './modules/page-performance.js';
-// New module imports
 import { PrivacyManagerModule } from './modules/privacy-manager.js';
 import { ReferrersModule } from './modules/referrers.js';
 import { ResolutionModule } from './modules/resolution.js';
@@ -52,6 +51,18 @@ import { SearchEngineKeywordsPerformanceModule } from './modules/search-engine-k
 import { SeoModule } from './modules/seo.js';
 import { SegmentEditorModule } from './modules/segment-editor.js';
 import { TagManagerModule } from './modules/tag-manager.js';
+import { TourModule } from './modules/tour.js';
+import { TransitionsModule } from './modules/transitions.js';
+import { TwoFactorAuthModule } from './modules/two-factor-auth.js';
+import { UserCountryModule } from './modules/user-country.js';
+import { UserIdModule } from './modules/user-id.js';
+import { UserLanguageModule } from './modules/user-language.js';
+import { UsersFlowModule } from './modules/users-flow.js';
+import { UsersManagerModule } from './modules/users-manager.js';
+import { VisitFrequencyModule } from './modules/visit-frequency.js';
+import { VisitTimeModule } from './modules/visit-time.js';
+import { VisitorInterestModule } from './modules/visitor-interest.js';
+import { VisitsSummaryModule } from './modules/visits-summary.js';
 
 export type { ReportingClientOptions, RequestParams } from './modules/core.js';
 
@@ -94,7 +105,6 @@ export class ReportingClient {
   public multiSites: MultiSitesModule;
   public overlay: OverlayModule;
   public pagePerformance: PagePerformanceModule;
-  // New module properties
   public privacyManager: PrivacyManagerModule;
   public referrers: ReferrersModule;
   public resolution: ResolutionModule;
@@ -104,6 +114,18 @@ export class ReportingClient {
   public seo: SeoModule;
   public segmentEditor: SegmentEditorModule;
   public tagManager: TagManagerModule;
+  public tour: TourModule;
+  public transitions: TransitionsModule;
+  public twoFactorAuth: TwoFactorAuthModule;
+  public userCountry: UserCountryModule;
+  public userId: UserIdModule;
+  public userLanguage: UserLanguageModule;
+  public usersFlow: UsersFlowModule;
+  public usersManager: UsersManagerModule;
+  public visitFrequency: VisitFrequencyModule;
+  public visitTime: VisitTimeModule;
+  public visitorInterest: VisitorInterestModule;
+  public visitsSummary: VisitsSummaryModule;
 
   /**
    * Create a new Matomo Reporting API client
@@ -154,17 +176,27 @@ export class ReportingClient {
     this.multiSites = new MultiSitesModule(this.core);
     this.overlay = new OverlayModule(this.core);
     this.pagePerformance = new PagePerformanceModule(this.core);
-    // Initialize existing modules
     this.privacyManager = new PrivacyManagerModule(this.core);
     this.referrers = new ReferrersModule(this.core);
     this.resolution = new ResolutionModule(this.core);
     this.rollUpReporting = new RollUpReportingModule(this.core);
     this.seo = new SeoModule(this.core);
-    // Initialize new modules
     this.scheduledReports = new ScheduledReportsModule(this.core);
     this.searchEngineKeywordsPerformance =
       new SearchEngineKeywordsPerformanceModule(this.core);
     this.segmentEditor = new SegmentEditorModule(this.core);
     this.tagManager = new TagManagerModule(this.core);
+    this.tour = new TourModule(this.core);
+    this.transitions = new TransitionsModule(this.core);
+    this.twoFactorAuth = new TwoFactorAuthModule(this.core);
+    this.userCountry = new UserCountryModule(this.core);
+    this.userId = new UserIdModule(this.core);
+    this.userLanguage = new UserLanguageModule(this.core);
+    this.usersFlow = new UsersFlowModule(this.core);
+    this.usersManager = new UsersManagerModule(this.core);
+    this.visitFrequency = new VisitFrequencyModule(this.core);
+    this.visitTime = new VisitTimeModule(this.core);
+    this.visitorInterest = new VisitorInterestModule(this.core);
+    this.visitsSummary = new VisitsSummaryModule(this.core);
   }
 }

@@ -51,12 +51,27 @@ export { MultiChannelConversionAttributionModule } from './modules/multi-channel
 export { MultiSitesModule } from './modules/multi-sites.js';
 export { OverlayModule } from './modules/overlay.js';
 export { PagePerformanceModule } from './modules/page-performance.js';
-// New modules
 export { PrivacyManagerModule } from './modules/privacy-manager.js';
 export { ReferrersModule } from './modules/referrers.js';
 export { ResolutionModule } from './modules/resolution.js';
 export { RollUpReportingModule } from './modules/roll-up-reporting.js';
+export { ScheduledReportsModule } from './modules/scheduled-reports.js';
+export { SearchEngineKeywordsPerformanceModule } from './modules/search-engine-keywords-performance.js';
+export { SegmentEditorModule } from './modules/segment-editor.js';
 export { SeoModule } from './modules/seo.js';
+export { TagManagerModule } from './modules/tag-manager.js';
+export { TourModule } from './modules/tour.js';
+export { TransitionsModule } from './modules/transitions.js';
+export { TwoFactorAuthModule } from './modules/two-factor-auth.js';
+export { UserCountryModule } from './modules/user-country.js';
+export { UserIdModule } from './modules/user-id.js';
+export { UserLanguageModule } from './modules/user-language.js';
+export { UsersFlowModule } from './modules/users-flow.js';
+export { UsersManagerModule } from './modules/users-manager.js';
+export { VisitFrequencyModule } from './modules/visit-frequency.js';
+export { VisitTimeModule } from './modules/visit-time.js';
+export { VisitorInterestModule } from './modules/visitor-interest.js';
+export { VisitsSummaryModule } from './modules/visits-summary.js';
 
 // Default export
 import { ReportingClient } from './reporting-client.js';

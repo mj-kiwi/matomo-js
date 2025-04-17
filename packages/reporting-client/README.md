@@ -1806,6 +1806,85 @@ const segments = await client.segmentEditor.getAll();
 const siteSegments = await client.segmentEditor.getAll(1);
 ```
 
+### VisitsSummary Module
+
+The `visitsSummary` module provides methods for accessing core web analytics metrics such as visits, unique visitors, actions, time on site, bounce rate, and conversions:
+
+```typescript
+// Get all core metrics
+const metrics = await client.visitsSummary.get(
+  1,                    // Site ID
+  'month',              // Period
+  'last30',             // Date
+  'deviceType==mobile', // Segment (optional)
+  'nb_visits,bounce_rate' // Columns (optional)
+);
+
+// Get only visit counts
+const visits = await client.visitsSummary.getVisits(
+  1,                    // Site ID
+  'week',               // Period
+  'last7',              // Date
+  'country==US'         // Segment (optional)
+);
+
+// Get unique visitor counts
+const uniqueVisitors = await client.visitsSummary.getUniqueVisitors(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get user counts
+const users = await client.visitsSummary.getUsers(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get action counts (page views, downloads, etc.)
+const actions = await client.visitsSummary.getActions(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get maximum actions in any visit
+const maxActions = await client.visitsSummary.getMaxActions(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get bounce count
+const bounces = await client.visitsSummary.getBounceCount(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get count of converted visits
+const conversions = await client.visitsSummary.getVisitsConverted(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get total time spent by visitors (in seconds)
+const totalTime = await client.visitsSummary.getSumVisitsLength(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+
+// Get formatted total time spent by visitors
+const formattedTime = await client.visitsSummary.getSumVisitsLengthPretty(
+  1,                    // Site ID
+  'month',              // Period
+  'last30'              // Date
+);
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

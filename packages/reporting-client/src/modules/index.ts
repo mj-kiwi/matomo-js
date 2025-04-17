@@ -34,3 +34,4 @@ export * from './scheduled-reports.js';
 export * from './search-engine-keywords-performance.js';
 export * from './segment-editor.js';
 export * from './sites-manager.js';
+export * from './visits-summary.js';
