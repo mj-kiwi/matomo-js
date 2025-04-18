@@ -3,7 +3,7 @@
  * Base client implementation for the Matomo Reporting API
  */
 
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 export interface ReportingClientOptions {
   /**
@@ -22,7 +22,7 @@ export interface ReportingClientOptions {
   /**
    * Default format for API responses
    */
-  format?: 'json' | 'xml' | 'csv' | 'tsv' | 'html' | 'rss' | 'original';
+  format?: "json" | "xml" | "csv" | "tsv" | "html" | "rss" | "original";
   /**
    * Default language for translations
    */
@@ -35,6 +35,11 @@ export interface ReportingClientOptions {
    * Custom axios instance (useful for testing or custom configurations)
    */
   axiosInstance?: AxiosInstance;
+  /**
+   * Security mode - when true (default), uses POST instead of GET for API requests
+   * This helps prevent sensitive parameters from appearing in URLs or server logs
+   */
+  securityMode?: boolean;
 }
 
 export interface RequestParams {
@@ -57,6 +62,7 @@ export class CoreReportingClient {
   protected language?: string;
   protected timeout: number;
   protected axios: AxiosInstance;
+  protected securityMode: boolean;
 
   /**
    * Create a new Matomo Reporting API client
@@ -65,14 +71,16 @@ export class CoreReportingClient {
    */
   constructor(options: ReportingClientOptions) {
     // Ensure the URL doesn't end with a slash
-    this.baseUrl = options.url.endsWith('/')
+    this.baseUrl = options.url.endsWith("/")
       ? options.url.slice(0, -1)
       : options.url;
     this.tokenAuth = options.tokenAuth;
     this.defaultIdSite = options.idSite;
-    this.format = options.format || 'json';
+    this.format = options.format || "json";
     this.language = options.language;
     this.timeout = options.timeout || 30000; // Default timeout: 30 seconds
+    // Security mode is enabled by default
+    this.securityMode = options.securityMode !== false;
 
     // Use provided axios instance or create a new one
     this.axios =
@@ -94,30 +102,30 @@ export class CoreReportingClient {
     const requestParams = new URLSearchParams();
 
     // Set required parameters
-    requestParams.set('module', 'API');
-    requestParams.set('method', method);
-    requestParams.set('format', this.format);
+    requestParams.set("module", "API");
+    requestParams.set("method", method);
+    requestParams.set("format", this.format);
 
     // Add token auth if available
     if (this.tokenAuth) {
-      requestParams.set('token_auth', this.tokenAuth);
+      requestParams.set("token_auth", this.tokenAuth);
     }
 
     // Add default idSite if specified and not already in params
     if (this.defaultIdSite !== undefined && params.idSite === undefined) {
-      requestParams.set('idSite', String(this.defaultIdSite));
+      requestParams.set("idSite", String(this.defaultIdSite));
     }
 
     // Add language if specified
     if (this.language && !params.language) {
-      requestParams.set('language', this.language);
+      requestParams.set("language", this.language);
     }
 
     // Add all other parameters
     Object.entries(params).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         if (Array.isArray(value)) {
-          requestParams.set(key, value.join(','));
+          requestParams.set(key, value.join(","));
         } else {
           requestParams.set(key, String(value));
         }
@@ -127,14 +135,22 @@ export class CoreReportingClient {
     try {
       const requestUrl = `${this.baseUrl}/index.php`;
       const config: AxiosRequestConfig = {
-        params: requestParams,
         timeout: this.timeout,
       };
 
-      const response = await this.axios.get(requestUrl, config);
+      let response;
+
+      if (this.securityMode) {
+        // Use POST in security mode (default)
+        response = await this.axios.post(requestUrl, requestParams, config);
+      } else {
+        // Use GET when security mode is disabled
+        config.params = requestParams;
+        response = await this.axios.get(requestUrl, config);
+      }
 
       // If format is 'original', return the full response
-      if (this.format === 'original') {
+      if (this.format === "original") {
         return response as unknown as T;
       }
 
@@ -142,9 +158,9 @@ export class CoreReportingClient {
       const data = response.data;
       if (
         data &&
-        typeof data === 'object' &&
-        'result' in data &&
-        data.result === 'error'
+        typeof data === "object" &&
+        "result" in data &&
+        data.result === "error"
       ) {
         throw new Error(`Matomo API error: ${data.message}`);
       }
@@ -167,9 +183,9 @@ export class CoreReportingClient {
     methods: Record<string, RequestParams>
   ): Promise<Record<string, T>> {
     const requestParams: RequestParams = {
-      module: 'API',
+      module: "API",
       format: this.format,
-      method: 'API.getBulkRequest',
+      method: "API.getBulkRequest",
     };
 
     let methodIndex = 0;
@@ -179,9 +195,8 @@ export class CoreReportingClient {
       if (params) {
         for (const [key, value] of Object.entries(params)) {
           if (value !== null && value !== undefined) {
-            requestParams[
-              `urls[${methodIndex}]`
-            ] += `&${key}=${encodeURIComponent(String(value))}`;
+            requestParams[`urls[${methodIndex}]`] +=
+              `&${key}=${encodeURIComponent(String(value))}`;
           }
         }
       }
@@ -194,6 +209,6 @@ export class CoreReportingClient {
       requestParams.token_auth = this.tokenAuth;
     }
 
-    return this.request<Record<string, T>>('API.getBulkRequest', requestParams);
+    return this.request<Record<string, T>>("API.getBulkRequest", requestParams);
   }
 }

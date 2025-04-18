@@ -2,6 +2,10 @@
 
 A modern JavaScript/TypeScript client library for Matomo Analytics.
 
+## Project Status
+
+⚠️ **This project is still under construction.** APIs may change in the future as we continue to develop and refine the library. Please use with caution in production environments.
+
 ## Overview
 
 This monorepo contains JavaScript/TypeScript libraries for interacting with Matomo Analytics. Built with TypeScript and structured as an Nx monorepo for optimal development experience.
@@ -84,7 +88,6 @@ const siteData = await client.core.getVisits({
   date: 'yesterday',
 });
 ```
-
 
 ## License
 
