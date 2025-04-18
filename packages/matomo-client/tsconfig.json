@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
     "moduleResolution": "NodeNext",
-    "module": "NodeNext"
+    "module": "NodeNext",
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
   },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  // Removed the empty files array as it is unnecessary
+  "include": ["src/**/*.ts"]
 }

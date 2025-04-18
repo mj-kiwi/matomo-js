@@ -7,9 +7,11 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "release": "changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.2",
     "prettier": "^3.5.3",
     "turbo": "^2.5.0",
     "typescript": "5.8.2"
