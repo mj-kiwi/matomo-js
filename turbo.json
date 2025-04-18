@@ -16,6 +16,10 @@
       "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
+    },
+    "coverage": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

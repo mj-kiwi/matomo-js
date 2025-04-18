@@ -83,8 +83,6 @@ const siteData = await client.core.getVisits({
   period: 'day',
   date: 'yesterday',
 });
-
-
 ```
 
 
