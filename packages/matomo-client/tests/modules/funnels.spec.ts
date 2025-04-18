@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { FunnelsModule, CoreReportingClient } from "@mj-kiwi/matomo-client";
+import { FunnelsModule, CoreReportingClient } from "../../src/index";
 
 // Mock CoreReportingClient
-vi.mock(import("@mj-kiwi/matomo-client"), async (importOriginal) => {
+vi.mock(import("../../src/index"), async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...original,
@@ -90,6 +90,42 @@ describe("FunnelsModule", () => {
     });
   });
 
+  describe("getFunnelFlowTable", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.getFunnelFlowTable(1, "day", "yesterday");
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getFunnelFlowTable",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+    });
+
+    it("should include optional parameters when provided", async () => {
+      await funnelsModule.getFunnelFlowTable(
+        1,
+        "day",
+        "yesterday",
+        123,
+        456,
+        "deviceType==mobile"
+      );
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getFunnelFlowTable",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idFunnel: 123,
+          idGoal: 456,
+          segment: "deviceType==mobile",
+        }
+      );
+    });
+  });
+
   describe("getFunnelStepSubtable", () => {
     it("should call the API with required parameters", async () => {
       await funnelsModule.getFunnelStepSubtable(1, "day", "yesterday", 2);
@@ -172,12 +208,71 @@ describe("FunnelsModule", () => {
     });
   });
 
+  describe("getFunnelExits", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.getFunnelExits(1, "day", "yesterday", 123);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getFunnelExits",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idFunnel: 123,
+        }
+      );
+    });
+
+    it("should include optional parameters when provided", async () => {
+      await funnelsModule.getFunnelExits(
+        1,
+        "day",
+        "yesterday",
+        123,
+        "deviceType==mobile",
+        2
+      );
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getFunnelExits",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idFunnel: 123,
+          segment: "deviceType==mobile",
+          step: 2,
+        }
+      );
+    });
+  });
+
   describe("getGoalFunnel", () => {
     it("should call the API with required parameters", async () => {
       await funnelsModule.getGoalFunnel(1, 123);
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getGoalFunnel", {
         idSite: 1,
         idGoal: 123,
+      });
+    });
+  });
+
+  describe("getSalesFunnelForSite", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.getSalesFunnelForSite(1);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getSalesFunnelForSite",
+        {
+          idSite: 1,
+        }
+      );
+    });
+  });
+
+  describe("getFunnel", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.getFunnel(1, 123);
+      expect(mockClient.request).toHaveBeenCalledWith("Funnels.getFunnel", {
+        idSite: 1,
+        idFunnel: 123,
       });
     });
   });
@@ -189,6 +284,44 @@ describe("FunnelsModule", () => {
         "Funnels.getAllActivatedFunnelsForSite",
         {
           idSite: 1,
+        }
+      );
+    });
+  });
+
+  describe("hasAnyActivatedFunnelForSite", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.hasAnyActivatedFunnelForSite(1);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.hasAnyActivatedFunnelForSite",
+        {
+          idSite: 1,
+        }
+      );
+    });
+  });
+
+  describe("deleteGoalFunnel", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.deleteGoalFunnel(1, 123);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.deleteGoalFunnel",
+        {
+          idSite: 1,
+          idGoal: 123,
+        }
+      );
+    });
+  });
+
+  describe("deleteNonGoalFunnel", () => {
+    it("should call the API with required parameters", async () => {
+      await funnelsModule.deleteNonGoalFunnel(1, 123);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.deleteNonGoalFunnel",
+        {
+          idSite: 1,
+          idFunnel: 123,
         }
       );
     });
@@ -209,6 +342,36 @@ describe("FunnelsModule", () => {
         isActivated: true,
         steps: steps,
       });
+    });
+  });
+
+  describe("saveNonGoalFunnel", () => {
+    it("should call the API with required parameters", async () => {
+      const steps = [
+        { pattern: "/landing", pattern_type: "contains" },
+        { pattern: "/product", pattern_type: "contains" },
+        { pattern: "/checkout", pattern_type: "contains" },
+      ];
+
+      await funnelsModule.saveNonGoalFunnel(1, 123, "Purchase Funnel", steps);
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.saveNonGoalFunnel",
+        {
+          idSite: 1,
+          idFunnel: 123,
+          funnelName: "Purchase Funnel",
+          steps: steps,
+        }
+      );
+    });
+  });
+
+  describe("getAvailablePatternMatches", () => {
+    it("should call the API with no parameters", async () => {
+      await funnelsModule.getAvailablePatternMatches();
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Funnels.getAvailablePatternMatches"
+      );
     });
   });
 

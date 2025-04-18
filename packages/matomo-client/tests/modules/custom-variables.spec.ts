@@ -1,6 +1,6 @@
 // filepath: /Users/mingjian.liang/MyProjects/matomo-js/packages/reporting-client/tests/custom-variables.spec.ts
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CustomVariablesModule } from "@mj-kiwi/matomo-client";
+import { CustomVariablesModule } from "../../src/index";
 
 describe("CustomVariablesModule", () => {
   let mockClient: any;

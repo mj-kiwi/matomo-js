@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CustomJsTrackerModule } from "@mj-kiwi/matomo-client";
+import { CustomJsTrackerModule } from "../../src/index";
 
 describe("CustomJsTrackerModule", () => {
   let mockClient: any;

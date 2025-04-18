@@ -1,8 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  CoreReportingClient,
-  ReportingClientOptions,
-} from "@mj-kiwi/matomo-client";
+import { CoreReportingClient, ReportingClientOptions } from "../../src/index";
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 const mocks = vi.hoisted(() => ({

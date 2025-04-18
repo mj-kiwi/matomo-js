@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CustomDimensionsModule } from "@mj-kiwi/matomo-client";
+import { CustomDimensionsModule } from "../../src/index";
 
 describe("CustomDimensionsModule", () => {
   let mockClient: any;
@@ -89,6 +89,36 @@ describe("CustomDimensionsModule", () => {
     );
   });
 
+  it("should handle boolean true active parameter in configureNewCustomDimension", async () => {
+    await module.configureNewCustomDimension(1, "name", "visit", true);
+    expect(mockClient.request).toHaveBeenCalledWith(
+      "CustomDimensions.configureNewCustomDimension",
+      {
+        idSite: 1,
+        name: "name",
+        scope: "visit",
+        active: 1,
+        extractions: "Array",
+        caseSensitive: "1",
+      }
+    );
+  });
+
+  it("should handle boolean false active parameter in configureNewCustomDimension", async () => {
+    await module.configureNewCustomDimension(1, "name", "visit", false);
+    expect(mockClient.request).toHaveBeenCalledWith(
+      "CustomDimensions.configureNewCustomDimension",
+      {
+        idSite: 1,
+        name: "name",
+        scope: "visit",
+        active: 0,
+        extractions: "Array",
+        caseSensitive: "1",
+      }
+    );
+  });
+
   it("should configure existing custom dimension", async () => {
     await module.configureExistingCustomDimension(1, 2, "Updated name", 1);
     expect(mockClient.request).toHaveBeenCalledWith(
@@ -122,6 +152,55 @@ describe("CustomDimensionsModule", () => {
         active: 0,
         extractions,
         caseSensitive: 1,
+      }
+    );
+  });
+
+  it("should handle boolean true active parameter in configureExistingCustomDimension", async () => {
+    await module.configureExistingCustomDimension(1, 2, "Updated name", true);
+    expect(mockClient.request).toHaveBeenCalledWith(
+      "CustomDimensions.configureExistingCustomDimension",
+      {
+        idDimension: 1,
+        idSite: 2,
+        name: "Updated name",
+        active: 1,
+        extractions: "Array",
+      }
+    );
+  });
+
+  it("should handle boolean false active parameter in configureExistingCustomDimension", async () => {
+    await module.configureExistingCustomDimension(1, 2, "Updated name", false);
+    expect(mockClient.request).toHaveBeenCalledWith(
+      "CustomDimensions.configureExistingCustomDimension",
+      {
+        idDimension: 1,
+        idSite: 2,
+        name: "Updated name",
+        active: 0,
+        extractions: "Array",
+      }
+    );
+  });
+
+  it("should handle empty caseSensitive parameter in configureExistingCustomDimension", async () => {
+    await module.configureExistingCustomDimension(
+      1,
+      2,
+      "Updated name",
+      1,
+      "Array",
+      ""
+    );
+    expect(mockClient.request).toHaveBeenCalledWith(
+      "CustomDimensions.configureExistingCustomDimension",
+      {
+        idDimension: 1,
+        idSite: 2,
+        name: "Updated name",
+        active: 1,
+        extractions: "Array",
       }
     );
   });

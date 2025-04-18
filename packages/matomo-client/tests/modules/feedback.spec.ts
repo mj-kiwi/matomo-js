@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { CoreReportingClient, FeedbackModule } from "@mj-kiwi/matomo-client";
+import { CoreReportingClient, FeedbackModule } from "../../src/index";
 
 describe("Feedback Module", () => {
   // Mock CoreReportingClient with a spy on the request method

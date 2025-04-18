@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { VisitTimeModule, CoreReportingClient } from "@mj-kiwi/matomo-client";
+import { VisitTimeModule, CoreReportingClient } from "../../src/index";
 
 // Mock CoreReportingClient
-vi.mock(import("@mj-kiwi/matomo-client"), async (importOriginal) => {
+vi.mock(import("../../src/index"), async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...original,

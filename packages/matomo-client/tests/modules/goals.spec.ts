@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { GoalsModule, CoreReportingClient } from "@mj-kiwi/matomo-client";
+import { GoalsModule, CoreReportingClient } from "../../src/index";
 
 // Mock CoreReportingClient
-vi.mock(import("@mj-kiwi/matomo-client"), async (importOriginal) => {
+vi.mock(import("../../src/index"), async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...original,
@@ -122,6 +122,35 @@ describe("GoalsModule", () => {
         patternType: "contains",
       });
     });
+
+    it("should include optional parameters when provided", async () => {
+      await goalsModule.updateGoal(
+        1,
+        123,
+        "Download Brochure",
+        "url",
+        "/brochure",
+        "contains",
+        true,
+        10.5,
+        false,
+        "Brochure downloads",
+        true
+      );
+      expect(mockClient.request).toHaveBeenCalledWith("Goals.updateGoal", {
+        idSite: 1,
+        idGoal: 123,
+        name: "Download Brochure",
+        matchAttribute: "url",
+        pattern: "/brochure",
+        patternType: "contains",
+        caseSensitive: true,
+        revenue: 10.5,
+        allowMultipleConversionsPerVisit: false,
+        description: "Brochure downloads",
+        useEventValueAsRevenue: true,
+      });
+    });
   });
 
   describe("deleteGoal", () => {
@@ -159,6 +188,68 @@ describe("GoalsModule", () => {
         abandonedCarts: true,
         segment: "deviceType==desktop",
       });
+    });
+  });
+
+  describe("getItemsName", () => {
+    it("should call the API with required parameters", async () => {
+      await goalsModule.getItemsName(1, "day", "yesterday");
+      expect(mockClient.request).toHaveBeenCalledWith("Goals.getItemsName", {
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
+    });
+
+    it("should include optional parameters when provided", async () => {
+      await goalsModule.getItemsName(
+        1,
+        "day",
+        "yesterday",
+        true,
+        "deviceType==desktop"
+      );
+      expect(mockClient.request).toHaveBeenCalledWith("Goals.getItemsName", {
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        abandonedCarts: true,
+        segment: "deviceType==desktop",
+      });
+    });
+  });
+
+  describe("getItemsCategory", () => {
+    it("should call the API with required parameters", async () => {
+      await goalsModule.getItemsCategory(1, "day", "yesterday");
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Goals.getItemsCategory",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+    });
+
+    it("should include optional parameters when provided", async () => {
+      await goalsModule.getItemsCategory(
+        1,
+        "day",
+        "yesterday",
+        true,
+        "deviceType==desktop"
+      );
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Goals.getItemsCategory",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          abandonedCarts: true,
+          segment: "deviceType==desktop",
+        }
+      );
     });
   });
 
@@ -258,6 +349,26 @@ describe("GoalsModule", () => {
           idSite: 1,
           period: "day",
           date: "yesterday",
+        }
+      );
+    });
+
+    it("should include optional parameters when provided", async () => {
+      await goalsModule.getVisitsUntilConversion(
+        1,
+        "day",
+        "yesterday",
+        "deviceType==desktop",
+        1
+      );
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Goals.getVisitsUntilConversion",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          segment: "deviceType==desktop",
+          idGoal: 1,
         }
       );
     });

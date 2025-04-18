@@ -1,11 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  SegmentEditorModule,
-  CoreReportingClient,
-} from "@mj-kiwi/matomo-client";
+import { SegmentEditorModule, CoreReportingClient } from "../../src/index";
 
 // Mock CoreReportingClient
-vi.mock(import("@mj-kiwi/matomo-client"), async (importOriginal) => {
+vi.mock(import("../../src/index"), async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...original,

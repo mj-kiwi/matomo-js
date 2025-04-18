@@ -1,11 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  CrashAnalyticsModule,
-  CoreReportingClient,
-} from "@mj-kiwi/matomo-client";
+import { CrashAnalyticsModule, CoreReportingClient } from "../../src/index";
 
 // Mock CoreReportingClient
-vi.mock(import("@mj-kiwi/matomo-client"), async (importOriginal) => {
+vi.mock(import("../../src/index"), async (importOriginal) => {
   const original = await importOriginal();
   return {
     ...original,
@@ -86,6 +83,59 @@ describe("CrashAnalyticsModule", () => {
           limit: 5,
           offset: 10,
           excludeIdLogCrashes: [1, 2],
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should handle string excludeIdLogCrashes parameter", async () => {
+      const mockResponse = [{ id: 3, message: "TypeError: string test" }];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(
+        1,
+        "main.js",
+        "TypeError",
+        5,
+        10,
+        "1,2,3"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.searchCrashMessagesForMerge",
+        {
+          idSite: 1,
+          resourceUri: "main.js",
+          searchTerm: "TypeError",
+          limit: 5,
+          offset: 10,
+          excludeIdLogCrashes: "1,2,3",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should handle empty array excludeIdLogCrashes parameter", async () => {
+      const mockResponse = [{ id: 3, message: "TypeError: empty array test" }];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(
+        1,
+        "main.js",
+        "TypeError",
+        5,
+        10,
+        []
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.searchCrashMessagesForMerge",
+        {
+          idSite: 1,
+          resourceUri: "main.js",
+          searchTerm: "TypeError",
+          limit: 5,
+          offset: 10,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -351,6 +401,34 @@ describe("CrashAnalyticsModule", () => {
       );
       expect(result).toEqual(mockResponse);
     });
+
+    it("should call the API with custom parameters", async () => {
+      const mockResponse = [
+        { id: 1, message: "Error 1" },
+        { id: 2, message: "Error 2" },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getAllCrashes(
+        1,
+        "count",
+        "asc",
+        20,
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getAllCrashes",
+        {
+          idSite: 1,
+          filter_sort_column: "count",
+          filter_sort_order: "asc",
+          filter_limit: 20,
+          filter_offset: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
   });
 
   describe("get", () => {
@@ -370,6 +448,799 @@ describe("CrashAnalyticsModule", () => {
       });
       expect(result).toEqual(mockResponse);
     });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = {
+        nb_crashes: 42,
+        nb_crashes_unique: 10,
+      };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.get(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile",
+        "nb_crashes,nb_crashes_unique"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith("CrashAnalytics.get", {
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        columns: "nb_crashes,nb_crashes_unique",
+      });
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getAllCrashMessages", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getAllCrashMessages(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getAllCrashMessages",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getAllCrashMessages(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getAllCrashMessages",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashMessages", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashMessages(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashMessages",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashMessages(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashMessages",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getUnidentifiedCrashMessages", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getUnidentifiedCrashMessages",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getUnidentifiedCrashMessages",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getDisappearedCrashes", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getDisappearedCrashes(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getDisappearedCrashes",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getDisappearedCrashes(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getDisappearedCrashes",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getReappearedCrashes", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getReappearedCrashes(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getReappearedCrashes",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getReappearedCrashes(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getReappearedCrashes",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getNewCrashes", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getNewCrashes(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getNewCrashes",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getNewCrashes(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getNewCrashes",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesByPageUrl", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { "/page1": 5, "/page2": 2 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByPageUrl(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByPageUrl",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = { "/page1": 5 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByPageUrl(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile",
+        1,
+        1
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByPageUrl",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+          expanded: 1,
+          flat: 1,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesForPageUrl", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForPageUrl(
+        1,
+        "day",
+        "yesterday",
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForPageUrl",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idSubtable: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForPageUrl(
+        1,
+        "week",
+        "last7",
+        5,
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForPageUrl",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          idSubtable: 5,
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesByPageTitle", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { "Home Page": 5, "Contact Page": 2 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByPageTitle(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByPageTitle",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = { "Home Page": 5 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByPageTitle(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile",
+        1,
+        1
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByPageTitle",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+          expanded: 1,
+          flat: 1,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesForPageTitle", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForPageTitle(
+        1,
+        "day",
+        "yesterday",
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForPageTitle",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idSubtable: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForPageTitle(
+        1,
+        "week",
+        "last7",
+        5,
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForPageTitle",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          idSubtable: 5,
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesBySource", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { "main.js": 5, "vendor.js": 2 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesBySource(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesBySource",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = { "main.js": 5 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesBySource(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile",
+        1,
+        1
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesBySource",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+          expanded: 1,
+          flat: 1,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesForSource", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForSource(
+        1,
+        "day",
+        "yesterday",
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForSource",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idSubtable: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForSource(
+        1,
+        "week",
+        "last7",
+        5,
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForSource",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          idSubtable: 5,
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesByCategory", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { JavaScript: 5, Browser: 2 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByCategory(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByCategory",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = { JavaScript: 5 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByCategory(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile",
+        1,
+        1
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByCategory",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+          expanded: 1,
+          flat: 1,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesForCategory", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForCategory(
+        1,
+        "day",
+        "yesterday",
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForCategory",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+          idSubtable: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesForCategory(
+        1,
+        "week",
+        "last7",
+        5,
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesForCategory",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          idSubtable: 5,
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesByFirstParty", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByFirstParty(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByFirstParty",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByFirstParty(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByFirstParty",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getCrashesByThirdParty", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = ["Error 1", "Error 2"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByThirdParty(
+        1,
+        "day",
+        "yesterday"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByThirdParty",
+        {
+          idSite: 1,
+          period: "day",
+          date: "yesterday",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = ["Error 1"];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getCrashesByThirdParty(
+        1,
+        "week",
+        "last7",
+        "deviceType==mobile"
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getCrashesByThirdParty",
+        {
+          idSite: 1,
+          period: "week",
+          date: "last7",
+          segment: "deviceType==mobile",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
   });
 
   describe("getLastCrashesOverview", () => {
@@ -384,6 +1255,211 @@ describe("CrashAnalyticsModule", () => {
         {
           idSite: 1,
           lastMinutes: "30",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = { count: 10, newCount: 3, reappearedCount: 1 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastCrashesOverview(
+        1,
+        "deviceType==mobile",
+        60
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastCrashesOverview",
+        {
+          idSite: 1,
+          segment: "deviceType==mobile",
+          lastMinutes: 60,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getLastTopCrashes", () => {
+    it("should call the API with default parameters", async () => {
+      const mockResponse = [
+        { message: "Error 1", count: 15 },
+        { message: "Error 2", count: 10 },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastTopCrashes(1);
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastTopCrashes",
+        {
+          idSite: 1,
+          lastMinutes: "30",
+          filter_limit: "5",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = [
+        { message: "Error 1", count: 15 },
+        { message: "Error 2", count: 10 },
+        { message: "Error 3", count: 5 },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastTopCrashes(
+        1,
+        "deviceType==mobile",
+        60,
+        10
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastTopCrashes",
+        {
+          idSite: 1,
+          segment: "deviceType==mobile",
+          lastMinutes: 60,
+          filter_limit: 10,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getLastNewCrashes", () => {
+    it("should call the API with default parameters", async () => {
+      const mockResponse = [
+        { message: "Error 1", count: 5 },
+        { message: "Error 2", count: 3 },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastNewCrashes(1);
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastNewCrashes",
+        {
+          idSite: 1,
+          lastMinutes: "30",
+          filter_limit: "10",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = [{ message: "Error 1", count: 5 }];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastNewCrashes(
+        1,
+        "deviceType==mobile",
+        60,
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastNewCrashes",
+        {
+          idSite: 1,
+          segment: "deviceType==mobile",
+          lastMinutes: 60,
+          filter_limit: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getLastReappearedCrashes", () => {
+    it("should call the API with default parameters", async () => {
+      const mockResponse = [
+        { message: "Error 1", count: 5 },
+        { message: "Error 2", count: 3 },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastReappearedCrashes(1);
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastReappearedCrashes",
+        {
+          idSite: 1,
+          lastMinutes: "30",
+          filter_limit: "10",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = [{ message: "Error 1", count: 5 }];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastReappearedCrashes(
+        1,
+        "deviceType==mobile",
+        60,
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastReappearedCrashes",
+        {
+          idSite: 1,
+          segment: "deviceType==mobile",
+          lastMinutes: 60,
+          filter_limit: 5,
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getLastDisappearedCrashes", () => {
+    it("should call the API with default parameters", async () => {
+      const mockResponse = [
+        { message: "Error 1", lastSeen: "2023-01-01" },
+        { message: "Error 2", lastSeen: "2023-01-02" },
+      ];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastDisappearedCrashes(1);
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastDisappearedCrashes",
+        {
+          idSite: 1,
+          lastMinutes: "30",
+          filter_limit: "10",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with all parameters", async () => {
+      const mockResponse = [{ message: "Error 1", lastSeen: "2023-01-01" }];
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await crashAnalyticsModule.getLastDisappearedCrashes(
+        1,
+        "deviceType==mobile",
+        60,
+        5
+      );
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "CrashAnalytics.getLastDisappearedCrashes",
+        {
+          idSite: 1,
+          segment: "deviceType==mobile",
+          lastMinutes: 60,
+          filter_limit: 5,
         }
       );
       expect(result).toEqual(mockResponse);

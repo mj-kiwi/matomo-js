@@ -1,6 +1,6 @@
 // filepath: /Users/mingjian.liang/MyProjects/matomo-js/packages/reporting-client/tests/custom-reports.spec.ts
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CustomReportsModule } from "@mj-kiwi/matomo-client";
+import { CustomReportsModule } from "../../src/index";
 
 describe("CustomReportsModule", () => {
   let mockClient: any;
