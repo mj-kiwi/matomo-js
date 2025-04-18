@@ -65,6 +65,7 @@ jobs:
           version: pnpm run version
           commit: "chore: version packages"
           title: "chore: version packages"
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
