@@ -49,8 +49,9 @@ export class ActivityLogModule {
    */
   async getEntries(params: GetEntriesParams = {}): Promise<any> {
     const requestParams: RequestParams = {
-      offset: params.offset ?? "0",
-      limit: params.limit ?? "25",
+      offset: "0",
+      limit: "25",
+      ...params,
     };
 
     if (params.filterByUserLogin)
@@ -94,7 +95,8 @@ export class ActivityLogModule {
     params: GetAllActivityTypesParams = {}
   ): Promise<string[]> {
     const requestParams: RequestParams = {
-      filterLimit: params.filterLimit ?? "-1",
+      filterLimit: "-1",
+      ...params,
     };
 
     return this.client.request<string[]>(
