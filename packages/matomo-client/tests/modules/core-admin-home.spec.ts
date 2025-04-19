@@ -38,7 +38,7 @@ describe("CoreAdminHomeModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.deleteAllTrackingFailures({});
+      const result = await coreAdminHomeModule.deleteAllTrackingFailures();
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.deleteAllTrackingFailures"
@@ -91,7 +91,7 @@ describe("CoreAdminHomeModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.getTrackingFailures({});
+      const result = await coreAdminHomeModule.getTrackingFailures();
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.getTrackingFailures"
