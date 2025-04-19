@@ -40,7 +40,11 @@ describe("MultiChannelConversionAttributionModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiChannelModule.setGoalAttribution(1, 2, true);
+      const result = await multiChannelModule.setGoalAttribution({
+        idSite: 1,
+        idGoal: 2,
+        isEnabled: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.setGoalAttribution",
@@ -59,7 +63,10 @@ describe("MultiChannelConversionAttributionModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiChannelModule.getGoalAttribution(1, 2);
+      const result = await multiChannelModule.getGoalAttribution({
+        idSite: 1,
+        idGoal: 2,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.getGoalAttribution",
@@ -77,12 +84,12 @@ describe("MultiChannelConversionAttributionModule", () => {
       const mockResponse = { data: [] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiChannelModule.getChannelAttribution(
-        1,
-        "day",
-        "2023-01-01",
-        2
-      );
+      const result = await multiChannelModule.getChannelAttribution({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idGoal: 2,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.getChannelAttribution",
@@ -91,11 +98,6 @@ describe("MultiChannelConversionAttributionModule", () => {
           period: "day",
           date: "2023-01-01",
           idGoal: 2,
-          idCampaignDimensionCombination: "0",
-          segment: "",
-          expanded: "",
-          flat: "",
-          idSubtable: "",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -105,17 +107,17 @@ describe("MultiChannelConversionAttributionModule", () => {
       const mockResponse = { data: [] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiChannelModule.getChannelAttribution(
-        1,
-        "month",
-        "2023-01-01",
-        2,
-        "1",
-        "referrer==google",
-        "true",
-        "true",
-        "3"
-      );
+      const result = await multiChannelModule.getChannelAttribution({
+        idSite: 1,
+        period: "month",
+        date: "2023-01-01",
+        idGoal: 2,
+        idCampaignDimensionCombination: "1",
+        segment: "referrer==google",
+        expanded: "true",
+        flat: "true",
+        idSubtable: "3",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.getChannelAttribution",
@@ -144,7 +146,7 @@ describe("MultiChannelConversionAttributionModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await multiChannelModule.getAvailableCampaignDimensionCombinations();
+        await multiChannelModule.getAvailableCampaignDimensionCombinations(); // Pass empty object
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.getAvailableCampaignDimensionCombinations"
@@ -161,7 +163,9 @@ describe("MultiChannelConversionAttributionModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiChannelModule.getSiteAttributionGoals(1);
+      const result = await multiChannelModule.getSiteAttributionGoals({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiChannelConversionAttribution.getSiteAttributionGoals",

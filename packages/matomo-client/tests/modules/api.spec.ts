@@ -34,9 +34,12 @@ describe("ApiModule", () => {
     it("should call the correct API method and return the version", async () => {
       mockClient.request.mockResolvedValueOnce({ value: "4.14.0" });
 
-      const result = await apiModule.getMatomoVersion();
+      const result = await apiModule.getMatomoVersion({});
 
-      expect(mockClient.request).toHaveBeenCalledWith("API.getMatomoVersion");
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "API.getMatomoVersion",
+        {}
+      ); // Pass empty object
       expect(result).toBe("4.14.0");
     });
   });
@@ -45,9 +48,9 @@ describe("ApiModule", () => {
     it("should call the correct API method and return the PHP version", async () => {
       mockClient.request.mockResolvedValueOnce({ value: "8.1.0" });
 
-      const result = await apiModule.getPhpVersion();
+      const result = await apiModule.getPhpVersion({});
 
-      expect(mockClient.request).toHaveBeenCalledWith("API.getPhpVersion");
+      expect(mockClient.request).toHaveBeenCalledWith("API.getPhpVersion", {}); // Pass empty object
       expect(result).toBe("8.1.0");
     });
   });
@@ -56,9 +59,12 @@ describe("ApiModule", () => {
     it("should call the correct API method and return the IP address", async () => {
       mockClient.request.mockResolvedValueOnce({ value: "192.168.1.1" });
 
-      const result = await apiModule.getIpFromHeader();
+      const result = await apiModule.getIpFromHeader({});
 
-      expect(mockClient.request).toHaveBeenCalledWith("API.getIpFromHeader");
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "API.getIpFromHeader",
+        {}
+      ); // Pass empty object
       expect(result).toBe("192.168.1.1");
     });
   });
@@ -68,9 +74,9 @@ describe("ApiModule", () => {
       const mockSettings = { setting1: "value1", setting2: "value2" };
       mockClient.request.mockResolvedValueOnce(mockSettings);
 
-      const result = await apiModule.getSettings();
+      const result = await apiModule.getSettings({});
 
-      expect(mockClient.request).toHaveBeenCalledWith("API.getSettings");
+      expect(mockClient.request).toHaveBeenCalledWith("API.getSettings", {}); // Pass empty object
       expect(result).toEqual(mockSettings);
     });
   });
@@ -80,7 +86,9 @@ describe("ApiModule", () => {
       const mockResponse = [{ id: "segment1" }, { id: "segment2" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getSegmentsMetadata([1, 2, 3]);
+      const result = await apiModule.getSegmentsMetadata({
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getSegmentsMetadata",
@@ -95,13 +103,11 @@ describe("ApiModule", () => {
       const mockResponse = [{ id: "segment1" }, { id: "segment2" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getSegmentsMetadata();
+      const result = await apiModule.getSegmentsMetadata({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getSegmentsMetadata",
-        {
-          idSites: undefined,
-        }
+        {}
       );
       expect(result).toEqual(mockResponse);
     });
@@ -112,19 +118,7 @@ describe("ApiModule", () => {
       const mockResponse = { metadata: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getMetadata(
-        1,
-        "Actions",
-        "getPageUrls",
-        { filter_limit: 10 },
-        "en",
-        "day",
-        "today",
-        true,
-        false
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith("API.getMetadata", {
+      const params = {
         idSite: 1,
         apiModule: "Actions",
         apiAction: "getPageUrls",
@@ -134,7 +128,14 @@ describe("ApiModule", () => {
         date: "today",
         hideMetricsDoc: true,
         showSubtableReports: false,
-      });
+      };
+
+      const result = await apiModule.getMetadata(params);
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "API.getMetadata",
+        params
+      );
       expect(result).toEqual(mockResponse);
     });
 
@@ -142,7 +143,7 @@ describe("ApiModule", () => {
       const mockResponse = { metadata: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getMetadata();
+      const result = await apiModule.getMetadata({});
 
       expect(mockClient.request).toHaveBeenCalledWith("API.getMetadata", {});
       expect(result).toEqual(mockResponse);
@@ -174,7 +175,7 @@ describe("ApiModule", () => {
       const mockResponse = [{ report1: "data" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getReportMetadata();
+      const result = await apiModule.getReportMetadata({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getReportMetadata",
@@ -243,11 +244,12 @@ describe("ApiModule", () => {
       const mockResponse = { pages: ["page1", "page2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getReportPagesMetadata(1);
+      const params = { idSite: 1 };
+      const result = await apiModule.getReportPagesMetadata(params);
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getReportPagesMetadata",
-        { idSite: 1 }
+        params
       );
       expect(result).toEqual(mockResponse);
     });
@@ -256,7 +258,7 @@ describe("ApiModule", () => {
       const mockResponse = { pages: ["page1", "page2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getReportPagesMetadata();
+      const result = await apiModule.getReportPagesMetadata({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getReportPagesMetadata",
@@ -271,11 +273,13 @@ describe("ApiModule", () => {
       const mockResponse = { widgets: ["widget1", "widget2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getWidgetMetadata(1);
+      const params = { idSite: 1 };
+      const result = await apiModule.getWidgetMetadata(params);
 
-      expect(mockClient.request).toHaveBeenCalledWith("API.getWidgetMetadata", {
-        idSite: 1,
-      });
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "API.getWidgetMetadata",
+        params
+      );
       expect(result).toEqual(mockResponse);
     });
 
@@ -283,7 +287,7 @@ describe("ApiModule", () => {
       const mockResponse = { widgets: ["widget1", "widget2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getWidgetMetadata();
+      const result = await apiModule.getWidgetMetadata({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getWidgetMetadata",
@@ -298,13 +302,15 @@ describe("ApiModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.get(1, "day", "today");
-
-      expect(mockClient.request).toHaveBeenCalledWith("API.get", {
+      const params = {
         idSite: 1,
         period: "day",
         date: "today",
-      });
+      };
+
+      const result = await apiModule.get(params);
+
+      expect(mockClient.request).toHaveBeenCalledWith("API.get", params);
       expect(result).toEqual(mockResponse);
     });
 
@@ -312,21 +318,17 @@ describe("ApiModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.get(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        "nb_visits,nb_actions"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith("API.get", {
+      const params = {
         idSite: 1,
         period: "day",
         date: "today",
         segment: "deviceType==desktop",
         columns: "nb_visits,nb_actions",
-      });
+      };
+
+      const result = await apiModule.get(params);
+
+      expect(mockClient.request).toHaveBeenCalledWith("API.get", params);
       expect(result).toEqual(mockResponse);
     });
   });
@@ -364,7 +366,7 @@ describe("ApiModule", () => {
         "method=Actions.getPageTitles&idSite=1&period=day&date=today",
       ];
 
-      const result = await apiModule.getBulkRequest(urls);
+      const result = await apiModule.getBulkRequest({ urls });
 
       expect(mockClient.request).toHaveBeenCalledWith("API.getBulkRequest", {
         urls,
@@ -391,7 +393,7 @@ describe("ApiModule", () => {
         },
       ];
 
-      const result = await apiModule.getBulkRequest(urls);
+      const result = await apiModule.getBulkRequest({ urls });
 
       expect(mockClient.request).toHaveBeenCalledWith("API.getBulkRequest", {
         urls,
@@ -404,7 +406,9 @@ describe("ApiModule", () => {
     it("should call the API with plugin name and return boolean result", async () => {
       mockClient.request.mockResolvedValueOnce({ value: true });
 
-      const result = await apiModule.isPluginActivated("CustomDimensions");
+      const result = await apiModule.isPluginActivated({
+        pluginName: "CustomDimensions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("API.isPluginActivated", {
         pluginName: "CustomDimensions",
@@ -415,7 +419,9 @@ describe("ApiModule", () => {
     it("should handle negative plugin activation status", async () => {
       mockClient.request.mockResolvedValueOnce({ value: false });
 
-      const result = await apiModule.isPluginActivated("NonExistentPlugin");
+      const result = await apiModule.isPluginActivated({
+        pluginName: "NonExistentPlugin",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("API.isPluginActivated", {
         pluginName: "NonExistentPlugin",
@@ -429,17 +435,16 @@ describe("ApiModule", () => {
       const mockResponse = ["value1", "value2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getSuggestedValuesForSegment(
-        "countryCode",
-        1
-      );
+      const params = {
+        segmentName: "countryCode",
+        idSite: 1,
+      };
+
+      const result = await apiModule.getSuggestedValuesForSegment(params);
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getSuggestedValuesForSegment",
-        {
-          segmentName: "countryCode",
-          idSite: 1,
-        }
+        params
       );
       expect(result).toEqual(mockResponse);
     });
@@ -448,14 +453,15 @@ describe("ApiModule", () => {
       const mockResponse = ["value1", "value2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await apiModule.getSuggestedValuesForSegment("countryCode");
+      const params = {
+        segmentName: "countryCode",
+      };
+
+      const result = await apiModule.getSuggestedValuesForSegment(params);
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getSuggestedValuesForSegment",
-        {
-          segmentName: "countryCode",
-        }
+        params
       );
       expect(result).toEqual(mockResponse);
     });
@@ -466,10 +472,11 @@ describe("ApiModule", () => {
       const mockResponse = ["plugin1", "plugin2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getPagesComparisonsDisabledFor();
+      const result = await apiModule.getPagesComparisonsDisabledFor({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
-        "API.getPagesComparisonsDisabledFor"
+        "API.getPagesComparisonsDisabledFor",
+        {} // Pass empty object
       );
       expect(result).toEqual(mockResponse);
     });
@@ -480,11 +487,12 @@ describe("ApiModule", () => {
       const mockResponse = { reports: ["report1", "report2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getGlossaryReports(1);
+      const params = { idSite: 1 };
+      const result = await apiModule.getGlossaryReports(params);
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getGlossaryReports",
-        { idSite: 1 }
+        params
       );
       expect(result).toEqual(mockResponse);
     });
@@ -495,11 +503,12 @@ describe("ApiModule", () => {
       const mockResponse = { metrics: ["metric1", "metric2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await apiModule.getGlossaryMetrics(1);
+      const params = { idSite: 1 };
+      const result = await apiModule.getGlossaryMetrics(params);
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "API.getGlossaryMetrics",
-        { idSite: 1 }
+        params
       );
       expect(result).toEqual(mockResponse);
     });

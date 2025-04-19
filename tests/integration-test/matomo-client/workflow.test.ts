@@ -142,23 +142,25 @@ describe("Matomo Client Workflow Integration Tests", () => {
     expect(initialSites).toHaveLength(1);
 
     // Step 2: Add a new site
-    const addSiteResult = await client.sitesManager.addSite(
-      "New Test Site",
-      "https://newtest.com"
-    );
+    const addSiteResult = await client.sitesManager.addSite({
+      siteName: "New Test Site",
+      urls: "https://newtest.com",
+    });
     expect(addSiteResult).toEqual({ value: 2 });
 
     // Step 3: Get the new site details
-    const createdSite = await client.sitesManager.getSiteFromId(2);
+    const createdSite = await client.sitesManager.getSiteFromId({
+      idSite: 2,
+    });
     expect(createdSite).toEqual(newSite);
     expect(createdSite.name).toBe("New Test Site");
     expect(createdSite.main_url).toBe("https://newtest.com");
 
     // Step 4: Update the site
-    const updateResult = await client.sitesManager.updateSite(
-      2,
-      "Updated Test Site"
-    );
+    const updateResult = await client.sitesManager.updateSite({
+      idSite: 2,
+      siteName: "Updated Test Site",
+    });
     expect(updateResult).toEqual({ value: true });
 
     // Step 5: Get all sites again and verify update
@@ -321,40 +323,40 @@ describe("Matomo Client Workflow Integration Tests", () => {
 
     // Execute the reporting workflow
     // Step 1: Get visits summary
-    const summary = await client.visitsSummary.get(
-      DEFAULT_SITE_ID,
-      period,
-      date
-    );
+    const summary = await client.visitsSummary.get({
+      idSite: DEFAULT_SITE_ID,
+      period: period,
+      date: date,
+    });
     expect(summary).toEqual(visitsSummary);
     expect(summary.nb_visits).toBe(4200);
 
     // Step 2: Get top pages
-    const pages = await client.actions.getPageUrls(
-      DEFAULT_SITE_ID,
-      period,
-      date
-    );
+    const pages = await client.actions.getPageUrls({
+      idSite: DEFAULT_SITE_ID,
+      period: period,
+      date: date,
+    });
     expect(pages).toEqual(topPages);
     expect(pages[0].label).toBe("/home");
     expect(pages[0].nb_visits).toBe(3200);
 
     // Step 3: Get referrers
-    const websiteReferrers = await client.referrers.getWebsites(
-      DEFAULT_SITE_ID,
-      period,
-      date
-    );
+    const websiteReferrers = await client.referrers.getWebsites({
+      idSite: DEFAULT_SITE_ID,
+      period: period,
+      date: date,
+    });
     expect(websiteReferrers).toEqual(referrers);
     expect(websiteReferrers[0].label).toBe("Google");
     expect(websiteReferrers[0].nb_visits).toBe(1500);
 
     // Step 4: Get visitor countries
-    const visitorCountries = await client.userCountry.getCountry(
-      DEFAULT_SITE_ID,
-      period,
-      date
-    );
+    const visitorCountries = await client.userCountry.getCountry({
+      idSite: DEFAULT_SITE_ID,
+      period: period,
+      date: date,
+    });
     expect(visitorCountries).toEqual(countries);
     expect(visitorCountries[0].label).toBe("United States");
     expect(visitorCountries[0].nb_visits).toBe(2200);
@@ -418,11 +420,11 @@ describe("Matomo Client Workflow Integration Tests", () => {
       });
 
     // Execute
-    const xmlResult = await xmlClient.visitsSummary.get(
-      DEFAULT_SITE_ID,
-      "day",
-      "yesterday"
-    );
+    const xmlResult = await xmlClient.visitsSummary.get({
+      idSite: DEFAULT_SITE_ID,
+      period: "day",
+      date: "yesterday",
+    });
 
     // Verify XML response is returned as string
     expect(typeof xmlResult).toBe("string");

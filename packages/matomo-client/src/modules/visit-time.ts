@@ -3,67 +3,55 @@
  * VisitTime API lets you access reports by Hour (Server time), and by Hour Local Time of your visitors.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for VisitTime API methods
+ */
+export interface VisitTimeParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for server time reports
+ */
+export interface ServerTimeParams extends VisitTimeParams {
+  /** Whether to hide future hours when date is today */
+  hideFutureHoursWhenToday?: string | boolean;
+}
 
 export class VisitTimeModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
-   * Get visit by local time (visitor's time)
+   * Get visitor times by local time (browser's local time)
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visitor time by local time
    */
-  async getVisitInformationPerLocalTime(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getVisitInformationPerLocalTime(params: VisitTimeParams): Promise<any> {
     return this.client.request(
-      'VisitTime.getVisitInformationPerLocalTime',
+      "VisitTime.getVisitInformationPerLocalTime",
       params
     );
   }
 
   /**
-   * Get visit by server time
+   * Get visitor times by server time
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param hideFutureHoursWhenToday Whether to hide future hours when date is today
+   * @param params Parameters for getting visitor time by server time
    */
   async getVisitInformationPerServerTime(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    hideFutureHoursWhenToday: string | boolean = ''
+    params: ServerTimeParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (hideFutureHoursWhenToday !== '')
-      params.hideFutureHoursWhenToday = hideFutureHoursWhenToday;
-
     return this.client.request(
-      'VisitTime.getVisitInformationPerServerTime',
+      "VisitTime.getVisitInformationPerServerTime",
       params
     );
   }
@@ -71,25 +59,9 @@ export class VisitTimeModule {
   /**
    * Get visits by day of week
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visits by day of week
    */
-  async getByDayOfWeek(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitTime.getByDayOfWeek', params);
+  async getByDayOfWeek(params: VisitTimeParams): Promise<any> {
+    return this.client.request("VisitTime.getByDayOfWeek", params);
   }
 }

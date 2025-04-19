@@ -4,7 +4,129 @@
  * API for the Funnels plugin which lets you create, manage, and analyze conversion funnels.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for funnel reporting methods
+ */
+export interface FunnelReportParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional funnel ID to filter by */
+  idFunnel?: string | number;
+  /** Optional goal ID to filter by */
+  idGoal?: string | number;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for funnel step subtable
+ */
+export interface FunnelStepSubtableParams extends FunnelReportParams {
+  /** Step position in the funnel */
+  stepPosition: number | string;
+}
+
+/**
+ * Parameters for funnel entries
+ */
+export interface FunnelEntriesParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Funnel ID */
+  idFunnel: number | string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional step filter */
+  step?: string | number;
+  /** Optional expanded flag */
+  expanded?: string | boolean;
+  /** Optional subtable ID */
+  idSubtable?: string | number;
+  /** Optional flat report flag */
+  flat?: string | boolean;
+}
+
+/**
+ * Parameters for funnel exits
+ */
+export interface FunnelExitsParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Funnel ID */
+  idFunnel: number | string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional step filter */
+  step?: string | number;
+}
+
+/**
+ * Parameters for site and ID operations
+ */
+export interface SiteIdParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for goal funnel operations
+ */
+export interface GoalFunnelParams extends SiteIdParams {
+  /** Goal ID */
+  idGoal: number | string;
+}
+
+/**
+ * Parameters for funnel operations
+ */
+export interface FunnelParams extends SiteIdParams {
+  /** Funnel ID */
+  idFunnel: number | string;
+}
+
+/**
+ * Parameters for setting a goal funnel
+ */
+export interface SetGoalFunnelParams extends GoalFunnelParams {
+  /** Whether the funnel is activated */
+  isActivated: boolean;
+  /** Array of funnel steps */
+  steps: any[];
+}
+
+/**
+ * Parameters for saving a non-goal funnel
+ */
+export interface SaveNonGoalFunnelParams extends FunnelParams {
+  /** Name of the funnel */
+  funnelName: string;
+  /** Array of funnel steps */
+  steps: any[];
+}
+
+/**
+ * Parameters for testing URL matches
+ */
+export interface TestUrlMatchesStepsParams extends RequestParams {
+  /** URL to test */
+  url: string;
+  /** Array of funnel steps */
+  steps: any[];
+}
 
 export class FunnelsModule {
   constructor(private client: CoreReportingClient) {}
@@ -12,350 +134,151 @@ export class FunnelsModule {
   /**
    * Get funnel metrics
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idFunnel Optional funnel ID to filter by
-   * @param idGoal Optional goal ID to filter by
-   * @param segment Optional segment definition
+   * @param params Parameters for funnel report
    * @returns Promise with the funnel metrics
    */
-  getMetrics(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idFunnel: string | number = '',
-    idGoal: string | number = '',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (idFunnel !== '') params.idFunnel = idFunnel;
-    if (idGoal !== '') params.idGoal = idGoal;
-    if (segment) params.segment = segment;
-
-    return this.client.request('Funnels.getMetrics', params);
+  getMetrics(params: FunnelReportParams): Promise<any> {
+    return this.client.request("Funnels.getMetrics", params);
   }
 
   /**
    * Get funnel flow visualization data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idFunnel Optional funnel ID to filter by
-   * @param idGoal Optional goal ID to filter by
-   * @param segment Optional segment definition
+   * @param params Parameters for funnel report
    * @returns Promise with the funnel flow data for visualization
    */
-  getFunnelFlow(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idFunnel: string | number = '',
-    idGoal: string | number = '',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (idFunnel !== '') params.idFunnel = idFunnel;
-    if (idGoal !== '') params.idGoal = idGoal;
-    if (segment) params.segment = segment;
-
-    return this.client.request('Funnels.getFunnelFlow', params);
+  getFunnelFlow(params: FunnelReportParams): Promise<any> {
+    return this.client.request("Funnels.getFunnelFlow", params);
   }
 
   /**
    * Get funnel flow as table data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idFunnel Optional funnel ID to filter by
-   * @param idGoal Optional goal ID to filter by
-   * @param segment Optional segment definition
+   * @param params Parameters for funnel report
    * @returns Promise with the funnel flow data in table format
    */
-  getFunnelFlowTable(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idFunnel: string | number = '',
-    idGoal: string | number = '',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (idFunnel !== '') params.idFunnel = idFunnel;
-    if (idGoal !== '') params.idGoal = idGoal;
-    if (segment) params.segment = segment;
-
-    return this.client.request('Funnels.getFunnelFlowTable', params);
+  getFunnelFlowTable(params: FunnelReportParams): Promise<any> {
+    return this.client.request("Funnels.getFunnelFlowTable", params);
   }
 
   /**
    * Get funnel step subtable
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param stepPosition Step position in the funnel
-   * @param idFunnel Optional funnel ID to filter by
-   * @param idGoal Optional goal ID to filter by
-   * @param segment Optional segment definition
+   * @param params Parameters for funnel step subtable
    * @returns Promise with the funnel step subtable data
    */
-  getFunnelStepSubtable(
-    idSite: number | string,
-    period: string,
-    date: string,
-    stepPosition: number | string,
-    idFunnel: string | number = '',
-    idGoal: string | number = '',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      stepPosition,
-    };
-
-    if (idFunnel !== '') params.idFunnel = idFunnel;
-    if (idGoal !== '') params.idGoal = idGoal;
-    if (segment) params.segment = segment;
-
-    return this.client.request('Funnels.getFunnelStepSubtable', params);
+  getFunnelStepSubtable(params: FunnelStepSubtableParams): Promise<any> {
+    return this.client.request("Funnels.getFunnelStepSubtable", params);
   }
 
   /**
    * Get funnel entries
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idFunnel Funnel ID
-   * @param segment Optional segment definition
-   * @param step Optional step filter
-   * @param expanded Optional expanded flag
-   * @param idSubtable Optional subtable ID
-   * @param flat Optional flat report flag
+   * @param params Parameters for funnel entries
    * @returns Promise with the funnel entries data
    */
-  getFunnelEntries(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idFunnel: number | string,
-    segment: string = '',
-    step: string | number = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idFunnel,
-    };
-
-    if (segment) params.segment = segment;
-    if (step !== '') params.step = step;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Funnels.getFunnelEntries', params);
+  getFunnelEntries(params: FunnelEntriesParams): Promise<any> {
+    return this.client.request("Funnels.getFunnelEntries", params);
   }
 
   /**
    * Get funnel exits
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idFunnel Funnel ID
-   * @param segment Optional segment definition
-   * @param step Optional step filter
+   * @param params Parameters for funnel exits
    * @returns Promise with the funnel exits data
    */
-  getFunnelExits(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idFunnel: number | string,
-    segment: string = '',
-    step: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idFunnel,
-    };
-
-    if (segment) params.segment = segment;
-    if (step !== '') params.step = step;
-
-    return this.client.request('Funnels.getFunnelExits', params);
+  getFunnelExits(params: FunnelExitsParams): Promise<any> {
+    return this.client.request("Funnels.getFunnelExits", params);
   }
 
   /**
    * Get funnel for a specific goal
    *
-   * @param idSite Site ID
-   * @param idGoal Goal ID
+   * @param params Parameters for goal funnel
    * @returns Promise with the goal funnel configuration
    */
-  getGoalFunnel(
-    idSite: number | string,
-    idGoal: number | string
-  ): Promise<any> {
-    return this.client.request('Funnels.getGoalFunnel', {
-      idSite,
-      idGoal,
-    });
+  getGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    return this.client.request("Funnels.getGoalFunnel", params);
   }
 
   /**
    * Get sales funnel for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters with site ID
    * @returns Promise with the sales funnel data
    */
-  getSalesFunnelForSite(idSite: number | string): Promise<any> {
-    return this.client.request('Funnels.getSalesFunnelForSite', { idSite });
+  getSalesFunnelForSite(params: SiteIdParams): Promise<any> {
+    return this.client.request("Funnels.getSalesFunnelForSite", params);
   }
 
   /**
    * Get a specific funnel
    *
-   * @param idSite Site ID
-   * @param idFunnel Funnel ID
+   * @param params Parameters for funnel
    * @returns Promise with the funnel configuration
    */
-  getFunnel(idSite: number | string, idFunnel: number | string): Promise<any> {
-    return this.client.request('Funnels.getFunnel', {
-      idSite,
-      idFunnel,
-    });
+  getFunnel(params: FunnelParams): Promise<any> {
+    return this.client.request("Funnels.getFunnel", params);
   }
 
   /**
    * Get all activated funnels for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters with site ID
    * @returns Promise with the list of activated funnels
    */
-  getAllActivatedFunnelsForSite(idSite: number | string): Promise<any> {
-    return this.client.request('Funnels.getAllActivatedFunnelsForSite', {
-      idSite,
-    });
+  getAllActivatedFunnelsForSite(params: SiteIdParams): Promise<any> {
+    return this.client.request("Funnels.getAllActivatedFunnelsForSite", params);
   }
 
   /**
    * Check if site has any activated funnels
    *
-   * @param idSite Site ID
+   * @param params Parameters with site ID
    * @returns Promise with boolean result
    */
-  hasAnyActivatedFunnelForSite(idSite: number | string): Promise<boolean> {
-    return this.client.request('Funnels.hasAnyActivatedFunnelForSite', {
-      idSite,
-    });
+  hasAnyActivatedFunnelForSite(params: SiteIdParams): Promise<boolean> {
+    return this.client.request("Funnels.hasAnyActivatedFunnelForSite", params);
   }
 
   /**
    * Delete a goal funnel
    *
-   * @param idSite Site ID
-   * @param idGoal Goal ID
+   * @param params Parameters for goal funnel
    * @returns Promise with the API response
    */
-  deleteGoalFunnel(
-    idSite: number | string,
-    idGoal: number | string
-  ): Promise<any> {
-    return this.client.request('Funnels.deleteGoalFunnel', {
-      idSite,
-      idGoal,
-    });
+  deleteGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    return this.client.request("Funnels.deleteGoalFunnel", params);
   }
 
   /**
    * Delete a non-goal funnel
    *
-   * @param idSite Site ID
-   * @param idFunnel Funnel ID
+   * @param params Parameters for funnel
    * @returns Promise with the API response
    */
-  deleteNonGoalFunnel(
-    idSite: number | string,
-    idFunnel: number | string
-  ): Promise<any> {
-    return this.client.request('Funnels.deleteNonGoalFunnel', {
-      idSite,
-      idFunnel,
-    });
+  deleteNonGoalFunnel(params: FunnelParams): Promise<any> {
+    return this.client.request("Funnels.deleteNonGoalFunnel", params);
   }
 
   /**
    * Set a goal funnel configuration
    *
-   * @param idSite Site ID
-   * @param idGoal Goal ID
-   * @param isActivated Whether the funnel is activated
-   * @param steps Array of funnel steps
+   * @param params Parameters for setting a goal funnel
    * @returns Promise with the API response
    */
-  setGoalFunnel(
-    idSite: number | string,
-    idGoal: number | string,
-    isActivated: boolean,
-    steps: any[]
-  ): Promise<any> {
-    return this.client.request('Funnels.setGoalFunnel', {
-      idSite,
-      idGoal,
-      isActivated,
-      steps,
-    });
+  setGoalFunnel(params: SetGoalFunnelParams): Promise<any> {
+    return this.client.request("Funnels.setGoalFunnel", params);
   }
 
   /**
    * Save a non-goal funnel
    *
-   * @param idSite Site ID
-   * @param idFunnel Funnel ID
-   * @param funnelName Name of the funnel
-   * @param steps Array of funnel steps
+   * @param params Parameters for saving a non-goal funnel
    * @returns Promise with the API response
    */
-  saveNonGoalFunnel(
-    idSite: number | string,
-    idFunnel: number | string,
-    funnelName: string,
-    steps: any[]
-  ): Promise<any> {
-    return this.client.request('Funnels.saveNonGoalFunnel', {
-      idSite,
-      idFunnel,
-      funnelName,
-      steps,
-    });
+  saveNonGoalFunnel(params: SaveNonGoalFunnelParams): Promise<any> {
+    return this.client.request("Funnels.saveNonGoalFunnel", params);
   }
 
   /**
@@ -364,20 +287,16 @@ export class FunnelsModule {
    * @returns Promise with the list of available pattern matches
    */
   getAvailablePatternMatches(): Promise<any> {
-    return this.client.request('Funnels.getAvailablePatternMatches');
+    return this.client.request("Funnels.getAvailablePatternMatches");
   }
 
   /**
    * Test if a URL matches the funnel steps
    *
-   * @param url URL to test
-   * @param steps Array of funnel steps
+   * @param params Parameters for testing URL matches
    * @returns Promise with the matching results
    */
-  testUrlMatchesSteps(url: string, steps: any[]): Promise<any> {
-    return this.client.request('Funnels.testUrlMatchesSteps', {
-      url,
-      steps,
-    });
+  testUrlMatchesSteps(params: TestUrlMatchesStepsParams): Promise<any> {
+    return this.client.request("Funnels.testUrlMatchesSteps", params);
   }
 }

@@ -36,11 +36,11 @@ describe("VisitorInterestModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await visitorInterestModule.getNumberOfVisitsPerVisitDuration(
-          1,
-          "day",
-          "today"
-        );
+        await visitorInterestModule.getNumberOfVisitsPerVisitDuration({
+          idSite: 1,
+          period: "day",
+          date: "today",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsPerVisitDuration",
@@ -58,12 +58,12 @@ describe("VisitorInterestModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await visitorInterestModule.getNumberOfVisitsPerVisitDuration(
-          1,
-          "day",
-          "today",
-          "deviceType==desktop"
-        );
+        await visitorInterestModule.getNumberOfVisitsPerVisitDuration({
+          idSite: 1,
+          period: "day",
+          date: "today",
+          segment: "deviceType==desktop",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsPerVisitDuration",
@@ -83,11 +83,11 @@ describe("VisitorInterestModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitorInterestModule.getNumberOfVisitsPerPage(
-        1,
-        "day",
-        "today"
-      );
+      const result = await visitorInterestModule.getNumberOfVisitsPerPage({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsPerPage",
@@ -104,12 +104,12 @@ describe("VisitorInterestModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitorInterestModule.getNumberOfVisitsPerPage(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await visitorInterestModule.getNumberOfVisitsPerPage({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsPerPage",
@@ -130,11 +130,11 @@ describe("VisitorInterestModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await visitorInterestModule.getNumberOfVisitsByDaysSinceLast(
-          1,
-          "day",
-          "today"
-        );
+        await visitorInterestModule.getNumberOfVisitsByDaysSinceLast({
+          idSite: 1,
+          period: "day",
+          date: "today",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
@@ -152,12 +152,12 @@ describe("VisitorInterestModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await visitorInterestModule.getNumberOfVisitsByDaysSinceLast(
-          1,
-          "day",
-          "today",
-          "deviceType==desktop"
-        );
+        await visitorInterestModule.getNumberOfVisitsByDaysSinceLast({
+          idSite: 1,
+          period: "day",
+          date: "today",
+          segment: "deviceType==desktop",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
@@ -177,11 +177,11 @@ describe("VisitorInterestModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitorInterestModule.getNumberOfVisitsByVisitCount(
-        1,
-        "day",
-        "today"
-      );
+      const result = await visitorInterestModule.getNumberOfVisitsByVisitCount({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsByVisitCount",
@@ -198,12 +198,12 @@ describe("VisitorInterestModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitorInterestModule.getNumberOfVisitsByVisitCount(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await visitorInterestModule.getNumberOfVisitsByVisitCount({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitorInterest.getNumberOfVisitsByVisitCount",

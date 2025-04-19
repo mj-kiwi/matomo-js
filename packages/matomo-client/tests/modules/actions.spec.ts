@@ -35,7 +35,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.get(1, "day", "today");
+      const result = await actionsModule.get({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.get", {
         idSite: 1,
@@ -49,13 +53,13 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.get(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        "nb_visits,nb_actions"
-      );
+      const result = await actionsModule.get({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        columns: "nb_visits,nb_actions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.get", {
         idSite: 1,
@@ -73,7 +77,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrls(1, "day", "today");
+      const result = await actionsModule.getPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageUrls", {
         idSite: 1,
@@ -87,16 +95,16 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrls(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        2,
-        true
-      );
+      const result = await actionsModule.getPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        depth: 2,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageUrls", {
         idSite: 1,
@@ -117,11 +125,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrlsFollowingSiteSearch(
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getPageUrlsFollowingSiteSearch({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getPageUrlsFollowingSiteSearch",
@@ -138,14 +146,14 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrlsFollowingSiteSearch(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5
-      );
+      const result = await actionsModule.getPageUrlsFollowingSiteSearch({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getPageUrlsFollowingSiteSearch",
@@ -167,11 +175,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitlesFollowingSiteSearch(
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getPageTitlesFollowingSiteSearch({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getPageTitlesFollowingSiteSearch",
@@ -188,14 +196,14 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitlesFollowingSiteSearch(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5
-      );
+      const result = await actionsModule.getPageTitlesFollowingSiteSearch({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getPageTitlesFollowingSiteSearch",
@@ -217,7 +225,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getEntryPageUrls(1, "day", "today");
+      const result = await actionsModule.getEntryPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getEntryPageUrls",
@@ -234,15 +246,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getEntryPageUrls(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getEntryPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getEntryPageUrls",
@@ -265,7 +277,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getExitPageUrls(1, "day", "today");
+      const result = await actionsModule.getExitPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getExitPageUrls",
@@ -282,15 +298,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getExitPageUrls(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getExitPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getExitPageUrls",
@@ -313,12 +329,12 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrl(
-        "https%3A%2F%2Fexample.org",
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getPageUrl({
+        pageUrl: "https%3A%2F%2Fexample.org",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageUrl", {
         pageUrl: "https%3A%2F%2Fexample.org",
@@ -333,13 +349,13 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageUrl(
-        "https%3A%2F%2Fexample.org",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getPageUrl({
+        pageUrl: "https%3A%2F%2Fexample.org",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageUrl", {
         pageUrl: "https%3A%2F%2Fexample.org",
@@ -357,7 +373,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitles(1, "day", "today");
+      const result = await actionsModule.getPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageTitles", {
         idSite: 1,
@@ -371,15 +391,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitles(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageTitles", {
         idSite: 1,
@@ -399,7 +419,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getEntryPageTitles(1, "day", "today");
+      const result = await actionsModule.getEntryPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getEntryPageTitles",
@@ -416,15 +440,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getEntryPageTitles(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getEntryPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getEntryPageTitles",
@@ -447,7 +471,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getExitPageTitles(1, "day", "today");
+      const result = await actionsModule.getExitPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getExitPageTitles",
@@ -464,15 +492,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getExitPageTitles(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getExitPageTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getExitPageTitles",
@@ -495,15 +523,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitle(
-        "Example%20Page",
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getPageTitle({
+        pageName: "Example%20Page%20Title",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageTitle", {
-        pageName: "Example%20Page",
+        pageName: "Example%20Page%20Title",
         idSite: 1,
         period: "day",
         date: "today",
@@ -515,16 +543,16 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getPageTitle(
-        "Example%20Page",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getPageTitle({
+        pageName: "Example%20Page%20Title",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getPageTitle", {
-        pageName: "Example%20Page",
+        pageName: "Example%20Page%20Title",
         idSite: 1,
         period: "day",
         date: "today",
@@ -539,7 +567,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getDownloads(1, "day", "today");
+      const result = await actionsModule.getDownloads({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getDownloads", {
         idSite: 1,
@@ -553,15 +585,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getDownloads(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getDownloads({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getDownloads", {
         idSite: 1,
@@ -581,12 +613,12 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getDownload(
-        "https%3A%2F%2Fexample.org%2Ffile.pdf",
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getDownload({
+        downloadUrl: "https%3A%2F%2Fexample.org%2Ffile.pdf",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getDownload", {
         downloadUrl: "https%3A%2F%2Fexample.org%2Ffile.pdf",
@@ -601,13 +633,13 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getDownload(
-        "https%3A%2F%2Fexample.org%2Ffile.pdf",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getDownload({
+        downloadUrl: "https%3A%2F%2Fexample.org%2Ffile.pdf",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getDownload", {
         downloadUrl: "https%3A%2F%2Fexample.org%2Ffile.pdf",
@@ -625,7 +657,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getOutlinks(1, "day", "today");
+      const result = await actionsModule.getOutlinks({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getOutlinks", {
         idSite: 1,
@@ -639,15 +675,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getOutlinks(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        5,
-        true
-      );
+      const result = await actionsModule.getOutlinks({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        idSubtable: 5,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getOutlinks", {
         idSite: 1,
@@ -667,15 +703,15 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getOutlink(
-        "https%3A%2F%2Fexample.com",
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getOutlink({
+        outlinkUrl: "https%3A%2F%2Fexternal-link.com",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getOutlink", {
-        outlinkUrl: "https%3A%2F%2Fexample.com",
+        outlinkUrl: "https%3A%2F%2Fexternal-link.com",
         idSite: 1,
         period: "day",
         date: "today",
@@ -687,16 +723,16 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getOutlink(
-        "https%3A%2F%2Fexample.com",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getOutlink({
+        outlinkUrl: "https%3A%2F%2Fexternal-link.com",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Actions.getOutlink", {
-        outlinkUrl: "https%3A%2F%2Fexample.com",
+        outlinkUrl: "https%3A%2F%2Fexternal-link.com",
         idSite: 1,
         period: "day",
         date: "today",
@@ -711,11 +747,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchKeywords(
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getSiteSearchKeywords({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchKeywords",
@@ -732,12 +768,12 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchKeywords(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getSiteSearchKeywords({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchKeywords",
@@ -757,11 +793,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchNoResultKeywords(
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getSiteSearchNoResultKeywords({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchNoResultKeywords",
@@ -778,12 +814,12 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchNoResultKeywords(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getSiteSearchNoResultKeywords({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchNoResultKeywords",
@@ -803,11 +839,11 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchCategories(
-        1,
-        "day",
-        "today"
-      );
+      const result = await actionsModule.getSiteSearchCategories({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchCategories",
@@ -824,12 +860,12 @@ describe("ActionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await actionsModule.getSiteSearchCategories(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await actionsModule.getSiteSearchCategories({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Actions.getSiteSearchCategories",

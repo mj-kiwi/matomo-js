@@ -35,7 +35,9 @@ describe("TwoFactorAuthModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await twoFactorAuthModule.resetTwoFactorAuth("user1");
+      const result = await twoFactorAuthModule.resetTwoFactorAuth({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TwoFactorAuth.resetTwoFactorAuth",
@@ -50,10 +52,10 @@ describe("TwoFactorAuthModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await twoFactorAuthModule.resetTwoFactorAuth(
-        "user1",
-        "password123"
-      );
+      const result = await twoFactorAuthModule.resetTwoFactorAuth({
+        userLogin: "user1",
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TwoFactorAuth.resetTwoFactorAuth",

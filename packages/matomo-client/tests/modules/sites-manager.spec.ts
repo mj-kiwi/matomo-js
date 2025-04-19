@@ -33,34 +33,6 @@ describe("SitesManagerModule", () => {
   // Group related tests by SitesManagerModule methods
 
   describe("Basic Site Information Methods", () => {
-    describe("getSitesInfo", () => {
-      it("should call the API without parameters", async () => {
-        const mockResponse = [{ id: 1, name: "Site 1" }];
-        mockClient.request.mockResolvedValueOnce(mockResponse);
-
-        const result = await sitesManagerModule.getSitesInfo();
-
-        expect(mockClient.request).toHaveBeenCalledWith(
-          "SitesManager.getSitesWithAtLeastViewAccess",
-          {}
-        );
-        expect(result).toEqual(mockResponse);
-      });
-
-      it("should call the API with idSites parameter", async () => {
-        const mockResponse = [{ id: 1, name: "Site 1" }];
-        mockClient.request.mockResolvedValueOnce(mockResponse);
-
-        const result = await sitesManagerModule.getSitesInfo([1, 2, 3]);
-
-        expect(mockClient.request).toHaveBeenCalledWith(
-          "SitesManager.getSitesWithAtLeastViewAccess",
-          { idSite: [1, 2, 3] }
-        );
-        expect(result).toEqual(mockResponse);
-      });
-    });
-
     describe("getSiteFromId", () => {
       it("should call the API with idSite parameter", async () => {
         const mockResponse = {
@@ -70,7 +42,7 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSiteFromId(1);
+        const result = await sitesManagerModule.getSiteFromId({ idSite: 1 });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSiteFromId",
@@ -85,7 +57,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = ["https://example.org", "https://example.com"];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSiteUrlsFromId(1);
+        const result = await sitesManagerModule.getSiteUrlsFromId({
+          idSite: 1,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSiteUrlsFromId",
@@ -138,7 +112,7 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSiteSettings(1);
+        const result = await sitesManagerModule.getSiteSettings({ idSite: 1 });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSiteSettings",
@@ -173,7 +147,7 @@ describe("SitesManagerModule", () => {
         ];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesFromGroup();
+        const result = await sitesManagerModule.getSitesFromGroup({});
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesFromGroup",
@@ -186,7 +160,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 1, name: "Site 1" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesFromGroup("E-commerce");
+        const result = await sitesManagerModule.getSitesFromGroup({
+          group: "E-commerce",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesFromGroup",
@@ -201,10 +177,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.renameGroup(
-          "Old Group",
-          "New Group"
-        );
+        const result = await sitesManagerModule.renameGroup({
+          oldGroupName: "Old Group",
+          newGroupName: "New Group",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.renameGroup",
@@ -224,7 +200,7 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 1, name: "Site 1" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesWithAdminAccess();
+        const result = await sitesManagerModule.getSitesWithAdminAccess({});
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesWithAdminAccess",
@@ -237,12 +213,12 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 2, name: "Site 2" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesWithAdminAccess(
-          true,
-          "example",
-          10,
-          [1, 3]
-        );
+        const result = await sitesManagerModule.getSitesWithAdminAccess({
+          fetchAliasUrls: true,
+          pattern: "example",
+          limit: 10,
+          sitesToExclude: [1, 3],
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesWithAdminAccess",
@@ -283,7 +259,9 @@ describe("SitesManagerModule", () => {
         ];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesWithAtLeastViewAccess();
+        const result = await sitesManagerModule.getSitesWithAtLeastViewAccess(
+          {}
+        );
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesWithAtLeastViewAccess",
@@ -296,8 +274,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 1, name: "Site 1" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result =
-          await sitesManagerModule.getSitesWithAtLeastViewAccess(5);
+        const result = await sitesManagerModule.getSitesWithAtLeastViewAccess({
+          limit: 5,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesWithAtLeastViewAccess",
@@ -373,9 +352,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = [1, 2];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getSitesIdFromSiteUrl(
-          "https://example.org"
-        );
+        const result = await sitesManagerModule.getSitesIdFromSiteUrl({
+          url: "https://example.org",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getSitesIdFromSiteUrl",
@@ -392,7 +371,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = { id: 3 };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.addSite("New Test Site");
+        const result = await sitesManagerModule.addSite({
+          siteName: "New Test Site",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.addSite",
@@ -407,26 +388,26 @@ describe("SitesManagerModule", () => {
         const mockResponse = { id: 3 };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.addSite(
-          "New Test Site",
-          ["https://newsite.com", "https://newsite.org"],
-          true,
-          true,
-          "q,query,s",
-          "cat",
-          "192.168.1.1",
-          "utm_*",
-          "Europe/Paris",
-          "EUR",
-          "E-commerce",
-          "2023-01-01",
-          "bot,spider",
-          true,
-          "website",
-          { customSetting: "value" },
-          true,
-          "facebook.com"
-        );
+        const result = await sitesManagerModule.addSite({
+          siteName: "New Test Site",
+          urls: ["https://newsite.com", "https://newsite.org"],
+          ecommerce: true,
+          siteSearch: true,
+          searchKeywordParameters: "q,query,s",
+          searchCategoryParameters: "cat",
+          excludedIps: "192.168.1.1",
+          excludedQueryParameters: "utm_*",
+          timezone: "Europe/Paris",
+          currency: "EUR",
+          group: "E-commerce",
+          startDate: "2023-01-01",
+          excludedUserAgents: "bot,spider",
+          keepURLFragments: true,
+          type: "website",
+          settingValues: { customSetting: "value" },
+          excludeUnknownUrls: true,
+          excludedReferrers: "facebook.com",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.addSite",
@@ -460,7 +441,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.deleteSite(1);
+        const result = await sitesManagerModule.deleteSite({
+          idSite: 1,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.deleteSite",
@@ -473,7 +456,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.deleteSite(1, "password123");
+        const result = await sitesManagerModule.deleteSite({
+          idSite: 1,
+          passwordConfirmation: "password123",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.deleteSite",
@@ -491,7 +477,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.updateSite(1);
+        const result = await sitesManagerModule.updateSite({
+          idSite: 1,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.updateSite",
@@ -504,27 +492,27 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.updateSite(
-          1,
-          "Updated Site",
-          ["https://updated.example.com"],
-          true,
-          true,
-          "q,query",
-          "cat",
-          "192.168.1.1",
-          "utm_*",
-          "Europe/Paris",
-          "EUR",
-          "Blogs",
-          "2023-01-01",
-          "bot,spider",
-          true,
-          "blog",
-          { setting1: "value1" },
-          true,
-          "spam.com"
-        );
+        const result = await sitesManagerModule.updateSite({
+          idSite: 1,
+          siteName: "Updated Site",
+          urls: ["https://updated.example.com"],
+          ecommerce: true,
+          siteSearch: true,
+          searchKeywordParameters: "q,query",
+          searchCategoryParameters: "cat",
+          excludedIps: "192.168.1.1",
+          excludedQueryParameters: "utm_*",
+          timezone: "Europe/Paris",
+          currency: "EUR",
+          group: "Blogs",
+          startDate: "2023-01-01",
+          excludedUserAgents: "bot,spider",
+          keepURLFragments: true,
+          type: "blog",
+          settingValues: { setting1: "value1" },
+          excludeUnknownUrls: true,
+          excludedReferrers: "spam.com",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.updateSite",
@@ -559,7 +547,9 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 1, name: "Example Site" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getPatternMatchSites("example");
+        const result = await sitesManagerModule.getPatternMatchSites({
+          pattern: "example",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getPatternMatchSites",
@@ -572,11 +562,11 @@ describe("SitesManagerModule", () => {
         const mockResponse = [{ id: 1, name: "Example Site" }];
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getPatternMatchSites(
-          "example",
-          10,
-          [2, 3]
-        );
+        const result = await sitesManagerModule.getPatternMatchSites({
+          pattern: "example",
+          limit: 10,
+          sitesToExclude: [2, 3],
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getPatternMatchSites",
@@ -597,10 +587,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.addSiteAliasUrls(
-          1,
-          "https://alias.example.org"
-        );
+        const result = await sitesManagerModule.addSiteAliasUrls({
+          idSite: 1,
+          urls: "https://alias.example.org",
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.addSiteAliasUrls",
@@ -616,10 +606,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.addSiteAliasUrls(1, [
-          "https://alias1.example.org",
-          "https://alias2.example.org",
-        ]);
+        const result = await sitesManagerModule.addSiteAliasUrls({
+          idSite: 1,
+          urls: ["https://alias1.example.org", "https://alias2.example.org"],
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.addSiteAliasUrls",
@@ -637,7 +627,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.setSiteAliasUrls(1);
+        const result = await sitesManagerModule.setSiteAliasUrls({
+          idSite: 1,
+          urls: [],
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.setSiteAliasUrls",
@@ -653,10 +646,10 @@ describe("SitesManagerModule", () => {
         const mockResponse = { success: true };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.setSiteAliasUrls(1, [
-          "https://new1.example.org",
-          "https://new2.example.org",
-        ]);
+        const result = await sitesManagerModule.setSiteAliasUrls({
+          idSite: 1,
+          urls: ["https://new1.example.org", "https://new2.example.org"],
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.setSiteAliasUrls",
@@ -678,7 +671,9 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getJavascriptTag(1);
+        const result = await sitesManagerModule.getJavascriptTag({
+          idSite: 1,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getJavascriptTag",
@@ -693,25 +688,25 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getJavascriptTag(
-          1,
-          "https://matomo.example.org",
-          true,
-          true,
-          true,
-          { userId: "visitor1" },
-          { page: "homepage" },
-          "campaign_name",
-          "campaign_keyword",
-          true,
-          true,
-          true,
-          true,
-          true,
-          "utm_*",
-          "facebook.com",
-          true
-        );
+        const result = await sitesManagerModule.getJavascriptTag({
+          idSite: 1,
+          piwikUrl: "https://matomo.example.org",
+          mergeSubdomains: true,
+          groupPageTitlesByDomain: true,
+          mergeAliasUrls: true,
+          visitorCustomVariables: { userId: "visitor1" },
+          pageCustomVariables: { page: "homepage" },
+          customCampaignNameQueryParam: "campaign_name",
+          customCampaignKeywordParam: "campaign_keyword",
+          doNotTrack: true,
+          disableCookies: true,
+          trackNoScript: true,
+          crossDomain: true,
+          forceMatomoEndpoint: true,
+          excludedQueryParams: "utm_*",
+          excludedReferrers: "facebook.com",
+          disableCampaignParameters: true,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getJavascriptTag",
@@ -746,7 +741,9 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getImageTrackingCode(1);
+        const result = await sitesManagerModule.getImageTrackingCode({
+          idSite: 1,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getImageTrackingCode",
@@ -761,14 +758,14 @@ describe("SitesManagerModule", () => {
         };
         mockClient.request.mockResolvedValueOnce(mockResponse);
 
-        const result = await sitesManagerModule.getImageTrackingCode(
-          1,
-          "https://matomo.example.org",
-          "Purchase",
-          1,
-          19.99,
-          true
-        );
+        const result = await sitesManagerModule.getImageTrackingCode({
+          idSite: 1,
+          piwikUrl: "https://matomo.example.org",
+          actionName: "Purchase",
+          idGoal: 1,
+          revenue: 19.99,
+          forceMatomoEndpoint: true,
+        });
 
         expect(mockClient.request).toHaveBeenCalledWith(
           "SitesManager.getImageTrackingCode",
@@ -793,8 +790,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = ["192.168.1.1", "192.168.1.2"];
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.getIpsForRange("192.168.1.1-2");
+          const result = await sitesManagerModule.getIpsForRange({
+            ipRange: "192.168.1.1-2",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.getIpsForRange",
@@ -809,9 +807,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.setGlobalExcludedIps(
-            "192.168.1.1,10.0.0.1"
-          );
+          const result = await sitesManagerModule.setGlobalExcludedIps({
+            excludedIps: "192.168.1.1,10.0.0.1",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalExcludedIps",
@@ -843,10 +841,10 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.setGlobalSearchParameters(
-            "q,query,s",
-            "cat,category"
-          );
+          const result = await sitesManagerModule.setGlobalSearchParameters({
+            searchKeywordParameters: "q,query,s",
+            searchCategoryParameters: "cat,category",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalSearchParameters",
@@ -898,7 +896,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = ["utm_source", "utm_medium", "utm_campaign"];
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.getExcludedQueryParameters(1);
+          const result = await sitesManagerModule.getExcludedQueryParameters({
+            idSite: 1,
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.getExcludedQueryParameters",
@@ -934,8 +934,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.setGlobalQueryParamExclusion("exact");
+          const result = await sitesManagerModule.setGlobalQueryParamExclusion({
+            exclusionType: "exact",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalQueryParamExclusion",
@@ -948,10 +949,10 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.setGlobalQueryParamExclusion(
-            "exact",
-            "utm_*"
-          );
+          const result = await sitesManagerModule.setGlobalQueryParamExclusion({
+            exclusionType: "exact",
+            queryParamsToExclude: "utm_*",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalQueryParamExclusion",
@@ -1002,10 +1003,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.setGlobalExcludedUserAgents(
-              "bot,spider,crawl"
-            );
+          const result = await sitesManagerModule.setGlobalExcludedUserAgents({
+            excludedUserAgents: "bot,spider,crawl",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalExcludedUserAgents",
@@ -1022,7 +1022,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = ["spam.com", "unwanted.org"];
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.getExcludedReferrers(1);
+          const result = await sitesManagerModule.getExcludedReferrers({
+            idSite: 1,
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.getExcludedReferrers",
@@ -1052,9 +1054,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.setGlobalExcludedReferrers(
-            "spam.com,unwanted.org"
-          );
+          const result = await sitesManagerModule.setGlobalExcludedReferrers({
+            excludedReferrers: "spam.com,unwanted.org",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setGlobalExcludedReferrers",
@@ -1082,12 +1084,13 @@ describe("SitesManagerModule", () => {
       });
 
       describe("setKeepURLFragmentsGlobal", () => {
-        it("should call the API with enabled parameter", async () => {
+        it("should call the API with keepURLFragments parameter", async () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.setKeepURLFragmentsGlobal(true);
+          const result = await sitesManagerModule.setKeepURLFragmentsGlobal({
+            enabled: true,
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setKeepURLFragmentsGlobal",
@@ -1119,7 +1122,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.setDefaultCurrency("EUR");
+          const result = await sitesManagerModule.setDefaultCurrency({
+            defaultCurrency: "EUR",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setDefaultCurrency",
@@ -1204,8 +1209,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = "Central European Time";
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.getTimezoneName("Europe/Paris");
+          const result = await sitesManagerModule.getTimezoneName({
+            timezone: "Europe/Paris",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.getTimezoneName",
@@ -1218,11 +1224,11 @@ describe("SitesManagerModule", () => {
           const mockResponse = "Eastern Time";
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result = await sitesManagerModule.getTimezoneName(
-            "America/New_York",
-            "US",
-            true
-          );
+          const result = await sitesManagerModule.getTimezoneName({
+            timezone: "America/New_York",
+            countryCode: "US",
+            multipleTimezonesInCountry: true,
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.getTimezoneName",
@@ -1271,8 +1277,9 @@ describe("SitesManagerModule", () => {
           const mockResponse = { success: true };
           mockClient.request.mockResolvedValueOnce(mockResponse);
 
-          const result =
-            await sitesManagerModule.setDefaultTimezone("Europe/Paris");
+          const result = await sitesManagerModule.setDefaultTimezone({
+            defaultTimezone: "Europe/Paris",
+          });
 
           expect(mockClient.request).toHaveBeenCalledWith(
             "SitesManager.setDefaultTimezone",

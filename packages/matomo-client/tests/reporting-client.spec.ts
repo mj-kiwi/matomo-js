@@ -158,8 +158,8 @@ describe("ReportingClient", () => {
   // Test a few specific modules to ensure they're initialized with the core client
   it("should pass the core client to modules when initializing them", () => {
     const client = new ReportingClient(options);
-    expect(client.api).haveOwnProperty("client", client.core);
-    expect(client.abTesting).haveOwnProperty("client", client.core);
-    expect(client.sitesManager).haveOwnProperty("client", client.core);
+    expect(client.api).toHaveProperty("client", client.core);
+    expect(client.abTesting).toHaveProperty("client", client.core);
+    expect(client.sitesManager).toHaveProperty("client", client.core);
   });
 });

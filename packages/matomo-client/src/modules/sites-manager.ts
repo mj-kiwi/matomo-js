@@ -3,227 +3,411 @@
  * Provides access to site management functionality
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for site-specific operations
+ */
+export interface SiteIdParams extends RequestParams {
+  /** Site ID */
+  idSite: number;
+}
+
+/**
+ * Parameters for getting JavaScript tracking code
+ */
+export interface JavascriptTagParams extends SiteIdParams {
+  /** Optional Matomo URL (uses client URL if not provided) */
+  piwikUrl?: string;
+  /** Set to true to track visitors across all subdomains */
+  mergeSubdomains?: boolean;
+  /** Set to true to group page titles by domain */
+  groupPageTitlesByDomain?: boolean;
+  /** Set to true to track visitors across all alias URLs */
+  mergeAliasUrls?: boolean;
+  /** Custom variables for the visitor */
+  visitorCustomVariables?: Record<string, any>;
+  /** Custom variables for the page */
+  pageCustomVariables?: Record<string, any>;
+  /** Custom campaign name parameter */
+  customCampaignNameQueryParam?: string;
+  /** Custom campaign keyword parameter */
+  customCampaignKeywordParam?: string;
+  /** Honor DoNotTrack setting in the browser */
+  doNotTrack?: boolean;
+  /** Set to true to disable all tracking cookies */
+  disableCookies?: boolean;
+  /** Set to true to include a <noscript> tag */
+  trackNoScript?: boolean;
+  /** Set to true to enable cross-domain linking */
+  crossDomain?: boolean;
+  /** Set to true to use matomo.php instead of piwik.php */
+  forceMatomoEndpoint?: boolean;
+  /** Query parameters to exclude from page URLs */
+  excludedQueryParams?: string;
+  /** Referrers to exclude */
+  excludedReferrers?: string;
+  /** Set to true to disable campaign parameters */
+  disableCampaignParameters?: boolean;
+}
+
+/**
+ * Parameters for getting image tracking code
+ */
+export interface ImageTrackingCodeParams extends SiteIdParams {
+  /** Optional Matomo URL (uses client URL if not provided) */
+  piwikUrl?: string;
+  /** Action name for the request */
+  actionName?: string;
+  /** Goal ID to trigger */
+  idGoal?: string | number;
+  /** Revenue for the conversion */
+  revenue?: string | number;
+  /** Set to true to use matomo.php instead of piwik.php */
+  forceMatomoEndpoint?: boolean;
+}
+
+/**
+ * Parameters for group operations
+ */
+export interface GroupParams extends RequestParams {
+  /** Group to search for sites */
+  group?: string;
+}
+
+/**
+ * Parameters for renaming groups
+ */
+export interface RenameGroupParams extends RequestParams {
+  /** Original group name */
+  oldGroupName: string;
+  /** New group name */
+  newGroupName: string;
+}
+
+/**
+ * Parameters for admin access operations
+ */
+export interface AdminAccessParams extends RequestParams {
+  /** Whether to include alias URLs */
+  fetchAliasUrls?: boolean | string;
+  /** Filter sites by pattern */
+  pattern?: string;
+  /** Maximum number of sites to return */
+  limit?: number | string;
+  /** Array of site IDs to exclude */
+  sitesToExclude?: number[];
+}
+
+/**
+ * Parameters for limit operations
+ */
+export interface LimitParams extends RequestParams {
+  /** Maximum number of sites to return */
+  limit?: number | string;
+}
+
+/**
+ * Parameters for URL operations
+ */
+export interface UrlParams extends RequestParams {
+  /** URL to search for */
+  url: string;
+}
+
+/**
+ * Parameters for adding a site
+ */
+export interface AddSiteParams extends RequestParams {
+  /** Name of the site */
+  siteName: string;
+  /** URLs of the site */
+  urls?: string | string[];
+  /** Is an ecommerce site */
+  ecommerce?: boolean | string;
+  /** Should site search be tracked */
+  siteSearch?: boolean | string;
+  /** Parameters used for search keywords */
+  searchKeywordParameters?: string;
+  /** Parameters used for search categories */
+  searchCategoryParameters?: string;
+  /** IPs to exclude from tracking */
+  excludedIps?: string;
+  /** Query parameters to exclude from page URLs */
+  excludedQueryParameters?: string;
+  /** Site timezone */
+  timezone?: string;
+  /** Site currency */
+  currency?: string;
+  /** Site group */
+  group?: string;
+  /** When to start tracking data */
+  startDate?: string;
+  /** User agents to exclude from tracking */
+  excludedUserAgents?: string;
+  /** Whether to keep URL fragments (anchors) */
+  keepURLFragments?: boolean | string;
+  /** Site type */
+  type?: string;
+  /** Additional setting values */
+  settingValues?: Record<string, any>;
+  /** Whether to exclude unknown URLs */
+  excludeUnknownUrls?: boolean | string;
+  /** Referrers to exclude */
+  excludedReferrers?: string;
+}
+
+/**
+ * Parameters for updating a site
+ */
+export interface UpdateSiteParams extends SiteIdParams {
+  /** Name of the site */
+  siteName?: string;
+  /** URLs of the site */
+  urls?: string | string[];
+  /** Is an ecommerce site */
+  ecommerce?: boolean | string;
+  /** Should site search be tracked */
+  siteSearch?: boolean | string;
+  /** Parameters used for search keywords */
+  searchKeywordParameters?: string;
+  /** Parameters used for search categories */
+  searchCategoryParameters?: string;
+  /** IPs to exclude from tracking */
+  excludedIps?: string;
+  /** Query parameters to exclude from page URLs */
+  excludedQueryParameters?: string;
+  /** Site timezone */
+  timezone?: string;
+  /** Site currency */
+  currency?: string;
+  /** Site group */
+  group?: string;
+  /** When to start tracking data */
+  startDate?: string;
+  /** User agents to exclude from tracking */
+  excludedUserAgents?: string;
+  /** Whether to keep URL fragments (anchors) */
+  keepURLFragments?: boolean | string;
+  /** Site type */
+  type?: string;
+  /** Additional setting values */
+  settingValues?: Record<string, any>;
+  /** Whether to exclude unknown URLs */
+  excludeUnknownUrls?: boolean | string;
+  /** Referrers to exclude */
+  excludedReferrers?: string;
+}
+
+/**
+ * Parameters for deleting a site
+ */
+export interface DeleteSiteParams extends SiteIdParams {
+  /** Password confirmation for security */
+  passwordConfirmation?: string;
+}
+
+/**
+ * Parameters for site alias URLs
+ */
+export interface SiteAliasParams extends SiteIdParams {
+  /** URLs to add or set as aliases */
+  urls: string | string[];
+}
+
+/**
+ * Parameters for IP range operations
+ */
+export interface IpRangeParams extends RequestParams {
+  /** IP range expression */
+  ipRange: string;
+}
+
+/**
+ * Parameters for excluded IPs
+ */
+export interface ExcludedIpsParams extends RequestParams {
+  /** Comma-separated list of IPs or IP ranges to exclude */
+  excludedIps: string;
+}
+
+/**
+ * Parameters for search parameters
+ */
+export interface SearchParamsParams extends RequestParams {
+  /** Comma-separated list of search keyword parameters */
+  searchKeywordParameters: string;
+  /** Comma-separated list of search category parameters */
+  searchCategoryParameters: string;
+}
+
+/**
+ * Parameters for excluded user agents
+ */
+export interface ExcludedUserAgentsParams extends RequestParams {
+  /** Comma-separated list of user agents to exclude */
+  excludedUserAgents: string;
+}
+
+/**
+ * Parameters for excluded referrers
+ */
+export interface ExcludedReferrersParams extends RequestParams {
+  /** Comma-separated list of referrers to exclude */
+  excludedReferrers: string;
+}
+
+/**
+ * Parameters for URL fragments
+ */
+export interface UrlFragmentsParams extends RequestParams {
+  /** Whether to keep URL fragments globally */
+  enabled: boolean;
+}
+
+/**
+ * Parameters for default currency
+ */
+export interface DefaultCurrencyParams extends RequestParams {
+  /** Currency code (e.g., USD, EUR) */
+  defaultCurrency: string;
+}
+
+/**
+ * Parameters for default timezone
+ */
+export interface DefaultTimezoneParams extends RequestParams {
+  /** Timezone identifier (e.g., UTC, Europe/Paris) */
+  defaultTimezone: string;
+}
+
+/**
+ * Parameters for global query parameter exclusion
+ */
+export interface QueryParamExclusionParams extends RequestParams {
+  /** Exclusion type */
+  exclusionType: string;
+  /** Query parameters to exclude */
+  queryParamsToExclude?: string;
+}
+
+/**
+ * Parameters for timezone name
+ */
+export interface TimezoneNameParams extends RequestParams {
+  /** Timezone ID */
+  timezone: string;
+  /** Country code */
+  countryCode?: string;
+  /** Whether multiple timezones exist in country */
+  multipleTimezonesInCountry?: boolean;
+}
+
+/**
+ * Parameters for pattern matching
+ */
+export interface PatternMatchParams extends RequestParams {
+  /** Pattern to match */
+  pattern: string;
+  /** Maximum number of sites to return */
+  limit?: number | string;
+  /** Array of site IDs to exclude */
+  sitesToExclude?: number[];
+}
 
 export class SitesManagerModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
-   * Get site data for given site IDs
-   *
-   * @param idSites Array of site IDs or comma-separated string
-   */
-  async getSitesInfo(idSites?: number[] | string): Promise<any> {
-    const params: RequestParams = {};
-
-    if (idSites) {
-      params.idSite = idSites;
-    }
-
-    return this.client.request(
-      'SitesManager.getSitesWithAtLeastViewAccess',
-      params
-    );
-  }
-
-  /**
    * Get JavaScript tracking code for a site
    *
-   * @param idSite Site ID
-   * @param piwikUrl Optional Matomo URL (uses client URL if not provided)
-   * @param mergeSubdomains Set to true to track visitors across all subdomains
-   * @param groupPageTitlesByDomain Set to true to group page titles by domain
-   * @param mergeAliasUrls Set to true to track visitors across all alias URLs
-   * @param visitorCustomVariables Custom variables for the visitor
-   * @param pageCustomVariables Custom variables for the page
-   * @param customCampaignNameQueryParam Custom campaign name parameter
-   * @param customCampaignKeywordParam Custom campaign keyword parameter
-   * @param doNotTrack Honor DoNotTrack setting in the browser
-   * @param disableCookies Set to true to disable all tracking cookies
-   * @param trackNoScript Set to true to include a <noscript> tag
-   * @param crossDomain Set to true to enable cross-domain linking
-   * @param forceMatomoEndpoint Set to true to use matomo.php instead of piwik.php
-   * @param excludedQueryParams Query parameters to exclude from page URLs
-   * @param excludedReferrers Referrers to exclude
-   * @param disableCampaignParameters Set to true to disable campaign parameters
+   * @param params Parameters for getting JavaScript tracking code
    */
-  async getJavascriptTag(
-    idSite: number,
-    piwikUrl: string = '',
-    mergeSubdomains: boolean = false,
-    groupPageTitlesByDomain: boolean = false,
-    mergeAliasUrls: boolean = false,
-    visitorCustomVariables: Record<string, any> = {},
-    pageCustomVariables: Record<string, any> = {},
-    customCampaignNameQueryParam: string = '',
-    customCampaignKeywordParam: string = '',
-    doNotTrack: boolean = false,
-    disableCookies: boolean = false,
-    trackNoScript: boolean = false,
-    crossDomain: boolean = false,
-    forceMatomoEndpoint: boolean = false,
-    excludedQueryParams: string = '',
-    excludedReferrers: string = '',
-    disableCampaignParameters: boolean = false
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (piwikUrl) params.piwikUrl = piwikUrl;
-    if (mergeSubdomains) params.mergeSubdomains = mergeSubdomains;
-    if (groupPageTitlesByDomain)
-      params.groupPageTitlesByDomain = groupPageTitlesByDomain;
-    if (mergeAliasUrls) params.mergeAliasUrls = mergeAliasUrls;
-    if (Object.keys(visitorCustomVariables).length > 0)
-      params.visitorCustomVariables = visitorCustomVariables;
-    if (Object.keys(pageCustomVariables).length > 0)
-      params.pageCustomVariables = pageCustomVariables;
-    if (customCampaignNameQueryParam)
-      params.customCampaignNameQueryParam = customCampaignNameQueryParam;
-    if (customCampaignKeywordParam)
-      params.customCampaignKeywordParam = customCampaignKeywordParam;
-    if (doNotTrack) params.doNotTrack = doNotTrack;
-    if (disableCookies) params.disableCookies = disableCookies;
-    if (trackNoScript) params.trackNoScript = trackNoScript;
-    if (crossDomain) params.crossDomain = crossDomain;
-    if (forceMatomoEndpoint) params.forceMatomoEndpoint = forceMatomoEndpoint;
-    if (excludedQueryParams) params.excludedQueryParams = excludedQueryParams;
-    if (excludedReferrers) params.excludedReferrers = excludedReferrers;
-    if (disableCampaignParameters)
-      params.disableCampaignParameters = disableCampaignParameters;
-
-    return this.client.request('SitesManager.getJavascriptTag', params);
+  async getJavascriptTag(params: JavascriptTagParams): Promise<any> {
+    return this.client.request("SitesManager.getJavascriptTag", params);
   }
 
   /**
    * Get image tracking code for a site
    *
-   * @param idSite Site ID
-   * @param piwikUrl Optional Matomo URL (uses client URL if not provided)
-   * @param actionName Action name for the request
-   * @param idGoal Goal ID to trigger
-   * @param revenue Revenue for the conversion
-   * @param forceMatomoEndpoint Set to true to use matomo.php instead of piwik.php
+   * @param params Parameters for getting image tracking code
    */
-  async getImageTrackingCode(
-    idSite: number,
-    piwikUrl: string = '',
-    actionName: string = '',
-    idGoal: string | number = '',
-    revenue: string | number = '',
-    forceMatomoEndpoint: boolean = false
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (piwikUrl) params.piwikUrl = piwikUrl;
-    if (actionName) params.actionName = actionName;
-    if (idGoal) params.idGoal = idGoal;
-    if (revenue) params.revenue = revenue;
-    if (forceMatomoEndpoint) params.forceMatomoEndpoint = forceMatomoEndpoint;
-
-    return this.client.request('SitesManager.getImageTrackingCode', params);
+  async getImageTrackingCode(params: ImageTrackingCodeParams): Promise<any> {
+    return this.client.request("SitesManager.getImageTrackingCode", params);
   }
 
   /**
    * Get all sites that belong to the specified group
    *
-   * @param group Group to search for sites (empty string for all groups)
+   * @param params Parameters for getting sites from a group
    */
-  async getSitesFromGroup(group: string = ''): Promise<any> {
-    const params: RequestParams = {};
-
-    if (group) params.group = group;
-
-    return this.client.request('SitesManager.getSitesFromGroup', params);
+  async getSitesFromGroup(params: GroupParams = {}): Promise<any> {
+    return this.client.request("SitesManager.getSitesFromGroup", params);
   }
 
   /**
    * Get all site groups available
    */
   async getSitesGroups(): Promise<any> {
-    return this.client.request('SitesManager.getSitesGroups', {});
+    return this.client.request("SitesManager.getSitesGroups", {});
   }
 
   /**
    * Get detailed information about a single site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getSiteFromId(idSite: number): Promise<any> {
-    return this.client.request('SitesManager.getSiteFromId', { idSite });
+  async getSiteFromId(params: SiteIdParams): Promise<any> {
+    return this.client.request("SitesManager.getSiteFromId", params);
   }
 
   /**
    * Get all URLs registered for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getSiteUrlsFromId(idSite: number): Promise<any> {
-    return this.client.request('SitesManager.getSiteUrlsFromId', { idSite });
+  async getSiteUrlsFromId(params: SiteIdParams): Promise<any> {
+    return this.client.request("SitesManager.getSiteUrlsFromId", params);
   }
 
   /**
    * Get all sites
    */
   async getAllSites(): Promise<any> {
-    return this.client.request('SitesManager.getAllSites', {});
+    return this.client.request("SitesManager.getAllSites", {});
   }
 
   /**
    * Get IDs of all available sites
    */
   async getAllSitesId(): Promise<any> {
-    return this.client.request('SitesManager.getAllSitesId', {});
+    return this.client.request("SitesManager.getAllSitesId", {});
   }
 
   /**
    * Get sites where the current user has admin access
    *
-   * @param fetchAliasUrls Whether to include alias URLs
-   * @param pattern Filter sites by pattern
-   * @param limit Maximum number of sites to return
-   * @param sitesToExclude Array of site IDs to exclude
+   * @param params Parameters for getting sites with admin access
    */
-  async getSitesWithAdminAccess(
-    fetchAliasUrls: boolean | string = '',
-    pattern: string = '',
-    limit: number | string = '',
-    sitesToExclude: number[] = []
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (fetchAliasUrls) params.fetchAliasUrls = fetchAliasUrls;
-    if (pattern) params.pattern = pattern;
-    if (limit) params.limit = limit;
-    if (sitesToExclude.length > 0) params.sitesToExclude = sitesToExclude;
-
-    return this.client.request('SitesManager.getSitesWithAdminAccess', params);
+  async getSitesWithAdminAccess(params: AdminAccessParams = {}): Promise<any> {
+    return this.client.request("SitesManager.getSitesWithAdminAccess", params);
   }
 
   /**
    * Get sites where the current user has view access
    */
   async getSitesWithViewAccess(): Promise<any> {
-    return this.client.request('SitesManager.getSitesWithViewAccess', {});
+    return this.client.request("SitesManager.getSitesWithViewAccess", {});
   }
 
   /**
    * Get sites where the current user has at least view access
    *
-   * @param limit Maximum number of sites to return
+   * @param params Parameters specifying the limit
    */
-  async getSitesWithAtLeastViewAccess(
-    limit: number | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (limit) params.limit = limit;
-
+  async getSitesWithAtLeastViewAccess(params: LimitParams = {}): Promise<any> {
     return this.client.request(
-      'SitesManager.getSitesWithAtLeastViewAccess',
+      "SitesManager.getSitesWithAtLeastViewAccess",
       params
     );
   }
@@ -232,21 +416,21 @@ export class SitesManagerModule {
    * Get IDs of sites where the current user has admin access
    */
   async getSitesIdWithAdminAccess(): Promise<any> {
-    return this.client.request('SitesManager.getSitesIdWithAdminAccess', {});
+    return this.client.request("SitesManager.getSitesIdWithAdminAccess", {});
   }
 
   /**
    * Get IDs of sites where the current user has view access
    */
   async getSitesIdWithViewAccess(): Promise<any> {
-    return this.client.request('SitesManager.getSitesIdWithViewAccess', {});
+    return this.client.request("SitesManager.getSitesIdWithViewAccess", {});
   }
 
   /**
    * Get IDs of sites where the current user has write access
    */
   async getSitesIdWithWriteAccess(): Promise<any> {
-    return this.client.request('SitesManager.getSitesIdWithWriteAccess', {});
+    return this.client.request("SitesManager.getSitesIdWithWriteAccess", {});
   }
 
   /**
@@ -254,7 +438,7 @@ export class SitesManagerModule {
    */
   async getSitesIdWithAtLeastViewAccess(): Promise<any> {
     return this.client.request(
-      'SitesManager.getSitesIdWithAtLeastViewAccess',
+      "SitesManager.getSitesIdWithAtLeastViewAccess",
       {}
     );
   }
@@ -262,175 +446,85 @@ export class SitesManagerModule {
   /**
    * Get site IDs that match a given URL
    *
-   * @param url URL to search for
+   * @param params Parameters containing the URL to search for
    */
-  async getSitesIdFromSiteUrl(url: string): Promise<any> {
-    return this.client.request('SitesManager.getSitesIdFromSiteUrl', { url });
+  async getSitesIdFromSiteUrl(params: UrlParams): Promise<any> {
+    return this.client.request("SitesManager.getSitesIdFromSiteUrl", params);
   }
 
   /**
    * Add a new site
    *
-   * @param siteName Name of the site
-   * @param urls URLs of the site
-   * @param ecommerce Is an ecommerce site
-   * @param siteSearch Should site search be tracked
-   * @param searchKeywordParameters Parameters used for search keywords
-   * @param searchCategoryParameters Parameters used for search categories
-   * @param excludedIps IPs to exclude from tracking
-   * @param excludedQueryParameters Query parameters to exclude from page URLs
-   * @param timezone Site timezone
-   * @param currency Site currency
-   * @param group Site group
-   * @param startDate When to start tracking data
-   * @param excludedUserAgents User agents to exclude from tracking
-   * @param keepURLFragments Whether to keep URL fragments (anchors)
-   * @param type Site type
-   * @param settingValues Additional setting values
-   * @param excludeUnknownUrls Whether to exclude unknown URLs
-   * @param excludedReferrers Referrers to exclude
+   * @param params Parameters for adding a new site
    */
-  async addSite(
-    siteName: string,
-    urls: string | string[] = '',
-    ecommerce: boolean | string = '',
-    siteSearch: boolean | string = '',
-    searchKeywordParameters: string = '',
-    searchCategoryParameters: string = '',
-    excludedIps: string = '',
-    excludedQueryParameters: string = '',
-    timezone: string = '',
-    currency: string = '',
-    group: string = '',
-    startDate: string = '',
-    excludedUserAgents: string = '',
-    keepURLFragments: boolean | string = '',
-    type: string = '',
-    settingValues: Record<string, any> = {},
-    excludeUnknownUrls: boolean | string = '',
-    excludedReferrers: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      siteName,
-    };
-
-    if (urls) params.urls = urls;
-    if (ecommerce) params.ecommerce = ecommerce;
-    if (siteSearch) params.siteSearch = siteSearch;
-    if (searchKeywordParameters)
-      params.searchKeywordParameters = searchKeywordParameters;
-    if (searchCategoryParameters)
-      params.searchCategoryParameters = searchCategoryParameters;
-    if (excludedIps) params.excludedIps = excludedIps;
-    if (excludedQueryParameters)
-      params.excludedQueryParameters = excludedQueryParameters;
-    if (timezone) params.timezone = timezone;
-    if (currency) params.currency = currency;
-    if (group) params.group = group;
-    if (startDate) params.startDate = startDate;
-    if (excludedUserAgents) params.excludedUserAgents = excludedUserAgents;
-    if (keepURLFragments) params.keepURLFragments = keepURLFragments;
-    if (type) params.type = type;
-    if (Object.keys(settingValues).length > 0)
-      params.settingValues = settingValues;
-    if (excludeUnknownUrls) params.excludeUnknownUrls = excludeUnknownUrls;
-    if (excludedReferrers) params.excludedReferrers = excludedReferrers;
-
-    return this.client.request('SitesManager.addSite', params);
+  async addSite(params: AddSiteParams): Promise<any> {
+    return this.client.request("SitesManager.addSite", params);
   }
 
   /**
    * Get all settings for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getSiteSettings(idSite: number): Promise<any> {
-    return this.client.request('SitesManager.getSiteSettings', { idSite });
+  async getSiteSettings(params: SiteIdParams): Promise<any> {
+    return this.client.request("SitesManager.getSiteSettings", params);
   }
 
   /**
    * Delete a site
    *
-   * @param idSite Site ID
-   * @param passwordConfirmation Password confirmation for security
+   * @param params Parameters for deleting a site
    */
-  async deleteSite(
-    idSite: number,
-    passwordConfirmation: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (passwordConfirmation)
-      params.passwordConfirmation = passwordConfirmation;
-
-    return this.client.request('SitesManager.deleteSite', params);
+  async deleteSite(params: DeleteSiteParams): Promise<any> {
+    return this.client.request("SitesManager.deleteSite", params);
   }
 
   /**
    * Add alias URLs to a site
    *
-   * @param idSite Site ID
-   * @param urls URLs to add as aliases
+   * @param params Parameters for adding site alias URLs
    */
-  async addSiteAliasUrls(
-    idSite: number,
-    urls: string | string[]
-  ): Promise<any> {
-    return this.client.request('SitesManager.addSiteAliasUrls', {
-      idSite,
-      urls,
-    });
+  async addSiteAliasUrls(params: SiteAliasParams): Promise<any> {
+    return this.client.request("SitesManager.addSiteAliasUrls", params);
   }
 
   /**
    * Set alias URLs for a site (replaces existing ones)
    *
-   * @param idSite Site ID
-   * @param urls URLs to set as aliases
+   * @param params Parameters for setting site alias URLs
    */
-  async setSiteAliasUrls(idSite: number, urls: string[] = []): Promise<any> {
-    return this.client.request('SitesManager.setSiteAliasUrls', {
-      idSite,
-      urls,
-    });
+  async setSiteAliasUrls(params: SiteAliasParams): Promise<any> {
+    return this.client.request("SitesManager.setSiteAliasUrls", params);
   }
 
   /**
    * Get IPs for a range expression
    *
-   * @param ipRange IP range expression
+   * @param params Parameters containing the IP range
    */
-  async getIpsForRange(ipRange: string): Promise<any> {
-    return this.client.request('SitesManager.getIpsForRange', { ipRange });
+  async getIpsForRange(params: IpRangeParams): Promise<any> {
+    return this.client.request("SitesManager.getIpsForRange", params);
   }
 
   /**
    * Set globally excluded IPs
    *
-   * @param excludedIps Comma-separated list of IPs or IP ranges to exclude
+   * @param params Parameters containing the IPs to exclude
    */
-  async setGlobalExcludedIps(excludedIps: string): Promise<any> {
-    return this.client.request('SitesManager.setGlobalExcludedIps', {
-      excludedIps,
-    });
+  async setGlobalExcludedIps(params: ExcludedIpsParams): Promise<any> {
+    return this.client.request("SitesManager.setGlobalExcludedIps", params);
   }
 
   /**
    * Set global search parameters
    *
-   * @param searchKeywordParameters Comma-separated list of search keyword parameters
-   * @param searchCategoryParameters Comma-separated list of search category parameters
+   * @param params Parameters containing the search parameters
    */
-  async setGlobalSearchParameters(
-    searchKeywordParameters: string,
-    searchCategoryParameters: string
-  ): Promise<any> {
-    return this.client.request('SitesManager.setGlobalSearchParameters', {
-      searchKeywordParameters,
-      searchCategoryParameters,
-    });
+  async setGlobalSearchParameters(params: SearchParamsParams): Promise<any> {
+    return this.client.request(
+      "SitesManager.setGlobalSearchParameters",
+      params
+    );
   }
 
   /**
@@ -438,7 +532,7 @@ export class SitesManagerModule {
    */
   async getSearchKeywordParametersGlobal(): Promise<any> {
     return this.client.request(
-      'SitesManager.getSearchKeywordParametersGlobal',
+      "SitesManager.getSearchKeywordParametersGlobal",
       {}
     );
   }
@@ -448,7 +542,7 @@ export class SitesManagerModule {
    */
   async getSearchCategoryParametersGlobal(): Promise<any> {
     return this.client.request(
-      'SitesManager.getSearchCategoryParametersGlobal',
+      "SitesManager.getSearchCategoryParametersGlobal",
       {}
     );
   }
@@ -456,12 +550,13 @@ export class SitesManagerModule {
   /**
    * Get excluded query parameters for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getExcludedQueryParameters(idSite: number): Promise<any> {
-    return this.client.request('SitesManager.getExcludedQueryParameters', {
-      idSite,
-    });
+  async getExcludedQueryParameters(params: SiteIdParams): Promise<any> {
+    return this.client.request(
+      "SitesManager.getExcludedQueryParameters",
+      params
+    );
   }
 
   /**
@@ -469,7 +564,7 @@ export class SitesManagerModule {
    */
   async getExcludedQueryParametersGlobal(): Promise<any> {
     return this.client.request(
-      'SitesManager.getExcludedQueryParametersGlobal',
+      "SitesManager.getExcludedQueryParametersGlobal",
       {}
     );
   }
@@ -478,128 +573,121 @@ export class SitesManagerModule {
    * Get global excluded user agents
    */
   async getExcludedUserAgentsGlobal(): Promise<any> {
-    return this.client.request('SitesManager.getExcludedUserAgentsGlobal', {});
+    return this.client.request("SitesManager.getExcludedUserAgentsGlobal", {});
   }
 
   /**
    * Set global excluded user agents
    *
-   * @param excludedUserAgents Comma-separated list of user agents to exclude
+   * @param params Parameters containing the user agents to exclude
    */
-  async setGlobalExcludedUserAgents(excludedUserAgents: string): Promise<any> {
-    return this.client.request('SitesManager.setGlobalExcludedUserAgents', {
-      excludedUserAgents,
-    });
+  async setGlobalExcludedUserAgents(
+    params: ExcludedUserAgentsParams
+  ): Promise<any> {
+    return this.client.request(
+      "SitesManager.setGlobalExcludedUserAgents",
+      params
+    );
   }
 
   /**
    * Get excluded referrers for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getExcludedReferrers(idSite: number): Promise<any> {
-    return this.client.request('SitesManager.getExcludedReferrers', { idSite });
+  async getExcludedReferrers(params: SiteIdParams): Promise<any> {
+    return this.client.request("SitesManager.getExcludedReferrers", params);
   }
 
   /**
    * Get globally excluded referrers
    */
   async getExcludedReferrersGlobal(): Promise<any> {
-    return this.client.request('SitesManager.getExcludedReferrersGlobal', {});
+    return this.client.request("SitesManager.getExcludedReferrersGlobal", {});
   }
 
   /**
    * Set globally excluded referrers
    *
-   * @param excludedReferrers Comma-separated list of referrers to exclude
+   * @param params Parameters containing the referrers to exclude
    */
-  async setGlobalExcludedReferrers(excludedReferrers: string): Promise<any> {
-    return this.client.request('SitesManager.setGlobalExcludedReferrers', {
-      excludedReferrers,
-    });
+  async setGlobalExcludedReferrers(
+    params: ExcludedReferrersParams
+  ): Promise<any> {
+    return this.client.request(
+      "SitesManager.setGlobalExcludedReferrers",
+      params
+    );
   }
 
   /**
    * Get global setting for keeping URL fragments
    */
   async getKeepURLFragmentsGlobal(): Promise<any> {
-    return this.client.request('SitesManager.getKeepURLFragmentsGlobal', {});
+    return this.client.request("SitesManager.getKeepURLFragmentsGlobal", {});
   }
 
   /**
    * Set global setting for keeping URL fragments
    *
-   * @param enabled Whether to keep URL fragments globally
+   * @param params Parameters for setting URL fragments
    */
-  async setKeepURLFragmentsGlobal(enabled: boolean): Promise<any> {
-    return this.client.request('SitesManager.setKeepURLFragmentsGlobal', {
-      enabled,
-    });
+  async setKeepURLFragmentsGlobal(params: UrlFragmentsParams): Promise<any> {
+    return this.client.request(
+      "SitesManager.setKeepURLFragmentsGlobal",
+      params
+    );
   }
 
   /**
    * Get globally excluded IPs
    */
   async getExcludedIpsGlobal(): Promise<any> {
-    return this.client.request('SitesManager.getExcludedIpsGlobal', {});
+    return this.client.request("SitesManager.getExcludedIpsGlobal", {});
   }
 
   /**
    * Get default currency
    */
   async getDefaultCurrency(): Promise<any> {
-    return this.client.request('SitesManager.getDefaultCurrency', {});
+    return this.client.request("SitesManager.getDefaultCurrency", {});
   }
 
   /**
    * Set default currency
    *
-   * @param defaultCurrency Currency code (e.g., USD, EUR)
+   * @param params Parameters containing the default currency
    */
-  async setDefaultCurrency(defaultCurrency: string): Promise<any> {
-    return this.client.request('SitesManager.setDefaultCurrency', {
-      defaultCurrency,
-    });
+  async setDefaultCurrency(params: DefaultCurrencyParams): Promise<any> {
+    return this.client.request("SitesManager.setDefaultCurrency", params);
   }
 
   /**
    * Get default timezone
    */
   async getDefaultTimezone(): Promise<any> {
-    return this.client.request('SitesManager.getDefaultTimezone', {});
+    return this.client.request("SitesManager.getDefaultTimezone", {});
   }
 
   /**
    * Set default timezone
    *
-   * @param defaultTimezone Timezone identifier (e.g., UTC, Europe/Paris)
+   * @param params Parameters containing the default timezone
    */
-  async setDefaultTimezone(defaultTimezone: string): Promise<any> {
-    return this.client.request('SitesManager.setDefaultTimezone', {
-      defaultTimezone,
-    });
+  async setDefaultTimezone(params: DefaultTimezoneParams): Promise<any> {
+    return this.client.request("SitesManager.setDefaultTimezone", params);
   }
 
   /**
    * Set global query parameter exclusion
    *
-   * @param exclusionType Exclusion type
-   * @param queryParamsToExclude Query parameters to exclude
+   * @param params Parameters for global query parameter exclusion
    */
   async setGlobalQueryParamExclusion(
-    exclusionType: string,
-    queryParamsToExclude?: string
+    params: QueryParamExclusionParams
   ): Promise<any> {
-    const params: RequestParams = {
-      exclusionType,
-    };
-
-    if (queryParamsToExclude !== undefined) {
-      params.queryParamsToExclude = queryParamsToExclude;
-    }
-
     return this.client.request(
-      'SitesManager.setGlobalQueryParamExclusion',
+      "SitesManager.setGlobalQueryParamExclusion",
       params
     );
   }
@@ -609,7 +697,7 @@ export class SitesManagerModule {
    */
   async getExclusionTypeForQueryParams(): Promise<any> {
     return this.client.request(
-      'SitesManager.getExclusionTypeForQueryParams',
+      "SitesManager.getExclusionTypeForQueryParams",
       {}
     );
   }
@@ -617,168 +705,72 @@ export class SitesManagerModule {
   /**
    * Update a site
    *
-   * @param idSite Site ID
-   * @param siteName Name of the site
-   * @param urls URLs of the site
-   * @param ecommerce Is an ecommerce site
-   * @param siteSearch Should site search be tracked
-   * @param searchKeywordParameters Parameters used for search keywords
-   * @param searchCategoryParameters Parameters used for search categories
-   * @param excludedIps IPs to exclude from tracking
-   * @param excludedQueryParameters Query parameters to exclude from page URLs
-   * @param timezone Site timezone
-   * @param currency Site currency
-   * @param group Site group
-   * @param startDate When to start tracking data
-   * @param excludedUserAgents User agents to exclude from tracking
-   * @param keepURLFragments Whether to keep URL fragments (anchors)
-   * @param type Site type
-   * @param settingValues Additional setting values
-   * @param excludeUnknownUrls Whether to exclude unknown URLs
-   * @param excludedReferrers Referrers to exclude
+   * @param params Parameters for updating a site
    */
-  async updateSite(
-    idSite: number,
-    siteName: string = '',
-    urls: string | string[] = '',
-    ecommerce: boolean | string = '',
-    siteSearch: boolean | string = '',
-    searchKeywordParameters: string = '',
-    searchCategoryParameters: string = '',
-    excludedIps: string = '',
-    excludedQueryParameters: string = '',
-    timezone: string = '',
-    currency: string = '',
-    group: string = '',
-    startDate: string = '',
-    excludedUserAgents: string = '',
-    keepURLFragments: boolean | string = '',
-    type: string = '',
-    settingValues: Record<string, any> = {},
-    excludeUnknownUrls: boolean | string = '',
-    excludedReferrers: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (siteName) params.siteName = siteName;
-    if (urls) params.urls = urls;
-    if (ecommerce) params.ecommerce = ecommerce;
-    if (siteSearch) params.siteSearch = siteSearch;
-    if (searchKeywordParameters)
-      params.searchKeywordParameters = searchKeywordParameters;
-    if (searchCategoryParameters)
-      params.searchCategoryParameters = searchCategoryParameters;
-    if (excludedIps) params.excludedIps = excludedIps;
-    if (excludedQueryParameters)
-      params.excludedQueryParameters = excludedQueryParameters;
-    if (timezone) params.timezone = timezone;
-    if (currency) params.currency = currency;
-    if (group) params.group = group;
-    if (startDate) params.startDate = startDate;
-    if (excludedUserAgents) params.excludedUserAgents = excludedUserAgents;
-    if (keepURLFragments) params.keepURLFragments = keepURLFragments;
-    if (type) params.type = type;
-    if (Object.keys(settingValues).length > 0)
-      params.settingValues = settingValues;
-    if (excludeUnknownUrls) params.excludeUnknownUrls = excludeUnknownUrls;
-    if (excludedReferrers) params.excludedReferrers = excludedReferrers;
-
-    return this.client.request('SitesManager.updateSite', params);
+  async updateSite(params: UpdateSiteParams): Promise<any> {
+    return this.client.request("SitesManager.updateSite", params);
   }
 
   /**
    * Get list of available currencies
    */
   async getCurrencyList(): Promise<any> {
-    return this.client.request('SitesManager.getCurrencyList', {});
+    return this.client.request("SitesManager.getCurrencyList", {});
   }
 
   /**
    * Get currency symbols
    */
   async getCurrencySymbols(): Promise<any> {
-    return this.client.request('SitesManager.getCurrencySymbols', {});
+    return this.client.request("SitesManager.getCurrencySymbols", {});
   }
 
   /**
    * Check if timezone support is enabled
    */
   async isTimezoneSupportEnabled(): Promise<any> {
-    return this.client.request('SitesManager.isTimezoneSupportEnabled', {});
+    return this.client.request("SitesManager.isTimezoneSupportEnabled", {});
   }
 
   /**
    * Get list of available timezones
    */
   async getTimezonesList(): Promise<any> {
-    return this.client.request('SitesManager.getTimezonesList', {});
+    return this.client.request("SitesManager.getTimezonesList", {});
   }
 
   /**
    * Get timezone name from timezone ID
    *
-   * @param timezone Timezone ID
-   * @param countryCode Country code
-   * @param multipleTimezonesInCountry Whether multiple timezones exist in country
+   * @param params Parameters for getting timezone name
    */
-  async getTimezoneName(
-    timezone: string,
-    countryCode: string = '',
-    multipleTimezonesInCountry: boolean = false
-  ): Promise<any> {
-    const params: RequestParams = {
-      timezone,
-    };
-
-    if (countryCode) params.countryCode = countryCode;
-    if (multipleTimezonesInCountry)
-      params.multipleTimezonesInCountry = multipleTimezonesInCountry;
-
-    return this.client.request('SitesManager.getTimezoneName', params);
+  async getTimezoneName(params: TimezoneNameParams): Promise<any> {
+    return this.client.request("SitesManager.getTimezoneName", params);
   }
 
   /**
    * Get unique site timezones
    */
   async getUniqueSiteTimezones(): Promise<any> {
-    return this.client.request('SitesManager.getUniqueSiteTimezones', {});
+    return this.client.request("SitesManager.getUniqueSiteTimezones", {});
   }
 
   /**
    * Rename a site group
    *
-   * @param oldGroupName Original group name
-   * @param newGroupName New group name
+   * @param params Parameters for renaming a group
    */
-  async renameGroup(oldGroupName: string, newGroupName: string): Promise<any> {
-    return this.client.request('SitesManager.renameGroup', {
-      oldGroupName,
-      newGroupName,
-    });
+  async renameGroup(params: RenameGroupParams): Promise<any> {
+    return this.client.request("SitesManager.renameGroup", params);
   }
 
   /**
    * Get sites matching a pattern
    *
-   * @param pattern Pattern to match
-   * @param limit Maximum number of sites to return
-   * @param sitesToExclude Array of site IDs to exclude
+   * @param params Parameters for pattern matching
    */
-  async getPatternMatchSites(
-    pattern: string,
-    limit: number | string = '',
-    sitesToExclude: number[] = []
-  ): Promise<any> {
-    const params: RequestParams = {
-      pattern,
-    };
-
-    if (limit) params.limit = limit;
-    if (sitesToExclude.length > 0) params.sitesToExclude = sitesToExclude;
-
-    return this.client.request('SitesManager.getPatternMatchSites', params);
+  async getPatternMatchSites(params: PatternMatchParams): Promise<any> {
+    return this.client.request("SitesManager.getPatternMatchSites", params);
   }
 
   /**
@@ -786,7 +778,7 @@ export class SitesManagerModule {
    */
   async getNumWebsitesToDisplayPerPage(): Promise<any> {
     return this.client.request(
-      'SitesManager.getNumWebsitesToDisplayPerPage',
+      "SitesManager.getNumWebsitesToDisplayPerPage",
       {}
     );
   }

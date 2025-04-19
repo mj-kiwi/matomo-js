@@ -63,13 +63,14 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mobileMessagingModule.setSMSAPICredential("nexmo");
+      const result = await mobileMessagingModule.setSMSAPICredential({
+        provider: "nexmo",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.setSMSAPICredential",
         {
           provider: "nexmo",
-          credentials: {},
         }
       );
       expect(result).toEqual(mockResponse);
@@ -80,10 +81,10 @@ describe("MobileMessagingModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const credentials = { apiKey: "key123", apiSecret: "secret456" };
-      const result = await mobileMessagingModule.setSMSAPICredential(
-        "nexmo",
-        credentials
-      );
+      const result = await mobileMessagingModule.setSMSAPICredential({
+        provider: "nexmo",
+        credentials,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.setSMSAPICredential",
@@ -101,7 +102,9 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mobileMessagingModule.addPhoneNumber("+1234567890");
+      const result = await mobileMessagingModule.addPhoneNumber({
+        phoneNumber: "+1234567890",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.addPhoneNumber",
@@ -118,8 +121,9 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await mobileMessagingModule.resendVerificationCode("+1234567890");
+      const result = await mobileMessagingModule.resendVerificationCode({
+        phoneNumber: "+1234567890",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.resendVerificationCode",
@@ -167,8 +171,9 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await mobileMessagingModule.removePhoneNumber("+1234567890");
+      const result = await mobileMessagingModule.removePhoneNumber({
+        phoneNumber: "+1234567890",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.removePhoneNumber",
@@ -185,10 +190,10 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mobileMessagingModule.validatePhoneNumber(
-        "+1234567890",
-        "123456"
-      );
+      const result = await mobileMessagingModule.validatePhoneNumber({
+        phoneNumber: "+1234567890",
+        verificationCode: "123456",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.validatePhoneNumber",
@@ -220,7 +225,9 @@ describe("MobileMessagingModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mobileMessagingModule.setDelegatedManagement(true);
+      const result = await mobileMessagingModule.setDelegatedManagement({
+        delegatedManagement: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MobileMessaging.setDelegatedManagement",

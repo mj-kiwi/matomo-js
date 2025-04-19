@@ -42,7 +42,11 @@ describe("PagePerformanceModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await pagePerformanceModule.get(1, "day", "2023-01-01");
+      const result = await pagePerformanceModule.get({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("PagePerformance.get", {
         idSite: 1,
@@ -64,12 +68,12 @@ describe("PagePerformanceModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await pagePerformanceModule.get(
-        1,
-        "day",
-        "2023-01-01",
-        "browserName==Chrome"
-      );
+      const result = await pagePerformanceModule.get({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("PagePerformance.get", {
         idSite: 1,

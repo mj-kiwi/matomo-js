@@ -38,8 +38,9 @@ describe("ConnectAccountsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await connectAccountsModule.getGtmContainersList("123456789");
+      const result = await connectAccountsModule.getGtmContainersList({
+        accountId: "123456789",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ConnectAccounts.getGtmContainersList",
@@ -59,10 +60,10 @@ describe("ConnectAccountsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await connectAccountsModule.getGtmWorkspaceList(
-        "123456789",
-        "GTM-ABC123"
-      );
+      const result = await connectAccountsModule.getGtmWorkspaceList({
+        accountId: "123456789",
+        containerId: "GTM-ABC123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ConnectAccounts.getGtmWorkspaceList",
@@ -89,12 +90,12 @@ describe("ConnectAccountsModule", () => {
         variableNames: ["matomo-url", "matomo-site-id"],
       };
 
-      const result = await connectAccountsModule.createMatomoTag(
-        "123456789",
-        "GTM-ABC123",
-        "ws1",
-        parentInfo
-      );
+      const result = await connectAccountsModule.createMatomoTag({
+        accountId: "123456789",
+        containerId: "GTM-ABC123",
+        workspaceId: "ws1",
+        parentInfo: parentInfo,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ConnectAccounts.createMatomoTag",
@@ -120,12 +121,12 @@ describe("ConnectAccountsModule", () => {
         { name: "matomo-site-id", value: "1" },
       ];
 
-      const result = await connectAccountsModule.createMatomoTag(
-        "123456789",
-        "GTM-ABC123",
-        "ws1",
-        parentInfo
-      );
+      const result = await connectAccountsModule.createMatomoTag({
+        accountId: "123456789",
+        containerId: "GTM-ABC123",
+        workspaceId: "ws1",
+        parentInfo: parentInfo,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ConnectAccounts.createMatomoTag",

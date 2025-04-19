@@ -3,7 +3,41 @@
  * API for plugin MarketingCampaignsReporting providing access to campaign data
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Basic marketing campaign report parameters
+ */
+export interface MarketingCampaignParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Extended marketing campaign report parameters with expanded and flat options
+ */
+export interface ExtendedMarketingCampaignParams
+  extends MarketingCampaignParams {
+  /** Whether to expand the campaign names */
+  expanded?: string | boolean;
+  /** Whether to return a flattened report */
+  flat?: string | boolean;
+}
+
+/**
+ * Subtable marketing campaign report parameters
+ */
+export interface SubtableMarketingCampaignParams
+  extends MarketingCampaignParams {
+  /** Subtable ID */
+  idSubtable: string | number;
+}
 
 export class MarketingCampaignsReportingModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,86 +45,31 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign IDs
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MarketingCampaignsReporting.getId', params);
+  async getId(params: MarketingCampaignParams): Promise<any> {
+    return this.client.request("MarketingCampaignsReporting.getId", params);
   }
 
   /**
    * Get campaign names
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the campaign names
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for campaign report
    */
-  async getName(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('MarketingCampaignsReporting.getName', params);
+  async getName(params: ExtendedMarketingCampaignParams): Promise<any> {
+    return this.client.request("MarketingCampaignsReporting.getName", params);
   }
 
   /**
    * Get keyword content from name ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for subtable campaign report
    */
   async getKeywordContentFromNameId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
+    params: SubtableMarketingCampaignParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'MarketingCampaignsReporting.getKeywordContentFromNameId',
+      "MarketingCampaignsReporting.getKeywordContentFromNameId",
       params
     );
   }
@@ -98,27 +77,11 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getKeyword(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getKeyword(params: MarketingCampaignParams): Promise<any> {
     return this.client.request(
-      'MarketingCampaignsReporting.getKeyword',
+      "MarketingCampaignsReporting.getKeyword",
       params
     );
   }
@@ -126,77 +89,29 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign sources
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getSource(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MarketingCampaignsReporting.getSource', params);
+  async getSource(params: MarketingCampaignParams): Promise<any> {
+    return this.client.request("MarketingCampaignsReporting.getSource", params);
   }
 
   /**
    * Get campaign mediums
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getMedium(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MarketingCampaignsReporting.getMedium', params);
+  async getMedium(params: MarketingCampaignParams): Promise<any> {
+    return this.client.request("MarketingCampaignsReporting.getMedium", params);
   }
 
   /**
    * Get campaign content
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getContent(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getContent(params: MarketingCampaignParams): Promise<any> {
     return this.client.request(
-      'MarketingCampaignsReporting.getContent',
+      "MarketingCampaignsReporting.getContent",
       params
     );
   }
@@ -204,52 +119,20 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign group
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getGroup(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MarketingCampaignsReporting.getGroup', params);
+  async getGroup(params: MarketingCampaignParams): Promise<any> {
+    return this.client.request("MarketingCampaignsReporting.getGroup", params);
   }
 
   /**
    * Get campaign placement
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for campaign report
    */
-  async getPlacement(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getPlacement(params: MarketingCampaignParams): Promise<any> {
     return this.client.request(
-      'MarketingCampaignsReporting.getPlacement',
+      "MarketingCampaignsReporting.getPlacement",
       params
     );
   }
@@ -257,33 +140,11 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign source/medium combinations
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the report
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for campaign report
    */
-  async getSourceMedium(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (flat !== '') params.flat = flat;
-
+  async getSourceMedium(params: ExtendedMarketingCampaignParams): Promise<any> {
     return this.client.request(
-      'MarketingCampaignsReporting.getSourceMedium',
+      "MarketingCampaignsReporting.getSourceMedium",
       params
     );
   }
@@ -291,30 +152,13 @@ export class MarketingCampaignsReportingModule {
   /**
    * Get campaign names from source/medium ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for subtable campaign report
    */
   async getNameFromSourceMediumId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
+    params: SubtableMarketingCampaignParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'MarketingCampaignsReporting.getNameFromSourceMediumId',
+      "MarketingCampaignsReporting.getNameFromSourceMediumId",
       params
     );
   }

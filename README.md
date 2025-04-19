@@ -27,26 +27,65 @@ A TypeScript client for the Matomo Reporting API with strongly typed interfaces.
 
 The reporting client includes modules for all major Matomo API endpoints, including:
 
-- **Core** - Core reporting functionality
-- **API** - General API operations
-- **SitesManager** - Methods for managing sites
-- **AbTesting** - Methods for A/B testing features
-- **Actions** - Page views, content tracking
-- **Events** - Event tracking and analysis
-- **Goals** - Conversion goals and funnels
-- **VisitsSummary** - Visit metrics and statistics
-- **UserCountry** - Geographic data
-- **Referrers** - Traffic sources
-- **CustomDimensions** - Custom dimensions tracking
-- **CustomVariables** - Custom variables
-- **MediaAnalytics** - Media engagement stats
-- **HeatmapSessionRecording** - User behavior recordings
-- **TagManager** - Tag manager functionality
-- **FormAnalytics** - Form interaction data
-- **RollUpReporting** - Roll-up reporting features
-- **SearchEngineKeywordsPerformance** - SEO keywords
-- **PagePerformance** - Page load metrics
-- **VisitorInterest** - Engagement metrics
+- **Core** - Core reporting functionality (`core`)
+- **API** - General API operations (`api`)
+- **SitesManager** - Methods for managing sites (`sitesManager`)
+- **AbTesting** - Methods for A/B testing features (`abTesting`)
+- **Actions** - Page views, content tracking (`actions`)
+- **ActivityLog** - User activity logs (`activityLog`)
+- **AdvertisingConversionExport** - Advertising conversion exports (`advertisingConversionExport`)
+- **Annotations** - Managing annotations (`annotations`)
+- **ConnectAccounts** - Integration with other platforms (`connectAccounts`)
+- **Contents** - Content interaction data (`contents`)
+- **CoreAdminHome** - Administrative tasks (`coreAdminHome`)
+- **CrashAnalytics** - JavaScript error tracking (`crashAnalytics`)
+- **CustomAlerts** - Custom alert definitions (`customAlerts`)
+- **CustomDimensions** - Custom dimensions tracking (`customDimensions`)
+- **CustomJsTracker** - Custom JS tracker functionality (`customJsTracker`)
+- **CustomReports** - Custom report management (`customReports`)
+- **CustomVariables** - Custom variables data (`customVariables`)
+- **Dashboard** - Dashboard management (`dashboard`)
+- **DevicePlugins** - Browser plugin statistics (`devicePlugins`)
+- **DevicesDetection** - Visitor device reports (`devicesDetection`)
+- **Events** - Event tracking and analysis (`events`)
+- **Feedback** - User feedback submission (`feedback`)
+- **FormAnalytics** - Form interaction data (`formAnalytics`)
+- **Funnels** - Conversion funnel analysis (`funnels`)
+- **Goals** - Conversion goals and ecommerce (`goals`)
+- **HeatmapSessionRecording** - Heatmaps and session recordings (`heatmapSessionRecording`)
+- **ImageGraph** - Static PNG graph generation (`imageGraph`)
+- **Insights** - Analytical insights generation (`insights`)
+- **LanguagesManager** - Translations and language settings (`languagesManager`)
+- **Live** - Real-time visitor data (`live`)
+- **Login** - Authentication methods (`login`)
+- **MarketingCampaignsReporting** - Marketing campaign data (`marketingCampaignsReporting`)
+- **MediaAnalytics** - Media engagement stats (`mediaAnalytics`)
+- **MobileMessaging** - Mobile messaging integration (`mobileMessaging`)
+- **MultiChannelConversionAttribution** - Multi-channel attribution (`multiChannelConversionAttribution`)
+- **MultiSites** - Multi-site summary data (`multiSites`)
+- **Overlay** - Page overlay reports (`overlay`)
+- **PagePerformance** - Page load metrics (`pagePerformance`)
+- **PrivacyManager** - Data privacy management (`privacyManager`)
+- **Referrers** - Traffic sources (`referrers`)
+- **Resolution** - Screen resolution reports (`resolution`)
+- **RollUpReporting** - Roll-up reporting features (`rollUpReporting`)
+- **ScheduledReports** - Scheduled report management (`scheduledReports`)
+- **SearchEngineKeywordsPerformance** - SEO keywords (`searchEngineKeywordsPerformance`)
+- **SegmentEditor** - Segment management (`segmentEditor`)
+- **Seo** - SEO ranking reports (`seo`)
+- **TagManager** - Tag manager functionality (`tagManager`)
+- **Tour** - Guided tour features (`tour`)
+- **Transitions** - Visitor navigation paths (`transitions`)
+- **TwoFactorAuth** - Two-factor authentication management (`twoFactorAuth`)
+- **UserCountry** - Geographic data (`userCountry`)
+- **UserId** - User ID tracking (`userId`)
+- **UserLanguage** - Visitor language reports (`userLanguage`)
+- **UsersFlow** - User flow visualization (`usersFlow`)
+- **UsersManager** - User management (`usersManager`)
+- **VisitFrequency** - Visitor frequency metrics (`visitFrequency`)
+- **VisitTime** - Visitor time reports (`visitTime`)
+- **VisitorInterest** - Engagement metrics (`visitorInterest`)
+- **VisitsSummary** - Visit metrics and statistics (`visitsSummary`)
 
 And many more modules for comprehensive Matomo API coverage.
 

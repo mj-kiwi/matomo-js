@@ -3,7 +3,21 @@
  * Provides access to page performance metrics
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for getting page performance metrics
+ */
+export interface PagePerformanceParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
 
 export class PagePerformanceModule {
   /**
@@ -14,22 +28,9 @@ export class PagePerformanceModule {
   /**
    * Get page performance metrics
    *
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   * @param params Parameters for getting page performance metrics
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('PagePerformance.get', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async get(params: PagePerformanceParams): Promise<any> {
+    return this.core.request<any>("PagePerformance.get", params);
   }
 }

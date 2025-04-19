@@ -55,7 +55,10 @@ describe("CoreAdminHomeModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.deleteTrackingFailure(1, 123);
+      const result = await coreAdminHomeModule.deleteTrackingFailure({
+        idSite: 1,
+        idFailure: 123,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.deleteTrackingFailure",

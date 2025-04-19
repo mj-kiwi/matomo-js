@@ -32,7 +32,11 @@ describe("FunnelsModule", () => {
 
   describe("getMetrics", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getMetrics(1, "day", "yesterday");
+      await funnelsModule.getMetrics({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getMetrics", {
         idSite: 1,
         period: "day",
@@ -41,14 +45,14 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getMetrics(
-        1,
-        "day",
-        "yesterday",
-        123,
-        456,
-        "deviceType==mobile"
-      );
+      await funnelsModule.getMetrics({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+        idGoal: 456,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getMetrics", {
         idSite: 1,
         period: "day",
@@ -62,7 +66,11 @@ describe("FunnelsModule", () => {
 
   describe("getFunnelFlow", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnelFlow(1, "day", "yesterday");
+      await funnelsModule.getFunnelFlow({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getFunnelFlow", {
         idSite: 1,
         period: "day",
@@ -71,14 +79,14 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getFunnelFlow(
-        1,
-        "day",
-        "yesterday",
-        123,
-        456,
-        "deviceType==mobile"
-      );
+      await funnelsModule.getFunnelFlow({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+        idGoal: 456,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getFunnelFlow", {
         idSite: 1,
         period: "day",
@@ -92,7 +100,11 @@ describe("FunnelsModule", () => {
 
   describe("getFunnelFlowTable", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnelFlowTable(1, "day", "yesterday");
+      await funnelsModule.getFunnelFlowTable({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelFlowTable",
         {
@@ -104,14 +116,14 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getFunnelFlowTable(
-        1,
-        "day",
-        "yesterday",
-        123,
-        456,
-        "deviceType==mobile"
-      );
+      await funnelsModule.getFunnelFlowTable({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+        idGoal: 456,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelFlowTable",
         {
@@ -128,7 +140,12 @@ describe("FunnelsModule", () => {
 
   describe("getFunnelStepSubtable", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnelStepSubtable(1, "day", "yesterday", 2);
+      await funnelsModule.getFunnelStepSubtable({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        stepPosition: 2,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelStepSubtable",
         {
@@ -141,15 +158,15 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getFunnelStepSubtable(
-        1,
-        "day",
-        "yesterday",
-        2,
-        123,
-        456,
-        "deviceType==mobile"
-      );
+      await funnelsModule.getFunnelStepSubtable({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        stepPosition: 2,
+        idFunnel: 123,
+        idGoal: 456,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelStepSubtable",
         {
@@ -167,7 +184,12 @@ describe("FunnelsModule", () => {
 
   describe("getFunnelEntries", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnelEntries(1, "day", "yesterday", 123);
+      await funnelsModule.getFunnelEntries({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelEntries",
         {
@@ -180,17 +202,17 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getFunnelEntries(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile",
-        2,
-        true,
-        456,
-        true
-      );
+      await funnelsModule.getFunnelEntries({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+        segment: "deviceType==mobile",
+        step: 2,
+        expanded: true,
+        idSubtable: 456,
+        flat: true,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelEntries",
         {
@@ -210,7 +232,12 @@ describe("FunnelsModule", () => {
 
   describe("getFunnelExits", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnelExits(1, "day", "yesterday", 123);
+      await funnelsModule.getFunnelExits({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelExits",
         {
@@ -223,14 +250,14 @@ describe("FunnelsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await funnelsModule.getFunnelExits(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile",
-        2
-      );
+      await funnelsModule.getFunnelExits({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idFunnel: 123,
+        segment: "deviceType==mobile",
+        step: 2,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getFunnelExits",
         {
@@ -247,7 +274,10 @@ describe("FunnelsModule", () => {
 
   describe("getGoalFunnel", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getGoalFunnel(1, 123);
+      await funnelsModule.getGoalFunnel({
+        idSite: 1,
+        idGoal: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getGoalFunnel", {
         idSite: 1,
         idGoal: 123,
@@ -257,7 +287,9 @@ describe("FunnelsModule", () => {
 
   describe("getSalesFunnelForSite", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getSalesFunnelForSite(1);
+      await funnelsModule.getSalesFunnelForSite({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getSalesFunnelForSite",
         {
@@ -269,7 +301,10 @@ describe("FunnelsModule", () => {
 
   describe("getFunnel", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getFunnel(1, 123);
+      await funnelsModule.getFunnel({
+        idSite: 1,
+        idFunnel: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.getFunnel", {
         idSite: 1,
         idFunnel: 123,
@@ -279,7 +314,9 @@ describe("FunnelsModule", () => {
 
   describe("getAllActivatedFunnelsForSite", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.getAllActivatedFunnelsForSite(1);
+      await funnelsModule.getAllActivatedFunnelsForSite({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.getAllActivatedFunnelsForSite",
         {
@@ -291,7 +328,9 @@ describe("FunnelsModule", () => {
 
   describe("hasAnyActivatedFunnelForSite", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.hasAnyActivatedFunnelForSite(1);
+      await funnelsModule.hasAnyActivatedFunnelForSite({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.hasAnyActivatedFunnelForSite",
         {
@@ -303,7 +342,10 @@ describe("FunnelsModule", () => {
 
   describe("deleteGoalFunnel", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.deleteGoalFunnel(1, 123);
+      await funnelsModule.deleteGoalFunnel({
+        idSite: 1,
+        idGoal: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.deleteGoalFunnel",
         {
@@ -316,7 +358,10 @@ describe("FunnelsModule", () => {
 
   describe("deleteNonGoalFunnel", () => {
     it("should call the API with required parameters", async () => {
-      await funnelsModule.deleteNonGoalFunnel(1, 123);
+      await funnelsModule.deleteNonGoalFunnel({
+        idSite: 1,
+        idFunnel: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.deleteNonGoalFunnel",
         {
@@ -335,7 +380,12 @@ describe("FunnelsModule", () => {
         { pattern: "/checkout/payment", pattern_type: "contains" },
       ];
 
-      await funnelsModule.setGoalFunnel(1, 123, true, steps);
+      await funnelsModule.setGoalFunnel({
+        idSite: 1,
+        idGoal: 123,
+        isActivated: true,
+        steps: steps,
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Funnels.setGoalFunnel", {
         idSite: 1,
         idGoal: 123,
@@ -353,7 +403,12 @@ describe("FunnelsModule", () => {
         { pattern: "/checkout", pattern_type: "contains" },
       ];
 
-      await funnelsModule.saveNonGoalFunnel(1, 123, "Purchase Funnel", steps);
+      await funnelsModule.saveNonGoalFunnel({
+        idSite: 1,
+        idFunnel: 123,
+        funnelName: "Purchase Funnel",
+        steps: steps,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.saveNonGoalFunnel",
         {
@@ -382,10 +437,10 @@ describe("FunnelsModule", () => {
         { pattern: "/checkout/delivery", pattern_type: "contains" },
       ];
 
-      await funnelsModule.testUrlMatchesSteps(
-        "https://example.org/checkout/cart",
-        steps
-      );
+      await funnelsModule.testUrlMatchesSteps({
+        url: "https://example.org/checkout/cart",
+        steps: steps,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Funnels.testUrlMatchesSteps",
         {

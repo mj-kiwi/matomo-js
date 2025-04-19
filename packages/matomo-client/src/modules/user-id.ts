@@ -3,33 +3,31 @@
  * API for plugin UserId. Allows to get User IDs table.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for UserId API methods
+ */
+export interface UserIdParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
 
 export class UserIdModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
    * Get a list of users with their visits
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting users
    */
-  async getUsers(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserId.getUsers', params);
+  async getUsers(params: UserIdParams): Promise<any> {
+    return this.client.request("UserId.getUsers", params);
   }
 }

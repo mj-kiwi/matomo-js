@@ -32,7 +32,10 @@ describe("InsightsModule", () => {
 
   describe("canGenerateInsights", () => {
     it("should call the API with required parameters", async () => {
-      await insightsModule.canGenerateInsights("yesterday", "day");
+      await insightsModule.canGenerateInsights({
+        date: "yesterday",
+        period: "day",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.canGenerateInsights",
         {
@@ -45,7 +48,11 @@ describe("InsightsModule", () => {
 
   describe("getInsightsOverview", () => {
     it("should call the API with required parameters", async () => {
-      await insightsModule.getInsightsOverview(1, "day", "yesterday");
+      await insightsModule.getInsightsOverview({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getInsightsOverview",
         {
@@ -57,12 +64,12 @@ describe("InsightsModule", () => {
     });
 
     it("should include segment when provided", async () => {
-      await insightsModule.getInsightsOverview(
-        1,
-        "day",
-        "yesterday",
-        "deviceType==desktop"
-      );
+      await insightsModule.getInsightsOverview({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        segment: "deviceType==desktop",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getInsightsOverview",
         {
@@ -77,7 +84,11 @@ describe("InsightsModule", () => {
 
   describe("getMoversAndShakersOverview", () => {
     it("should call the API with required parameters", async () => {
-      await insightsModule.getMoversAndShakersOverview(1, "day", "yesterday");
+      await insightsModule.getMoversAndShakersOverview({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getMoversAndShakersOverview",
         {
@@ -89,12 +100,12 @@ describe("InsightsModule", () => {
     });
 
     it("should include segment when provided", async () => {
-      await insightsModule.getMoversAndShakersOverview(
-        1,
-        "day",
-        "yesterday",
-        "deviceType==desktop"
-      );
+      await insightsModule.getMoversAndShakersOverview({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        segment: "deviceType==desktop",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getMoversAndShakersOverview",
         {
@@ -109,12 +120,12 @@ describe("InsightsModule", () => {
 
   describe("getMoversAndShakers", () => {
     it("should call the API with required parameters", async () => {
-      await insightsModule.getMoversAndShakers(
-        1,
-        "day",
-        "yesterday",
-        "Actions.getPageUrls"
-      );
+      await insightsModule.getMoversAndShakers({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        reportUniqueId: "Actions.getPageUrls",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getMoversAndShakers",
         {
@@ -127,16 +138,16 @@ describe("InsightsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await insightsModule.getMoversAndShakers(
-        1,
-        "day",
-        "yesterday",
-        "Actions.getPageUrls",
-        "deviceType==desktop",
-        "2",
-        "5",
-        "3"
-      );
+      await insightsModule.getMoversAndShakers({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        reportUniqueId: "Actions.getPageUrls",
+        segment: "deviceType==desktop",
+        comparedToXPeriods: "2",
+        limitIncreaser: "5",
+        limitDecreaser: "3",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "Insights.getMoversAndShakers",
         {
@@ -155,12 +166,12 @@ describe("InsightsModule", () => {
 
   describe("getInsights", () => {
     it("should call the API with required parameters", async () => {
-      await insightsModule.getInsights(
-        1,
-        "day",
-        "yesterday",
-        "Actions.getPageUrls"
-      );
+      await insightsModule.getInsights({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        reportUniqueId: "Actions.getPageUrls",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Insights.getInsights", {
         idSite: 1,
         period: "day",
@@ -170,20 +181,20 @@ describe("InsightsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await insightsModule.getInsights(
-        1,
-        "day",
-        "yesterday",
-        "Actions.getPageUrls",
-        "deviceType==desktop",
-        "10",
-        "8",
-        "movers",
-        "5",
-        "25",
-        "3",
-        "percent"
-      );
+      await insightsModule.getInsights({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        reportUniqueId: "Actions.getPageUrls",
+        segment: "deviceType==desktop",
+        limitIncreaser: "10",
+        limitDecreaser: "8",
+        filterBy: "movers",
+        minImpactPercent: "5",
+        minGrowthPercent: "25",
+        comparedToXPeriods: "3",
+        orderBy: "percent",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("Insights.getInsights", {
         idSite: 1,
         period: "day",

@@ -14,7 +14,11 @@ describe("CustomVariablesModule", () => {
   });
 
   it("should get custom variables with required parameters", async () => {
-    await module.getCustomVariables(1, "day", "yesterday");
+    await module.getCustomVariables({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomVariables.getCustomVariables",
@@ -27,7 +31,14 @@ describe("CustomVariablesModule", () => {
   });
 
   it("should get custom variables with all parameters", async () => {
-    await module.getCustomVariables(1, "day", "yesterday", "country==FR", 1, 1);
+    await module.getCustomVariables({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+      segment: "country==FR",
+      expanded: 1,
+      flat: 1,
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomVariables.getCustomVariables",
@@ -43,7 +54,12 @@ describe("CustomVariablesModule", () => {
   });
 
   it("should get custom variable values from name id", async () => {
-    await module.getCustomVariablesValuesFromNameId(1, "day", "yesterday", 2);
+    await module.getCustomVariablesValuesFromNameId({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+      idSubtable: 2,
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomVariables.getCustomVariablesValuesFromNameId",
@@ -57,13 +73,13 @@ describe("CustomVariablesModule", () => {
   });
 
   it("should get custom variable values from name id with segment", async () => {
-    await module.getCustomVariablesValuesFromNameId(
-      1,
-      "day",
-      "yesterday",
-      2,
-      "country==FR"
-    );
+    await module.getCustomVariablesValuesFromNameId({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+      idSubtable: 2,
+      segment: "country==FR",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomVariables.getCustomVariablesValuesFromNameId",
@@ -78,7 +94,9 @@ describe("CustomVariablesModule", () => {
   });
 
   it("should get usages of slots", async () => {
-    await module.getUsagesOfSlots(1);
+    await module.getUsagesOfSlots({
+      idSite: 1,
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomVariables.getUsagesOfSlots",

@@ -5,7 +5,129 @@
  * reports and metrics about how users interact with your forms.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for form-specific operations
+ */
+export interface FormParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for getting a specific form
+ */
+export interface FormIdParams extends FormParams {
+  /** Form ID */
+  idForm: number | string;
+}
+
+/**
+ * Parameters for adding a new form
+ */
+export interface AddFormParams extends FormParams {
+  /** Form name */
+  name: string;
+  /** Optional form description */
+  description?: string;
+  /** Optional rules to match forms */
+  matchFormRules?: string;
+  /** Optional rules to match pages */
+  matchPageRules?: string;
+  /** Optional conversion rule option */
+  conversionRuleOption?: string;
+  /** Optional conversion rules */
+  conversionRules?: string;
+}
+
+/**
+ * Parameters for updating a form
+ */
+export interface UpdateFormParams extends FormIdParams {
+  /** Form name */
+  name: string;
+  /** Optional form description */
+  description?: string;
+  /** Optional rules to match forms */
+  matchFormRules?: string;
+  /** Optional rules to match pages */
+  matchPageRules?: string;
+  /** Optional conversion rule option */
+  conversionRuleOption?: string;
+  /** Optional conversion rules */
+  conversionRules?: string;
+}
+
+/**
+ * Parameters for form report methods
+ */
+export interface FormReportParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Form ID */
+  idForm: number | string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for general form analytics data
+ */
+export interface FormAnalyticsParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional form ID to filter by */
+  idForm?: string | number;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
+
+/**
+ * Parameters for form counters
+ */
+export interface FormCountersParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Number of minutes to look back */
+  lastMinutes: number | string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for popular forms
+ */
+export interface PopularFormsParams extends FormCountersParams {
+  /** Optional limit of forms to return */
+  filter_limit?: number | string;
+}
+
+/**
+ * Parameters for updating field display names
+ */
+export interface UpdateFieldDisplayNameParams extends FormIdParams {
+  /** Object with field name/display name pairs */
+  fields: Record<string, string>;
+}
+
+/**
+ * Parameters for forms by statuses
+ */
+export interface FormsByStatusesParams extends FormParams {
+  /** Array of status values */
+  statuses: string[] | string;
+}
 
 export class FormAnalyticsModule {
   constructor(private client: CoreReportingClient) {}
@@ -13,479 +135,197 @@ export class FormAnalyticsModule {
   /**
    * Add a new form to be tracked
    *
-   * @param idSite Site ID
-   * @param name Form name
-   * @param description Optional form description
-   * @param matchFormRules Optional rules to match forms
-   * @param matchPageRules Optional rules to match pages
-   * @param conversionRuleOption Optional conversion rule option
-   * @param conversionRules Optional conversion rules
+   * @param params Parameters for adding a new form
    * @returns Promise with the API response
    */
-  addForm(
-    idSite: number | string,
-    name: string,
-    description: string = '',
-    matchFormRules: string = '',
-    matchPageRules: string = '',
-    conversionRuleOption: string = 'page_visit',
-    conversionRules: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      name,
-    };
-
-    if (description) params.description = description;
-    if (matchFormRules) params.matchFormRules = matchFormRules;
-    if (matchPageRules) params.matchPageRules = matchPageRules;
-    if (conversionRuleOption)
-      params.conversionRuleOption = conversionRuleOption;
-    if (conversionRules) params.conversionRules = conversionRules;
-
-    return this.client.request('FormAnalytics.addForm', params);
+  addForm(params: AddFormParams): Promise<any> {
+    return this.client.request("FormAnalytics.addForm", params);
   }
 
   /**
    * Update an existing form
    *
-   * @param idSite Site ID
-   * @param idForm Form ID
-   * @param name Form name
-   * @param description Optional form description
-   * @param matchFormRules Optional rules to match forms
-   * @param matchPageRules Optional rules to match pages
-   * @param conversionRuleOption Optional conversion rule option
-   * @param conversionRules Optional conversion rules
+   * @param params Parameters for updating a form
    * @returns Promise with the API response
    */
-  updateForm(
-    idSite: number | string,
-    idForm: number | string,
-    name: string,
-    description: string = '',
-    matchFormRules: string = '',
-    matchPageRules: string = '',
-    conversionRuleOption: string = 'page_visit',
-    conversionRules: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      idForm,
-      name,
-    };
-
-    if (description) params.description = description;
-    if (matchFormRules) params.matchFormRules = matchFormRules;
-    if (matchPageRules) params.matchPageRules = matchPageRules;
-    if (conversionRuleOption)
-      params.conversionRuleOption = conversionRuleOption;
-    if (conversionRules) params.conversionRules = conversionRules;
-
-    return this.client.request('FormAnalytics.updateForm', params);
+  updateForm(params: UpdateFormParams): Promise<any> {
+    return this.client.request("FormAnalytics.updateForm", params);
   }
 
   /**
    * Get a specific form
    *
-   * @param idSite Site ID
-   * @param idForm Form ID
+   * @param params Parameters containing site ID and form ID
    * @returns Promise with the form details
    */
-  getForm(idSite: number | string, idForm: number | string): Promise<any> {
-    return this.client.request('FormAnalytics.getForm', {
-      idSite,
-      idForm,
-    });
+  getForm(params: FormIdParams): Promise<any> {
+    return this.client.request("FormAnalytics.getForm", params);
   }
 
   /**
    * Get all forms for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns Promise with the list of forms
    */
-  getForms(idSite: number | string): Promise<any> {
-    return this.client.request('FormAnalytics.getForms', { idSite });
+  getForms(params: FormParams): Promise<any> {
+    return this.client.request("FormAnalytics.getForms", params);
   }
 
   /**
    * Get forms by specific statuses
    *
-   * @param idSite Site ID
-   * @param statuses Array of status values
+   * @param params Parameters containing site ID and statuses
    * @returns Promise with the filtered list of forms
    */
-  getFormsByStatuses(
-    idSite: number | string,
-    statuses: string[] | string
-  ): Promise<any> {
-    return this.client.request('FormAnalytics.getFormsByStatuses', {
-      idSite,
-      statuses,
-    });
+  getFormsByStatuses(params: FormsByStatusesParams): Promise<any> {
+    return this.client.request("FormAnalytics.getFormsByStatuses", params);
   }
 
   /**
    * Delete a form
    *
-   * @param idSite Site ID
-   * @param idForm Form ID
+   * @param params Parameters containing site ID and form ID
    * @returns Promise with the API response
    */
-  deleteForm(idSite: number | string, idForm: number | string): Promise<any> {
-    return this.client.request('FormAnalytics.deleteForm', {
-      idSite,
-      idForm,
-    });
+  deleteForm(params: FormIdParams): Promise<any> {
+    return this.client.request("FormAnalytics.deleteForm", params);
   }
 
   /**
    * Archive a form
    *
-   * @param idSite Site ID
-   * @param idForm Form ID
+   * @param params Parameters containing site ID and form ID
    * @returns Promise with the API response
    */
-  archiveForm(idSite: number | string, idForm: number | string): Promise<any> {
-    return this.client.request('FormAnalytics.archiveForm', {
-      idSite,
-      idForm,
-    });
+  archiveForm(params: FormIdParams): Promise<any> {
+    return this.client.request("FormAnalytics.archiveForm", params);
   }
 
   /**
    * Get form analytics data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Optional form ID to filter by
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for the general form analytics data
    * @returns Promise with the form analytics data
    */
-  get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: string | number = '',
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (idForm !== '') params.idForm = idForm;
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('FormAnalytics.get', params);
+  get(params: FormAnalyticsParams): Promise<any> {
+    return this.client.request("FormAnalytics.get", params);
   }
 
   /**
    * Get entry fields report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the entry fields report
    */
-  getEntryFields(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getEntryFields', params);
+  getEntryFields(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getEntryFields", params);
   }
 
   /**
    * Get drop off fields report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the drop off fields report
    */
-  getDropOffFields(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getDropOffFields', params);
+  getDropOffFields(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getDropOffFields", params);
   }
 
   /**
    * Get page URLs for forms
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the page URLs report
    */
-  getPageUrls(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getPageUrls', params);
+  getPageUrls(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getPageUrls", params);
   }
 
   /**
    * Get field timings report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the field timings report
    */
-  getFieldTimings(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getFieldTimings', params);
+  getFieldTimings(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getFieldTimings", params);
   }
 
   /**
    * Get field size report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the field size report
    */
-  getFieldSize(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getFieldSize', params);
+  getFieldSize(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getFieldSize", params);
   }
 
   /**
    * Get unneeded fields report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the unneeded fields report
    */
-  getUneededFields(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getUneededFields', params);
+  getUneededFields(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getUneededFields", params);
   }
 
   /**
    * Get most used fields report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the most used fields report
    */
-  getMostUsedFields(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getMostUsedFields', params);
+  getMostUsedFields(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getMostUsedFields", params);
   }
 
   /**
    * Get field corrections report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idForm Form ID
-   * @param segment Optional segment definition
+   * @param params Parameters for form report
    * @returns Promise with the field corrections report
    */
-  getFieldCorrections(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idForm: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idForm,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getFieldCorrections', params);
+  getFieldCorrections(params: FormReportParams): Promise<any> {
+    return this.client.request("FormAnalytics.getFieldCorrections", params);
   }
 
   /**
    * Update form field display names
    *
-   * @param idSite Site ID
-   * @param idForm Form ID
-   * @param fields Object with field name/display name pairs
+   * @param params Parameters for updating field display names
    * @returns Promise with the API response
    */
   updateFormFieldDisplayName(
-    idSite: number | string,
-    idForm: number | string,
-    fields: Record<string, string> = {}
+    params: UpdateFieldDisplayNameParams
   ): Promise<any> {
-    return this.client.request('FormAnalytics.updateFormFieldDisplayName', {
-      idSite,
-      idForm,
-      fields,
-    });
+    return this.client.request(
+      "FormAnalytics.updateFormFieldDisplayName",
+      params
+    );
   }
 
   /**
    * Get form analytics counters for the specified time period
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back
-   * @param segment Optional segment definition
+   * @param params Parameters for form counters
    * @returns Promise with the counters
    */
-  getCounters(
-    idSite: number | string,
-    lastMinutes: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('FormAnalytics.getCounters', params);
+  getCounters(params: FormCountersParams): Promise<any> {
+    return this.client.request("FormAnalytics.getCounters", params);
   }
 
   /**
    * Get current most popular forms
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Optional limit of forms to return
-   * @param segment Optional segment definition
+   * @param params Parameters for popular forms
    * @returns Promise with the popular forms list
    */
-  getCurrentMostPopularForms(
-    idSite: number | string,
-    lastMinutes: number | string,
-    filter_limit: number | string = '5',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
-    };
-
-    if (segment) params.segment = segment;
-
+  getCurrentMostPopularForms(params: PopularFormsParams): Promise<any> {
     return this.client.request(
-      'FormAnalytics.getCurrentMostPopularForms',
+      "FormAnalytics.getCurrentMostPopularForms",
       params
     );
   }
@@ -493,13 +333,11 @@ export class FormAnalyticsModule {
   /**
    * Get auto creation settings
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns Promise with the auto creation settings
    */
-  getAutoCreationSettings(idSite: number | string): Promise<any> {
-    return this.client.request('FormAnalytics.getAutoCreationSettings', {
-      idSite,
-    });
+  getAutoCreationSettings(params: FormParams): Promise<any> {
+    return this.client.request("FormAnalytics.getAutoCreationSettings", params);
   }
 
   /**
@@ -508,7 +346,7 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available statuses
    */
   getAvailableStatuses(): Promise<any> {
-    return this.client.request('FormAnalytics.getAvailableStatuses');
+    return this.client.request("FormAnalytics.getAvailableStatuses");
   }
 
   /**
@@ -517,7 +355,7 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available form rules
    */
   getAvailableFormRules(): Promise<any> {
-    return this.client.request('FormAnalytics.getAvailableFormRules');
+    return this.client.request("FormAnalytics.getAvailableFormRules");
   }
 
   /**
@@ -526,7 +364,7 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available page rules
    */
   getAvailablePageRules(): Promise<any> {
-    return this.client.request('FormAnalytics.getAvailablePageRules');
+    return this.client.request("FormAnalytics.getAvailablePageRules");
   }
 
   /**
@@ -536,7 +374,7 @@ export class FormAnalyticsModule {
    */
   getAvailableConversionRuleOptions(): Promise<any> {
     return this.client.request(
-      'FormAnalytics.getAvailableConversionRuleOptions'
+      "FormAnalytics.getAvailableConversionRuleOptions"
     );
   }
 }

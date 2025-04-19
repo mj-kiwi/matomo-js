@@ -38,7 +38,7 @@ describe("SeoModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await seoModule.getRank("https://example.com");
+      const result = await seoModule.getRank({ url: "https://example.com" });
 
       expect(mockClient.request).toHaveBeenCalledWith("SEO.getRank", {
         url: "https://example.com",

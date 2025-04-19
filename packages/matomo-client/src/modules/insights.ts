@@ -5,7 +5,59 @@
  * helping you to identify trends and patterns.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for checking generation capabilities
+ */
+export interface CanGenerateInsightsParams extends RequestParams {
+  /** Date string */
+  date: string;
+  /** Period to request data for */
+  period: string;
+}
+
+/**
+ * Common parameters for site insights
+ */
+export interface SiteInsightsParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for movers and shakers data
+ */
+export interface MoversAndShakersParams extends SiteInsightsParams {
+  /** Report unique ID */
+  reportUniqueId: string;
+  /** Number of periods to compare */
+  comparedToXPeriods?: number | string;
+  /** Limit for increased values */
+  limitIncreaser?: number | string;
+  /** Limit for decreased values */
+  limitDecreaser?: number | string;
+}
+
+/**
+ * Parameters for insights data
+ */
+export interface InsightsParams extends MoversAndShakersParams {
+  /** Filter type */
+  filterBy?: string;
+  /** Minimum impact percent */
+  minImpactPercent?: number | string;
+  /** Minimum growth percent */
+  minGrowthPercent?: number | string;
+  /** Order metric */
+  orderBy?: string;
+}
 
 export class InsightsModule {
   constructor(private client: CoreReportingClient) {}
@@ -13,156 +65,50 @@ export class InsightsModule {
   /**
    * Check if insights can be generated for a specific period and date
    *
-   * @param date Date string
-   * @param period Period to request data for
+   * @param params Parameters for checking generation capabilities
    * @returns Promise with the result whether insights can be generated
    */
-  canGenerateInsights(date: string, period: string): Promise<any> {
-    return this.client.request('Insights.canGenerateInsights', {
-      date,
-      period,
-    });
+  canGenerateInsights(params: CanGenerateInsightsParams): Promise<any> {
+    return this.client.request("Insights.canGenerateInsights", params);
   }
 
   /**
    * Get insights overview for a site
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for site insights
    * @returns Promise with the insights overview
    */
-  getInsightsOverview(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Insights.getInsightsOverview', params);
+  getInsightsOverview(params: SiteInsightsParams): Promise<any> {
+    return this.client.request("Insights.getInsightsOverview", params);
   }
 
   /**
    * Get an overview of movers and shakers for a site
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for site insights
    * @returns Promise with movers and shakers overview
    */
-  getMoversAndShakersOverview(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Insights.getMoversAndShakersOverview', params);
+  getMoversAndShakersOverview(params: SiteInsightsParams): Promise<any> {
+    return this.client.request("Insights.getMoversAndShakersOverview", params);
   }
 
   /**
    * Get movers and shakers data for a specific report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param reportUniqueId Report unique ID
-   * @param segment Optional segment definition
-   * @param comparedToXPeriods Number of periods to compare
-   * @param limitIncreaser Limit for increased values
-   * @param limitDecreaser Limit for decreased values
+   * @param params Parameters for movers and shakers data
    * @returns Promise with movers and shakers data
    */
-  getMoversAndShakers(
-    idSite: number | string,
-    period: string,
-    date: string,
-    reportUniqueId: string,
-    segment: string = '',
-    comparedToXPeriods: number | string = '1',
-    limitIncreaser: number | string = '4',
-    limitDecreaser: number | string = '4'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      reportUniqueId,
-    };
-
-    if (segment) params.segment = segment;
-    if (comparedToXPeriods !== '1')
-      params.comparedToXPeriods = comparedToXPeriods;
-    if (limitIncreaser !== '4') params.limitIncreaser = limitIncreaser;
-    if (limitDecreaser !== '4') params.limitDecreaser = limitDecreaser;
-
-    return this.client.request('Insights.getMoversAndShakers', params);
+  getMoversAndShakers(params: MoversAndShakersParams): Promise<any> {
+    return this.client.request("Insights.getMoversAndShakers", params);
   }
 
   /**
    * Get insights data for a specific report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param reportUniqueId Report unique ID
-   * @param segment Optional segment definition
-   * @param limitIncreaser Limit for increased values
-   * @param limitDecreaser Limit for decreased values
-   * @param filterBy Filter type
-   * @param minImpactPercent Minimum impact percent
-   * @param minGrowthPercent Minimum growth percent
-   * @param comparedToXPeriods Number of periods to compare
-   * @param orderBy Order metric
+   * @param params Parameters for insights data
    * @returns Promise with insights data
    */
-  getInsights(
-    idSite: number | string,
-    period: string,
-    date: string,
-    reportUniqueId: string,
-    segment: string = '',
-    limitIncreaser: number | string = '5',
-    limitDecreaser: number | string = '5',
-    filterBy: string = '',
-    minImpactPercent: number | string = '2',
-    minGrowthPercent: number | string = '20',
-    comparedToXPeriods: number | string = '1',
-    orderBy: string = 'absolute'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      reportUniqueId,
-    };
-
-    if (segment) params.segment = segment;
-    if (limitIncreaser !== '5') params.limitIncreaser = limitIncreaser;
-    if (limitDecreaser !== '5') params.limitDecreaser = limitDecreaser;
-    if (filterBy) params.filterBy = filterBy;
-    if (minImpactPercent !== '2') params.minImpactPercent = minImpactPercent;
-    if (minGrowthPercent !== '20') params.minGrowthPercent = minGrowthPercent;
-    if (comparedToXPeriods !== '1')
-      params.comparedToXPeriods = comparedToXPeriods;
-    if (orderBy !== 'absolute') params.orderBy = orderBy;
-
-    return this.client.request('Insights.getInsights', params);
+  getInsights(params: InsightsParams): Promise<any> {
+    return this.client.request("Insights.getInsights", params);
   }
 }

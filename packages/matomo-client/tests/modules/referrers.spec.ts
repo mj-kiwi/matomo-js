@@ -35,14 +35,16 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.get(1, "day", "2023-01-01");
+      const result = await referrersModule.get({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.get", {
         idSite: 1,
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
-        columns: "",
       });
       expect(result).toEqual(mockResponse);
     });
@@ -51,13 +53,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.get(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        "nb_visits,nb_actions"
-      );
+      const result = await referrersModule.get({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        columns: "nb_visits,nb_actions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.get", {
         idSite: 1,
@@ -75,11 +77,11 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getReferrerType(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getReferrerType({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getReferrerType",
@@ -87,10 +89,6 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
-          typeReferrer: "",
-          idSubtable: undefined,
-          expanded: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -100,15 +98,15 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getReferrerType(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        "search",
-        2,
-        true
-      );
+      const result = await referrersModule.getReferrerType({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        typeReferrer: "search",
+        idSubtable: 2,
+        expanded: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getReferrerType",
@@ -131,13 +129,16 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getAll(1, "day", "2023-01-01");
+      const result = await referrersModule.getAll({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getAll", {
         idSite: 1,
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -146,12 +147,12 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getAll(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
+      const result = await referrersModule.getAll({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getAll", {
         idSite: 1,
@@ -159,100 +160,6 @@ describe("ReferrersModule", () => {
         date: "2023-01-01",
         segment: "userId==123",
       });
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe("getKeywords", () => {
-    it("should call the API with required parameters", async () => {
-      const mockResponse = { result: "success" };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getKeywords(1, "day", "2023-01-01");
-
-      expect(mockClient.request).toHaveBeenCalledWith("Referrers.getKeywords", {
-        idSite: 1,
-        period: "day",
-        date: "2023-01-01",
-        segment: undefined,
-        expanded: undefined,
-        flat: undefined,
-      });
-      expect(result).toEqual(mockResponse);
-    });
-
-    it("should call the API with all parameters", async () => {
-      const mockResponse = { result: "success" };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getKeywords(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        true,
-        true
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith("Referrers.getKeywords", {
-        idSite: 1,
-        period: "day",
-        date: "2023-01-01",
-        segment: "userId==123",
-        expanded: true,
-        flat: true,
-      });
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe("getSearchEnginesFromKeywordId", () => {
-    it("should call the API with required parameters", async () => {
-      const mockResponse = { result: "success" };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getSearchEnginesFromKeywordId(
-        1,
-        "day",
-        "2023-01-01",
-        5
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getSearchEnginesFromKeywordId",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          idSubtable: 5,
-          segment: undefined,
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-
-    it("should call the API with segment parameter", async () => {
-      const mockResponse = { result: "success" };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getSearchEnginesFromKeywordId(
-        1,
-        "day",
-        "2023-01-01",
-        5,
-        "userId==123"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getSearchEnginesFromKeywordId",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          idSubtable: 5,
-          segment: "userId==123",
-        }
-      );
       expect(result).toEqual(mockResponse);
     });
   });
@@ -262,11 +169,11 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getSearchEngines(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getSearchEngines({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getSearchEngines",
@@ -274,9 +181,6 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
-          expanded: undefined,
-          flat: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -286,14 +190,14 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getSearchEngines(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        true,
-        true
-      );
+      const result = await referrersModule.getSearchEngines({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getSearchEngines",
@@ -315,12 +219,12 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getKeywordsFromSearchEngineId(
-        1,
-        "day",
-        "2023-01-01",
-        5
-      );
+      const result = await referrersModule.getKeywordsFromSearchEngineId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getKeywordsFromSearchEngineId",
@@ -329,7 +233,6 @@ describe("ReferrersModule", () => {
           period: "day",
           date: "2023-01-01",
           idSubtable: 5,
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -339,13 +242,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getKeywordsFromSearchEngineId(
-        1,
-        "day",
-        "2023-01-01",
-        5,
-        "userId==123"
-      );
+      const result = await referrersModule.getKeywordsFromSearchEngineId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getKeywordsFromSearchEngineId",
@@ -366,7 +269,11 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getCampaigns(1, "day", "2023-01-01");
+      const result = await referrersModule.getCampaigns({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getCampaigns",
@@ -374,8 +281,6 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
-          expanded: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -385,13 +290,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getCampaigns(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        true
-      );
+      const result = await referrersModule.getCampaigns({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        expanded: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getCampaigns",
@@ -412,12 +317,12 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getKeywordsFromCampaignId(
-        1,
-        "day",
-        "2023-01-01",
-        5
-      );
+      const result = await referrersModule.getKeywordsFromCampaignId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getKeywordsFromCampaignId",
@@ -426,7 +331,6 @@ describe("ReferrersModule", () => {
           period: "day",
           date: "2023-01-01",
           idSubtable: 5,
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -436,13 +340,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getKeywordsFromCampaignId(
-        1,
-        "day",
-        "2023-01-01",
-        5,
-        "userId==123"
-      );
+      const result = await referrersModule.getKeywordsFromCampaignId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getKeywordsFromCampaignId",
@@ -463,15 +367,16 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getWebsites(1, "day", "2023-01-01");
+      const result = await referrersModule.getWebsites({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getWebsites", {
         idSite: 1,
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
-        expanded: undefined,
-        flat: undefined,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -480,14 +385,14 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getWebsites(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        true,
-        true
-      );
+      const result = await referrersModule.getWebsites({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getWebsites", {
         idSite: 1,
@@ -506,12 +411,12 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getUrlsFromWebsiteId(
-        1,
-        "day",
-        "2023-01-01",
-        5
-      );
+      const result = await referrersModule.getUrlsFromWebsiteId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getUrlsFromWebsiteId",
@@ -520,7 +425,6 @@ describe("ReferrersModule", () => {
           period: "day",
           date: "2023-01-01",
           idSubtable: 5,
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -530,13 +434,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getUrlsFromWebsiteId(
-        1,
-        "day",
-        "2023-01-01",
-        5,
-        "userId==123"
-      );
+      const result = await referrersModule.getUrlsFromWebsiteId({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        idSubtable: 5,
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getUrlsFromWebsiteId",
@@ -557,15 +461,16 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getSocials(1, "day", "2023-01-01");
+      const result = await referrersModule.getSocials({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getSocials", {
         idSite: 1,
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
-        expanded: undefined,
-        flat: undefined,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -574,14 +479,14 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getSocials(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        true,
-        true
-      );
+      const result = await referrersModule.getSocials({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Referrers.getSocials", {
         idSite: 1,
@@ -600,11 +505,11 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getUrlsForSocial(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getUrlsForSocial({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getUrlsForSocial",
@@ -612,8 +517,6 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
-          idSubtable: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -623,13 +526,13 @@ describe("ReferrersModule", () => {
       const mockResponse = { result: "success" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getUrlsForSocial(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123",
-        5
-      );
+      const result = await referrersModule.getUrlsForSocial({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getUrlsForSocial",
@@ -645,165 +548,23 @@ describe("ReferrersModule", () => {
     });
   });
 
-  describe("getNumberOfDistinctSearchEngines", () => {
-    it("should call the API with required parameters", async () => {
-      const mockResponse = { value: 5 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctSearchEngines(
-        1,
-        "day",
-        "2023-01-01"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctSearchEngines",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: undefined,
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-
-    it("should call the API with segment parameter", async () => {
-      const mockResponse = { value: 3 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctSearchEngines(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctSearchEngines",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: "userId==123",
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe("getNumberOfDistinctSocialNetworks", () => {
-    it("should call the API with required parameters", async () => {
-      const mockResponse = { value: 5 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctSocialNetworks(
-        1,
-        "day",
-        "2023-01-01"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctSocialNetworks",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: undefined,
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-
-    it("should call the API with segment parameter", async () => {
-      const mockResponse = { value: 3 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctSocialNetworks(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctSocialNetworks",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: "userId==123",
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe("getNumberOfDistinctKeywords", () => {
-    it("should call the API with required parameters", async () => {
-      const mockResponse = { value: 50 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctKeywords(
-        1,
-        "day",
-        "2023-01-01"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctKeywords",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: undefined,
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-
-    it("should call the API with segment parameter", async () => {
-      const mockResponse = { value: 30 };
-      mockClient.request.mockResolvedValueOnce(mockResponse);
-
-      const result = await referrersModule.getNumberOfDistinctKeywords(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
-
-      expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctKeywords",
-        {
-          idSite: 1,
-          period: "day",
-          date: "2023-01-01",
-          segment: "userId==123",
-        }
-      );
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe("getNumberOfDistinctCampaigns", () => {
+  describe("getNumberOfSearchEngines", () => {
     it("should call the API with required parameters", async () => {
       const mockResponse = { value: 10 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctCampaigns(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getNumberOfSearchEngines({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
-        "Referrers.getNumberOfDistinctCampaigns",
+        "Referrers.getNumberOfDistinctSearchEngines",
         {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -813,12 +574,104 @@ describe("ReferrersModule", () => {
       const mockResponse = { value: 5 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctCampaigns(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
+      const result = await referrersModule.getNumberOfSearchEngines({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Referrers.getNumberOfDistinctSearchEngines",
+        {
+          idSite: 1,
+          period: "day",
+          date: "2023-01-01",
+          segment: "userId==123",
+        }
       );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getNumberOfKeywords", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { value: 50 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await referrersModule.getNumberOfKeywords({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Referrers.getNumberOfDistinctKeywords",
+        {
+          idSite: 1,
+          period: "day",
+          date: "2023-01-01",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = { value: 25 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await referrersModule.getNumberOfKeywords({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Referrers.getNumberOfDistinctKeywords",
+        {
+          idSite: 1,
+          period: "day",
+          date: "2023-01-01",
+          segment: "userId==123",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe("getNumberOfCampaigns", () => {
+    it("should call the API with required parameters", async () => {
+      const mockResponse = { value: 5 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await referrersModule.getNumberOfCampaigns({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Referrers.getNumberOfDistinctCampaigns",
+        {
+          idSite: 1,
+          period: "day",
+          date: "2023-01-01",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with segment parameter", async () => {
+      const mockResponse = { value: 2 };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await referrersModule.getNumberOfCampaigns({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getNumberOfDistinctCampaigns",
@@ -833,16 +686,16 @@ describe("ReferrersModule", () => {
     });
   });
 
-  describe("getNumberOfDistinctWebsites", () => {
+  describe("getNumberOfWebsites", () => {
     it("should call the API with required parameters", async () => {
-      const mockResponse = { value: 25 };
+      const mockResponse = { value: 20 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctWebsites(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getNumberOfWebsites({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getNumberOfDistinctWebsites",
@@ -850,22 +703,21 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
     });
 
     it("should call the API with segment parameter", async () => {
-      const mockResponse = { value: 15 };
+      const mockResponse = { value: 10 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctWebsites(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
+      const result = await referrersModule.getNumberOfWebsites({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getNumberOfDistinctWebsites",
@@ -880,16 +732,16 @@ describe("ReferrersModule", () => {
     });
   });
 
-  describe("getNumberOfDistinctWebsitesUrls", () => {
+  describe("getNumberOfWebsiteUrls", () => {
     it("should call the API with required parameters", async () => {
       const mockResponse = { value: 100 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctWebsitesUrls(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await referrersModule.getNumberOfWebsiteUrls({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getNumberOfDistinctWebsitesUrls",
@@ -897,7 +749,6 @@ describe("ReferrersModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-01-01",
-          segment: undefined,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -907,12 +758,12 @@ describe("ReferrersModule", () => {
       const mockResponse = { value: 50 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await referrersModule.getNumberOfDistinctWebsitesUrls(
-        1,
-        "day",
-        "2023-01-01",
-        "userId==123"
-      );
+      const result = await referrersModule.getNumberOfWebsiteUrls({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "userId==123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Referrers.getNumberOfDistinctWebsitesUrls",

@@ -3,7 +3,37 @@
  * API for plugin RollUpReporting to manage roll-up reporting features
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for adding a roll-up
+ */
+export interface AddRollUpParams extends RequestParams {
+  /** Name of the roll-up */
+  name: string;
+  /** Array of site IDs to include in the roll-up */
+  sourceIdSites: (number | string)[];
+  /** Timezone for the roll-up */
+  timezone: string;
+  /** Currency code for the roll-up */
+  currency: string;
+}
+
+/**
+ * Parameters for updating a roll-up
+ */
+export interface UpdateRollUpParams extends RequestParams {
+  /** ID of the roll-up site */
+  idSite: number | string;
+  /** New name for the roll-up */
+  name?: string;
+  /** New array of site IDs to include */
+  sourceIdSites?: (number | string)[];
+  /** New timezone */
+  timezone?: string;
+  /** New currency code */
+  currency?: string;
+}
 
 export class RollUpReportingModule {
   /**
@@ -14,54 +44,25 @@ export class RollUpReportingModule {
   /**
    * Add a new roll-up
    *
-   * @param name Name of the roll-up
-   * @param sourceIdSites Array of site IDs to include in the roll-up
-   * @param timezone Timezone for the roll-up
-   * @param currency Currency code for the roll-up
+   * @param params Parameters for adding a roll-up
    */
-  async addRollUp(
-    name: string,
-    sourceIdSites: (number | string)[],
-    timezone: string,
-    currency: string
-  ): Promise<any> {
-    return this.core.request<any>('RollUpReporting.addRollUp', {
-      name,
-      sourceIdSites,
-      timezone,
-      currency,
-    });
+  async addRollUp(params: AddRollUpParams): Promise<any> {
+    return this.core.request<any>("RollUpReporting.addRollUp", params);
   }
 
   /**
    * Update an existing roll-up
    *
-   * @param idSite ID of the roll-up site
-   * @param name New name for the roll-up
-   * @param sourceIdSites New array of site IDs to include
-   * @param timezone New timezone
-   * @param currency New currency code
+   * @param params Parameters for updating a roll-up
    */
-  async updateRollUp(
-    idSite: number | string,
-    name: string = '',
-    sourceIdSites: (number | string)[] = [],
-    timezone: string = '',
-    currency: string = ''
-  ): Promise<any> {
-    return this.core.request<any>('RollUpReporting.updateRollUp', {
-      idSite,
-      name,
-      sourceIdSites,
-      timezone,
-      currency,
-    });
+  async updateRollUp(params: UpdateRollUpParams): Promise<any> {
+    return this.core.request<any>("RollUpReporting.updateRollUp", params);
   }
 
   /**
    * Get all roll-ups
    */
   async getRollUps(): Promise<any[]> {
-    return this.core.request<any[]>('RollUpReporting.getRollUps');
+    return this.core.request<any[]>("RollUpReporting.getRollUps");
   }
 }

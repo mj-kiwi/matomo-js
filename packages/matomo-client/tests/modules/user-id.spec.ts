@@ -35,7 +35,11 @@ describe("UserIdModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userIdModule.getUsers(1, "day", "today");
+      const result = await userIdModule.getUsers({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserId.getUsers", {
         idSite: 1,
@@ -49,12 +53,12 @@ describe("UserIdModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userIdModule.getUsers(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userIdModule.getUsers({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserId.getUsers", {
         idSite: 1,

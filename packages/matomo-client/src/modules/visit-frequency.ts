@@ -3,7 +3,23 @@
  * VisitFrequency API lets you access a list of metrics related to Returning Visitors.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for VisitFrequency API methods
+ */
+export interface VisitFrequencyParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
 
 export class VisitFrequencyModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,28 +27,9 @@ export class VisitFrequencyModule {
   /**
    * Get metrics about new and returning visitors
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for getting visitor frequency metrics
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('VisitFrequency.get', params);
+  async get(params: VisitFrequencyParams): Promise<any> {
+    return this.client.request("VisitFrequency.get", params);
   }
 }

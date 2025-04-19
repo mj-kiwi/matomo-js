@@ -14,12 +14,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getType should make correct API call", async () => {
-    await devicesDetection.getType(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getType({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getType",
@@ -33,12 +33,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getBrand should make correct API call", async () => {
-    await devicesDetection.getBrand(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getBrand({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getBrand",
@@ -52,12 +52,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getModel should make correct API call", async () => {
-    await devicesDetection.getModel(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getModel({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getModel",
@@ -71,12 +71,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getOsFamilies should make correct API call", async () => {
-    await devicesDetection.getOsFamilies(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getOsFamilies({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getOsFamilies",
@@ -90,12 +90,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getOsVersions should make correct API call", async () => {
-    await devicesDetection.getOsVersions(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getOsVersions({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getOsVersions",
@@ -109,12 +109,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getBrowsers should make correct API call", async () => {
-    await devicesDetection.getBrowsers(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getBrowsers({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getBrowsers",
@@ -128,12 +128,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getBrowserVersions should make correct API call", async () => {
-    await devicesDetection.getBrowserVersions(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getBrowserVersions({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getBrowserVersions",
@@ -147,12 +147,12 @@ describe("DevicesDetection Module", () => {
   });
 
   it("getBrowserEngines should make correct API call", async () => {
-    await devicesDetection.getBrowserEngines(
-      1,
-      "day",
-      "2022-01-01",
-      "deviceType==mobile"
-    );
+    await devicesDetection.getBrowserEngines({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "DevicesDetection.getBrowserEngines",

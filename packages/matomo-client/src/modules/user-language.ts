@@ -3,58 +3,40 @@
  * The UserLanguage API lets you access reports about your Visitors language setting
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for UserLanguage API methods
+ */
+export interface UserLanguageParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
 
 export class UserLanguageModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
    * Get visitor language information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting visitor language information
    */
-  async getLanguage(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserLanguage.getLanguage', params);
+  async getLanguage(params: UserLanguageParams): Promise<any> {
+    return this.client.request("UserLanguage.getLanguage", params);
   }
 
   /**
    * Get visitor language code information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting visitor language code information
    */
-  async getLanguageCode(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserLanguage.getLanguageCode', params);
+  async getLanguageCode(params: UserLanguageParams): Promise<any> {
+    return this.client.request("UserLanguage.getLanguageCode", params);
   }
 }

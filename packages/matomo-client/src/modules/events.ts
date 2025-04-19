@@ -4,7 +4,41 @@
  * Tracker trackEvent() function or the Tracking HTTP API.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for Event module methods
+ */
+export interface EventReportParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for dimension reports (category, action, name)
+ */
+export interface EventDimensionParams extends EventReportParams {
+  /** Whether to expand the results */
+  expanded?: string;
+  /** Secondary dimension (eventAction, eventName or eventCategory) */
+  secondaryDimension?: string;
+  /** Whether to return a flattened report */
+  flat?: string;
+}
+
+/**
+ * Parameters for subtable reports
+ */
+export interface EventSubtableParams extends EventReportParams {
+  /** Subtable ID */
+  idSubtable: string | number;
+}
 
 export class EventsModule {
   constructor(private client: CoreReportingClient) {}
@@ -12,279 +46,90 @@ export class EventsModule {
   /**
    * Get event categories
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the categories
-   * @param secondaryDimension Secondary dimension (eventAction or eventName)
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting event categories
    * @returns Promise with the API response
    */
-  async getCategory(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string = '',
-    secondaryDimension: string = '',
-    flat: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded) params.expanded = expanded;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-    if (flat) params.flat = flat;
-
-    return this.client.request('Events.getCategory', params);
+  async getCategory(params: EventDimensionParams): Promise<any> {
+    return this.client.request("Events.getCategory", params);
   }
 
   /**
    * Get event actions
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the actions
-   * @param secondaryDimension Secondary dimension (eventName or eventCategory)
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting event actions
    * @returns Promise with the API response
    */
-  async getAction(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string = '',
-    secondaryDimension: string = '',
-    flat: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded) params.expanded = expanded;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-    if (flat) params.flat = flat;
-
-    return this.client.request('Events.getAction', params);
+  async getAction(params: EventDimensionParams): Promise<any> {
+    return this.client.request("Events.getAction", params);
   }
 
   /**
    * Get event names
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the names
-   * @param secondaryDimension Secondary dimension (eventAction or eventCategory)
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting event names
    * @returns Promise with the API response
    */
-  async getName(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string = '',
-    secondaryDimension: string = '',
-    flat: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded) params.expanded = expanded;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-    if (flat) params.flat = flat;
-
-    return this.client.request('Events.getName', params);
+  async getName(params: EventDimensionParams): Promise<any> {
+    return this.client.request("Events.getName", params);
   }
 
   /**
    * Get action from category ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting actions from a category ID
    * @returns Promise with the API response
    */
-  async getActionFromCategoryId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getActionFromCategoryId', params);
+  async getActionFromCategoryId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getActionFromCategoryId", params);
   }
 
   /**
    * Get name from category ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting names from a category ID
    * @returns Promise with the API response
    */
-  async getNameFromCategoryId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getNameFromCategoryId', params);
+  async getNameFromCategoryId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getNameFromCategoryId", params);
   }
 
   /**
    * Get category from action ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting categories from an action ID
    * @returns Promise with the API response
    */
-  async getCategoryFromActionId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getCategoryFromActionId', params);
+  async getCategoryFromActionId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getCategoryFromActionId", params);
   }
 
   /**
    * Get name from action ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting names from an action ID
    * @returns Promise with the API response
    */
-  async getNameFromActionId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getNameFromActionId', params);
+  async getNameFromActionId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getNameFromActionId", params);
   }
 
   /**
    * Get action from name ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting actions from a name ID
    * @returns Promise with the API response
    */
-  async getActionFromNameId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getActionFromNameId', params);
+  async getActionFromNameId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getActionFromNameId", params);
   }
 
   /**
    * Get category from name ID
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting categories from a name ID
    * @returns Promise with the API response
    */
-  async getCategoryFromNameId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Events.getCategoryFromNameId', params);
+  async getCategoryFromNameId(params: EventSubtableParams): Promise<any> {
+    return this.client.request("Events.getCategoryFromNameId", params);
   }
 }

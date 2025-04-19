@@ -3,7 +3,47 @@
  * API for plugin PrivacyManager to manage privacy-related features
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for data subjects operations
+ */
+export interface DataSubjectsParams extends RequestParams {
+  /** The visits to process */
+  visits: any[];
+}
+
+/**
+ * Parameters for finding data subjects
+ */
+export interface FindDataSubjectsParams extends RequestParams {
+  /** The ID of the site */
+  idSite: number | string;
+  /** Segment to find data subjects */
+  segment: string;
+}
+
+/**
+ * Parameters for anonymizing raw data
+ */
+export interface AnonymizeRawDataParams extends RequestParams {
+  /** Array of site IDs */
+  idSites: (number | string)[];
+  /** Date to anonymize data for */
+  date: string;
+  /** Whether to anonymize IP addresses */
+  anonymizeIp?: string;
+  /** Whether to anonymize location data */
+  anonymizeLocation?: string;
+  /** Whether to anonymize user IDs */
+  anonymizeUserId?: string;
+  /** Visit columns to unset */
+  unsetVisitColumns?: string[];
+  /** Link visit action columns to unset */
+  unsetLinkVisitActionColumns?: string[];
+  /** Password confirmation */
+  passwordConfirmation?: string;
+}
 
 export class PrivacyManagerModule {
   /**
@@ -13,74 +53,41 @@ export class PrivacyManagerModule {
 
   /**
    * Delete data subjects (visits)
-   * 
-   * @param visits The visits to delete
+   *
+   * @param params Parameters for deleting data subjects
    */
-  async deleteDataSubjects(visits: any[]): Promise<any> {
-    return this.core.request<any>('PrivacyManager.deleteDataSubjects', {
-      visits,
-    });
+  async deleteDataSubjects(params: DataSubjectsParams): Promise<any> {
+    return this.core.request<any>("PrivacyManager.deleteDataSubjects", params);
   }
 
   /**
    * Export data subjects (visits)
-   * 
-   * @param visits The visits to export
+   *
+   * @param params Parameters for exporting data subjects
    */
-  async exportDataSubjects(visits: any[]): Promise<any> {
-    return this.core.request<any>('PrivacyManager.exportDataSubjects', {
-      visits,
-    });
+  async exportDataSubjects(params: DataSubjectsParams): Promise<any> {
+    return this.core.request<any>("PrivacyManager.exportDataSubjects", params);
   }
 
   /**
    * Find data subjects based on segment
-   * 
-   * @param idSite The ID of the site
-   * @param segment Segment to find data subjects
+   *
+   * @param params Parameters for finding data subjects
    */
-  async findDataSubjects(
-    idSite: number | string,
-    segment: string
-  ): Promise<any> {
-    return this.core.request<any>('PrivacyManager.findDataSubjects', {
-      idSite,
-      segment,
-    });
+  async findDataSubjects(params: FindDataSubjectsParams): Promise<any> {
+    return this.core.request<any>("PrivacyManager.findDataSubjects", params);
   }
 
   /**
    * Anonymize some raw data
-   * 
-   * @param idSites Array of site IDs
-   * @param date Date to anonymize data for
-   * @param anonymizeIp Whether to anonymize IP addresses
-   * @param anonymizeLocation Whether to anonymize location data
-   * @param anonymizeUserId Whether to anonymize user IDs
-   * @param unsetVisitColumns Visit columns to unset
-   * @param unsetLinkVisitActionColumns Link visit action columns to unset
-   * @param passwordConfirmation Password confirmation
+   *
+   * @param params Parameters for anonymizing raw data
    */
-  async anonymizeSomeRawData(
-    idSites: (number | string)[],
-    date: string,
-    anonymizeIp: string = '',
-    anonymizeLocation: string = '',
-    anonymizeUserId: string = '',
-    unsetVisitColumns: string[] = [],
-    unsetLinkVisitActionColumns: string[] = [],
-    passwordConfirmation: string = ''
-  ): Promise<any> {
-    return this.core.request<any>('PrivacyManager.anonymizeSomeRawData', {
-      idSites,
-      date,
-      anonymizeIp,
-      anonymizeLocation,
-      anonymizeUserId,
-      unsetVisitColumns,
-      unsetLinkVisitActionColumns,
-      passwordConfirmation,
-    });
+  async anonymizeSomeRawData(params: AnonymizeRawDataParams): Promise<any> {
+    return this.core.request<any>(
+      "PrivacyManager.anonymizeSomeRawData",
+      params
+    );
   }
 
   /**
@@ -88,7 +95,7 @@ export class PrivacyManagerModule {
    */
   async getAvailableVisitColumnsToAnonymize(): Promise<string[]> {
     return this.core.request<string[]>(
-      'PrivacyManager.getAvailableVisitColumnsToAnonymize'
+      "PrivacyManager.getAvailableVisitColumnsToAnonymize"
     );
   }
 
@@ -97,7 +104,7 @@ export class PrivacyManagerModule {
    */
   async getAvailableLinkVisitActionColumnsToAnonymize(): Promise<string[]> {
     return this.core.request<string[]>(
-      'PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize'
+      "PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize"
     );
   }
 }

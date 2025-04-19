@@ -3,7 +3,21 @@
  * Provides access to screen resolution analytics
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for Resolution API methods
+ */
+export interface ResolutionParams extends RequestParams {
+  /** The ID of the site */
+  idSite: number | string;
+  /** The period to analyze */
+  period: string;
+  /** The date to analyze */
+  date: string;
+  /** Segment to apply */
+  segment?: string;
+}
 
 export class ResolutionModule {
   /**
@@ -14,44 +28,18 @@ export class ResolutionModule {
   /**
    * Get screen resolution data
    *
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   * @param params Parameters for getting screen resolution data
    */
-  async getResolution(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Resolution.getResolution', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getResolution(params: ResolutionParams): Promise<any> {
+    return this.core.request<any>("Resolution.getResolution", params);
   }
 
   /**
    * Get device configuration data
    *
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   * @param params Parameters for getting device configuration data
    */
-  async getConfiguration(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Resolution.getConfiguration', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getConfiguration(params: ResolutionParams): Promise<any> {
+    return this.core.request<any>("Resolution.getConfiguration", params);
   }
 }

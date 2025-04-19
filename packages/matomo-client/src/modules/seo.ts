@@ -3,7 +3,15 @@
  * Provides access to SEO metrics for a specified URL
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for SEO rank requests
+ */
+export interface SeoRankParams extends RequestParams {
+  /** The URL to get SEO metrics for */
+  url: string;
+}
 
 export class SeoModule {
   /**
@@ -15,9 +23,9 @@ export class SeoModule {
    * Get SEO rank data for a URL
    * This provides metrics like Bing indexed pages and domain age
    *
-   * @param url The URL to get SEO metrics for
+   * @param params Parameters containing the URL to analyze
    */
-  async getRank(url: string): Promise<any> {
-    return this.core.request<any>('SEO.getRank', { url });
+  async getRank(params: SeoRankParams): Promise<any> {
+    return this.core.request<any>("SEO.getRank", params);
   }
 }

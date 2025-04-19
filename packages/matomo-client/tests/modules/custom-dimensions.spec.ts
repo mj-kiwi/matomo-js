@@ -13,7 +13,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should get custom dimension", async () => {
-    await module.getCustomDimension(1, 2, "day", "yesterday");
+    await module.getCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      period: "day",
+      date: "yesterday",
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.getCustomDimension",
       {
@@ -26,16 +31,16 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should get custom dimension with optional parameters", async () => {
-    await module.getCustomDimension(
-      1,
-      2,
-      "day",
-      "yesterday",
-      "segment",
-      1,
-      1,
-      3
-    );
+    await module.getCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      period: "day",
+      date: "yesterday",
+      segment: "segment",
+      expanded: 1,
+      flat: 1,
+      idSubtable: 3,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.getCustomDimension",
       {
@@ -52,7 +57,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should configure new custom dimension", async () => {
-    await module.configureNewCustomDimension(1, "name", "visit", 1);
+    await module.configureNewCustomDimension({
+      idSite: 1,
+      name: "name",
+      scope: "visit",
+      active: 1,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureNewCustomDimension",
       {
@@ -68,14 +78,14 @@ describe("CustomDimensionsModule", () => {
 
   it("should configure new custom dimension with custom extractions and case sensitivity", async () => {
     const extractions = ["url", "path"];
-    await module.configureNewCustomDimension(
-      1,
-      "name",
-      "visit",
-      1,
-      extractions,
-      0
-    );
+    await module.configureNewCustomDimension({
+      idSite: 1,
+      name: "name",
+      scope: "visit",
+      active: 1,
+      extractions: extractions,
+      caseSensitive: 0,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureNewCustomDimension",
       {
@@ -90,7 +100,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should handle boolean true active parameter in configureNewCustomDimension", async () => {
-    await module.configureNewCustomDimension(1, "name", "visit", true);
+    await module.configureNewCustomDimension({
+      idSite: 1,
+      name: "name",
+      scope: "visit",
+      active: true,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureNewCustomDimension",
       {
@@ -105,7 +120,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should handle boolean false active parameter in configureNewCustomDimension", async () => {
-    await module.configureNewCustomDimension(1, "name", "visit", false);
+    await module.configureNewCustomDimension({
+      idSite: 1,
+      name: "name",
+      scope: "visit",
+      active: false,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureNewCustomDimension",
       {
@@ -120,7 +140,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should configure existing custom dimension", async () => {
-    await module.configureExistingCustomDimension(1, 2, "Updated name", 1);
+    await module.configureExistingCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      name: "Updated name",
+      active: 1,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureExistingCustomDimension",
       {
@@ -135,14 +160,14 @@ describe("CustomDimensionsModule", () => {
 
   it("should configure existing custom dimension with custom parameters", async () => {
     const extractions = ["url", "path"];
-    await module.configureExistingCustomDimension(
-      1,
-      2,
-      "Updated name",
-      0,
-      extractions,
-      1
-    );
+    await module.configureExistingCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      name: "Updated name",
+      active: 0,
+      extractions: extractions,
+      caseSensitive: 1,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureExistingCustomDimension",
       {
@@ -157,7 +182,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should handle boolean true active parameter in configureExistingCustomDimension", async () => {
-    await module.configureExistingCustomDimension(1, 2, "Updated name", true);
+    await module.configureExistingCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      name: "Updated name",
+      active: true,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureExistingCustomDimension",
       {
@@ -171,7 +201,12 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should handle boolean false active parameter in configureExistingCustomDimension", async () => {
-    await module.configureExistingCustomDimension(1, 2, "Updated name", false);
+    await module.configureExistingCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      name: "Updated name",
+      active: false,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureExistingCustomDimension",
       {
@@ -185,14 +220,14 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should handle empty caseSensitive parameter in configureExistingCustomDimension", async () => {
-    await module.configureExistingCustomDimension(
-      1,
-      2,
-      "Updated name",
-      1,
-      "Array",
-      ""
-    );
+    await module.configureExistingCustomDimension({
+      idDimension: 1,
+      idSite: 2,
+      name: "Updated name",
+      active: 1,
+      extractions: "Array",
+      caseSensitive: "",
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.configureExistingCustomDimension",
       {
@@ -201,12 +236,15 @@ describe("CustomDimensionsModule", () => {
         name: "Updated name",
         active: 1,
         extractions: "Array",
+        caseSensitive: "",
       }
     );
   });
 
   it("should get configured custom dimensions", async () => {
-    await module.getConfiguredCustomDimensions(1);
+    await module.getConfiguredCustomDimensions({
+      idSite: 1,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.getConfiguredCustomDimensions",
       {
@@ -216,7 +254,10 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should get configured custom dimensions having scope", async () => {
-    await module.getConfiguredCustomDimensionsHavingScope(1, "visit");
+    await module.getConfiguredCustomDimensionsHavingScope({
+      idSite: 1,
+      scope: "visit",
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.getConfiguredCustomDimensionsHavingScope",
       {
@@ -227,7 +268,9 @@ describe("CustomDimensionsModule", () => {
   });
 
   it("should get available scopes", async () => {
-    await module.getAvailableScopes(1);
+    await module.getAvailableScopes({
+      idSite: 1,
+    });
     expect(mockClient.request).toHaveBeenCalledWith(
       "CustomDimensions.getAvailableScopes",
       {

@@ -14,7 +14,12 @@ describe("DevicePlugins Module", () => {
   });
 
   it("getPlugin should make correct API call with all parameters", async () => {
-    await devicePlugins.getPlugin(1, "day", "2022-01-01", "deviceType==mobile");
+    await devicePlugins.getPlugin({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+      segment: "deviceType==mobile",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith("DevicePlugins.getPlugin", {
       idSite: 1,
@@ -25,7 +30,11 @@ describe("DevicePlugins Module", () => {
   });
 
   it("getPlugin should handle default parameters", async () => {
-    await devicePlugins.getPlugin(1, "day", "2022-01-01");
+    await devicePlugins.getPlugin({
+      idSite: 1,
+      period: "day",
+      date: "2022-01-01",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith("DevicePlugins.getPlugin", {
       idSite: 1,

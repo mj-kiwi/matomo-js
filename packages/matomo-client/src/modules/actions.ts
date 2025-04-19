@@ -3,7 +3,57 @@
  * Provides access to all page tracking data such as page views, page titles, downloads, outlinks
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for Action module methods
+ */
+export interface ActionReportParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for URL and title related reports
+ */
+export interface PageReportParams extends ActionReportParams {
+  /** Whether to expand the results */
+  expanded?: string | boolean;
+  /** If set, get data for this subtable */
+  idSubtable?: string | number;
+  /** Recursion depth for tree reports */
+  depth?: string | number;
+  /** Whether to return a flattened report */
+  flat?: string | boolean;
+}
+
+/**
+ * Parameters for specific page URL/title lookup
+ */
+export interface SpecificPageParams extends ActionReportParams {
+  /** URL of the page to get metrics for (must be URL encoded) */
+  pageUrl?: string;
+  /** Title of the page to get metrics for (must be URL encoded) */
+  pageName?: string;
+  /** URL of the download to get metrics for (must be URL encoded) */
+  downloadUrl?: string;
+  /** URL of the outlink to get metrics for (must be URL encoded) */
+  outlinkUrl?: string;
+}
+
+/**
+ * Parameters for the get method
+ */
+export interface ActionsGetParams extends ActionReportParams {
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
 
 export class ActionsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,98 +61,29 @@ export class ActionsModule {
   /**
    * Get actions data for multiple periods or sites
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for getting actions data
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('Actions.get', params);
+  async get(params: ActionsGetParams): Promise<any> {
+    return this.client.request("Actions.get", params);
   }
 
   /**
    * Get page URLs
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page URLs
-   * @param idSubtable If set, get data for this subtable
-   * @param depth Recursion depth for tree reports
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting page URLs
    */
-  async getPageUrls(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    depth: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (depth !== '') params.depth = depth;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getPageUrls', params);
+  async getPageUrls(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getPageUrls", params);
   }
 
   /**
    * Get page URLs following site search
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page URLs
-   * @param idSubtable If set, get data for this subtable
+   * @param params Parameters for getting page URLs following site search
    */
-  async getPageUrlsFollowingSiteSearch(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-
+  async getPageUrlsFollowingSiteSearch(params: PageReportParams): Promise<any> {
     return this.client.request(
-      'Actions.getPageUrlsFollowingSiteSearch',
+      "Actions.getPageUrlsFollowingSiteSearch",
       params
     );
   }
@@ -110,33 +91,13 @@ export class ActionsModule {
   /**
    * Get page titles following site search
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page titles
-   * @param idSubtable If set, get data for this subtable
+   * @param params Parameters for getting page titles following site search
    */
   async getPageTitlesFollowingSiteSearch(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = ''
+    params: PageReportParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-
     return this.client.request(
-      'Actions.getPageTitlesFollowingSiteSearch',
+      "Actions.getPageTitlesFollowingSiteSearch",
       params
     );
   }
@@ -144,425 +105,136 @@ export class ActionsModule {
   /**
    * Get entry page URLs
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page URLs
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting entry page URLs
    */
-  async getEntryPageUrls(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getEntryPageUrls', params);
+  async getEntryPageUrls(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getEntryPageUrls", params);
   }
 
   /**
    * Get exit page URLs
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page URLs
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting exit page URLs
    */
-  async getExitPageUrls(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getExitPageUrls', params);
+  async getExitPageUrls(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getExitPageUrls", params);
   }
 
   /**
    * Get metrics for a specific page URL
    *
-   * @param pageUrl URL of the page to get metrics for (must be URL encoded)
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metrics for a specific page URL
    */
   async getPageUrl(
-    pageUrl: string,
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: SpecificPageParams & { pageUrl: string }
   ): Promise<any> {
-    const params: RequestParams = {
-      pageUrl,
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getPageUrl', params);
+    return this.client.request("Actions.getPageUrl", params);
   }
 
   /**
    * Get page titles
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page titles
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting page titles
    */
-  async getPageTitles(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getPageTitles', params);
+  async getPageTitles(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getPageTitles", params);
   }
 
   /**
    * Get entry page titles
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page titles
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting entry page titles
    */
-  async getEntryPageTitles(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getEntryPageTitles', params);
+  async getEntryPageTitles(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getEntryPageTitles", params);
   }
 
   /**
    * Get exit page titles
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the page titles
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting exit page titles
    */
-  async getExitPageTitles(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getExitPageTitles', params);
+  async getExitPageTitles(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getExitPageTitles", params);
   }
 
   /**
    * Get metrics for a specific page title
    *
-   * @param pageName Title of the page to get metrics for (must be URL encoded)
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metrics for a specific page title
    */
   async getPageTitle(
-    pageName: string,
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: SpecificPageParams & { pageName: string }
   ): Promise<any> {
-    const params: RequestParams = {
-      pageName,
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getPageTitle', params);
+    return this.client.request("Actions.getPageTitle", params);
   }
 
   /**
    * Get file downloads
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the downloads
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting file downloads
    */
-  async getDownloads(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getDownloads', params);
+  async getDownloads(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getDownloads", params);
   }
 
   /**
    * Get metrics for a specific download
    *
-   * @param downloadUrl URL of the download to get metrics for (must be URL encoded)
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metrics for a specific download
    */
   async getDownload(
-    downloadUrl: string,
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: SpecificPageParams & { downloadUrl: string }
   ): Promise<any> {
-    const params: RequestParams = {
-      downloadUrl,
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getDownload', params);
+    return this.client.request("Actions.getDownload", params);
   }
 
   /**
    * Get outlinks
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the outlinks
-   * @param idSubtable If set, get data for this subtable
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for getting outlinks
    */
-  async getOutlinks(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    idSubtable: string | number = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('Actions.getOutlinks', params);
+  async getOutlinks(params: PageReportParams): Promise<any> {
+    return this.client.request("Actions.getOutlinks", params);
   }
 
   /**
    * Get metrics for a specific outlink
    *
-   * @param outlinkUrl URL of the outlink to get metrics for (must be URL encoded)
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metrics for a specific outlink
    */
   async getOutlink(
-    outlinkUrl: string,
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: SpecificPageParams & { outlinkUrl: string }
   ): Promise<any> {
-    const params: RequestParams = {
-      outlinkUrl,
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getOutlink', params);
+    return this.client.request("Actions.getOutlink", params);
   }
 
   /**
    * Get site search keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting site search keywords
    */
-  async getSiteSearchKeywords(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getSiteSearchKeywords', params);
+  async getSiteSearchKeywords(params: ActionReportParams): Promise<any> {
+    return this.client.request("Actions.getSiteSearchKeywords", params);
   }
 
   /**
    * Get site search keywords with no results
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting site search keywords with no results
    */
   async getSiteSearchNoResultKeywords(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: ActionReportParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getSiteSearchNoResultKeywords', params);
+    return this.client.request("Actions.getSiteSearchNoResultKeywords", params);
   }
 
   /**
    * Get site search categories
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting site search categories
    */
-  async getSiteSearchCategories(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Actions.getSiteSearchCategories', params);
+  async getSiteSearchCategories(params: ActionReportParams): Promise<any> {
+    return this.client.request("Actions.getSiteSearchCategories", params);
   }
 }

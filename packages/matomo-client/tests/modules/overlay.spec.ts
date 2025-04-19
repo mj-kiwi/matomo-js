@@ -39,7 +39,7 @@ describe("OverlayModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await overlayModule.getTranslations(1);
+      const result = await overlayModule.getTranslations({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Overlay.getTranslations",
@@ -59,12 +59,12 @@ describe("OverlayModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await overlayModule.getFollowingPages(
-        "https://example.com/",
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await overlayModule.getFollowingPages({
+        url: "https://example.com/",
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Overlay.getFollowingPages",
@@ -86,13 +86,13 @@ describe("OverlayModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await overlayModule.getFollowingPages(
-        "https://example.com/",
-        1,
-        "day",
-        "2023-01-01",
-        "browserName==Chrome"
-      );
+      const result = await overlayModule.getFollowingPages({
+        url: "https://example.com/",
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Overlay.getFollowingPages",

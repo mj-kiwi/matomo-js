@@ -38,11 +38,11 @@ describe("ResolutionModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await resolutionModule.getResolution(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await resolutionModule.getResolution({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Resolution.getResolution",
@@ -63,12 +63,12 @@ describe("ResolutionModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await resolutionModule.getResolution(
-        1,
-        "day",
-        "2023-01-01",
-        "browserName==Chrome"
-      );
+      const result = await resolutionModule.getResolution({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Resolution.getResolution",
@@ -91,11 +91,11 @@ describe("ResolutionModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await resolutionModule.getConfiguration(
-        1,
-        "day",
-        "2023-01-01"
-      );
+      const result = await resolutionModule.getConfiguration({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Resolution.getConfiguration",
@@ -116,12 +116,12 @@ describe("ResolutionModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await resolutionModule.getConfiguration(
-        1,
-        "day",
-        "2023-01-01",
-        "deviceType==desktop"
-      );
+      const result = await resolutionModule.getConfiguration({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Resolution.getConfiguration",

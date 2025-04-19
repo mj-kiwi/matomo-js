@@ -39,11 +39,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       const mockResponse = { keywords: ["search term 1", "search term 2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await searchEngineKeywordsPerformanceModule.getKeywords(
-        1,
-        "month",
-        "last30"
-      );
+      const result = await searchEngineKeywordsPerformanceModule.getKeywords({
+        idSite: 1,
+        period: "month",
+        date: "last30",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywords",
@@ -63,11 +63,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsImported(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsImported({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsImported",
@@ -87,11 +87,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsGoogle(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsGoogle({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsGoogle",
@@ -111,11 +111,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsBing(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsBing({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsBing",
@@ -135,11 +135,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsYandex(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsYandex({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsYandex",
@@ -161,11 +161,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleWeb(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleWeb({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsGoogleWeb",
@@ -187,11 +187,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleImage(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleImage({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsGoogleImage",
@@ -213,11 +213,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleVideo(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleVideo({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsGoogleVideo",
@@ -239,11 +239,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleNews(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getKeywordsGoogleNews({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getKeywordsGoogleNews",
@@ -268,11 +268,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getCrawlingOverviewBing(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getCrawlingOverviewBing({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getCrawlingOverviewBing",
@@ -297,11 +297,11 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await searchEngineKeywordsPerformanceModule.getCrawlingOverviewYandex(
-          1,
-          "month",
-          "last30"
-        );
+        await searchEngineKeywordsPerformanceModule.getCrawlingOverviewYandex({
+          idSite: 1,
+          period: "month",
+          date: "last30",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SearchEngineKeywordsPerformance.getCrawlingOverviewYandex",
@@ -335,7 +335,7 @@ describe("SearchEngineKeywordsPerformanceModule", () => {
 
       const result =
         await searchEngineKeywordsPerformanceModule.getCrawlingErrorExamplesBing(
-          1
+          { idSite: 1 }
         );
 
       expect(mockClient.request).toHaveBeenCalledWith(

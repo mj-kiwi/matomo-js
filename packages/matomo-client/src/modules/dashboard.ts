@@ -3,7 +3,61 @@
  * This API gives information about dashboards.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for getting dashboards
+ */
+export interface GetDashboardsParams extends RequestParams {
+  /** Optional user login */
+  login?: string;
+  /** Return default dashboard if no dashboards found ('1' by default) */
+  returnDefaultIfEmpty?: string;
+}
+
+/**
+ * Parameters for creating a new dashboard
+ */
+export interface CreateNewDashboardParams extends RequestParams {
+  /** User login */
+  login: string;
+  /** Dashboard name */
+  dashboardName?: string;
+  /** Whether to add default widgets ('1' by default) */
+  addDefaultWidgets?: string;
+}
+
+/**
+ * Parameters for removing a dashboard
+ */
+export interface RemoveDashboardParams extends RequestParams {
+  /** Dashboard ID */
+  idDashboard: string | number;
+  /** Optional user login */
+  login?: string;
+}
+
+/**
+ * Parameters for copying a dashboard
+ */
+export interface CopyDashboardParams extends RequestParams {
+  /** Dashboard ID to copy */
+  idDashboard: string | number;
+  /** Target user login to copy to */
+  copyToUser: string;
+  /** New dashboard name */
+  dashboardName?: string;
+}
+
+/**
+ * Parameters for resetting dashboard layout
+ */
+export interface ResetDashboardLayoutParams extends RequestParams {
+  /** Dashboard ID */
+  idDashboard: string | number;
+  /** Optional user login */
+  login?: string;
+}
 
 export class DashboardModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,106 +65,52 @@ export class DashboardModule {
   /**
    * Get available dashboards
    *
-   * @param login Optional user login
-   * @param returnDefaultIfEmpty Return default dashboard if no dashboards found ('1' by default)
+   * @param params Parameters for getting dashboards
    * @returns Promise with the API response containing dashboards
    */
-  async getDashboards(
-    login: string = '',
-    returnDefaultIfEmpty: string = '1'
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (login) params.login = login;
-    if (returnDefaultIfEmpty !== '1')
-      params.returnDefaultIfEmpty = returnDefaultIfEmpty;
-
-    return this.client.request('Dashboard.getDashboards', params);
+  async getDashboards(params: GetDashboardsParams = {}): Promise<any> {
+    return this.client.request("Dashboard.getDashboards", params);
   }
 
   /**
    * Create a new dashboard for a user
    *
-   * @param login User login
-   * @param dashboardName Dashboard name (optional)
-   * @param addDefaultWidgets Whether to add default widgets ('1' by default)
+   * @param params Parameters for creating a new dashboard
    * @returns Promise with the API response
    */
   async createNewDashboardForUser(
-    login: string,
-    dashboardName: string = '',
-    addDefaultWidgets: string = '1'
+    params: CreateNewDashboardParams
   ): Promise<any> {
-    const params: RequestParams = {
-      login,
-    };
-
-    if (dashboardName) params.dashboardName = dashboardName;
-    if (addDefaultWidgets !== '1') params.addDefaultWidgets = addDefaultWidgets;
-
-    return this.client.request('Dashboard.createNewDashboardForUser', params);
+    return this.client.request("Dashboard.createNewDashboardForUser", params);
   }
 
   /**
    * Remove a dashboard
    *
-   * @param idDashboard Dashboard ID
-   * @param login Optional user login
+   * @param params Parameters for removing a dashboard
    * @returns Promise with the API response
    */
-  async removeDashboard(
-    idDashboard: string | number,
-    login: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idDashboard,
-    };
-
-    if (login) params.login = login;
-
-    return this.client.request('Dashboard.removeDashboard', params);
+  async removeDashboard(params: RemoveDashboardParams): Promise<any> {
+    return this.client.request("Dashboard.removeDashboard", params);
   }
 
   /**
    * Copy a dashboard to another user
    *
-   * @param idDashboard Dashboard ID to copy
-   * @param copyToUser Target user login to copy to
-   * @param dashboardName New dashboard name (optional)
+   * @param params Parameters for copying a dashboard
    * @returns Promise with the API response
    */
-  async copyDashboardToUser(
-    idDashboard: string | number,
-    copyToUser: string,
-    dashboardName: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idDashboard,
-      copyToUser,
-    };
-
-    if (dashboardName) params.dashboardName = dashboardName;
-
-    return this.client.request('Dashboard.copyDashboardToUser', params);
+  async copyDashboardToUser(params: CopyDashboardParams): Promise<any> {
+    return this.client.request("Dashboard.copyDashboardToUser", params);
   }
 
   /**
    * Reset dashboard layout to default
    *
-   * @param idDashboard Dashboard ID
-   * @param login Optional user login
+   * @param params Parameters for resetting dashboard layout
    * @returns Promise with the API response
    */
-  async resetDashboardLayout(
-    idDashboard: string | number,
-    login: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idDashboard,
-    };
-
-    if (login) params.login = login;
-
-    return this.client.request('Dashboard.resetDashboardLayout', params);
+  async resetDashboardLayout(params: ResetDashboardLayoutParams): Promise<any> {
+    return this.client.request("Dashboard.resetDashboardLayout", params);
   }
 }

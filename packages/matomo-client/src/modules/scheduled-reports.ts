@@ -10,7 +10,103 @@
  * about Scheduled Email reports in Matomo.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for deleteReport method
+ */
+export interface DeleteReportParams extends RequestParams {
+  /** ID of the report to delete */
+  idReport: number | string;
+}
+
+/**
+ * Parameters for addReport method
+ */
+export interface AddReportParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Report description */
+  description: string;
+  /** Report period (day, week, month, year) */
+  period: string;
+  /** Hour when the report should be sent */
+  hour: number | string;
+  /** Type of the report */
+  reportType: string;
+  /** Format of the report */
+  reportFormat: string;
+  /** Reports to include */
+  reports: string | string[] | Record<string, any>;
+  /** Additional parameters */
+  parameters: string | Record<string, any>;
+  /** Optional segment ID */
+  idSegment?: string;
+  /** Evolution period metric */
+  evolutionPeriodFor?: string;
+  /** Evolution period value */
+  evolutionPeriodN?: string | number;
+  /** Additional period parameter */
+  periodParam?: string;
+}
+
+/**
+ * Parameters for updateReport method
+ */
+export interface UpdateReportParams extends AddReportParams {
+  /** ID of the report to update */
+  idReport: number | string;
+}
+
+/**
+ * Parameters for getReports method
+ */
+export interface GetReportsParams extends RequestParams {
+  /** Optional Site ID */
+  idSite?: number | string;
+  /** Optional report period */
+  period?: string;
+  /** Optional report ID */
+  idReport?: number | string;
+  /** Optional parameter to filter reports */
+  ifSuperUserReturnOnlySuperUserReports?: boolean | string;
+  /** Optional segment ID */
+  idSegment?: string;
+}
+
+/**
+ * Parameters for generateReport method
+ */
+export interface GenerateReportParams extends RequestParams {
+  /** ID of the report to generate */
+  idReport: number | string;
+  /** Date string for the report */
+  date: string;
+  /** Optional language for the report */
+  language?: string;
+  /** Optional output type */
+  outputType?: string;
+  /** Optional period */
+  period?: string;
+  /** Optional report format */
+  reportFormat?: string;
+  /** Optional additional parameters */
+  parameters?: string | Record<string, any>;
+}
+
+/**
+ * Parameters for sendReport method
+ */
+export interface SendReportParams extends RequestParams {
+  /** ID of the report to send */
+  idReport: number | string;
+  /** Optional period for the report */
+  period?: string;
+  /** Optional date for the report */
+  date?: string;
+  /** Optional parameter to force sending the report */
+  force?: boolean | string;
+}
 
 export class ScheduledReportsModule {
   constructor(private client: CoreReportingClient) {}
@@ -18,213 +114,101 @@ export class ScheduledReportsModule {
   /**
    * Add a new scheduled report
    *
-   * @param idSite Site ID
-   * @param description Report description
-   * @param period Report period (day, week, month, year)
-   * @param hour Hour when the report should be sent
-   * @param reportType Type of the report
-   * @param reportFormat Format of the report
-   * @param reports Reports to include
-   * @param parameters Additional parameters
-   * @param idSegment Optional segment ID
-   * @param evolutionPeriodFor Evolution period metric
-   * @param evolutionPeriodN Evolution period value
-   * @param periodParam Additional period parameter
+   * @param params Parameters for adding a new report
    * @returns Promise with the result of the API call
    */
-  async addReport(
-    idSite: number | string,
-    description: string,
-    period: string,
-    hour: number | string,
-    reportType: string,
-    reportFormat: string,
-    reports: string | string[] | Record<string, any>,
-    parameters: Record<string, any>,
-    idSegment: string = '',
-    evolutionPeriodFor: string = 'prev',
-    evolutionPeriodN: string | number = '',
-    periodParam: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      description,
-      period,
-      hour,
-      reportType,
-      reportFormat,
-      reports: typeof reports === 'object' ? JSON.stringify(reports) : reports,
-      parameters: JSON.stringify(parameters),
-    };
+  async addReport(params: AddReportParams): Promise<any> {
+    const formattedParams = { ...params };
 
-    if (idSegment) params.idSegment = idSegment;
-    if (evolutionPeriodFor !== 'prev')
-      params.evolutionPeriodFor = evolutionPeriodFor;
-    if (evolutionPeriodN !== '') params.evolutionPeriodN = evolutionPeriodN;
-    if (periodParam) params.periodParam = periodParam;
+    if (
+      typeof formattedParams.reports === "object" &&
+      !Array.isArray(formattedParams.reports)
+    ) {
+      formattedParams.reports = JSON.stringify(formattedParams.reports);
+    }
 
-    return this.client.request('ScheduledReports.addReport', params);
+    if (typeof formattedParams.parameters === "object") {
+      formattedParams.parameters = JSON.stringify(formattedParams.parameters);
+    }
+
+    return this.client.request("ScheduledReports.addReport", formattedParams);
   }
 
   /**
    * Update an existing scheduled report
    *
-   * @param idReport ID of the report to update
-   * @param idSite Site ID
-   * @param description Report description
-   * @param period Report period (day, week, month, year)
-   * @param hour Hour when the report should be sent
-   * @param reportType Type of the report
-   * @param reportFormat Format of the report
-   * @param reports Reports to include
-   * @param parameters Additional parameters
-   * @param idSegment Optional segment ID
-   * @param evolutionPeriodFor Evolution period metric
-   * @param evolutionPeriodN Evolution period value
-   * @param periodParam Additional period parameter
+   * @param params Parameters for updating an existing report
    * @returns Promise with the result of the API call
    */
-  async updateReport(
-    idReport: number | string,
-    idSite: number | string,
-    description: string,
-    period: string,
-    hour: number | string,
-    reportType: string,
-    reportFormat: string,
-    reports: string | string[] | Record<string, any>,
-    parameters: Record<string, any>,
-    idSegment: string = '',
-    evolutionPeriodFor: string = 'prev',
-    evolutionPeriodN: string | number = '',
-    periodParam: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idReport,
-      idSite,
-      description,
-      period,
-      hour,
-      reportType,
-      reportFormat,
-      reports: typeof reports === 'object' ? JSON.stringify(reports) : reports,
-      parameters: JSON.stringify(parameters),
-    };
+  async updateReport(params: UpdateReportParams): Promise<any> {
+    const formattedParams = { ...params };
 
-    if (idSegment) params.idSegment = idSegment;
-    if (evolutionPeriodFor !== 'prev')
-      params.evolutionPeriodFor = evolutionPeriodFor;
-    if (evolutionPeriodN !== '') params.evolutionPeriodN = evolutionPeriodN;
-    if (periodParam) params.periodParam = periodParam;
+    if (
+      typeof formattedParams.reports === "object" &&
+      !Array.isArray(formattedParams.reports)
+    ) {
+      formattedParams.reports = JSON.stringify(formattedParams.reports);
+    }
 
-    return this.client.request('ScheduledReports.updateReport', params);
+    if (typeof formattedParams.parameters === "object") {
+      formattedParams.parameters = JSON.stringify(formattedParams.parameters);
+    }
+
+    return this.client.request(
+      "ScheduledReports.updateReport",
+      formattedParams
+    );
   }
 
   /**
    * Delete an existing scheduled report
    *
-   * @param idReport ID of the report to delete
+   * @param params Parameters containing the report ID to delete
    * @returns Promise with the result of the API call
    */
-  async deleteReport(idReport: number | string): Promise<any> {
-    return this.client.request('ScheduledReports.deleteReport', {
-      idReport,
-    });
+  async deleteReport(params: DeleteReportParams): Promise<any> {
+    return this.client.request("ScheduledReports.deleteReport", params);
   }
 
   /**
    * Get scheduled reports
    *
-   * @param idSite Optional Site ID
-   * @param period Optional report period
-   * @param idReport Optional report ID
-   * @param ifSuperUserReturnOnlySuperUserReports Optional parameter to filter reports
-   * @param idSegment Optional segment ID
+   * @param params Parameters for getting reports
    * @returns Promise with the list of reports
    */
-  async getReports(
-    idSite: number | string = '',
-    period: string = '',
-    idReport: number | string = '',
-    ifSuperUserReturnOnlySuperUserReports: boolean | string = '',
-    idSegment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (idSite !== '') params.idSite = idSite;
-    if (period) params.period = period;
-    if (idReport !== '') params.idReport = idReport;
-    if (ifSuperUserReturnOnlySuperUserReports !== '')
-      params.ifSuperUserReturnOnlySuperUserReports =
-        ifSuperUserReturnOnlySuperUserReports;
-    if (idSegment) params.idSegment = idSegment;
-
-    return this.client.request('ScheduledReports.getReports', params);
+  async getReports(params: GetReportsParams = {}): Promise<any> {
+    return this.client.request("ScheduledReports.getReports", params);
   }
 
   /**
    * Generate a scheduled report
    *
-   * @param idReport ID of the report to generate
-   * @param date Date string for the report
-   * @param language Optional language for the report
-   * @param outputType Optional output type
-   * @param period Optional period
-   * @param reportFormat Optional report format
-   * @param parameters Optional additional parameters
+   * @param params Parameters for generating a report
    * @returns Promise with the generated report
    */
-  async generateReport(
-    idReport: number | string,
-    date: string,
-    language: string = '',
-    outputType: string = '',
-    period: string = '',
-    reportFormat: string = '',
-    parameters: string | Record<string, any> = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idReport,
-      date,
-    };
+  async generateReport(params: GenerateReportParams): Promise<any> {
+    const formattedParams = { ...params };
 
-    if (language) params.language = language;
-    if (outputType) params.outputType = outputType;
-    if (period) params.period = period;
-    if (reportFormat) params.reportFormat = reportFormat;
-    if (parameters) {
-      params.parameters =
-        typeof parameters === 'object'
-          ? JSON.stringify(parameters)
-          : parameters;
+    if (
+      formattedParams.parameters &&
+      typeof formattedParams.parameters === "object"
+    ) {
+      formattedParams.parameters = JSON.stringify(formattedParams.parameters);
     }
 
-    return this.client.request('ScheduledReports.generateReport', params);
+    return this.client.request(
+      "ScheduledReports.generateReport",
+      formattedParams
+    );
   }
 
   /**
    * Send a scheduled report
    *
-   * @param idReport ID of the report to send
-   * @param period Optional period for the report
-   * @param date Optional date for the report
-   * @param force Optional parameter to force sending the report
+   * @param params Parameters for sending a report
    * @returns Promise with the result of the API call
    */
-  async sendReport(
-    idReport: number | string,
-    period: string = '',
-    date: string = '',
-    force: boolean | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idReport,
-    };
-
-    if (period) params.period = period;
-    if (date) params.date = date;
-    if (force !== '') params.force = force;
-
-    return this.client.request('ScheduledReports.sendReport', params);
+  async sendReport(params: SendReportParams): Promise<any> {
+    return this.client.request("ScheduledReports.sendReport", params);
   }
 }

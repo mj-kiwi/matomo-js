@@ -36,7 +36,9 @@ describe("PrivacyManagerModule", () => {
       const mockResponse = { success: true, count: 1 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await privacyManagerModule.deleteDataSubjects(visits);
+      const result = await privacyManagerModule.deleteDataSubjects({
+        visits,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "PrivacyManager.deleteDataSubjects",
@@ -52,7 +54,9 @@ describe("PrivacyManagerModule", () => {
       const mockResponse = { data: [{ visit_id: 123, visitor_id: "abc" }] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await privacyManagerModule.exportDataSubjects(visits);
+      const result = await privacyManagerModule.exportDataSubjects({
+        visits,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "PrivacyManager.exportDataSubjects",
@@ -67,10 +71,10 @@ describe("PrivacyManagerModule", () => {
       const mockResponse = { visits: [{ id: 123, visitorId: "abc" }] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await privacyManagerModule.findDataSubjects(
-        1,
-        "userId==abc"
-      );
+      const result = await privacyManagerModule.findDataSubjects({
+        idSite: 1,
+        segment: "userId==abc",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "PrivacyManager.findDataSubjects",
@@ -85,22 +89,16 @@ describe("PrivacyManagerModule", () => {
       const mockResponse = { processed: 10 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await privacyManagerModule.anonymizeSomeRawData(
-        [1, 2],
-        "2023-01-01"
-      );
+      const result = await privacyManagerModule.anonymizeSomeRawData({
+        idSites: [1, 2],
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "PrivacyManager.anonymizeSomeRawData",
         {
           idSites: [1, 2],
           date: "2023-01-01",
-          anonymizeIp: "",
-          anonymizeLocation: "",
-          anonymizeUserId: "",
-          unsetVisitColumns: [],
-          unsetLinkVisitActionColumns: [],
-          passwordConfirmation: "",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -110,16 +108,16 @@ describe("PrivacyManagerModule", () => {
       const mockResponse = { processed: 10 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await privacyManagerModule.anonymizeSomeRawData(
-        [1, 2],
-        "2023-01-01",
-        "1",
-        "1",
-        "1",
-        ["user_id", "config_id"],
-        ["action_name"],
-        "password123"
-      );
+      const result = await privacyManagerModule.anonymizeSomeRawData({
+        idSites: [1, 2],
+        date: "2023-01-01",
+        anonymizeIp: "1",
+        anonymizeLocation: "1",
+        anonymizeUserId: "1",
+        unsetVisitColumns: ["user_id", "config_id"],
+        unsetLinkVisitActionColumns: ["action_name"],
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "PrivacyManager.anonymizeSomeRawData",

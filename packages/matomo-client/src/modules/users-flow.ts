@@ -4,7 +4,61 @@
  * or visitors navigate through your website.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for UsersFlow API methods
+ */
+export interface UsersFlowParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional data source for the flow report */
+  dataSource?: string;
+}
+
+/**
+ * Parameters for getUsersFlowPretty method
+ */
+export interface UsersFlowPrettyParams extends UsersFlowParams {
+  /** Whether to expand the flow */
+  expanded?: string | boolean;
+  /** Whether to return a flattened report */
+  flat?: string | boolean;
+  /** If set, get data for this subtable */
+  idSubtable?: string | number;
+}
+
+/**
+ * Parameters for getUsersFlow method
+ */
+export interface GetUsersFlowParams extends UsersFlowParams {
+  /** Maximum number of actions per step */
+  limitActionsPerStep?: string | number;
+  /** Step number to explore */
+  exploreStep?: string | number;
+  /** URL to explore */
+  exploreUrl?: string;
+  /** Whether to expand the flow */
+  expanded?: string | boolean;
+}
+
+/**
+ * Parameters for getInteractionActions method
+ */
+export interface InteractionActionsParams extends UsersFlowParams {
+  /** Position of the interaction */
+  interactionPosition: string | number;
+  /** Offset for actions per step */
+  offsetActionsPerStep?: string | number;
+  /** If set, get data for this subtable */
+  idSubtable?: string | number;
+}
 
 export class UsersFlowModule {
   constructor(private client: CoreReportingClient) {}
@@ -12,123 +66,34 @@ export class UsersFlowModule {
   /**
    * Get a formatted user flow report
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the flow
-   * @param flat Whether to return a flattened report
-   * @param idSubtable If set, get data for this subtable
-   * @param dataSource Data source for the flow report
+   * @param params Parameters for getting a formatted user flow
    */
-  async getUsersFlowPretty(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | boolean = '',
-    flat: string | boolean = '',
-    idSubtable: string | number = '',
-    dataSource: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (flat !== '') params.flat = flat;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (dataSource) params.dataSource = dataSource;
-
-    return this.client.request('UsersFlow.getUsersFlowPretty', params);
+  async getUsersFlowPretty(params: UsersFlowPrettyParams): Promise<any> {
+    return this.client.request("UsersFlow.getUsersFlowPretty", params);
   }
 
   /**
    * Get the raw user flow data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param limitActionsPerStep Maximum number of actions per step
-   * @param exploreStep Step number to explore
-   * @param exploreUrl URL to explore
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the flow
-   * @param dataSource Data source for the flow report
+   * @param params Parameters for getting raw user flow data
    */
-  async getUsersFlow(
-    idSite: number | string,
-    period: string,
-    date: string,
-    limitActionsPerStep: string | number = '5',
-    exploreStep: string | number = '',
-    exploreUrl: string = '',
-    segment: string = '',
-    expanded: string | boolean = '',
-    dataSource: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (limitActionsPerStep !== '5')
-      params.limitActionsPerStep = limitActionsPerStep;
-    if (exploreStep !== '') params.exploreStep = exploreStep;
-    if (exploreUrl) params.exploreUrl = exploreUrl;
-    if (segment) params.segment = segment;
-    if (expanded !== '') params.expanded = expanded;
-    if (dataSource) params.dataSource = dataSource;
-
-    return this.client.request('UsersFlow.getUsersFlow', params);
+  async getUsersFlow(params: GetUsersFlowParams): Promise<any> {
+    return this.client.request("UsersFlow.getUsersFlow", params);
   }
 
   /**
    * Get details about interactions at a specific position
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param interactionPosition Position of the interaction
-   * @param offsetActionsPerStep Offset for actions per step
-   * @param segment Optional segment definition
-   * @param idSubtable If set, get data for this subtable
-   * @param dataSource Data source for the report
+   * @param params Parameters for getting interaction actions
    */
-  async getInteractionActions(
-    idSite: number | string,
-    period: string,
-    date: string,
-    interactionPosition: string | number,
-    offsetActionsPerStep: string | number = '',
-    segment: string = '',
-    idSubtable: string | number = '',
-    dataSource: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      interactionPosition,
-    };
-
-    if (offsetActionsPerStep !== '')
-      params.offsetActionsPerStep = offsetActionsPerStep;
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (dataSource) params.dataSource = dataSource;
-
-    return this.client.request('UsersFlow.getInteractionActions', params);
+  async getInteractionActions(params: InteractionActionsParams): Promise<any> {
+    return this.client.request("UsersFlow.getInteractionActions", params);
   }
 
   /**
    * Get the available data sources for users flow reports
    */
   async getAvailableDataSources(): Promise<any> {
-    return this.client.request('UsersFlow.getAvailableDataSources', {});
+    return this.client.request("UsersFlow.getAvailableDataSources", {});
   }
 }

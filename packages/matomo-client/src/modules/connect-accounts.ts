@@ -3,7 +3,39 @@
  * Provides methods for connecting external accounts and integrations
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for Google account operations
+ */
+export interface AccountParams extends RequestParams {
+  /** Google account ID */
+  accountId: string;
+}
+
+/**
+ * Parameters for GTM workspace operations
+ */
+export interface WorkspaceParams extends RequestParams {
+  /** Google account ID */
+  accountId: string;
+  /** GTM container ID */
+  containerId: string;
+}
+
+/**
+ * Parameters for creating a Matomo tag
+ */
+export interface CreateTagParams extends RequestParams {
+  /** Google account ID */
+  accountId: string;
+  /** GTM container ID */
+  containerId: string;
+  /** GTM workspace ID */
+  workspaceId: string;
+  /** Information about the parent tag/trigger/etc. */
+  parentInfo: Record<string, any> | any[] | string;
+}
 
 export class ConnectAccountsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,55 +43,39 @@ export class ConnectAccountsModule {
   /**
    * Get a list of Google Tag Manager containers
    *
-   * @param accountId Google account ID
+   * @param params Parameters containing the Google account ID
    * @returns List of GTM containers
    */
-  async getGtmContainersList(accountId: string): Promise<any> {
-    return this.client.request('ConnectAccounts.getGtmContainersList', {
-      accountId,
-    });
+  async getGtmContainersList(params: AccountParams): Promise<any> {
+    return this.client.request("ConnectAccounts.getGtmContainersList", params);
   }
 
   /**
    * Get a list of Google Tag Manager workspaces
    *
-   * @param accountId Google account ID
-   * @param containerId GTM container ID
+   * @param params Parameters containing account and container IDs
    * @returns List of GTM workspaces
    */
-  async getGtmWorkspaceList(
-    accountId: string,
-    containerId: string
-  ): Promise<any> {
-    return this.client.request('ConnectAccounts.getGtmWorkspaceList', {
-      accountId,
-      containerId,
-    });
+  async getGtmWorkspaceList(params: WorkspaceParams): Promise<any> {
+    return this.client.request("ConnectAccounts.getGtmWorkspaceList", params);
   }
 
   /**
    * Create a Matomo tag in Google Tag Manager
    *
-   * @param accountId Google account ID
-   * @param containerId GTM container ID
-   * @param workspaceId GTM workspace ID
-   * @param parentInfo Information about the parent tag/trigger/etc.
+   * @param params Parameters for creating a Matomo tag
    * @returns Information about the created tag
    */
-  async createMatomoTag(
-    accountId: string,
-    containerId: string,
-    workspaceId: string,
-    parentInfo: Record<string, any> | any[]
-  ): Promise<any> {
-    return this.client.request('ConnectAccounts.createMatomoTag', {
-      accountId,
-      containerId,
-      workspaceId,
-      parentInfo:
-        typeof parentInfo === 'object'
-          ? JSON.stringify(parentInfo)
-          : parentInfo,
-    });
+  async createMatomoTag(params: CreateTagParams): Promise<any> {
+    const requestParams = { ...params };
+
+    if (typeof params.parentInfo === "object") {
+      requestParams.parentInfo = JSON.stringify(params.parentInfo);
+    }
+
+    return this.client.request(
+      "ConnectAccounts.createMatomoTag",
+      requestParams
+    );
   }
 }

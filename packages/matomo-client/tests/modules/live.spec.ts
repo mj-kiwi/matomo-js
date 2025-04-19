@@ -40,7 +40,10 @@ describe("LiveModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getCounters(1, 30);
+      const result = await liveModule.getCounters({
+        idSite: 1,
+        lastMinutes: 30,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Live.getCounters", {
         idSite: 1,
@@ -58,13 +61,13 @@ describe("LiveModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getCounters(
-        1,
-        30,
-        "deviceType==mobile",
-        ["visits", "actions"],
-        ["visitsConverted"]
-      );
+      const result = await liveModule.getCounters({
+        idSite: 1,
+        lastMinutes: 30,
+        segment: "deviceType==mobile",
+        showColumns: ["visits", "actions"],
+        hideColumns: ["visitsConverted"],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Live.getCounters", {
         idSite: 1,
@@ -82,7 +85,9 @@ describe("LiveModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.isVisitorProfileEnabled(1);
+      const result = await liveModule.isVisitorProfileEnabled({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.isVisitorProfileEnabled",
@@ -109,7 +114,9 @@ describe("LiveModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getLastVisitsDetails(1);
+      const result = await liveModule.getLastVisitsDetails({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getLastVisitsDetails",
@@ -134,17 +141,17 @@ describe("LiveModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getLastVisitsDetails(
-        1,
-        "day",
-        "yesterday",
-        "deviceType==mobile",
-        10,
-        1619712000,
-        true,
-        false,
-        true
-      );
+      const result = await liveModule.getLastVisitsDetails({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        segment: "deviceType==mobile",
+        countVisitorsToFetch: 10,
+        minTimestamp: 1619712000,
+        flat: true,
+        doNotFetchActions: false,
+        enhanced: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getLastVisitsDetails",
@@ -180,7 +187,9 @@ describe("LiveModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getVisitorProfile(1);
+      const result = await liveModule.getVisitorProfile({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getVisitorProfile",
@@ -206,12 +215,12 @@ describe("LiveModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getVisitorProfile(
-        1,
-        "abc123",
-        "deviceType==mobile",
-        10
-      );
+      const result = await liveModule.getVisitorProfile({
+        idSite: 1,
+        visitorId: "abc123",
+        segment: "deviceType==mobile",
+        limitVisits: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getVisitorProfile",
@@ -231,7 +240,9 @@ describe("LiveModule", () => {
       const mockResponse = "abc123";
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getMostRecentVisitorId(1);
+      const result = await liveModule.getMostRecentVisitorId({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getMostRecentVisitorId",
@@ -246,10 +257,10 @@ describe("LiveModule", () => {
       const mockResponse = "def456";
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getMostRecentVisitorId(
-        1,
-        "deviceType==mobile"
-      );
+      const result = await liveModule.getMostRecentVisitorId({
+        idSite: 1,
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getMostRecentVisitorId",
@@ -267,7 +278,9 @@ describe("LiveModule", () => {
       const mockResponse = "2023-04-27 15:30:45";
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getMostRecentVisitsDateTime(1);
+      const result = await liveModule.getMostRecentVisitsDateTime({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getMostRecentVisitsDateTime",
@@ -282,11 +295,11 @@ describe("LiveModule", () => {
       const mockResponse = "2023-04-26 18:15:22";
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await liveModule.getMostRecentVisitsDateTime(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await liveModule.getMostRecentVisitsDateTime({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Live.getMostRecentVisitsDateTime",
