@@ -1,5 +1,11 @@
 # @mj-kiwi/matomo-client
 
+## 1.0.0
+
+### Major Changes
+
+- [#3](https://github.com/mj-kiwi/matomo-js/pull/3) [`253e784`](https://github.com/mj-kiwi/matomo-js/commit/253e78439c02d4059e2bcd577b0f57fbed407705) Thanks [@mj-kiwi](https://github.com/mj-kiwi)! - refactor(matomo-client): convert the positional parameters to object parameters
+
 ## 0.2.0
 
 ### Minor Changes
