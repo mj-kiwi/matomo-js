@@ -3,11 +3,45 @@
  * The Custom Variables API lets you access reports for your Custom Variables names and values.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
 
 export interface SlotUsage {
   name: string;
   scope: string;
+}
+
+/**
+ * Parameters for getting custom variables
+ */
+export interface CustomVariablesParams extends RequestParams {
+  /** Site ID */
+  idSite: string | number;
+  /** Period (day, week, month, year, etc.) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Whether to expand the results */
+  expanded?: string | number;
+  /** Whether to return a flat array */
+  flat?: string | number;
+}
+
+/**
+ * Parameters for getting custom variable values
+ */
+export interface CustomVariableValuesParams extends CustomVariablesParams {
+  /** Subtable ID (custom variable ID) */
+  idSubtable: string | number;
+}
+
+/**
+ * Parameters for getting usage of slots
+ */
+export interface SlotsUsageParams extends RequestParams {
+  /** Site ID */
+  idSite: string | number;
 }
 
 export class CustomVariablesModule {
@@ -16,73 +50,24 @@ export class CustomVariablesModule {
   /**
    * Get custom variables reports
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the results
-   * @param flat Whether to return a flat array
+   * @param params Parameters for getting custom variables
    * @returns Custom variables report data
    */
-  async getCustomVariables(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | number = '',
-    flat: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (expanded !== '') {
-      params.expanded = expanded;
-    }
-
-    if (flat !== '') {
-      params.flat = flat;
-    }
-
-    return this.client.request('CustomVariables.getCustomVariables', params);
+  async getCustomVariables(params: CustomVariablesParams): Promise<any> {
+    return this.client.request("CustomVariables.getCustomVariables", params);
   }
 
   /**
    * Get custom variable values for a specific variable ID
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param idSubtable Subtable ID (custom variable ID)
-   * @param segment Optional segment definition
+   * @param params Parameters for getting custom variable values
    * @returns Custom variable values data
    */
   async getCustomVariablesValuesFromNameId(
-    idSite: string | number,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
+    params: CustomVariableValuesParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
     return this.client.request(
-      'CustomVariables.getCustomVariablesValuesFromNameId',
+      "CustomVariables.getCustomVariablesValuesFromNameId",
       params
     );
   }
@@ -90,14 +75,12 @@ export class CustomVariablesModule {
   /**
    * Get information about the usage of custom variable slots
    *
-   * @param idSite Site ID
+   * @param params Parameters containing site ID
    * @returns Information about custom variable slots usage
    */
   async getUsagesOfSlots(
-    idSite: string | number
+    params: SlotsUsageParams
   ): Promise<Record<string, SlotUsage>> {
-    return this.client.request('CustomVariables.getUsagesOfSlots', {
-      idSite,
-    });
+    return this.client.request("CustomVariables.getUsagesOfSlots", params);
   }
 }

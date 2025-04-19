@@ -29,13 +29,13 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get overall visit summary", async () => {
-    const result = await visitsSummary.get(
-      1,
-      "day",
-      "yesterday",
-      "deviceType==mobile",
-      "nb_visits,bounce_rate"
-    );
+    const result = await visitsSummary.get({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+      segment: "deviceType==mobile",
+      columns: "nb_visits,bounce_rate",
+    });
 
     expect(client.request).toHaveBeenCalledWith("VisitsSummary.get", {
       idSite: 1,
@@ -58,12 +58,12 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get visits count", async () => {
-    const result = await visitsSummary.getVisits(
-      1,
-      "week",
-      "last7",
-      "country==FR"
-    );
+    const result = await visitsSummary.getVisits({
+      idSite: 1,
+      period: "week",
+      date: "last7",
+      segment: "country==FR",
+    });
 
     expect(client.request).toHaveBeenCalledWith("VisitsSummary.getVisits", {
       idSite: 1,
@@ -84,7 +84,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get unique visitors", async () => {
-    const result = await visitsSummary.getUniqueVisitors(1, "month", "last30");
+    const result = await visitsSummary.getUniqueVisitors({
+      idSite: 1,
+      period: "month",
+      date: "last30",
+    });
 
     expect(client.request).toHaveBeenCalledWith(
       "VisitsSummary.getUniqueVisitors",
@@ -106,7 +110,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get users count", async () => {
-    const result = await visitsSummary.getUsers(1, "year", "2023");
+    const result = await visitsSummary.getUsers({
+      idSite: 1,
+      period: "year",
+      date: "2023",
+    });
 
     expect(client.request).toHaveBeenCalledWith("VisitsSummary.getUsers", {
       idSite: 1,
@@ -125,11 +133,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get actions count", async () => {
-    const result = await visitsSummary.getActions(
-      1,
-      "range",
-      "2023-01-01,2023-01-31"
-    );
+    const result = await visitsSummary.getActions({
+      idSite: 1,
+      period: "range",
+      date: "2023-01-01,2023-01-31",
+    });
 
     expect(client.request).toHaveBeenCalledWith("VisitsSummary.getActions", {
       idSite: 1,
@@ -148,7 +156,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get max actions", async () => {
-    const result = await visitsSummary.getMaxActions(1, "day", "yesterday");
+    const result = await visitsSummary.getMaxActions({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(client.request).toHaveBeenCalledWith("VisitsSummary.getMaxActions", {
       idSite: 1,
@@ -167,7 +179,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get bounce count", async () => {
-    const result = await visitsSummary.getBounceCount(1, "day", "yesterday");
+    const result = await visitsSummary.getBounceCount({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(client.request).toHaveBeenCalledWith(
       "VisitsSummary.getBounceCount",
@@ -189,11 +205,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get visits converted", async () => {
-    const result = await visitsSummary.getVisitsConverted(
-      1,
-      "day",
-      "yesterday"
-    );
+    const result = await visitsSummary.getVisitsConverted({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(client.request).toHaveBeenCalledWith(
       "VisitsSummary.getVisitsConverted",
@@ -215,11 +231,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get sum visits length", async () => {
-    const result = await visitsSummary.getSumVisitsLength(
-      1,
-      "day",
-      "yesterday"
-    );
+    const result = await visitsSummary.getSumVisitsLength({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(client.request).toHaveBeenCalledWith(
       "VisitsSummary.getSumVisitsLength",
@@ -241,11 +257,11 @@ describe("VisitsSummaryModule", () => {
   });
 
   it("should get pretty sum visits length", async () => {
-    const result = await visitsSummary.getSumVisitsLengthPretty(
-      1,
-      "day",
-      "yesterday"
-    );
+    const result = await visitsSummary.getSumVisitsLengthPretty({
+      idSite: 1,
+      period: "day",
+      date: "yesterday",
+    });
 
     expect(client.request).toHaveBeenCalledWith(
       "VisitsSummary.getSumVisitsLengthPretty",

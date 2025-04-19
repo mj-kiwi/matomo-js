@@ -44,7 +44,7 @@ describe("AdvertisingConversionExportModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await advertisingConversionExportModule.getConversionExports();
+        await advertisingConversionExportModule.getConversionExports({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.getConversionExports",
@@ -58,7 +58,9 @@ describe("AdvertisingConversionExportModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await advertisingConversionExportModule.getConversionExports(5);
+        await advertisingConversionExportModule.getConversionExports({
+          idSite: 5,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.getConversionExports",
@@ -81,7 +83,9 @@ describe("AdvertisingConversionExportModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await advertisingConversionExportModule.getConversionExport(123);
+        await advertisingConversionExportModule.getConversionExport({
+          idExport: 123,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.getConversionExport",
@@ -99,7 +103,10 @@ describe("AdvertisingConversionExportModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await advertisingConversionExportModule.deleteConversionExport(123, 5);
+        await advertisingConversionExportModule.deleteConversionExport({
+          idExport: 123,
+          idSite: 5,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.deleteConversionExport",
@@ -124,12 +131,12 @@ describe("AdvertisingConversionExportModule", () => {
 
       const parameters = { pixelId: "987654321" };
       const result =
-        await advertisingConversionExportModule.addConversionExport(
-          5,
-          "Facebook Conversion API",
-          "facebook",
-          parameters
-        );
+        await advertisingConversionExportModule.addConversionExport({
+          idSite: 5,
+          name: "Facebook Conversion API",
+          type: "facebook",
+          parameters: parameters,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.addConversionExport",
@@ -156,13 +163,13 @@ describe("AdvertisingConversionExportModule", () => {
 
       const parameters = { pixelId: "987654321" };
       const result =
-        await advertisingConversionExportModule.addConversionExport(
-          5,
-          "Facebook Conversion API",
-          "facebook",
-          parameters,
-          "Export conversions to Facebook"
-        );
+        await advertisingConversionExportModule.addConversionExport({
+          idSite: 5,
+          name: "Facebook Conversion API",
+          type: "facebook",
+          parameters: parameters,
+          description: "Export conversions to Facebook",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.addConversionExport",
@@ -184,7 +191,9 @@ describe("AdvertisingConversionExportModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await advertisingConversionExportModule.regenerateAccessToken(123);
+        await advertisingConversionExportModule.regenerateAccessToken({
+          idExport: 123,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.regenerateAccessToken",
@@ -209,14 +218,14 @@ describe("AdvertisingConversionExportModule", () => {
 
       const parameters = { accountId: "98765" };
       const result =
-        await advertisingConversionExportModule.updateConversionExport(
-          123,
-          5,
-          "Updated Google Ads Export",
-          "google",
-          parameters,
-          "Updated description"
-        );
+        await advertisingConversionExportModule.updateConversionExport({
+          idExport: 123,
+          idSite: 5,
+          name: "Updated Google Ads Export",
+          type: "google",
+          parameters: parameters,
+          description: "Updated description",
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.updateConversionExport",
@@ -243,13 +252,13 @@ describe("AdvertisingConversionExportModule", () => {
 
       const parameters = { accountId: "98765" };
       const result =
-        await advertisingConversionExportModule.updateConversionExport(
-          123,
-          5,
-          "Updated Google Ads Export",
-          "google",
-          parameters
-        );
+        await advertisingConversionExportModule.updateConversionExport({
+          idExport: 123,
+          idSite: 5,
+          name: "Updated Google Ads Export",
+          type: "google",
+          parameters: parameters,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "AdvertisingConversionExport.updateConversionExport",

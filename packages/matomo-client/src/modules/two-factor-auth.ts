@@ -3,27 +3,29 @@
  * API for the Two Factor Authentication plugin
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
 
 export class TwoFactorAuthModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
    * Reset a user's two-factor authentication
-   * 
-   * @param userLogin Login name of the user to reset
-   * @param passwordConfirmation User's password for confirmation
+   *
+   * @param options Object containing parameters
+   * @param options.userLogin Login name of the user to reset
+   * @param options.passwordConfirmation User's password for confirmation
    */
-  async resetTwoFactorAuth(
-    userLogin: string,
-    passwordConfirmation: string = ''
-  ): Promise<any> {
+  async resetTwoFactorAuth(options: {
+    userLogin: string;
+    passwordConfirmation?: string;
+  }): Promise<any> {
     const params: RequestParams = {
-      userLogin,
+      userLogin: options.userLogin,
     };
 
-    if (passwordConfirmation) params.passwordConfirmation = passwordConfirmation;
+    if (options.passwordConfirmation)
+      params.passwordConfirmation = options.passwordConfirmation;
 
-    return this.client.request('TwoFactorAuth.resetTwoFactorAuth', params);
+    return this.client.request("TwoFactorAuth.resetTwoFactorAuth", params);
   }
 }

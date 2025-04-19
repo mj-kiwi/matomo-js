@@ -35,11 +35,11 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getVisitInformationPerLocalTime(
-        1,
-        "day",
-        "today"
-      );
+      const result = await visitTimeModule.getVisitInformationPerLocalTime({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getVisitInformationPerLocalTime",
@@ -56,12 +56,12 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getVisitInformationPerLocalTime(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await visitTimeModule.getVisitInformationPerLocalTime({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getVisitInformationPerLocalTime",
@@ -81,11 +81,11 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getVisitInformationPerServerTime(
-        1,
-        "day",
-        "today"
-      );
+      const result = await visitTimeModule.getVisitInformationPerServerTime({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getVisitInformationPerServerTime",
@@ -102,13 +102,13 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getVisitInformationPerServerTime(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true
-      );
+      const result = await visitTimeModule.getVisitInformationPerServerTime({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        hideFutureHoursWhenToday: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getVisitInformationPerServerTime",
@@ -129,7 +129,11 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getByDayOfWeek(1, "day", "today");
+      const result = await visitTimeModule.getByDayOfWeek({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getByDayOfWeek",
@@ -146,12 +150,12 @@ describe("VisitTimeModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await visitTimeModule.getByDayOfWeek(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await visitTimeModule.getByDayOfWeek({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "VisitTime.getByDayOfWeek",

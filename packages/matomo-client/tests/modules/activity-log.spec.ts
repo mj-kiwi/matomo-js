@@ -48,7 +48,7 @@ describe("ActivityLogModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await activityLogModule.getEntries();
+      const result = await activityLogModule.getEntries({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getEntries",
@@ -71,14 +71,14 @@ describe("ActivityLogModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await activityLogModule.getEntries(
-        10,
-        5,
-        "user1",
-        "create_site",
-        "day",
-        "2023-01-02"
-      );
+      const result = await activityLogModule.getEntries({
+        offset: 10,
+        limit: 5,
+        filterByUserLogin: "user1",
+        filterByActivityType: "create_site",
+        period: "day",
+        date: "2023-01-02",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getEntries",
@@ -99,7 +99,7 @@ describe("ActivityLogModule", () => {
     it("should call the API with no filters and return count", async () => {
       mockClient.request.mockResolvedValueOnce({ value: 42 });
 
-      const result = await activityLogModule.getEntryCount();
+      const result = await activityLogModule.getEntryCount({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getEntryCount",
@@ -111,12 +111,12 @@ describe("ActivityLogModule", () => {
     it("should call the API with all provided filters", async () => {
       mockClient.request.mockResolvedValueOnce({ value: 5 });
 
-      const result = await activityLogModule.getEntryCount(
-        "user1",
-        "login",
-        "week",
-        "last7"
-      );
+      const result = await activityLogModule.getEntryCount({
+        filterByUserLogin: "user1",
+        filterByActivityType: "login",
+        period: "week",
+        date: "last7",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getEntryCount",
@@ -142,7 +142,7 @@ describe("ActivityLogModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await activityLogModule.getAllActivityTypes();
+      const result = await activityLogModule.getAllActivityTypes({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getAllActivityTypes",
@@ -157,7 +157,9 @@ describe("ActivityLogModule", () => {
       const mockResponse = ["login", "logout", "create_site"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await activityLogModule.getAllActivityTypes(3);
+      const result = await activityLogModule.getAllActivityTypes({
+        filterLimit: 3,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ActivityLog.getAllActivityTypes",

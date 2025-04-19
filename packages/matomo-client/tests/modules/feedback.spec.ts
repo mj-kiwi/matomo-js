@@ -14,12 +14,12 @@ describe("Feedback Module", () => {
   });
 
   it("sendFeedbackForFeature should make correct API call with all parameters", async () => {
-    await feedback.sendFeedbackForFeature(
-      "segmentation",
-      "yes",
-      "option1",
-      "Great feature!"
-    );
+    await feedback.sendFeedbackForFeature({
+      featureName: "segmentation",
+      like: "yes",
+      choice: "option1",
+      message: "Great feature!",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "Feedback.sendFeedbackForFeature",
@@ -33,7 +33,7 @@ describe("Feedback Module", () => {
   });
 
   it("sendFeedbackForFeature should handle required parameters only", async () => {
-    await feedback.sendFeedbackForFeature("segmentation");
+    await feedback.sendFeedbackForFeature({ featureName: "segmentation" });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "Feedback.sendFeedbackForFeature",
@@ -44,10 +44,10 @@ describe("Feedback Module", () => {
   });
 
   it("sendFeedbackForSurvey should make correct API call with all parameters", async () => {
-    await feedback.sendFeedbackForSurvey(
-      "How satisfied are you?",
-      "Very satisfied!"
-    );
+    await feedback.sendFeedbackForSurvey({
+      question: "How satisfied are you?",
+      message: "Very satisfied!",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "Feedback.sendFeedbackForSurvey",
@@ -59,7 +59,9 @@ describe("Feedback Module", () => {
   });
 
   it("sendFeedbackForSurvey should handle required parameters only", async () => {
-    await feedback.sendFeedbackForSurvey("How satisfied are you?");
+    await feedback.sendFeedbackForSurvey({
+      question: "How satisfied are you?",
+    });
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "Feedback.sendFeedbackForSurvey",
@@ -70,7 +72,7 @@ describe("Feedback Module", () => {
   });
 
   it("updateFeedbackReminderDate should make correct API call", async () => {
-    await feedback.updateFeedbackReminderDate();
+    await feedback.updateFeedbackReminderDate({}); // Pass empty object
 
     expect(mockClient.request).toHaveBeenCalledWith(
       "Feedback.updateFeedbackReminderDate",

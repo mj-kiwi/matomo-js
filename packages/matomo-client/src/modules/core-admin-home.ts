@@ -3,7 +3,17 @@
  * Provides methods for core administration tasks
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for tracking failure operations
+ */
+export interface TrackingFailureParams extends RequestParams {
+  /** Site ID the tracking failure belongs to */
+  idSite: string | number;
+  /** ID of the tracking failure to delete */
+  idFailure: string | number;
+}
 
 export class CoreAdminHomeModule {
   constructor(private client: CoreReportingClient) {}
@@ -14,24 +24,17 @@ export class CoreAdminHomeModule {
    * @returns Success status of the operation
    */
   async deleteAllTrackingFailures(): Promise<any> {
-    return this.client.request('CoreAdminHome.deleteAllTrackingFailures');
+    return this.client.request("CoreAdminHome.deleteAllTrackingFailures");
   }
 
   /**
    * Delete a specific tracking failure
    *
-   * @param idSite Site ID the tracking failure belongs to
-   * @param idFailure ID of the tracking failure to delete
+   * @param params Parameters containing site ID and failure ID
    * @returns Success status of the operation
    */
-  async deleteTrackingFailure(
-    idSite: string | number,
-    idFailure: string | number
-  ): Promise<any> {
-    return this.client.request('CoreAdminHome.deleteTrackingFailure', {
-      idSite,
-      idFailure,
-    });
+  async deleteTrackingFailure(params: TrackingFailureParams): Promise<any> {
+    return this.client.request("CoreAdminHome.deleteTrackingFailure", params);
   }
 
   /**
@@ -40,6 +43,6 @@ export class CoreAdminHomeModule {
    * @returns List of tracking failures in the system
    */
   async getTrackingFailures(): Promise<any> {
-    return this.client.request('CoreAdminHome.getTrackingFailures');
+    return this.client.request("CoreAdminHome.getTrackingFailures");
   }
 }

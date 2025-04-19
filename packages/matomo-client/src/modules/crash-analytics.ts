@@ -3,7 +3,159 @@
  * Provides access to the crash analytics functionality in Matomo
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for site-specific operations
+ */
+export interface SiteParams extends RequestParams {
+  /** Site ID */
+  idSite: string | number;
+}
+
+/**
+ * Parameters for search crash messages for merge
+ */
+export interface SearchCrashMessagesForMergeParams extends SiteParams {
+  /** Optional resource URI filter */
+  resourceUri?: string;
+  /** Optional search term to filter crash messages */
+  searchTerm?: string;
+  /** Maximum number of results to return */
+  limit?: string | number;
+  /** Offset for pagination */
+  offset?: string | number;
+  /** Array of crash IDs to exclude from results */
+  excludeIdLogCrashes?: string | any[];
+}
+
+/**
+ * Parameters for merging crashes
+ */
+export interface MergeCrashesParams extends SiteParams {
+  /** Array of crash IDs to merge */
+  idLogCrashes: string | any[];
+}
+
+/**
+ * Parameters for unmerging a crash group
+ */
+export interface UnmergeCrashGroupParams extends SiteParams {
+  /** ID of the crash group to unmerge */
+  idLogCrash: string | number;
+}
+
+/**
+ * Parameters for getting crash types
+ */
+export interface GetCrashTypesParams extends SiteParams {
+  /** Optional limit on the number of results */
+  filter_limit?: string | number;
+}
+
+/**
+ * Parameters for setting ignore crash status
+ */
+export interface SetIgnoreCrashParams extends SiteParams {
+  /** Crash ID to ignore/unignore */
+  idLogCrash: string | number;
+  /** 1 to ignore, 0 to unignore */
+  ignore?: string | number;
+}
+
+/**
+ * Parameters for getting crash summary
+ */
+export interface GetCrashSummaryParams extends SiteParams {
+  /** Crash ID */
+  idLogCrash: string | number;
+}
+
+/**
+ * Parameters for getting crash visit context
+ */
+export interface GetCrashVisitContextParams extends RequestParams {
+  /** Crash ID */
+  idLogCrash: string | number;
+  /** Site ID */
+  idSite: string | number;
+  /** Period to look for context (day, week, month, year, etc.) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Maximum number of actions to return */
+  filter_limit?: string | number;
+  /** Offset for pagination */
+  filter_offset?: string | number;
+  /** Whether to fetch recent actions before the crash */
+  fetchRecentActions?: string | number;
+}
+
+/**
+ * Parameters for getting all crashes
+ */
+export interface GetAllCrashesParams extends SiteParams {
+  /** Column to sort by */
+  filter_sort_column?: string;
+  /** Sort order (asc or desc) */
+  filter_sort_order?: string;
+  /** Maximum number of results */
+  filter_limit?: string | number;
+  /** Offset for pagination */
+  filter_offset?: string | number;
+}
+
+/**
+ * Common parameters for crash reports
+ */
+export interface CrashReportParams extends SiteParams {
+  /** Period (day, week, month, year, etc.) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for general crash analytics
+ */
+export interface GetCrashAnalyticsParams extends CrashReportParams {
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
+
+/**
+ * Parameters for crashes by URL or title reports
+ */
+export interface CrashesByParams extends CrashReportParams {
+  /** Whether to expand the results */
+  expanded?: string | number;
+  /** Whether to return a flat array */
+  flat?: string | number;
+}
+
+/**
+ * Parameters for crashes for specific subtable
+ */
+export interface CrashesForParams extends CrashReportParams {
+  /** Subtable ID */
+  idSubtable: string | number;
+}
+
+/**
+ * Parameters for getting recent crashes
+ */
+export interface RecentCrashesParams extends SiteParams {
+  /** Optional segment definition */
+  segment?: string;
+  /** Number of minutes to look back */
+  lastMinutes?: string | number;
+  /** Maximum number of results */
+  filter_limit?: string | number;
+}
 
 export class CrashAnalyticsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,38 +163,14 @@ export class CrashAnalyticsModule {
   /**
    * Search for crash messages that could be merged
    *
-   * @param idSite Site ID
-   * @param resourceUri Optional resource URI filter
-   * @param searchTerm Optional search term to filter crash messages
-   * @param limit Maximum number of results to return
-   * @param offset Offset for pagination
-   * @param excludeIdLogCrashes Array of crash IDs to exclude from results
+   * @param params Parameters for searching crash messages for merge
    * @returns List of crash messages that could be merged
    */
   async searchCrashMessagesForMerge(
-    idSite: string | number,
-    resourceUri: string = '',
-    searchTerm: string = '',
-    limit: string | number = '10',
-    offset: string | number = '0',
-    excludeIdLogCrashes: string | any[] = []
+    params: SearchCrashMessagesForMergeParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      resourceUri,
-      searchTerm,
-      limit,
-      offset,
-    };
-
-    if (Array.isArray(excludeIdLogCrashes) && excludeIdLogCrashes.length > 0) {
-      params.excludeIdLogCrashes = excludeIdLogCrashes;
-    } else if (excludeIdLogCrashes && typeof excludeIdLogCrashes === 'string') {
-      params.excludeIdLogCrashes = excludeIdLogCrashes;
-    }
-
     return this.client.request(
-      'CrashAnalytics.searchCrashMessagesForMerge',
+      "CrashAnalytics.searchCrashMessagesForMerge",
       params
     );
   }
@@ -50,303 +178,132 @@ export class CrashAnalyticsModule {
   /**
    * Merge multiple crashes into a single crash group
    *
-   * @param idSite Site ID
-   * @param idLogCrashes Array of crash IDs to merge
+   * @param params Parameters for merging crashes
    * @returns Result of the merge operation
    */
-  async mergeCrashes(
-    idSite: string | number,
-    idLogCrashes: string | any[]
-  ): Promise<any> {
-    return this.client.request('CrashAnalytics.mergeCrashes', {
-      idSite,
-      idLogCrashes,
-    });
+  async mergeCrashes(params: MergeCrashesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.mergeCrashes", params);
   }
 
   /**
    * Unmerge a crash group, separating the crashes
    *
-   * @param idSite Site ID
-   * @param idLogCrash ID of the crash group to unmerge
+   * @param params Parameters for unmerging a crash group
    * @returns Result of the unmerge operation
    */
-  async unmergeCrashGroup(
-    idSite: string | number,
-    idLogCrash: string | number
-  ): Promise<any> {
-    return this.client.request('CrashAnalytics.unmergeCrashGroup', {
-      idSite,
-      idLogCrash,
-    });
+  async unmergeCrashGroup(params: UnmergeCrashGroupParams): Promise<any> {
+    return this.client.request("CrashAnalytics.unmergeCrashGroup", params);
   }
 
   /**
    * Get all crash groups for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns List of crash groups
    */
-  async getCrashGroups(idSite: string | number): Promise<any> {
-    return this.client.request('CrashAnalytics.getCrashGroups', {
-      idSite,
-    });
+  async getCrashGroups(params: SiteParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashGroups", params);
   }
 
   /**
    * Get all crash types for a site
    *
-   * @param idSite Site ID
-   * @param filter_limit Optional limit on the number of results
+   * @param params Parameters for getting crash types
    * @returns List of crash types
    */
-  async getCrashTypes(
-    idSite: string | number,
-    filter_limit: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (filter_limit !== '') {
-      params.filter_limit = filter_limit;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashTypes', params);
+  async getCrashTypes(params: GetCrashTypesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashTypes", params);
   }
 
   /**
    * Set a crash to be ignored or unignored
    *
-   * @param idSite Site ID
-   * @param idLogCrash Crash ID to ignore/unignore
-   * @param ignore 1 to ignore, 0 to unignore
+   * @param params Parameters for setting ignore status
    * @returns Result of the operation
    */
-  async setIgnoreCrash(
-    idSite: string | number,
-    idLogCrash: string | number,
-    ignore: string | number = '1'
-  ): Promise<any> {
-    return this.client.request('CrashAnalytics.setIgnoreCrash', {
-      idSite,
-      idLogCrash,
-      ignore,
-    });
+  async setIgnoreCrash(params: SetIgnoreCrashParams): Promise<any> {
+    return this.client.request("CrashAnalytics.setIgnoreCrash", params);
   }
 
   /**
    * Get all ignored crashes for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns List of ignored crashes
    */
-  async getIgnoredCrashes(idSite: string | number): Promise<any> {
-    return this.client.request('CrashAnalytics.getIgnoredCrashes', {
-      idSite,
-    });
+  async getIgnoredCrashes(params: SiteParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getIgnoredCrashes", params);
   }
 
   /**
    * Get summary information about a specific crash
    *
-   * @param idSite Site ID
-   * @param idLogCrash Crash ID
+   * @param params Parameters for getting crash summary
    * @returns Summary information about the crash
    */
-  async getCrashSummary(
-    idSite: string | number,
-    idLogCrash: string | number
-  ): Promise<any> {
-    return this.client.request('CrashAnalytics.getCrashSummary', {
-      idSite,
-      idLogCrash,
-    });
+  async getCrashSummary(params: GetCrashSummaryParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashSummary", params);
   }
 
   /**
    * Get information about the visit context in which a crash occurred
    *
-   * @param idLogCrash Crash ID
-   * @param idSite Site ID
-   * @param period Period to look for context (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param filter_limit Maximum number of actions to return
-   * @param filter_offset Offset for pagination
-   * @param fetchRecentActions Whether to fetch recent actions before the crash
+   * @param params Parameters for getting crash visit context
    * @returns Visit context information for the crash
    */
-  async getCrashVisitContext(
-    idLogCrash: string | number,
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    filter_limit: string | number = '5',
-    filter_offset: string | number = '0',
-    fetchRecentActions: string | number = '1'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idLogCrash,
-      idSite,
-      period,
-      date,
-      filter_limit,
-      filter_offset,
-      fetchRecentActions,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashVisitContext', params);
+  async getCrashVisitContext(params: GetCrashVisitContextParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashVisitContext", params);
   }
 
   /**
    * Get all crashes for a site
    *
-   * @param idSite Site ID
-   * @param filter_sort_column Column to sort by
-   * @param filter_sort_order Sort order (asc or desc)
-   * @param filter_limit Maximum number of results
-   * @param filter_offset Offset for pagination
+   * @param params Parameters for getting all crashes
    * @returns List of all crashes
    */
-  async getAllCrashes(
-    idSite: string | number,
-    filter_sort_column: string = 'datetime_last_seen',
-    filter_sort_order: string = 'desc',
-    filter_limit: string | number = '10',
-    filter_offset: string | number = '0'
-  ): Promise<any> {
-    return this.client.request('CrashAnalytics.getAllCrashes', {
-      idSite,
-      filter_sort_column,
-      filter_sort_order,
-      filter_limit,
-      filter_offset,
-    });
+  async getAllCrashes(params: GetAllCrashesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getAllCrashes", params);
   }
 
   /**
    * Get crash analytics metrics
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for getting crash analytics
    * @returns Crash analytics metrics
    */
-  async get(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (columns) {
-      params.columns = columns;
-    }
-
-    return this.client.request('CrashAnalytics.get', params);
+  async get(params: GetCrashAnalyticsParams): Promise<any> {
+    return this.client.request("CrashAnalytics.get", params);
   }
 
   /**
    * Get all crash messages
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting all crash messages
    * @returns All crash messages
    */
-  async getAllCrashMessages(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getAllCrashMessages', params);
+  async getAllCrashMessages(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getAllCrashMessages", params);
   }
 
   /**
    * Get crash messages
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting crash messages
    * @returns Crash messages
    */
-  async getCrashMessages(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashMessages', params);
+  async getCrashMessages(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashMessages", params);
   }
 
   /**
    * Get unidentified crash messages
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting unidentified crash messages
    * @returns Unidentified crash messages
    */
-  async getUnidentifiedCrashMessages(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
+  async getUnidentifiedCrashMessages(params: CrashReportParams): Promise<any> {
     return this.client.request(
-      'CrashAnalytics.getUnidentifiedCrashMessages',
+      "CrashAnalytics.getUnidentifiedCrashMessages",
       params
     );
   }
@@ -354,535 +311,172 @@ export class CrashAnalyticsModule {
   /**
    * Get crashes that have disappeared
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting disappeared crashes
    * @returns Disappeared crashes
    */
-  async getDisappearedCrashes(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getDisappearedCrashes', params);
+  async getDisappearedCrashes(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getDisappearedCrashes", params);
   }
 
   /**
    * Get crashes that have reappeared
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting reappeared crashes
    * @returns Reappeared crashes
    */
-  async getReappearedCrashes(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getReappearedCrashes', params);
+  async getReappearedCrashes(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getReappearedCrashes", params);
   }
 
   /**
    * Get new crashes
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting new crashes
    * @returns New crashes
    */
-  async getNewCrashes(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getNewCrashes', params);
+  async getNewCrashes(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getNewCrashes", params);
   }
 
   /**
    * Get crashes by page URL
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the results
-   * @param flat Whether to return a flat array
+   * @param params Parameters for getting crashes by page URL
    * @returns Crashes by page URL
    */
-  async getCrashesByPageUrl(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | number = '',
-    flat: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (expanded !== '') {
-      params.expanded = expanded;
-    }
-
-    if (flat !== '') {
-      params.flat = flat;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesByPageUrl', params);
+  async getCrashesByPageUrl(params: CrashesByParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesByPageUrl", params);
   }
 
   /**
    * Get crashes for a specific page URL
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting crashes for page URL
    * @returns Crashes for the specified page URL
    */
-  async getCrashesForPageUrl(
-    idSite: string | number,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesForPageUrl', params);
+  async getCrashesForPageUrl(params: CrashesForParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesForPageUrl", params);
   }
 
   /**
    * Get crashes by page title
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the results
-   * @param flat Whether to return a flat array
+   * @param params Parameters for getting crashes by page title
    * @returns Crashes by page title
    */
-  async getCrashesByPageTitle(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | number = '',
-    flat: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (expanded !== '') {
-      params.expanded = expanded;
-    }
-
-    if (flat !== '') {
-      params.flat = flat;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesByPageTitle', params);
+  async getCrashesByPageTitle(params: CrashesByParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesByPageTitle", params);
   }
 
   /**
    * Get crashes for a specific page title
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting crashes for page title
    * @returns Crashes for the specified page title
    */
-  async getCrashesForPageTitle(
-    idSite: string | number,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesForPageTitle', params);
+  async getCrashesForPageTitle(params: CrashesForParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesForPageTitle", params);
   }
 
   /**
    * Get crashes by source file
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the results
-   * @param flat Whether to return a flat array
+   * @param params Parameters for getting crashes by source
    * @returns Crashes by source file
    */
-  async getCrashesBySource(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | number = '',
-    flat: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (expanded !== '') {
-      params.expanded = expanded;
-    }
-
-    if (flat !== '') {
-      params.flat = flat;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesBySource', params);
+  async getCrashesBySource(params: CrashesByParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesBySource", params);
   }
 
   /**
    * Get crashes for a specific source file
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting crashes for source
    * @returns Crashes for the specified source file
    */
-  async getCrashesForSource(
-    idSite: string | number,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesForSource', params);
+  async getCrashesForSource(params: CrashesForParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesForSource", params);
   }
 
   /**
    * Get crashes by category
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param expanded Whether to expand the results
-   * @param flat Whether to return a flat array
+   * @param params Parameters for getting crashes by category
    * @returns Crashes by category
    */
-  async getCrashesByCategory(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = '',
-    expanded: string | number = '',
-    flat: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    if (expanded !== '') {
-      params.expanded = expanded;
-    }
-
-    if (flat !== '') {
-      params.flat = flat;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesByCategory', params);
+  async getCrashesByCategory(params: CrashesByParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesByCategory", params);
   }
 
   /**
    * Get crashes for a specific category
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param idSubtable Subtable ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting crashes for category
    * @returns Crashes for the specified category
    */
-  async getCrashesForCategory(
-    idSite: string | number,
-    period: string,
-    date: string,
-    idSubtable: string | number,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSubtable,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesForCategory', params);
+  async getCrashesForCategory(params: CrashesForParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesForCategory", params);
   }
 
   /**
    * Get crashes from first-party sources
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting first-party crashes
    * @returns First-party crashes
    */
-  async getCrashesByFirstParty(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesByFirstParty', params);
+  async getCrashesByFirstParty(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesByFirstParty", params);
   }
 
   /**
    * Get crashes from third-party sources
    *
-   * @param idSite Site ID
-   * @param period Period (day, week, month, year, etc.)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting third-party crashes
    * @returns Third-party crashes
    */
-  async getCrashesByThirdParty(
-    idSite: string | number,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getCrashesByThirdParty', params);
+  async getCrashesByThirdParty(params: CrashReportParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getCrashesByThirdParty", params);
   }
 
   /**
    * Get an overview of recent crashes
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
-   * @param lastMinutes Number of minutes to look back
+   * @param params Parameters for getting last crashes overview
    * @returns Overview of recent crashes
    */
-  async getLastCrashesOverview(
-    idSite: string | number,
-    segment: string = '',
-    lastMinutes: string | number = '30'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getLastCrashesOverview', params);
+  async getLastCrashesOverview(params: RecentCrashesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getLastCrashesOverview", params);
   }
 
   /**
    * Get the most frequent recent crashes
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Maximum number of results
+   * @param params Parameters for getting top recent crashes
    * @returns Most frequent recent crashes
    */
-  async getLastTopCrashes(
-    idSite: string | number,
-    segment: string = '',
-    lastMinutes: string | number = '30',
-    filter_limit: string | number = '5'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getLastTopCrashes', params);
+  async getLastTopCrashes(params: RecentCrashesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getLastTopCrashes", params);
   }
 
   /**
    * Get new crashes that occurred recently
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Maximum number of results
+   * @param params Parameters for getting recent new crashes
    * @returns New crashes that occurred recently
    */
-  async getLastNewCrashes(
-    idSite: string | number,
-    segment: string = '',
-    lastMinutes: string | number = '30',
-    filter_limit: string | number = '10'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
-    return this.client.request('CrashAnalytics.getLastNewCrashes', params);
+  async getLastNewCrashes(params: RecentCrashesParams): Promise<any> {
+    return this.client.request("CrashAnalytics.getLastNewCrashes", params);
   }
 
   /**
    * Get crashes that reappeared recently
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Maximum number of results
+   * @param params Parameters for getting recent reappeared crashes
    * @returns Crashes that reappeared recently
    */
-  async getLastReappearedCrashes(
-    idSite: string | number,
-    segment: string = '',
-    lastMinutes: string | number = '30',
-    filter_limit: string | number = '10'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
+  async getLastReappearedCrashes(params: RecentCrashesParams): Promise<any> {
     return this.client.request(
-      'CrashAnalytics.getLastReappearedCrashes',
+      "CrashAnalytics.getLastReappearedCrashes",
       params
     );
   }
@@ -890,30 +484,12 @@ export class CrashAnalyticsModule {
   /**
    * Get crashes that disappeared recently
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Maximum number of results
+   * @param params Parameters for getting recent disappeared crashes
    * @returns Crashes that disappeared recently
    */
-  async getLastDisappearedCrashes(
-    idSite: string | number,
-    segment: string = '',
-    lastMinutes: string | number = '30',
-    filter_limit: string | number = '10'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
-    };
-
-    if (segment) {
-      params.segment = segment;
-    }
-
+  async getLastDisappearedCrashes(params: RecentCrashesParams): Promise<any> {
     return this.client.request(
-      'CrashAnalytics.getLastDisappearedCrashes',
+      "CrashAnalytics.getLastDisappearedCrashes",
       params
     );
   }

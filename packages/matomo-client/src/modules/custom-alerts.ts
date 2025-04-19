@@ -3,7 +3,83 @@
  * Provides methods to manage custom alerts in Matomo
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for alert-specific operations
+ */
+export interface AlertParams extends RequestParams {
+  /** Alert ID */
+  idAlert: string | number;
+}
+
+/**
+ * Parameters for retrieving historical alert values
+ */
+export interface AlertHistoryParams extends RequestParams {
+  /** Alert ID */
+  idAlert: string | number;
+  /** The number of past periods to retrieve */
+  subPeriodN: string | number;
+}
+
+/**
+ * Parameters for getting all alerts
+ */
+export interface GetAlertsParams extends RequestParams {
+  /** Site IDs to get alerts for (comma-separated string or array) */
+  idSites: string | number | (string | number)[];
+  /** Whether to return all alerts if the user is a super user */
+  ifSuperUserReturnAllAlerts?: string | number;
+}
+
+/**
+ * Parameters for adding a new alert
+ */
+export interface AddAlertParams extends RequestParams {
+  /** Alert name */
+  name: string;
+  /** Site IDs to apply the alert to (comma-separated string or array) */
+  idSites: string | number | (string | number)[];
+  /** Period type (day, week, month, etc.) */
+  period: string;
+  /** Whether to send email to the current user */
+  emailMe: boolean | string | number;
+  /** Additional email addresses to notify */
+  additionalEmails: string | string[];
+  /** Phone numbers to send SMS alerts to */
+  phoneNumbers: string | string[];
+  /** Metric to monitor */
+  metric: string;
+  /** Condition for comparison */
+  metricCondition: string;
+  /** Value to compare against */
+  metricValue: string | number;
+  /** Period to compare to ('previous' or specific period) */
+  comparedTo: string;
+  /** Report to monitor */
+  reportUniqueId: string;
+  /** Optional condition for report */
+  reportCondition?: string;
+  /** Optional report value */
+  reportValue?: string;
+}
+
+/**
+ * Parameters for editing an existing alert
+ */
+export interface EditAlertParams extends AddAlertParams {
+  /** Alert ID to edit */
+  idAlert: string | number;
+}
+
+/**
+ * Parameters for getting triggered alerts
+ */
+export interface GetTriggeredAlertsParams extends RequestParams {
+  /** Site IDs to get triggered alerts for (comma-separated string or array) */
+  idSites: string | number | (string | number)[];
+}
 
 export class CustomAlertsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,236 +87,169 @@ export class CustomAlertsModule {
   /**
    * Get historical values for an alert
    *
-   * @param idAlert Alert ID
-   * @param subPeriodN The number of past periods to retrieve
+   * @param params Parameters for retrieving historical alert values
    * @returns Historical alert values
    */
-  async getValuesForAlertInPast(
-    idAlert: string | number,
-    subPeriodN: string | number
-  ): Promise<any> {
-    return this.client.request('CustomAlerts.getValuesForAlertInPast', {
-      idAlert,
-      subPeriodN,
-    });
+  async getValuesForAlertInPast(params: AlertHistoryParams): Promise<any> {
+    return this.client.request("CustomAlerts.getValuesForAlertInPast", params);
   }
 
   /**
    * Get details for a specific alert
    *
-   * @param idAlert Alert ID
+   * @param params Parameters containing the alert ID
    * @returns Alert details
    */
-  async getAlert(idAlert: string | number): Promise<any> {
-    return this.client.request('CustomAlerts.getAlert', {
-      idAlert,
-    });
+  async getAlert(params: AlertParams): Promise<any> {
+    return this.client.request("CustomAlerts.getAlert", params);
   }
 
   /**
    * Get all alerts for the specified sites
    *
-   * @param idSites Site IDs to get alerts for (comma-separated string or array)
-   * @param ifSuperUserReturnAllAlerts Whether to return all alerts if the user is a super user
+   * @param params Parameters for getting alerts
    * @returns List of alerts
    */
-  async getAlerts(
-    idSites: string | number | (string | number)[],
-    ifSuperUserReturnAllAlerts: string | number = ''
-  ): Promise<any> {
-    const params: RequestParams = {};
+  async getAlerts(params: GetAlertsParams): Promise<any> {
+    const requestParams: RequestParams = {};
 
-    if (Array.isArray(idSites)) {
-      params.idSites = idSites.join(',');
+    if (Array.isArray(params.idSites)) {
+      requestParams.idSites = params.idSites.join(",");
     } else {
-      params.idSites = idSites;
+      requestParams.idSites = params.idSites;
     }
 
-    if (ifSuperUserReturnAllAlerts !== '') {
-      params.ifSuperUserReturnAllAlerts = ifSuperUserReturnAllAlerts;
+    if (params.ifSuperUserReturnAllAlerts !== undefined) {
+      requestParams.ifSuperUserReturnAllAlerts =
+        params.ifSuperUserReturnAllAlerts;
     }
 
-    return this.client.request('CustomAlerts.getAlerts', params);
+    return this.client.request("CustomAlerts.getAlerts", requestParams);
   }
 
   /**
    * Add a new alert
    *
-   * @param name Alert name
-   * @param idSites Site IDs to apply the alert to (comma-separated string or array)
-   * @param period Period type (day, week, month, etc.)
-   * @param emailMe Whether to send email to the current user
-   * @param additionalEmails Additional email addresses to notify
-   * @param phoneNumbers Phone numbers to send SMS alerts to
-   * @param metric Metric to monitor
-   * @param metricCondition Condition for comparison
-   * @param metricValue Value to compare against
-   * @param comparedTo Period to compare to ('previous' or specific period)
-   * @param reportUniqueId Report to monitor
-   * @param reportCondition Optional condition for report
-   * @param reportValue Optional report value
+   * @param params Parameters for adding a new alert
    * @returns Information about the created alert
    */
-  async addAlert(
-    name: string,
-    idSites: string | number | (string | number)[],
-    period: string,
-    emailMe: boolean | string | number,
-    additionalEmails: string | string[],
-    phoneNumbers: string | string[],
-    metric: string,
-    metricCondition: string,
-    metricValue: string | number,
-    comparedTo: string,
-    reportUniqueId: string,
-    reportCondition: string = '',
-    reportValue: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      name,
-      period,
-      emailMe,
-      metric,
-      metricCondition,
-      metricValue,
-      comparedTo,
-      reportUniqueId,
+  async addAlert(params: AddAlertParams): Promise<any> {
+    const requestParams: RequestParams = {
+      name: params.name,
+      period: params.period,
+      emailMe: params.emailMe,
+      metric: params.metric,
+      metricCondition: params.metricCondition,
+      metricValue: params.metricValue,
+      comparedTo: params.comparedTo,
+      reportUniqueId: params.reportUniqueId,
     };
 
-    if (Array.isArray(idSites)) {
-      params.idSites = idSites.join(',');
+    if (Array.isArray(params.idSites)) {
+      requestParams.idSites = params.idSites.join(",");
     } else {
-      params.idSites = idSites;
+      requestParams.idSites = params.idSites;
     }
 
-    if (Array.isArray(additionalEmails)) {
-      params.additionalEmails = additionalEmails.join(',');
+    if (Array.isArray(params.additionalEmails)) {
+      requestParams.additionalEmails = params.additionalEmails.join(",");
     } else {
-      params.additionalEmails = additionalEmails;
+      requestParams.additionalEmails = params.additionalEmails;
     }
 
-    if (Array.isArray(phoneNumbers)) {
-      params.phoneNumbers = phoneNumbers.join(',');
+    if (Array.isArray(params.phoneNumbers)) {
+      requestParams.phoneNumbers = params.phoneNumbers.join(",");
     } else {
-      params.phoneNumbers = phoneNumbers;
+      requestParams.phoneNumbers = params.phoneNumbers;
     }
 
-    if (reportCondition) {
-      params.reportCondition = reportCondition;
+    if (params.reportCondition) {
+      requestParams.reportCondition = params.reportCondition;
     }
 
-    if (reportValue) {
-      params.reportValue = reportValue;
+    if (params.reportValue) {
+      requestParams.reportValue = params.reportValue;
     }
 
-    return this.client.request('CustomAlerts.addAlert', params);
+    return this.client.request("CustomAlerts.addAlert", requestParams);
   }
 
   /**
    * Edit an existing alert
    *
-   * @param idAlert Alert ID to edit
-   * @param name Alert name
-   * @param idSites Site IDs to apply the alert to (comma-separated string or array)
-   * @param period Period type (day, week, month, etc.)
-   * @param emailMe Whether to send email to the current user
-   * @param additionalEmails Additional email addresses to notify
-   * @param phoneNumbers Phone numbers to send SMS alerts to
-   * @param metric Metric to monitor
-   * @param metricCondition Condition for comparison
-   * @param metricValue Value to compare against
-   * @param comparedTo Period to compare to ('previous' or specific period)
-   * @param reportUniqueId Report to monitor
-   * @param reportCondition Optional condition for report
-   * @param reportValue Optional report value
+   * @param params Parameters for editing an alert
    * @returns Information about the updated alert
    */
-  async editAlert(
-    idAlert: string | number,
-    name: string,
-    idSites: string | number | (string | number)[],
-    period: string,
-    emailMe: boolean | string | number,
-    additionalEmails: string | string[],
-    phoneNumbers: string | string[],
-    metric: string,
-    metricCondition: string,
-    metricValue: string | number,
-    comparedTo: string,
-    reportUniqueId: string,
-    reportCondition: string = '',
-    reportValue: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idAlert,
-      name,
-      period,
-      emailMe,
-      metric,
-      metricCondition,
-      metricValue,
-      comparedTo,
-      reportUniqueId,
+  async editAlert(params: EditAlertParams): Promise<any> {
+    const requestParams: RequestParams = {
+      idAlert: params.idAlert,
+      name: params.name,
+      period: params.period,
+      emailMe: params.emailMe,
+      metric: params.metric,
+      metricCondition: params.metricCondition,
+      metricValue: params.metricValue,
+      comparedTo: params.comparedTo,
+      reportUniqueId: params.reportUniqueId,
     };
 
-    if (Array.isArray(idSites)) {
-      params.idSites = idSites.join(',');
+    if (Array.isArray(params.idSites)) {
+      requestParams.idSites = params.idSites.join(",");
     } else {
-      params.idSites = idSites;
+      requestParams.idSites = params.idSites;
     }
 
-    if (Array.isArray(additionalEmails)) {
-      params.additionalEmails = additionalEmails.join(',');
+    if (Array.isArray(params.additionalEmails)) {
+      requestParams.additionalEmails = params.additionalEmails.join(",");
     } else {
-      params.additionalEmails = additionalEmails;
+      requestParams.additionalEmails = params.additionalEmails;
     }
 
-    if (Array.isArray(phoneNumbers)) {
-      params.phoneNumbers = phoneNumbers.join(',');
+    if (Array.isArray(params.phoneNumbers)) {
+      requestParams.phoneNumbers = params.phoneNumbers.join(",");
     } else {
-      params.phoneNumbers = phoneNumbers;
+      requestParams.phoneNumbers = params.phoneNumbers;
     }
 
-    if (reportCondition) {
-      params.reportCondition = reportCondition;
+    if (params.reportCondition) {
+      requestParams.reportCondition = params.reportCondition;
     }
 
-    if (reportValue) {
-      params.reportValue = reportValue;
+    if (params.reportValue) {
+      requestParams.reportValue = params.reportValue;
     }
 
-    return this.client.request('CustomAlerts.editAlert', params);
+    return this.client.request("CustomAlerts.editAlert", requestParams);
   }
 
   /**
    * Delete an alert
    *
-   * @param idAlert Alert ID to delete
+   * @param params Parameters containing the alert ID to delete
    * @returns Success status
    */
-  async deleteAlert(idAlert: string | number): Promise<any> {
-    return this.client.request('CustomAlerts.deleteAlert', {
-      idAlert,
-    });
+  async deleteAlert(params: AlertParams): Promise<any> {
+    return this.client.request("CustomAlerts.deleteAlert", params);
   }
 
   /**
    * Get triggered alerts for specified sites
    *
-   * @param idSites Site IDs to get triggered alerts for (comma-separated string or array)
+   * @param params Parameters for getting triggered alerts
    * @returns List of triggered alerts
    */
-  async getTriggeredAlerts(
-    idSites: string | number | (string | number)[]
-  ): Promise<any> {
-    const params: RequestParams = {};
+  async getTriggeredAlerts(params: GetTriggeredAlertsParams): Promise<any> {
+    const requestParams: RequestParams = {};
 
-    if (Array.isArray(idSites)) {
-      params.idSites = idSites.join(',');
+    if (Array.isArray(params.idSites)) {
+      requestParams.idSites = params.idSites.join(",");
     } else {
-      params.idSites = idSites;
+      requestParams.idSites = params.idSites;
     }
 
-    return this.client.request('CustomAlerts.getTriggeredAlerts', params);
+    return this.client.request(
+      "CustomAlerts.getTriggeredAlerts",
+      requestParams
+    );
   }
 }

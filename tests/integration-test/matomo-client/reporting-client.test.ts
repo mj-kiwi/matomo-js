@@ -151,12 +151,45 @@ describe("ReportingClient Integration Tests", () => {
         return [400, "Bad request"];
       });
 
-    // Execute
-    const result = await client.visitsSummary.get(
-      DEFAULT_SITE_ID,
-      "day",
-      "yesterday"
-    );
+    // Execute with object parameters
+    const result = await client.visitsSummary.get({
+      idSite: DEFAULT_SITE_ID,
+      period: "day",
+      date: "yesterday",
+    });
+
+    // Verify
+    expect(result).toEqual(VISITOR_SUMMARY_RESPONSE);
+    expect(result.nb_visits).toBe(1518);
+    expect(result.nb_actions).toBe(4522);
+  });
+
+  it("should get visitors summary with object parameters", async () => {
+    // Setup mock for POST request
+    nock(BASE_URL)
+      .post("/index.php")
+      .reply(function (uri, requestBody) {
+        const body = new URLSearchParams(requestBody as string);
+        if (
+          body.get("module") === "API" &&
+          body.get("method") === "VisitsSummary.get" &&
+          body.get("idSite") === String(DEFAULT_SITE_ID) &&
+          body.get("period") === "day" &&
+          body.get("date") === "yesterday" &&
+          body.get("format") === "json" &&
+          body.get("token_auth") === API_TOKEN
+        ) {
+          return [200, VISITOR_SUMMARY_RESPONSE];
+        }
+        return [400, "Bad request"];
+      });
+
+    // Execute with object parameters
+    const result = await client.visitsSummary.get({
+      idSite: DEFAULT_SITE_ID,
+      period: "day",
+      date: "yesterday",
+    });
 
     // Verify
     expect(result).toEqual(VISITOR_SUMMARY_RESPONSE);
@@ -247,13 +280,43 @@ describe("ReportingClient Integration Tests", () => {
         return [400, "Bad request"];
       });
 
-    // Execute with custom parameters
-    await client.actions.getPageUrls(
-      5, // Override default site ID
-      "month",
-      "last3",
-      "10"
-    );
+    // Execute with object parameters
+    await client.actions.getPageUrls({
+      idSite: 5, // Override default site ID
+      period: "month",
+      date: "last3",
+      segment: "10",
+    });
+  });
+
+  it("should accept object parameters", async () => {
+    // Setup mock for POST request with object parameters
+    nock(BASE_URL)
+      .post("/index.php")
+      .reply(function (uri, requestBody) {
+        const body = new URLSearchParams(requestBody as string);
+        if (
+          body.get("module") === "API" &&
+          body.get("method") === "Actions.getPageUrls" &&
+          body.get("idSite") === "5" && // Custom site ID overriding default
+          body.get("period") === "month" &&
+          body.get("date") === "last3" &&
+          body.get("segment") === "10" &&
+          body.get("format") === "json" &&
+          body.get("token_auth") === API_TOKEN
+        ) {
+          return [200, []];
+        }
+        return [400, "Bad request"];
+      });
+
+    // Execute with object parameters
+    await client.actions.getPageUrls({
+      idSite: 5, // Override default site ID
+      period: "month",
+      date: "last3",
+      segment: "10",
+    });
   });
 
   it("should handle network errors", async () => {

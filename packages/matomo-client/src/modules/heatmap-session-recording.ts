@@ -13,7 +13,185 @@
  * - idLogHsr represents the ID of an actually recorded / tracked session or heatmap activity
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Base parameters for site operations
+ */
+export interface HSRSiteParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for specific heatmap or session recording
+ */
+export interface HSRConfigParams extends HSRSiteParams {
+  /** Heatmap or session recording configuration ID */
+  idSiteHsr: number | string;
+}
+
+/**
+ * Parameters for recorded session operations
+ */
+export interface RecordedSessionParams extends HSRConfigParams {
+  /** Recorded session ID */
+  idLogHsr: number | string;
+}
+
+/**
+ * Parameters for visit operations
+ */
+export interface VisitParams extends HSRConfigParams {
+  /** Visit ID */
+  idVisit: number | string;
+}
+
+/**
+ * Parameters for adding a heatmap
+ */
+export interface AddHeatmapParams extends HSRSiteParams {
+  /** Heatmap name */
+  name: string;
+  /** Page matching rules */
+  matchPageRules: string | string[];
+  /** Sample limit */
+  sampleLimit?: number | string;
+  /** Sample rate */
+  sampleRate?: number | string;
+  /** Excluded elements */
+  excludedElements?: string;
+  /** Screenshot URL */
+  screenshotUrl?: string;
+  /** Breakpoint for mobile devices */
+  breakpointMobile?: string;
+  /** Breakpoint for tablet devices */
+  breakpointTablet?: string;
+  /** Flag to capture DOM manually */
+  captureDomManually?: boolean | string;
+}
+
+/**
+ * Parameters for updating a heatmap
+ */
+export interface UpdateHeatmapParams extends HSRConfigParams {
+  /** Heatmap name */
+  name: string;
+  /** Page matching rules */
+  matchPageRules: string | string[];
+  /** Sample limit */
+  sampleLimit?: number | string;
+  /** Sample rate */
+  sampleRate?: number | string;
+  /** Excluded elements */
+  excludedElements?: string;
+  /** Screenshot URL */
+  screenshotUrl?: string;
+  /** Breakpoint for mobile devices */
+  breakpointMobile?: string;
+  /** Breakpoint for tablet devices */
+  breakpointTablet?: string;
+  /** Flag to capture DOM manually */
+  captureDomManually?: boolean | string;
+}
+
+/**
+ * Parameters for adding a session recording
+ */
+export interface AddSessionRecordingParams extends HSRSiteParams {
+  /** Session recording name */
+  name: string;
+  /** Page matching rules */
+  matchPageRules?: string | string[];
+  /** Sample limit */
+  sampleLimit?: number | string;
+  /** Sample rate */
+  sampleRate?: number | string;
+  /** Minimum session time */
+  minSessionTime?: number | string;
+  /** Whether activity is required */
+  requiresActivity?: boolean | string;
+  /** Whether to capture keystrokes */
+  captureKeystrokes?: boolean | string;
+}
+
+/**
+ * Parameters for updating a session recording
+ */
+export interface UpdateSessionRecordingParams extends HSRConfigParams {
+  /** Session recording name */
+  name: string;
+  /** Page matching rules */
+  matchPageRules?: string | string[];
+  /** Sample limit */
+  sampleLimit?: number | string;
+  /** Sample rate */
+  sampleRate?: number | string;
+  /** Minimum session time */
+  minSessionTime?: number | string;
+  /** Whether activity is required */
+  requiresActivity?: boolean | string;
+  /** Whether to capture keystrokes */
+  captureKeystrokes?: boolean | string;
+}
+
+/**
+ * Parameters for getting heatmaps
+ */
+export interface GetHeatmapsParams extends HSRSiteParams {
+  /** Whether to include page tree mirror information */
+  includePageTreeMirror?: boolean | string;
+}
+
+/**
+ * Parameters for getting recorded sessions
+ */
+export interface RecordedSessionsParams extends HSRSiteParams {
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Session recording configuration ID */
+  idSiteHsr: number | string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional subtable ID */
+  idSubtable?: string;
+}
+
+/**
+ * Parameters for getting recorded heatmap metadata
+ */
+export interface RecordedHeatmapMetadataParams extends HSRSiteParams {
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Heatmap configuration ID */
+  idSiteHsr: number | string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for getting recorded heatmap data
+ */
+export interface RecordedHeatmapParams extends RecordedHeatmapMetadataParams {
+  /** Heatmap type */
+  heatmapType: string;
+  /** Device type */
+  deviceType: string;
+}
+
+/**
+ * Parameters for testing URL match
+ */
+export interface TestUrlMatchPagesParams extends RequestParams {
+  /** URL to test */
+  url: string;
+  /** Page matching rules */
+  matchPageRules?: string | string[];
+}
 
 export class HeatmapSessionRecordingModule {
   constructor(private client: CoreReportingClient) {}
@@ -21,152 +199,45 @@ export class HeatmapSessionRecordingModule {
   /**
    * Add a new heatmap
    *
-   * @param idSite Site ID
-   * @param name Heatmap name
-   * @param matchPageRules Page matching rules
-   * @param sampleLimit Sample limit
-   * @param sampleRate Sample rate
-   * @param excludedElements Excluded elements
-   * @param screenshotUrl Screenshot URL
-   * @param breakpointMobile Breakpoint for mobile devices
-   * @param breakpointTablet Breakpoint for tablet devices
-   * @param captureDomManually Flag to capture DOM manually
+   * @param params Parameters for adding a heatmap
    * @returns Promise with the API response
    */
-  addHeatmap(
-    idSite: number | string,
-    name: string,
-    matchPageRules: string | string[],
-    sampleLimit: number | string = '1000',
-    sampleRate: number | string = '5',
-    excludedElements: string = '',
-    screenshotUrl: string = '',
-    breakpointMobile: string = '',
-    breakpointTablet: string = '',
-    captureDomManually: boolean | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      name,
-      matchPageRules,
-      sampleLimit,
-      sampleRate,
-    };
-
-    if (excludedElements) params.excludedElements = excludedElements;
-    if (screenshotUrl) params.screenshotUrl = screenshotUrl;
-    if (breakpointMobile) params.breakpointMobile = breakpointMobile;
-    if (breakpointTablet) params.breakpointTablet = breakpointTablet;
-    if (captureDomManually !== '')
-      params.captureDomManually = captureDomManually;
-
-    return this.client.request('HeatmapSessionRecording.addHeatmap', params);
+  addHeatmap(params: AddHeatmapParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.addHeatmap", params);
   }
 
   /**
    * Update an existing heatmap
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
-   * @param name Heatmap name
-   * @param matchPageRules Page matching rules
-   * @param sampleLimit Sample limit
-   * @param sampleRate Sample rate
-   * @param excludedElements Excluded elements
-   * @param screenshotUrl Screenshot URL
-   * @param breakpointMobile Breakpoint for mobile devices
-   * @param breakpointTablet Breakpoint for tablet devices
-   * @param captureDomManually Flag to capture DOM manually
+   * @param params Parameters for updating a heatmap
    * @returns Promise with the API response
    */
-  updateHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    name: string,
-    matchPageRules: string | string[],
-    sampleLimit: number | string = '1000',
-    sampleRate: number | string = '5',
-    excludedElements: string = '',
-    screenshotUrl: string = '',
-    breakpointMobile: string = '',
-    breakpointTablet: string = '',
-    captureDomManually: boolean | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      idSiteHsr,
-      name,
-      matchPageRules,
-      sampleLimit,
-      sampleRate,
-    };
-
-    if (excludedElements) params.excludedElements = excludedElements;
-    if (screenshotUrl) params.screenshotUrl = screenshotUrl;
-    if (breakpointMobile) params.breakpointMobile = breakpointMobile;
-    if (breakpointTablet) params.breakpointTablet = breakpointTablet;
-    if (captureDomManually !== '')
-      params.captureDomManually = captureDomManually;
-
-    return this.client.request('HeatmapSessionRecording.updateHeatmap', params);
+  updateHeatmap(params: UpdateHeatmapParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.updateHeatmap", params);
   }
 
   /**
    * Delete a heatmap screenshot
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteHeatmapScreenshot(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
+  deleteHeatmapScreenshot(params: HSRConfigParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.deleteHeatmapScreenshot',
-      {
-        idSite,
-        idSiteHsr,
-      }
+      "HeatmapSessionRecording.deleteHeatmapScreenshot",
+      params
     );
   }
 
   /**
    * Add a new session recording
    *
-   * @param idSite Site ID
-   * @param name Session recording name
-   * @param matchPageRules Page matching rules
-   * @param sampleLimit Sample limit
-   * @param sampleRate Sample rate
-   * @param minSessionTime Minimum session time
-   * @param requiresActivity Whether activity is required
-   * @param captureKeystrokes Whether to capture keystrokes
+   * @param params Parameters for adding a session recording
    * @returns Promise with the API response
    */
-  addSessionRecording(
-    idSite: number | string,
-    name: string,
-    matchPageRules: string | string[] = 'Array',
-    sampleLimit: number | string = '1000',
-    sampleRate: number | string = '10',
-    minSessionTime: number | string = '0',
-    requiresActivity: boolean | string = '1',
-    captureKeystrokes: boolean | string = '1'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      name,
-      matchPageRules,
-      sampleLimit,
-      sampleRate,
-      minSessionTime,
-      requiresActivity,
-      captureKeystrokes,
-    };
-
+  addSessionRecording(params: AddSessionRecordingParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.addSessionRecording',
+      "HeatmapSessionRecording.addSessionRecording",
       params
     );
   }
@@ -174,42 +245,12 @@ export class HeatmapSessionRecordingModule {
   /**
    * Update an existing session recording
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
-   * @param name Session recording name
-   * @param matchPageRules Page matching rules
-   * @param sampleLimit Sample limit
-   * @param sampleRate Sample rate
-   * @param minSessionTime Minimum session time
-   * @param requiresActivity Whether activity is required
-   * @param captureKeystrokes Whether to capture keystrokes
+   * @param params Parameters for updating a session recording
    * @returns Promise with the API response
    */
-  updateSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    name: string,
-    matchPageRules: string | string[] = 'Array',
-    sampleLimit: number | string = '1000',
-    sampleRate: number | string = '10',
-    minSessionTime: number | string = '0',
-    requiresActivity: boolean | string = '1',
-    captureKeystrokes: boolean | string = '1'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      idSiteHsr,
-      name,
-      matchPageRules,
-      sampleLimit,
-      sampleRate,
-      minSessionTime,
-      requiresActivity,
-      captureKeystrokes,
-    };
-
+  updateSessionRecording(params: UpdateSessionRecordingParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.updateSessionRecording',
+      "HeatmapSessionRecording.updateSessionRecording",
       params
     );
   }
@@ -217,246 +258,150 @@ export class HeatmapSessionRecordingModule {
   /**
    * Get a specific heatmap
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the heatmap details
    */
-  getHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getHeatmap', {
-      idSite,
-      idSiteHsr,
-    });
+  getHeatmap(params: HSRConfigParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.getHeatmap", params);
   }
 
   /**
    * Get a specific session recording
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the session recording details
    */
-  getSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getSessionRecording', {
-      idSite,
-      idSiteHsr,
-    });
+  getSessionRecording(params: HSRConfigParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.getSessionRecording",
+      params
+    );
   }
 
   /**
    * Pause a heatmap
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  pauseHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.pauseHeatmap', {
-      idSite,
-      idSiteHsr,
-    });
+  pauseHeatmap(params: HSRConfigParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.pauseHeatmap", params);
   }
 
   /**
    * Resume a paused heatmap
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  resumeHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.resumeHeatmap', {
-      idSite,
-      idSiteHsr,
-    });
+  resumeHeatmap(params: HSRConfigParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.resumeHeatmap", params);
   }
 
   /**
    * Delete a heatmap
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.deleteHeatmap', {
-      idSite,
-      idSiteHsr,
-    });
+  deleteHeatmap(params: HSRConfigParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.deleteHeatmap", params);
   }
 
   /**
    * End a heatmap (mark it as completed)
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Heatmap configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  endHeatmap(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.endHeatmap', {
-      idSite,
-      idSiteHsr,
-    });
+  endHeatmap(params: HSRConfigParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.endHeatmap", params);
   }
 
   /**
    * Pause a session recording
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  pauseSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
+  pauseSessionRecording(params: HSRConfigParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.pauseSessionRecording',
-      {
-        idSite,
-        idSiteHsr,
-      }
+      "HeatmapSessionRecording.pauseSessionRecording",
+      params
     );
   }
 
   /**
    * Resume a paused session recording
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  resumeSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
+  resumeSessionRecording(params: HSRConfigParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.resumeSessionRecording',
-      {
-        idSite,
-        idSiteHsr,
-      }
+      "HeatmapSessionRecording.resumeSessionRecording",
+      params
     );
   }
 
   /**
    * Delete a session recording
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
+  deleteSessionRecording(params: HSRConfigParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.deleteSessionRecording',
-      {
-        idSite,
-        idSiteHsr,
-      }
+      "HeatmapSessionRecording.deleteSessionRecording",
+      params
     );
   }
 
   /**
    * End a session recording (mark it as completed)
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
+   * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  endSessionRecording(
-    idSite: number | string,
-    idSiteHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.endSessionRecording', {
-      idSite,
-      idSiteHsr,
-    });
+  endSessionRecording(params: HSRConfigParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.endSessionRecording",
+      params
+    );
   }
 
   /**
    * Get all heatmaps for a site
    *
-   * @param idSite Site ID
-   * @param includePageTreeMirror Whether to include page tree mirror information
+   * @param params Parameters for getting heatmaps
    * @returns Promise with the list of heatmaps
    */
-  getHeatmaps(
-    idSite: number | string,
-    includePageTreeMirror: boolean | string = '1'
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (includePageTreeMirror !== '1')
-      params.includePageTreeMirror = includePageTreeMirror;
-
-    return this.client.request('HeatmapSessionRecording.getHeatmaps', params);
+  getHeatmaps(params: GetHeatmapsParams): Promise<any> {
+    return this.client.request("HeatmapSessionRecording.getHeatmaps", params);
   }
 
   /**
    * Get all session recordings for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters for site operations
    * @returns Promise with the list of session recordings
    */
-  getSessionRecordings(idSite: number | string): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getSessionRecordings', {
-      idSite,
-    });
+  getSessionRecordings(params: HSRSiteParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.getSessionRecordings",
+      params
+    );
   }
 
   /**
    * Get recorded sessions for a specific session recording configuration
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSiteHsr Session recording configuration ID
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
+   * @param params Parameters for getting recorded sessions
    * @returns Promise with the list of recorded sessions
    */
-  getRecordedSessions(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSiteHsr: number | string,
-    segment: string = '',
-    idSubtable: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSiteHsr,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable) params.idSubtable = idSubtable;
-
+  getRecordedSessions(params: RecordedSessionsParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getRecordedSessions',
+      "HeatmapSessionRecording.getRecordedSessions",
       params
     );
   }
@@ -464,97 +409,53 @@ export class HeatmapSessionRecordingModule {
   /**
    * Get details of a specific recorded session
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
-   * @param idLogHsr Recorded session ID
+   * @param params Parameters for recorded session operations
    * @returns Promise with the recorded session details
    */
-  getRecordedSession(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    idLogHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getRecordedSession', {
-      idSite,
-      idSiteHsr,
-      idLogHsr,
-    });
+  getRecordedSession(params: RecordedSessionParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.getRecordedSession",
+      params
+    );
   }
 
   /**
    * Delete a recorded session
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
-   * @param idVisit Visit ID
+   * @param params Parameters for visit operations
    * @returns Promise with the API response
    */
-  deleteRecordedSession(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    idVisit: number | string
-  ): Promise<any> {
+  deleteRecordedSession(params: VisitParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.deleteRecordedSession',
-      {
-        idSite,
-        idSiteHsr,
-        idVisit,
-      }
+      "HeatmapSessionRecording.deleteRecordedSession",
+      params
     );
   }
 
   /**
    * Delete a recorded pageview
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Recording configuration ID
-   * @param idLogHsr Recorded pageview ID
+   * @param params Parameters for recorded session operations
    * @returns Promise with the API response
    */
-  deleteRecordedPageview(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    idLogHsr: number | string
-  ): Promise<any> {
+  deleteRecordedPageview(params: RecordedSessionParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.deleteRecordedPageview',
-      {
-        idSite,
-        idSiteHsr,
-        idLogHsr,
-      }
+      "HeatmapSessionRecording.deleteRecordedPageview",
+      params
     );
   }
 
   /**
    * Get metadata for a recorded heatmap
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSiteHsr Heatmap configuration ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting recorded heatmap metadata
    * @returns Promise with the heatmap metadata
    */
   getRecordedHeatmapMetadata(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSiteHsr: number | string,
-    segment: string = ''
+    params: RecordedHeatmapMetadataParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSiteHsr,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'HeatmapSessionRecording.getRecordedHeatmapMetadata',
+      "HeatmapSessionRecording.getRecordedHeatmapMetadata",
       params
     );
   }
@@ -562,37 +463,12 @@ export class HeatmapSessionRecordingModule {
   /**
    * Get recorded heatmap data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param idSiteHsr Heatmap configuration ID
-   * @param heatmapType Heatmap type
-   * @param deviceType Device type
-   * @param segment Optional segment definition
+   * @param params Parameters for getting recorded heatmap data
    * @returns Promise with the heatmap data
    */
-  getRecordedHeatmap(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSiteHsr: number | string,
-    heatmapType: string,
-    deviceType: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idSiteHsr,
-      heatmapType,
-      deviceType,
-    };
-
-    if (segment) params.segment = segment;
-
+  getRecordedHeatmap(params: RecordedHeatmapParams): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getRecordedHeatmap',
+      "HeatmapSessionRecording.getRecordedHeatmap",
       params
     );
   }
@@ -600,38 +476,27 @@ export class HeatmapSessionRecordingModule {
   /**
    * Get embed information for a session
    *
-   * @param idSite Site ID
-   * @param idSiteHsr Session recording configuration ID
-   * @param idLogHsr Recorded session ID
+   * @param params Parameters for recorded session operations
    * @returns Promise with embedding info
    */
-  getEmbedSessionInfo(
-    idSite: number | string,
-    idSiteHsr: number | string,
-    idLogHsr: number | string
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getEmbedSessionInfo', {
-      idSite,
-      idSiteHsr,
-      idLogHsr,
-    });
+  getEmbedSessionInfo(params: RecordedSessionParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.getEmbedSessionInfo",
+      params
+    );
   }
 
   /**
    * Test if a URL matches the specified page rules
    *
-   * @param url URL to test
-   * @param matchPageRules Page matching rules
+   * @param params Parameters for testing URL match
    * @returns Promise with test results
    */
-  testUrlMatchPages(
-    url: string,
-    matchPageRules: string | string[] = 'Array'
-  ): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.testUrlMatchPages', {
-      url,
-      matchPageRules,
-    });
+  testUrlMatchPages(params: TestUrlMatchPagesParams): Promise<any> {
+    return this.client.request(
+      "HeatmapSessionRecording.testUrlMatchPages",
+      params
+    );
   }
 
   /**
@@ -640,7 +505,7 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available statuses
    */
   getAvailableStatuses(): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getAvailableStatuses');
+    return this.client.request("HeatmapSessionRecording.getAvailableStatuses");
   }
 
   /**
@@ -650,7 +515,7 @@ export class HeatmapSessionRecordingModule {
    */
   getAvailableTargetPageRules(): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getAvailableTargetPageRules'
+      "HeatmapSessionRecording.getAvailableTargetPageRules"
     );
   }
 
@@ -661,7 +526,7 @@ export class HeatmapSessionRecordingModule {
    */
   getAvailableDeviceTypes(): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getAvailableDeviceTypes'
+      "HeatmapSessionRecording.getAvailableDeviceTypes"
     );
   }
 
@@ -672,7 +537,7 @@ export class HeatmapSessionRecordingModule {
    */
   getAvailableHeatmapTypes(): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getAvailableHeatmapTypes'
+      "HeatmapSessionRecording.getAvailableHeatmapTypes"
     );
   }
 
@@ -683,7 +548,7 @@ export class HeatmapSessionRecordingModule {
    */
   getAvailableSessionRecordingSampleLimits(): Promise<any> {
     return this.client.request(
-      'HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits'
+      "HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits"
     );
   }
 
@@ -693,6 +558,6 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available event types
    */
   getEventTypes(): Promise<any> {
-    return this.client.request('HeatmapSessionRecording.getEventTypes');
+    return this.client.request("HeatmapSessionRecording.getEventTypes");
   }
 }

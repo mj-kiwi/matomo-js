@@ -35,11 +35,11 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getUsersFlowPretty(
-        1,
-        "day",
-        "today"
-      );
+      const result = await usersFlowModule.getUsersFlowPretty({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getUsersFlowPretty",
@@ -56,16 +56,16 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getUsersFlowPretty(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        true,
-        5,
-        "actions"
-      );
+      const result = await usersFlowModule.getUsersFlowPretty({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        flat: true,
+        idSubtable: 5,
+        dataSource: "actions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getUsersFlowPretty",
@@ -89,7 +89,11 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getUsersFlow(1, "day", "today");
+      const result = await usersFlowModule.getUsersFlow({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getUsersFlow",
@@ -106,17 +110,17 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getUsersFlow(
-        1,
-        "day",
-        "today",
-        10,
-        2,
-        "https://example.org",
-        "deviceType==desktop",
-        true,
-        "actions"
-      );
+      const result = await usersFlowModule.getUsersFlow({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        limitActionsPerStep: 10,
+        exploreStep: 2,
+        exploreUrl: "https://example.org",
+        segment: "deviceType==desktop",
+        expanded: true,
+        dataSource: "actions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getUsersFlow",
@@ -141,12 +145,12 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getInteractionActions(
-        1,
-        "day",
-        "today",
-        2
-      );
+      const result = await usersFlowModule.getInteractionActions({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        interactionPosition: 2,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getInteractionActions",
@@ -164,16 +168,16 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getInteractionActions(
-        1,
-        "day",
-        "today",
-        2,
-        5,
-        "deviceType==desktop",
-        3,
-        "actions"
-      );
+      const result = await usersFlowModule.getInteractionActions({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        interactionPosition: 2,
+        offsetActionsPerStep: 5,
+        segment: "deviceType==desktop",
+        idSubtable: 3,
+        dataSource: "actions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getInteractionActions",
@@ -197,7 +201,7 @@ describe("UsersFlowModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersFlowModule.getAvailableDataSources();
+      const result = await usersFlowModule.getAvailableDataSources({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersFlow.getAvailableDataSources",

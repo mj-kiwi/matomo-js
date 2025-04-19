@@ -4,7 +4,21 @@
  * and number of visits per visit duration.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for VisitorInterest API methods
+ */
+export interface VisitorInterestParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
 
 export class VisitorInterestModule {
   constructor(private client: CoreReportingClient) {}
@@ -12,55 +26,25 @@ export class VisitorInterestModule {
   /**
    * Get number of visits per visit duration
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visits per visit duration
    */
   async getNumberOfVisitsPerVisitDuration(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: VisitorInterestParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'VisitorInterest.getNumberOfVisitsPerVisitDuration',
+      "VisitorInterest.getNumberOfVisitsPerVisitDuration",
       params
     );
   }
 
   /**
-   * Get number of visits per number of pages viewed
+   * Get number of visits per number of visited pages
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visits per visited pages count
    */
-  async getNumberOfVisitsPerPage(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getNumberOfVisitsPerPage(params: VisitorInterestParams): Promise<any> {
     return this.client.request(
-      'VisitorInterest.getNumberOfVisitsPerPage',
+      "VisitorInterest.getNumberOfVisitsPerPage",
       params
     );
   }
@@ -68,55 +52,27 @@ export class VisitorInterestModule {
   /**
    * Get number of days elapsed since last visit
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting days elapsed since last visit
    */
   async getNumberOfVisitsByDaysSinceLast(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: VisitorInterestParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'VisitorInterest.getNumberOfVisitsByDaysSinceLast',
+      "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
       params
     );
   }
 
   /**
-   * Get number of visits by visit count (first time, returning, etc.)
+   * Get number of visits by visit count
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visits by visit count
    */
   async getNumberOfVisitsByVisitCount(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
+    params: VisitorInterestParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
     return this.client.request(
-      'VisitorInterest.getNumberOfVisitsByVisitCount',
+      "VisitorInterest.getNumberOfVisitsByVisitCount",
       params
     );
   }

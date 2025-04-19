@@ -6,7 +6,29 @@
  * time on site, bounces and converted visits.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for VisitsSummary API methods
+ */
+export interface VisitsSummaryParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for the get method
+ */
+export interface VisitsSummaryGetParams extends VisitsSummaryParams {
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
 
 export class VisitsSummaryModule {
   constructor(private client: CoreReportingClient) {}
@@ -14,265 +36,102 @@ export class VisitsSummaryModule {
   /**
    * Get core web analytics metrics
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for getting core web analytics metrics
    * @returns Promise with the API response containing visit metrics
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('VisitsSummary.get', params);
+  async get(params: VisitsSummaryGetParams): Promise<any> {
+    return this.client.request("VisitsSummary.get", params);
   }
 
   /**
    * Get the number of visits
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting visit counts
    * @returns Promise with the API response containing visit counts
    */
-  async getVisits(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getVisits', params);
+  async getVisits(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getVisits", params);
   }
 
   /**
    * Get the number of unique visitors
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting unique visitor counts
    * @returns Promise with the API response containing unique visitor counts
    */
-  async getUniqueVisitors(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getUniqueVisitors', params);
+  async getUniqueVisitors(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getUniqueVisitors", params);
   }
 
   /**
    * Get the number of users
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting user counts
    * @returns Promise with the API response containing user counts
    */
-  async getUsers(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getUsers', params);
+  async getUsers(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getUsers", params);
   }
 
   /**
    * Get the number of actions (page views, downloads, etc.)
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting action counts
    * @returns Promise with the API response containing action counts
    */
-  async getActions(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getActions', params);
+  async getActions(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getActions", params);
   }
 
   /**
    * Get the maximum number of actions in a visit
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting maximum actions per visit
    * @returns Promise with the API response containing maximum actions per visit
    */
-  async getMaxActions(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getMaxActions', params);
+  async getMaxActions(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getMaxActions", params);
   }
 
   /**
    * Get the number of bounced visits
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting bounce counts
    * @returns Promise with the API response containing bounce counts
    */
-  async getBounceCount(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getBounceCount', params);
+  async getBounceCount(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getBounceCount", params);
   }
 
   /**
    * Get the number of visits that converted a goal
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting counts of converted visits
    * @returns Promise with the API response containing counts of converted visits
    */
-  async getVisitsConverted(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getVisitsConverted', params);
+  async getVisitsConverted(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getVisitsConverted", params);
   }
 
   /**
    * Get the total time spent by all visits
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting total visit time
    * @returns Promise with the API response containing total visit time in seconds
    */
-  async getSumVisitsLength(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('VisitsSummary.getSumVisitsLength', params);
+  async getSumVisitsLength(params: VisitsSummaryParams): Promise<any> {
+    return this.client.request("VisitsSummary.getSumVisitsLength", params);
   }
 
   /**
    * Get the total visit time formatted as a pretty string
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for getting formatted total visit time
    * @returns Promise with the API response containing formatted total visit time
    */
-  async getSumVisitsLengthPretty(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
+  async getSumVisitsLengthPretty(params: VisitsSummaryParams): Promise<any> {
     return this.client.request(
-      'VisitsSummary.getSumVisitsLengthPretty',
+      "VisitsSummary.getSumVisitsLengthPretty",
       params
     );
   }

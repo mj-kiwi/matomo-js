@@ -38,11 +38,11 @@ describe("ContentsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await contentsModule.getContentNames(
-        1,
-        "day",
-        "2023-05-15"
-      );
+      const result = await contentsModule.getContentNames({
+        idSite: 1,
+        period: "day",
+        date: "2023-05-15",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Contents.getContentNames",
@@ -61,13 +61,13 @@ describe("ContentsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await contentsModule.getContentNames(
-        1,
-        "week",
-        "last7",
-        "deviceType==desktop",
-        5
-      );
+      const result = await contentsModule.getContentNames({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Contents.getContentNames",
@@ -95,11 +95,11 @@ describe("ContentsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await contentsModule.getContentPieces(
-        1,
-        "month",
-        "2023-05"
-      );
+      const result = await contentsModule.getContentPieces({
+        idSite: 1,
+        period: "month",
+        date: "2023-05",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Contents.getContentPieces",
@@ -122,13 +122,13 @@ describe("ContentsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await contentsModule.getContentPieces(
-        1,
-        "range",
-        "2023-05-01,2023-05-15",
-        "countryCode==US",
-        3
-      );
+      const result = await contentsModule.getContentPieces({
+        idSite: 1,
+        period: "range",
+        date: "2023-05-01,2023-05-15",
+        segment: "countryCode==US",
+        idSubtable: 3,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Contents.getContentPieces",

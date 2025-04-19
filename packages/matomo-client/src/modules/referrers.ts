@@ -4,7 +4,75 @@
  * used to access your website.
  */
 
-import { CoreReportingClient } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for Referrers API methods
+ */
+export interface ReferrersParams extends RequestParams {
+  /** The ID of the site */
+  idSite: number | string;
+  /** The period to analyze */
+  period: string;
+  /** The date to analyze */
+  date: string;
+  /** Segment to apply */
+  segment?: string;
+}
+
+/**
+ * Parameters for methods supporting expanded and flat responses
+ */
+export interface ReferrersExpandableParams extends ReferrersParams {
+  /** Whether to include expanded data */
+  expanded?: boolean;
+  /** Whether to flatten nested data */
+  flat?: boolean;
+}
+
+/**
+ * Parameters for getting referrer type
+ */
+export interface ReferrerTypeParams extends ReferrersParams {
+  /** Type of referrer */
+  typeReferrer?: string;
+  /** Subtable ID */
+  idSubtable?: number | string;
+  /** Whether to include expanded data */
+  expanded?: boolean;
+}
+
+/**
+ * Parameters for subtable methods
+ */
+export interface ReferrersSubtableParams extends ReferrersParams {
+  /** Subtable ID */
+  idSubtable: number | string;
+}
+
+/**
+ * Parameters for getting columns
+ */
+export interface ReferrersGetParams extends ReferrersParams {
+  /** Columns to include in the response */
+  columns?: string;
+}
+
+/**
+ * Parameters for campaign methods
+ */
+export interface ReferrersCampaignParams extends ReferrersParams {
+  /** Whether to include expanded data */
+  expanded?: boolean;
+}
+
+/**
+ * Parameters for social URLs
+ */
+export interface SocialUrlParams extends ReferrersParams {
+  /** Subtable ID */
+  idSubtable?: number | string;
+}
 
 export class ReferrersModule {
   /**
@@ -14,473 +82,179 @@ export class ReferrersModule {
 
   /**
    * Get referrers overview data
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param columns Columns to include in the response
+   *
+   * @param params Parameters for getting referrer overview data
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    columns: string = ''
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.get', {
-      idSite,
-      period,
-      date,
-      segment,
-      columns,
-    });
+  async get(params: ReferrersGetParams): Promise<any> {
+    return this.core.request<any>("Referrers.get", params);
   }
 
   /**
-   * Get referrer type
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param typeReferrer Type of referrer
-   * @param idSubtable Subtable ID
-   * @param expanded Whether to include expanded data
+   * Get referrer type data
+   *
+   * @param params Parameters for getting referrer type data
    */
-  async getReferrerType(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    typeReferrer: string = '',
-    idSubtable?: number | string,
-    expanded?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getReferrerType', {
-      idSite,
-      period,
-      date,
-      segment,
-      typeReferrer,
-      idSubtable,
-      expanded,
-    });
+  async getReferrerType(params: ReferrerTypeParams): Promise<any> {
+    return this.core.request<any>("Referrers.getReferrerType", params);
   }
 
   /**
    * Get all referrers data
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting all referrers
    */
-  async getAll(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getAll', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getAll(params: ReferrersExpandableParams): Promise<any> {
+    return this.core.request<any>("Referrers.getAll", params);
   }
 
   /**
-   * Get keywords
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param expanded Whether to include expanded data
-   * @param flat Whether to flatten nested data
+   * Get direct entry referrers data
+   *
+   * @param params Parameters for getting direct entries
    */
-  async getKeywords(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    expanded?: boolean,
-    flat?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getKeywords', {
-      idSite,
-      period,
-      date,
-      segment,
-      expanded,
-      flat,
-    });
+  async getDirectEntry(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>("Referrers.getDirectEntry", params);
   }
 
   /**
-   * Get search engines from keyword ID
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param idSubtable Subtable ID
-   * @param segment Segment to apply
+   * Get search engines data
+   *
+   * @param params Parameters for getting search engines data
    */
-  async getSearchEnginesFromKeywordId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: number | string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getSearchEnginesFromKeywordId', {
-      idSite,
-      period,
-      date,
-      idSubtable,
-      segment,
-    });
+  async getSearchEngines(params: ReferrersExpandableParams): Promise<any> {
+    return this.core.request<any>("Referrers.getSearchEngines", params);
   }
 
   /**
-   * Get search engines
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param expanded Whether to include expanded data
-   * @param flat Whether to flatten nested data
-   */
-  async getSearchEngines(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    expanded?: boolean,
-    flat?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getSearchEngines', {
-      idSite,
-      period,
-      date,
-      segment,
-      expanded,
-      flat,
-    });
-  }
-
-  /**
-   * Get keywords from search engine ID
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param idSubtable Subtable ID
-   * @param segment Segment to apply
+   * Get keywords for a search engine
+   *
+   * @param params Parameters for getting keywords from search engine
    */
   async getKeywordsFromSearchEngineId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: number | string,
-    segment?: string
+    params: ReferrersSubtableParams
   ): Promise<any> {
-    return this.core.request<any>('Referrers.getKeywordsFromSearchEngineId', {
-      idSite,
-      period,
-      date,
-      idSubtable,
-      segment,
-    });
+    return this.core.request<any>(
+      "Referrers.getKeywordsFromSearchEngineId",
+      params
+    );
   }
 
   /**
    * Get campaigns
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param expanded Whether to include expanded data
+   *
+   * @param params Parameters for getting campaigns
    */
-  async getCampaigns(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    expanded?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getCampaigns', {
-      idSite,
-      period,
-      date,
-      segment,
-      expanded,
-    });
+  async getCampaigns(params: ReferrersCampaignParams): Promise<any> {
+    return this.core.request<any>("Referrers.getCampaigns", params);
   }
 
   /**
-   * Get keywords from campaign ID
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param idSubtable Subtable ID
-   * @param segment Segment to apply
+   * Get keywords for a campaign
+   *
+   * @param params Parameters for getting keywords from campaign
    */
   async getKeywordsFromCampaignId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: number | string,
-    segment?: string
+    params: ReferrersSubtableParams
   ): Promise<any> {
-    return this.core.request<any>('Referrers.getKeywordsFromCampaignId', {
-      idSite,
-      period,
-      date,
-      idSubtable,
-      segment,
-    });
+    return this.core.request<any>(
+      "Referrers.getKeywordsFromCampaignId",
+      params
+    );
   }
 
   /**
-   * Get websites
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param expanded Whether to include expanded data
-   * @param flat Whether to flatten nested data
+   * Get referring websites
+   *
+   * @param params Parameters for getting websites
    */
-  async getWebsites(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    expanded?: boolean,
-    flat?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getWebsites', {
-      idSite,
-      period,
-      date,
-      segment,
-      expanded,
-      flat,
-    });
+  async getWebsites(params: ReferrersExpandableParams): Promise<any> {
+    return this.core.request<any>("Referrers.getWebsites", params);
   }
 
   /**
-   * Get URLs from website ID
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param idSubtable Subtable ID
-   * @param segment Segment to apply
+   * Get URLs for a website referrer
+   *
+   * @param params Parameters for getting URLs from website
    */
-  async getUrlsFromWebsiteId(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idSubtable: number | string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getUrlsFromWebsiteId', {
-      idSite,
-      period,
-      date,
-      idSubtable,
-      segment,
-    });
+  async getUrlsFromWebsiteId(params: ReferrersSubtableParams): Promise<any> {
+    return this.core.request<any>("Referrers.getUrlsFromWebsiteId", params);
   }
 
   /**
-   * Get socials
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param expanded Whether to include expanded data
-   * @param flat Whether to flatten nested data
+   * Get social network referrers
+   *
+   * @param params Parameters for getting social referrers
    */
-  async getSocials(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    expanded?: boolean,
-    flat?: boolean
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getSocials', {
-      idSite,
-      period,
-      date,
-      segment,
-      expanded,
-      flat,
-    });
+  async getSocials(params: ReferrersExpandableParams): Promise<any> {
+    return this.core.request<any>("Referrers.getSocials", params);
   }
 
   /**
-   * Get URLs for social
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param idSubtable Subtable ID
+   * Get URLs for a social network referrer
+   *
+   * @param params Parameters for getting URLs from social network
    */
-  async getUrlsForSocial(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    idSubtable?: number | string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getUrlsForSocial', {
-      idSite,
-      period,
-      date,
-      segment,
-      idSubtable,
-    });
+  async getUrlsForSocial(params: SocialUrlParams): Promise<any> {
+    return this.core.request<any>("Referrers.getUrlsForSocial", params);
   }
 
   /**
    * Get number of distinct search engines
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting number of search engines
    */
-  async getNumberOfDistinctSearchEngines(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctSearchEngines', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
-  }
-
-  /**
-   * Get number of distinct social networks
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   */
-  async getNumberOfDistinctSocialNetworks(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctSocialNetworks', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getNumberOfSearchEngines(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>(
+      "Referrers.getNumberOfDistinctSearchEngines",
+      params
+    );
   }
 
   /**
    * Get number of distinct keywords
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting number of keywords
    */
-  async getNumberOfDistinctKeywords(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctKeywords', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getNumberOfKeywords(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>(
+      "Referrers.getNumberOfDistinctKeywords",
+      params
+    );
   }
 
   /**
    * Get number of distinct campaigns
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting number of campaigns
    */
-  async getNumberOfDistinctCampaigns(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctCampaigns', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getNumberOfCampaigns(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>(
+      "Referrers.getNumberOfDistinctCampaigns",
+      params
+    );
   }
 
   /**
    * Get number of distinct websites
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting number of websites
    */
-  async getNumberOfDistinctWebsites(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctWebsites', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getNumberOfWebsites(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>(
+      "Referrers.getNumberOfDistinctWebsites",
+      params
+    );
   }
 
   /**
    * Get number of distinct website URLs
-   * 
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
+   *
+   * @param params Parameters for getting number of website URLs
    */
-  async getNumberOfDistinctWebsitesUrls(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string
-  ): Promise<any> {
-    return this.core.request<any>('Referrers.getNumberOfDistinctWebsitesUrls', {
-      idSite,
-      period,
-      date,
-      segment,
-    });
+  async getNumberOfWebsiteUrls(params: ReferrersParams): Promise<any> {
+    return this.core.request<any>(
+      "Referrers.getNumberOfDistinctWebsitesUrls",
+      params
+    );
   }
 }

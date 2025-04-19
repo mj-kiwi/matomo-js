@@ -35,7 +35,7 @@ describe("SegmentEditorModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.isUserCanAddNewSegment();
+      const result = await segmentEditorModule.isUserCanAddNewSegment({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SegmentEditor.isUserCanAddNewSegment",
@@ -48,7 +48,9 @@ describe("SegmentEditorModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.isUserCanAddNewSegment(1);
+      const result = await segmentEditorModule.isUserCanAddNewSegment({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SegmentEditor.isUserCanAddNewSegment",
@@ -63,7 +65,9 @@ describe("SegmentEditorModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.delete(5);
+      const result = await segmentEditorModule.delete({
+        idSegment: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.delete", {
         idSegment: 5,
@@ -77,11 +81,11 @@ describe("SegmentEditorModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.update(
-        1,
-        "Updated Mobile Visitors",
-        "deviceType==mobile"
-      );
+      const result = await segmentEditorModule.update({
+        idSegment: 1,
+        name: "Updated Mobile Visitors",
+        definition: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.update", {
         idSegment: 1,
@@ -95,14 +99,14 @@ describe("SegmentEditorModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.update(
-        2,
-        "Desktop Visitors",
-        "deviceType==desktop",
-        1,
-        true,
-        true
-      );
+      const result = await segmentEditorModule.update({
+        idSegment: 2,
+        name: "Desktop Visitors",
+        definition: "deviceType==desktop",
+        idSite: 1,
+        autoArchive: true,
+        enabledAllUsers: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.update", {
         idSegment: 2,
@@ -121,10 +125,10 @@ describe("SegmentEditorModule", () => {
       const mockResponse = { success: true, idSegment: 3 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.add(
-        "New Visitors",
-        "visitorType==new"
-      );
+      const result = await segmentEditorModule.add({
+        name: "New Visitors",
+        definition: "visitorType==new",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.add", {
         name: "New Visitors",
@@ -137,13 +141,13 @@ describe("SegmentEditorModule", () => {
       const mockResponse = { success: true, idSegment: 4 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.add(
-        "Returning Visitors from US",
-        "visitorType==returning;countryCode==US",
-        2,
-        true,
-        true
-      );
+      const result = await segmentEditorModule.add({
+        name: "Returning Visitors from US",
+        definition: "visitorType==returning;countryCode==US",
+        idSite: 2,
+        autoArchive: true,
+        enabledAllUsers: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.add", {
         name: "Returning Visitors from US",
@@ -170,7 +174,9 @@ describe("SegmentEditorModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.get(1);
+      const result = await segmentEditorModule.get({
+        idSegment: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.get", {
         idSegment: 1,
@@ -197,7 +203,7 @@ describe("SegmentEditorModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.getAll();
+      const result = await segmentEditorModule.getAll({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "SegmentEditor.getAll",
@@ -217,7 +223,9 @@ describe("SegmentEditorModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await segmentEditorModule.getAll(1);
+      const result = await segmentEditorModule.getAll({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("SegmentEditor.getAll", {
         idSite: 1,

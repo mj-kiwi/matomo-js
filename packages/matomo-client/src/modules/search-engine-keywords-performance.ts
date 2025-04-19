@@ -16,7 +16,27 @@
  * (Internal server errors), Malware infected sites, Total inbound links.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for search engine keyword methods
+ */
+export interface SearchKeywordsParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+}
+
+/**
+ * Parameters for crawling error examples
+ */
+export interface CrawlingErrorParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
 
 export class SearchEngineKeywordsPerformanceModule {
   constructor(private client: CoreReportingClient) {}
@@ -24,24 +44,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get all search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting search keywords
    * @returns Promise with the search engine keywords data
    */
-  async getKeywords(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywords(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywords',
+      "SearchEngineKeywordsPerformance.getKeywords",
       params
     );
   }
@@ -49,24 +57,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get imported search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting imported search keywords
    * @returns Promise with the imported search engine keywords data
    */
-  async getKeywordsImported(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsImported(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsImported',
+      "SearchEngineKeywordsPerformance.getKeywordsImported",
       params
     );
   }
@@ -74,24 +70,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Google search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Google search keywords
    * @returns Promise with the Google search engine keywords data
    */
-  async getKeywordsGoogle(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsGoogle(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsGoogle',
+      "SearchEngineKeywordsPerformance.getKeywordsGoogle",
       params
     );
   }
@@ -99,24 +83,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Bing search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Bing search keywords
    * @returns Promise with the Bing search engine keywords data
    */
-  async getKeywordsBing(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsBing(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsBing',
+      "SearchEngineKeywordsPerformance.getKeywordsBing",
       params
     );
   }
@@ -124,24 +96,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Yandex search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Yandex search keywords
    * @returns Promise with the Yandex search engine keywords data
    */
-  async getKeywordsYandex(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsYandex(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsYandex',
+      "SearchEngineKeywordsPerformance.getKeywordsYandex",
       params
     );
   }
@@ -149,24 +109,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Google Web search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Google Web search keywords
    * @returns Promise with the Google Web search engine keywords data
    */
-  async getKeywordsGoogleWeb(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsGoogleWeb(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsGoogleWeb',
+      "SearchEngineKeywordsPerformance.getKeywordsGoogleWeb",
       params
     );
   }
@@ -174,24 +122,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Google Image search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Google Image search keywords
    * @returns Promise with the Google Image search engine keywords data
    */
-  async getKeywordsGoogleImage(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsGoogleImage(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsGoogleImage',
+      "SearchEngineKeywordsPerformance.getKeywordsGoogleImage",
       params
     );
   }
@@ -199,24 +135,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Google Video search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Google Video search keywords
    * @returns Promise with the Google Video search engine keywords data
    */
-  async getKeywordsGoogleVideo(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsGoogleVideo(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsGoogleVideo',
+      "SearchEngineKeywordsPerformance.getKeywordsGoogleVideo",
       params
     );
   }
@@ -224,24 +148,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Google News search engine keywords
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Google News search keywords
    * @returns Promise with the Google News search engine keywords data
    */
-  async getKeywordsGoogleNews(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getKeywordsGoogleNews(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getKeywordsGoogleNews',
+      "SearchEngineKeywordsPerformance.getKeywordsGoogleNews",
       params
     );
   }
@@ -249,24 +161,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Bing crawling overview
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Bing crawling overview
    * @returns Promise with the Bing crawling overview data
    */
-  async getCrawlingOverviewBing(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getCrawlingOverviewBing(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getCrawlingOverviewBing',
+      "SearchEngineKeywordsPerformance.getCrawlingOverviewBing",
       params
     );
   }
@@ -274,24 +174,12 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Yandex crawling overview
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
+   * @param params Parameters for getting Yandex crawling overview
    * @returns Promise with the Yandex crawling overview data
    */
-  async getCrawlingOverviewYandex(
-    idSite: number | string,
-    period: string,
-    date: string
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
+  async getCrawlingOverviewYandex(params: SearchKeywordsParams): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getCrawlingOverviewYandex',
+      "SearchEngineKeywordsPerformance.getCrawlingOverviewYandex",
       params
     );
   }
@@ -299,16 +187,14 @@ export class SearchEngineKeywordsPerformanceModule {
   /**
    * Get Bing crawling error examples
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns Promise with the Bing crawling error examples
    */
-  async getCrawlingErrorExamplesBing(idSite: number | string): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
+  async getCrawlingErrorExamplesBing(
+    params: CrawlingErrorParams
+  ): Promise<any> {
     return this.client.request(
-      'SearchEngineKeywordsPerformance.getCrawlingErrorExamplesBing',
+      "SearchEngineKeywordsPerformance.getCrawlingErrorExamplesBing",
       params
     );
   }

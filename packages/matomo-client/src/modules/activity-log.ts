@@ -3,7 +3,38 @@
  * Provides access to user activity logs in the Matomo instance
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+export interface GetEntriesParams {
+  /** Result offset (default: 0) */
+  offset?: string | number;
+  /** Number of records to return (default: 25) */
+  limit?: string | number;
+  /** Filter activities by specific user login */
+  filterByUserLogin?: string;
+  /** Filter by activity type */
+  filterByActivityType?: string;
+  /** Period to filter by */
+  period?: string;
+  /** Date to filter by */
+  date?: string;
+}
+
+export interface GetEntryCountParams {
+  /** Filter count by specific user login */
+  filterByUserLogin?: string;
+  /** Filter count by activity type */
+  filterByActivityType?: string;
+  /** Period to filter by */
+  period?: string;
+  /** Date to filter by */
+  date?: string;
+}
+
+export interface GetAllActivityTypesParams {
+  /** Number of activity types to return (-1 for all) */
+  filterLimit?: string | number;
+}
 
 export class ActivityLogModule {
   constructor(private client: CoreReportingClient) {}
@@ -15,62 +46,41 @@ export class ActivityLogModule {
    * The results depend on authentication:
    * - Super User: returns activity logs for all users
    * - User with view/admin access or anonymous: returns only this user's activity
-   *
-   * @param offset Result offset (default: 0)
-   * @param limit Number of records to return (default: 25)
-   * @param filterByUserLogin Filter activities by specific user login
-   * @param filterByActivityType Filter by activity type
-   * @param period Period to filter by
-   * @param date Date to filter by
    */
-  async getEntries(
-    offset: string | number = '0',
-    limit: string | number = '25',
-    filterByUserLogin: string = '',
-    filterByActivityType: string = '',
-    period: string = '',
-    date: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {};
+  async getEntries(params: GetEntriesParams = {}): Promise<any> {
+    const requestParams: RequestParams = {
+      offset: params.offset ?? "0",
+      limit: params.limit ?? "25",
+    };
 
-    if (offset !== undefined) params.offset = offset;
-    if (limit !== undefined) params.limit = limit;
-    if (filterByUserLogin) params.filterByUserLogin = filterByUserLogin;
-    if (filterByActivityType)
-      params.filterByActivityType = filterByActivityType;
-    if (period) params.period = period;
-    if (date) params.date = date;
+    if (params.filterByUserLogin)
+      requestParams.filterByUserLogin = params.filterByUserLogin;
+    if (params.filterByActivityType)
+      requestParams.filterByActivityType = params.filterByActivityType;
+    if (params.period) requestParams.period = params.period;
+    if (params.date) requestParams.date = params.date;
 
-    return this.client.request('ActivityLog.getEntries', params);
+    return this.client.request("ActivityLog.getEntries", requestParams);
   }
 
   /**
    * Get count of activity log entries
    *
    * Returns the total number of activities matching the specified filters
-   *
-   * @param filterByUserLogin Filter count by specific user login
-   * @param filterByActivityType Filter count by activity type
-   * @param period Period to filter by
-   * @param date Date to filter by
    */
-  async getEntryCount(
-    filterByUserLogin: string = '',
-    filterByActivityType: string = '',
-    period: string = '',
-    date: string = ''
-  ): Promise<number> {
-    const params: RequestParams = {};
+  async getEntryCount(params: GetEntryCountParams = {}): Promise<number> {
+    const requestParams: RequestParams = {};
 
-    if (filterByUserLogin) params.filterByUserLogin = filterByUserLogin;
-    if (filterByActivityType)
-      params.filterByActivityType = filterByActivityType;
-    if (period) params.period = period;
-    if (date) params.date = date;
+    if (params.filterByUserLogin)
+      requestParams.filterByUserLogin = params.filterByUserLogin;
+    if (params.filterByActivityType)
+      requestParams.filterByActivityType = params.filterByActivityType;
+    if (params.period) requestParams.period = params.period;
+    if (params.date) requestParams.date = params.date;
 
     const result = await this.client.request<{ value: number }>(
-      'ActivityLog.getEntryCount',
-      params
+      "ActivityLog.getEntryCount",
+      requestParams
     );
     return result.value;
   }
@@ -79,18 +89,17 @@ export class ActivityLogModule {
    * Get all available activity types
    *
    * Returns a list of all possible activity types that can be used for filtering
-   *
-   * @param filterLimit Number of activity types to return (-1 for all)
    */
   async getAllActivityTypes(
-    filterLimit: string | number = '-1'
+    params: GetAllActivityTypesParams = {}
   ): Promise<string[]> {
-    const params: RequestParams = {};
-    if (filterLimit !== undefined) params.filterLimit = filterLimit;
+    const requestParams: RequestParams = {
+      filterLimit: params.filterLimit ?? "-1",
+    };
 
     return this.client.request<string[]>(
-      'ActivityLog.getAllActivityTypes',
-      params
+      "ActivityLog.getAllActivityTypes",
+      requestParams
     );
   }
 }

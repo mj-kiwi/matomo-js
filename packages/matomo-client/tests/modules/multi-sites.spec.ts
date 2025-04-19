@@ -38,15 +38,14 @@ describe("MultiSitesModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getAll("day", "2023-01-01");
+      const result = await multiSitesModule.getAll({
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MultiSites.getAll", {
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
-        enhanced: false,
-        pattern: undefined,
-        showColumns: [],
       });
       expect(result).toEqual(mockResponse);
     });
@@ -58,14 +57,14 @@ describe("MultiSitesModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getAll(
-        "month",
-        "2023-01-01",
-        "browserName==Chrome",
-        true,
-        "example",
-        ["nb_visits", "revenue"]
-      );
+      const result = await multiSitesModule.getAll({
+        period: "month",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+        enhanced: true,
+        pattern: "example",
+        showColumns: ["nb_visits", "revenue"],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MultiSites.getAll", {
         period: "month",
@@ -84,14 +83,16 @@ describe("MultiSitesModule", () => {
       const mockResponse = { label: "Site 1", nb_visits: 100 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getOne(1, "day", "2023-01-01");
+      const result = await multiSitesModule.getOne({
+        idSite: 1,
+        period: "day",
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MultiSites.getOne", {
         idSite: 1,
         period: "day",
         date: "2023-01-01",
-        segment: undefined,
-        enhanced: false,
       });
       expect(result).toEqual(mockResponse);
     });
@@ -100,13 +101,13 @@ describe("MultiSitesModule", () => {
       const mockResponse = { label: "Site 1", nb_visits: 100, revenue: 1000 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getOne(
-        1,
-        "month",
-        "2023-01-01",
-        "browserName==Chrome",
-        true
-      );
+      const result = await multiSitesModule.getOne({
+        idSite: 1,
+        period: "month",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+        enhanced: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MultiSites.getOne", {
         idSite: 1,
@@ -136,17 +137,11 @@ describe("MultiSitesModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getAllWithGroups();
+      const result = await multiSitesModule.getAllWithGroups({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiSites.getAllWithGroups",
-        {
-          period: undefined,
-          date: undefined,
-          segment: undefined,
-          pattern: "",
-          filter_limit: 0,
-        }
+        {}
       );
       expect(result).toEqual(mockResponse);
     });
@@ -163,13 +158,13 @@ describe("MultiSitesModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await multiSitesModule.getAllWithGroups(
-        "month",
-        "2023-01-01",
-        "browserName==Chrome",
-        "example",
-        10
-      );
+      const result = await multiSitesModule.getAllWithGroups({
+        period: "month",
+        date: "2023-01-01",
+        segment: "browserName==Chrome",
+        pattern: "example",
+        filter_limit: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MultiSites.getAllWithGroups",

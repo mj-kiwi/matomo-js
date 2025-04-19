@@ -3,7 +3,21 @@
  * This API lets you access reports about device plugins such as browser plugins.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for device plugin reports
+ */
+export interface DevicePluginParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
 
 export class DevicePluginsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,26 +25,10 @@ export class DevicePluginsModule {
   /**
    * Get browser plugin usage
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for device plugin report
    * @returns Promise with the API response containing plugin usage data
    */
-  async getPlugin(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('DevicePlugins.getPlugin', params);
+  async getPlugin(params: DevicePluginParams): Promise<any> {
+    return this.client.request("DevicePlugins.getPlugin", params);
   }
 }

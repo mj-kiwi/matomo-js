@@ -38,7 +38,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getId(1, "day", "today");
+      const result = await marketingModule.getId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getId",
@@ -55,12 +59,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getId(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getId",
@@ -80,7 +84,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getName(1, "day", "today");
+      const result = await marketingModule.getName({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getName",
@@ -97,14 +105,14 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getName(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        true
-      );
+      const result = await marketingModule.getName({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getName",
@@ -126,12 +134,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getKeywordContentFromNameId(
-        1,
-        "day",
-        "today",
-        5
-      );
+      const result = await marketingModule.getKeywordContentFromNameId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getKeywordContentFromNameId",
@@ -149,13 +157,13 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getKeywordContentFromNameId(
-        1,
-        "day",
-        "today",
-        5,
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getKeywordContentFromNameId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        idSubtable: 5,
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getKeywordContentFromNameId",
@@ -176,7 +184,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getKeyword(1, "day", "today");
+      const result = await marketingModule.getKeyword({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getKeyword",
@@ -193,12 +205,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getKeyword(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getKeyword({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getKeyword",
@@ -218,7 +230,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getSource(1, "day", "today");
+      const result = await marketingModule.getSource({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getSource",
@@ -235,12 +251,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getSource(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getSource({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getSource",
@@ -260,7 +276,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getMedium(1, "day", "today");
+      const result = await marketingModule.getMedium({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getMedium",
@@ -277,12 +297,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getMedium(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getMedium({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getMedium",
@@ -302,7 +322,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getContent(1, "day", "today");
+      const result = await marketingModule.getContent({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getContent",
@@ -319,12 +343,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getContent(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getContent({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getContent",
@@ -344,7 +368,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getGroup(1, "day", "today");
+      const result = await marketingModule.getGroup({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getGroup",
@@ -361,12 +389,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getGroup(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getGroup({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getGroup",
@@ -386,7 +414,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getPlacement(1, "day", "today");
+      const result = await marketingModule.getPlacement({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getPlacement",
@@ -403,12 +435,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getPlacement(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getPlacement({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getPlacement",
@@ -428,7 +460,11 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getSourceMedium(1, "day", "today");
+      const result = await marketingModule.getSourceMedium({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getSourceMedium",
@@ -445,14 +481,14 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getSourceMedium(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        true,
-        true
-      );
+      const result = await marketingModule.getSourceMedium({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getSourceMedium",
@@ -474,12 +510,12 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getNameFromSourceMediumId(
-        1,
-        "day",
-        "today",
-        5
-      );
+      const result = await marketingModule.getNameFromSourceMediumId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getNameFromSourceMediumId",
@@ -497,13 +533,13 @@ describe("MarketingCampaignsReportingModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await marketingModule.getNameFromSourceMediumId(
-        1,
-        "day",
-        "today",
-        5,
-        "deviceType==desktop"
-      );
+      const result = await marketingModule.getNameFromSourceMediumId({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        idSubtable: 5,
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MarketingCampaignsReporting.getNameFromSourceMediumId",

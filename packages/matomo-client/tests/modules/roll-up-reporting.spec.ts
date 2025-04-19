@@ -35,12 +35,12 @@ describe("RollUpReportingModule", () => {
       const mockResponse = { success: true, idSite: 10 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await rollUpReportingModule.addRollUp(
-        "Combined Sites",
-        [1, 2, 3],
-        "UTC",
-        "USD"
-      );
+      const result = await rollUpReportingModule.addRollUp({
+        name: "Combined Sites",
+        sourceIdSites: [1, 2, 3],
+        timezone: "UTC",
+        currency: "USD",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "RollUpReporting.addRollUp",
@@ -60,16 +60,14 @@ describe("RollUpReportingModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await rollUpReportingModule.updateRollUp(10);
+      const result = await rollUpReportingModule.updateRollUp({
+        idSite: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "RollUpReporting.updateRollUp",
         {
           idSite: 10,
-          name: "",
-          sourceIdSites: [],
-          timezone: "",
-          currency: "",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -79,13 +77,13 @@ describe("RollUpReportingModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await rollUpReportingModule.updateRollUp(
-        10,
-        "Updated Roll-Up",
-        [1, 2, 4],
-        "Europe/Berlin",
-        "EUR"
-      );
+      const result = await rollUpReportingModule.updateRollUp({
+        idSite: 10,
+        name: "Updated Roll-Up",
+        sourceIdSites: [1, 2, 4],
+        timezone: "Europe/Berlin",
+        currency: "EUR",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "RollUpReporting.updateRollUp",

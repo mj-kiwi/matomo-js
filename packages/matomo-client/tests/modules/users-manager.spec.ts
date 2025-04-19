@@ -35,7 +35,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getAvailableRoles();
+      const result = await usersManagerModule.getAvailableRoles({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getAvailableRoles",
@@ -50,7 +50,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getAvailableCapabilities();
+      const result = await usersManagerModule.getAvailableCapabilities({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getAvailableCapabilities",
@@ -65,11 +65,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setUserPreference(
-        "user1",
-        "defaultReport",
-        "MultiSites"
-      );
+      const result = await usersManagerModule.setUserPreference({
+        userLogin: "user1",
+        preferenceName: "defaultReport",
+        preferenceValue: "MultiSites",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setUserPreference",
@@ -88,8 +88,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await usersManagerModule.getUserPreference("defaultReport");
+      const result = await usersManagerModule.getUserPreference({
+        preferenceName: "defaultReport",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUserPreference",
@@ -104,10 +105,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUserPreference(
-        "defaultReport",
-        "user1"
-      );
+      const result = await usersManagerModule.getUserPreference({
+        preferenceName: "defaultReport",
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUserPreference",
@@ -125,7 +126,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersPlusRole(1);
+      const result = await usersManagerModule.getUsersPlusRole({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersPlusRole",
@@ -140,14 +141,14 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersPlusRole(
-        1,
-        10,
-        20,
-        "searchTerm",
-        "view",
-        "active"
-      );
+      const result = await usersManagerModule.getUsersPlusRole({
+        idSite: 1,
+        limit: 10,
+        offset: 20,
+        filter_search: "searchTerm",
+        filter_access: "view",
+        filter_status: "active",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersPlusRole",
@@ -169,7 +170,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsers();
+      const result = await usersManagerModule.getUsers({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsers",
@@ -182,7 +183,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsers(["user1", "user2"]);
+      const result = await usersManagerModule.getUsers({
+        userLogins: ["user1", "user2"],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UsersManager.getUsers", {
         userLogins: ["user1", "user2"],
@@ -194,7 +197,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsers("user1");
+      const result = await usersManagerModule.getUsers({
+        userLogins: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UsersManager.getUsers", {
         userLogins: "user1",
@@ -208,7 +213,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersLogin();
+      const result = await usersManagerModule.getUsersLogin({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersLogin",
@@ -223,7 +228,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersSitesFromAccess("view");
+      const result = await usersManagerModule.getUsersSitesFromAccess({
+        access: "view",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersSitesFromAccess",
@@ -240,7 +247,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersAccessFromSite(1);
+      const result = await usersManagerModule.getUsersAccessFromSite({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersAccessFromSite",
@@ -257,7 +266,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersWithSiteAccess(1, "view");
+      const result = await usersManagerModule.getUsersWithSiteAccess({
+        idSite: 1,
+        access: "view",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersWithSiteAccess",
@@ -275,7 +287,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getSitesAccessFromUser("user1");
+      const result = await usersManagerModule.getSitesAccessFromUser({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getSitesAccessFromUser",
@@ -292,7 +306,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getSitesAccessForUser("user1");
+      const result = await usersManagerModule.getSitesAccessForUser({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getSitesAccessForUser",
@@ -307,13 +323,13 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getSitesAccessForUser(
-        "user1",
-        10,
-        20,
-        "searchTerm",
-        "view"
-      );
+      const result = await usersManagerModule.getSitesAccessForUser({
+        userLogin: "user1",
+        limit: 10,
+        offset: 20,
+        filter_search: "searchTerm",
+        filter_access: "view",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getSitesAccessForUser",
@@ -334,7 +350,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUser("user1");
+      const result = await usersManagerModule.getUser({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UsersManager.getUser", {
         userLogin: "user1",
@@ -348,8 +366,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await usersManagerModule.getUserByEmail("user@example.com");
+      const result = await usersManagerModule.getUserByEmail({
+        userEmail: "user@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUserByEmail",
@@ -366,11 +385,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.addUser(
-        "newuser",
-        "password123",
-        "user@example.com"
-      );
+      const result = await usersManagerModule.addUser({
+        userLogin: "newuser",
+        password: "password123",
+        email: "user@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UsersManager.addUser", {
         userLogin: "newuser",
@@ -384,13 +403,13 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.addUser(
-        "newuser",
-        "password123",
-        "user@example.com",
-        1,
-        "password123"
-      );
+      const result = await usersManagerModule.addUser({
+        userLogin: "newuser",
+        password: "password123",
+        email: "user@example.com",
+        initialIdSite: 1,
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UsersManager.addUser", {
         userLogin: "newuser",
@@ -408,10 +427,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.inviteUser(
-        "newuser",
-        "user@example.com"
-      );
+      const result = await usersManagerModule.inviteUser({
+        userLogin: "newuser",
+        email: "user@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.inviteUser",
@@ -427,13 +446,13 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.inviteUser(
-        "newuser",
-        "user@example.com",
-        1,
-        30,
-        "password123"
-      );
+      const result = await usersManagerModule.inviteUser({
+        userLogin: "newuser",
+        email: "user@example.com",
+        initialIdSite: 1,
+        expiryInDays: 30,
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.inviteUser",
@@ -454,7 +473,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setSuperUserAccess("user1", true);
+      const result = await usersManagerModule.setSuperUserAccess({
+        userLogin: "user1",
+        hasSuperUserAccess: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setSuperUserAccess",
@@ -470,11 +492,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setSuperUserAccess(
-        "user1",
-        false,
-        "password123"
-      );
+      const result = await usersManagerModule.setSuperUserAccess({
+        userLogin: "user1",
+        hasSuperUserAccess: false,
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setSuperUserAccess",
@@ -493,7 +515,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.hasSuperUserAccess();
+      const result = await usersManagerModule.hasSuperUserAccess({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.hasSuperUserAccess",
@@ -508,7 +530,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: ["user1", "user2"] };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.getUsersHavingSuperUserAccess();
+      const result = await usersManagerModule.getUsersHavingSuperUserAccess({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUsersHavingSuperUserAccess",
@@ -523,7 +545,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.updateUser("user1");
+      const result = await usersManagerModule.updateUser({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.updateUser",
@@ -538,12 +562,12 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.updateUser(
-        "user1",
-        "newpassword",
-        "newemail@example.com",
-        "password123"
-      );
+      const result = await usersManagerModule.updateUser({
+        userLogin: "user1",
+        password: "newpassword",
+        email: "newemail@example.com",
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.updateUser",
@@ -561,12 +585,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.updateUser(
-        "user1",
-        "newpassword",
-        "",
-        "password123"
-      );
+      const result = await usersManagerModule.updateUser({
+        userLogin: "user1",
+        password: "newpassword",
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.updateUser",
@@ -583,11 +606,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.updateUser(
-        "user1",
-        "",
-        "newemail@example.com"
-      );
+      const result = await usersManagerModule.updateUser({
+        userLogin: "user1",
+        email: "newemail@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.updateUser",
@@ -605,7 +627,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.deleteUser("user1");
+      const result = await usersManagerModule.deleteUser({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.deleteUser",
@@ -620,10 +644,10 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.deleteUser(
-        "user1",
-        "password123"
-      );
+      const result = await usersManagerModule.deleteUser({
+        userLogin: "user1",
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.deleteUser",
@@ -641,7 +665,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.userExists("user1");
+      const result = await usersManagerModule.userExists({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.userExists",
@@ -658,8 +684,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await usersManagerModule.userEmailExists("user@example.com");
+      const result = await usersManagerModule.userEmailExists({
+        userEmail: "user@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.userEmailExists",
@@ -676,8 +703,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "user1" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await usersManagerModule.getUserLoginFromUserEmail("user@example.com");
+      const result = await usersManagerModule.getUserLoginFromUserEmail({
+        userEmail: "user@example.com",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.getUserLoginFromUserEmail",
@@ -694,11 +722,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setUserAccess(
-        "user1",
-        "view",
-        [1, 2, 3]
-      );
+      const result = await usersManagerModule.setUserAccess({
+        userLogin: "user1",
+        access: "view",
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setUserAccess",
@@ -715,12 +743,12 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setUserAccess(
-        "user1",
-        "view",
-        [1, 2, 3],
-        "password123"
-      );
+      const result = await usersManagerModule.setUserAccess({
+        userLogin: "user1",
+        access: "view",
+        idSites: [1, 2, 3],
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setUserAccess",
@@ -738,7 +766,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.setUserAccess("user1", "view", 1);
+      const result = await usersManagerModule.setUserAccess({
+        userLogin: "user1",
+        access: "view",
+        idSites: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.setUserAccess",
@@ -757,11 +789,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.addCapabilities(
-        "user1",
-        "tagmanager_write",
-        [1, 2, 3]
-      );
+      const result = await usersManagerModule.addCapabilities({
+        userLogin: "user1",
+        capabilities: "tagmanager_write",
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.addCapabilities",
@@ -778,11 +810,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.addCapabilities(
-        "user1",
-        ["tagmanager_write", "tagmanager_read"],
-        [1, 2, 3]
-      );
+      const result = await usersManagerModule.addCapabilities({
+        userLogin: "user1",
+        capabilities: ["tagmanager_write", "tagmanager_read"],
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.addCapabilities",
@@ -799,11 +831,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.addCapabilities(
-        "user1",
-        "tagmanager_write",
-        1
-      );
+      const result = await usersManagerModule.addCapabilities({
+        userLogin: "user1",
+        capabilities: "tagmanager_write",
+        idSites: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.addCapabilities",
@@ -822,11 +854,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.removeCapabilities(
-        "user1",
-        "tagmanager_write",
-        [1, 2, 3]
-      );
+      const result = await usersManagerModule.removeCapabilities({
+        userLogin: "user1",
+        capabilities: "tagmanager_write",
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.removeCapabilities",
@@ -843,11 +875,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.removeCapabilities(
-        "user1",
-        ["tagmanager_write", "tagmanager_read"],
-        [1, 2, 3]
-      );
+      const result = await usersManagerModule.removeCapabilities({
+        userLogin: "user1",
+        capabilities: ["tagmanager_write", "tagmanager_read"],
+        idSites: [1, 2, 3],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.removeCapabilities",
@@ -864,11 +896,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.removeCapabilities(
-        "user1",
-        "tagmanager_write",
-        1
-      );
+      const result = await usersManagerModule.removeCapabilities({
+        userLogin: "user1",
+        capabilities: "tagmanager_write",
+        idSites: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.removeCapabilities",
@@ -887,11 +919,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.createAppSpecificTokenAuth(
-        "user1",
-        "password123",
-        "Mobile App Token"
-      );
+      const result = await usersManagerModule.createAppSpecificTokenAuth({
+        userLogin: "user1",
+        passwordConfirmation: "password123",
+        description: "Mobile App Token",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.createAppSpecificTokenAuth",
@@ -908,13 +940,13 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.createAppSpecificTokenAuth(
-        "user1",
-        "password123",
-        "Mobile App Token",
-        "2025-12-31",
-        48
-      );
+      const result = await usersManagerModule.createAppSpecificTokenAuth({
+        userLogin: "user1",
+        passwordConfirmation: "password123",
+        description: "Mobile App Token",
+        expireDate: "2025-12-31",
+        expireHours: 48,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.createAppSpecificTokenAuth",
@@ -935,7 +967,7 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.newsletterSignup();
+      const result = await usersManagerModule.newsletterSignup({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.newsletterSignup",
@@ -950,7 +982,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.resendInvite("user1");
+      const result = await usersManagerModule.resendInvite({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.resendInvite",
@@ -965,11 +999,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.resendInvite(
-        "user1",
-        30,
-        "password123"
-      );
+      const result = await usersManagerModule.resendInvite({
+        userLogin: "user1",
+        expiryInDays: 30,
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.resendInvite",
@@ -988,7 +1022,9 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.generateInviteLink("user1");
+      const result = await usersManagerModule.generateInviteLink({
+        userLogin: "user1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.generateInviteLink",
@@ -1003,11 +1039,11 @@ describe("UsersManagerModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await usersManagerModule.generateInviteLink(
-        "user1",
-        30,
-        "password123"
-      );
+      const result = await usersManagerModule.generateInviteLink({
+        userLogin: "user1",
+        expiryInDays: 30,
+        passwordConfirmation: "password123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UsersManager.generateInviteLink",

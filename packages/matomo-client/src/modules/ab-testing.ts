@@ -3,7 +3,132 @@
  * Provides access to A/B testing functionality in Matomo
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for the getMetricsOverview method
+ */
+export interface GetMetricsOverviewParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Experiment ID */
+  idExperiment: number | string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for the getMetricDetails method
+ */
+export interface GetMetricDetailsParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Experiment ID */
+  idExperiment: number | string;
+  /** Success metric to analyze */
+  successMetric: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for the addExperiment method
+ */
+export interface AddExperimentParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Experiment name */
+  name: string;
+  /** Experiment hypothesis */
+  hypothesis: string;
+  /** Experiment description */
+  description: string;
+  /** Array of experiment variations */
+  variations: any[];
+  /** Targeting rules for including visitors in the experiment */
+  includedTargets: any[];
+  /** Array of metrics to measure success */
+  successMetrics: any[];
+}
+
+/**
+ * Parameters for the updateExperiment method
+ */
+export interface UpdateExperimentParams extends RequestParams {
+  /** Experiment ID */
+  idExperiment: number | string;
+  /** Site ID */
+  idSite: number | string;
+  /** Experiment name */
+  name: string;
+  /** Experiment description */
+  description: string;
+  /** Experiment hypothesis */
+  hypothesis: string;
+  /** Array of experiment variations */
+  variations: any[];
+  /** Confidence threshold for statistical significance */
+  confidenceThreshold: number;
+  /** Minimum detectable effect (relative) */
+  mdeRelative: number;
+  /** Percentage of visitors to include in experiment */
+  percentageParticipants: number;
+  /** Array of metrics to measure success */
+  successMetrics: any[];
+  /** Targeting rules for including visitors */
+  includedTargets: any[];
+  /** Targeting rules for excluding visitors */
+  excludedTargets?: any[];
+  /** Optional start date */
+  startDate?: string;
+  /** Optional end date */
+  endDate?: string;
+  /** Whether to forward UTM params */
+  forwardUtmParams?: boolean | string;
+  /** Whether to forward all query params */
+  forwardAllQueryParams?: boolean | string;
+}
+
+/**
+ * Parameters for experiment operations (start, finish, archive, delete, etc.)
+ */
+export interface ExperimentOperationParams extends RequestParams {
+  /** Experiment ID */
+  idExperiment: number | string;
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for the getExperimentsByStatuses method
+ */
+export interface GetExperimentsByStatusesParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Array of status strings */
+  statuses: string[];
+}
+
+/**
+ * Parameters for site-specific operations
+ */
+export interface SiteParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for methods that don't require any specific parameters
+ */
+export interface EmptyParams extends RequestParams {}
 
 export class AbTestingModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,330 +136,172 @@ export class AbTestingModule {
   /**
    * Get metrics overview for an experiment
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param idExperiment Experiment ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metrics overview
    */
-  async getMetricsOverview(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idExperiment: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idExperiment,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('AbTesting.getMetricsOverview', params);
+  async getMetricsOverview(params: GetMetricsOverviewParams): Promise<any> {
+    return this.client.request("AbTesting.getMetricsOverview", params);
   }
 
   /**
    * Get detailed metrics for a specific success metric in an experiment
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param idExperiment Experiment ID
-   * @param successMetric Success metric to analyze
-   * @param segment Optional segment definition
+   * @param params Parameters for getting metric details
    */
-  async getMetricDetails(
-    idSite: number | string,
-    period: string,
-    date: string,
-    idExperiment: number | string,
-    successMetric: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-      idExperiment,
-      successMetric,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('AbTesting.getMetricDetails', params);
+  async getMetricDetails(params: GetMetricDetailsParams): Promise<any> {
+    return this.client.request("AbTesting.getMetricDetails", params);
   }
 
   /**
    * Add a new experiment
    *
-   * @param idSite Site ID
-   * @param name Experiment name
-   * @param hypothesis Experiment hypothesis
-   * @param description Experiment description
-   * @param variations Array of experiment variations
-   * @param includedTargets Targeting rules for including visitors in the experiment
-   * @param successMetrics Array of metrics to measure success
+   * @param params Parameters for adding a new experiment
    */
-  async addExperiment(
-    idSite: number | string,
-    name: string,
-    hypothesis: string,
-    description: string,
-    variations: any[],
-    includedTargets: any[],
-    successMetrics: any[]
-  ): Promise<any> {
-    return this.client.request('AbTesting.addExperiment', {
-      idSite,
-      name,
-      hypothesis,
-      description,
-      variations,
-      includedTargets,
-      successMetrics,
-    });
+  async addExperiment(params: AddExperimentParams): Promise<any> {
+    return this.client.request("AbTesting.addExperiment", params);
   }
 
   /**
    * Update an existing experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
-   * @param name Experiment name
-   * @param description Experiment description
-   * @param hypothesis Experiment hypothesis
-   * @param variations Array of experiment variations
-   * @param confidenceThreshold Confidence threshold for statistical significance
-   * @param mdeRelative Minimum detectable effect (relative)
-   * @param percentageParticipants Percentage of visitors to include in experiment
-   * @param successMetrics Array of metrics to measure success
-   * @param includedTargets Targeting rules for including visitors
-   * @param excludedTargets Targeting rules for excluding visitors
-   * @param startDate Optional start date
-   * @param endDate Optional end date
-   * @param forwardUtmParams Whether to forward UTM params
-   * @param forwardAllQueryParams Whether to forward all query params
+   * @param params Parameters for updating an experiment
    */
-  async updateExperiment(
-    idExperiment: number | string,
-    idSite: number | string,
-    name: string,
-    description: string,
-    hypothesis: string,
-    variations: any[],
-    confidenceThreshold: number,
-    mdeRelative: number,
-    percentageParticipants: number,
-    successMetrics: any[],
-    includedTargets: any[],
-    excludedTargets: any[] = [],
-    startDate: string = '',
-    endDate: string = '',
-    forwardUtmParams: boolean | string = false,
-    forwardAllQueryParams: boolean | string = false
-  ): Promise<any> {
-    const params: RequestParams = {
-      idExperiment,
-      idSite,
-      name,
-      description,
-      hypothesis,
-      variations,
-      confidenceThreshold,
-      mdeRelative,
-      percentageParticipants,
-      successMetrics,
-      includedTargets,
-    };
-
-    if (excludedTargets.length) params.excludedTargets = excludedTargets;
-    if (startDate) params.startDate = startDate;
-    if (endDate) params.endDate = endDate;
-    if (forwardUtmParams) params.forwardUtmParams = forwardUtmParams;
-    if (forwardAllQueryParams)
-      params.forwardAllQueryParams = forwardAllQueryParams;
-
-    return this.client.request('AbTesting.updateExperiment', params);
+  async updateExperiment(params: UpdateExperimentParams): Promise<any> {
+    return this.client.request("AbTesting.updateExperiment", params);
   }
 
   /**
    * Start an experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
-  async startExperiment(
-    idExperiment: number | string,
-    idSite: number | string
-  ): Promise<any> {
-    return this.client.request('AbTesting.startExperiment', {
-      idExperiment,
-      idSite,
-    });
+  async startExperiment(params: ExperimentOperationParams): Promise<any> {
+    return this.client.request("AbTesting.startExperiment", params);
   }
 
   /**
    * Finish an experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
-  async finishExperiment(
-    idExperiment: number | string,
-    idSite: number | string
-  ): Promise<any> {
-    return this.client.request('AbTesting.finishExperiment', {
-      idExperiment,
-      idSite,
-    });
+  async finishExperiment(params: ExperimentOperationParams): Promise<any> {
+    return this.client.request("AbTesting.finishExperiment", params);
   }
 
   /**
    * Archive an experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
-  async archiveExperiment(
-    idExperiment: number | string,
-    idSite: number | string
-  ): Promise<any> {
-    return this.client.request('AbTesting.archiveExperiment', {
-      idExperiment,
-      idSite,
-    });
+  async archiveExperiment(params: ExperimentOperationParams): Promise<any> {
+    return this.client.request("AbTesting.archiveExperiment", params);
   }
 
   /**
    * Get JavaScript include template for A/B testing
    * Returns the JavaScript code needed to integrate A/B testing on a site
+   *
+   * @param params Empty parameters object
    */
-  async getJsIncludeTemplate(): Promise<any> {
-    return this.client.request('AbTesting.getJsIncludeTemplate');
+  async getJsIncludeTemplate(params: EmptyParams = {}): Promise<any> {
+    return this.client.request("AbTesting.getJsIncludeTemplate", params);
   }
 
   /**
    * Get JavaScript experiment template
    * Returns the JavaScript code for a specific experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
   async getJsExperimentTemplate(
-    idExperiment: number | string,
-    idSite: number | string
+    params: ExperimentOperationParams
   ): Promise<any> {
-    return this.client.request('AbTesting.getJsExperimentTemplate', {
-      idExperiment,
-      idSite,
-    });
+    return this.client.request("AbTesting.getJsExperimentTemplate", params);
   }
 
   /**
    * Get all experiments for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters specifying site ID
    */
-  async getAllExperiments(idSite: number | string): Promise<any> {
-    return this.client.request('AbTesting.getAllExperiments', { idSite });
+  async getAllExperiments(params: SiteParams): Promise<any> {
+    return this.client.request("AbTesting.getAllExperiments", params);
   }
 
   /**
    * Get active experiments for a site
    *
-   * @param idSite Site ID
+   * @param params Parameters specifying site ID
    */
-  async getActiveExperiments(idSite: number | string): Promise<any> {
-    return this.client.request('AbTesting.getActiveExperiments', { idSite });
+  async getActiveExperiments(params: SiteParams): Promise<any> {
+    return this.client.request("AbTesting.getActiveExperiments", params);
   }
 
   /**
    * Get experiments by statuses
    *
-   * @param idSite Site ID
-   * @param statuses Array of status strings
+   * @param params Parameters specifying site ID and statuses
    */
   async getExperimentsByStatuses(
-    idSite: number | string,
-    statuses: string[]
+    params: GetExperimentsByStatusesParams
   ): Promise<any> {
-    return this.client.request('AbTesting.getExperimentsByStatuses', {
-      idSite,
-      statuses,
-    });
+    return this.client.request("AbTesting.getExperimentsByStatuses", params);
   }
 
   /**
    * Get a specific experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
-  async getExperiment(
-    idExperiment: number | string,
-    idSite: number | string
-  ): Promise<any> {
-    return this.client.request('AbTesting.getExperiment', {
-      idExperiment,
-      idSite,
-    });
+  async getExperiment(params: ExperimentOperationParams): Promise<any> {
+    return this.client.request("AbTesting.getExperiment", params);
   }
 
   /**
    * Delete an experiment
    *
-   * @param idExperiment Experiment ID
-   * @param idSite Site ID
+   * @param params Parameters specifying experiment and site IDs
    */
-  async deleteExperiment(
-    idExperiment: number | string,
-    idSite: number | string
-  ): Promise<any> {
-    return this.client.request('AbTesting.deleteExperiment', {
-      idExperiment,
-      idSite,
-    });
+  async deleteExperiment(params: ExperimentOperationParams): Promise<any> {
+    return this.client.request("AbTesting.deleteExperiment", params);
   }
 
   /**
    * Get available experiment statuses
    *
-   * @param idSite Site ID
+   * @param params Parameters specifying site ID
    */
-  async getAvailableStatuses(idSite: number | string): Promise<any> {
-    return this.client.request('AbTesting.getAvailableStatuses', { idSite });
+  async getAvailableStatuses(params: SiteParams): Promise<any> {
+    return this.client.request("AbTesting.getAvailableStatuses", params);
   }
 
   /**
    * Get available success metrics
    *
-   * @param idSite Site ID
+   * @param params Parameters specifying site ID
    */
-  async getAvailableSuccessMetrics(idSite: number | string): Promise<any> {
-    return this.client.request('AbTesting.getAvailableSuccessMetrics', {
-      idSite,
-    });
+  async getAvailableSuccessMetrics(params: SiteParams): Promise<any> {
+    return this.client.request("AbTesting.getAvailableSuccessMetrics", params);
   }
 
   /**
    * Get available target attributes
    * Returns the list of attributes that can be used for targeting
+   *
+   * @param params Empty parameters object
    */
-  async getAvailableTargetAttributes(): Promise<any> {
-    return this.client.request('AbTesting.getAvailableTargetAttributes');
+  async getAvailableTargetAttributes(params: EmptyParams = {}): Promise<any> {
+    return this.client.request(
+      "AbTesting.getAvailableTargetAttributes",
+      params
+    );
   }
 
   /**
    * Get experiments with reports
    *
-   * @param idSite Site ID
+   * @param params Parameters specifying site ID
    */
-  async getExperimentsWithReports(idSite: number | string): Promise<any> {
-    return this.client.request('AbTesting.getExperimentsWithReports', {
-      idSite,
-    });
+  async getExperimentsWithReports(params: SiteParams): Promise<any> {
+    return this.client.request("AbTesting.getExperimentsWithReports", params);
   }
 }

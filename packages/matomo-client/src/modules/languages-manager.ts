@@ -9,7 +9,47 @@
  * via "setLanguageForUser".
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for language availability check
+ */
+export interface LanguageCodeParams extends RequestParams {
+  /** The language code to check (e.g., 'en', 'fr', 'de') */
+  languageCode: string;
+}
+
+/**
+ * Parameters for language info
+ */
+export interface LanguageInfoParams extends RequestParams {
+  /** Whether to exclude non-core plugins */
+  excludeNonCorePlugins?: string | boolean;
+}
+
+/**
+ * Parameters for user login
+ */
+export interface UserLoginParams extends RequestParams {
+  /** User login */
+  login: string;
+}
+
+/**
+ * Parameters for setting language for user
+ */
+export interface SetLanguageParams extends UserLoginParams {
+  /** The language code to set (e.g., 'en', 'fr', 'de') */
+  languageCode: string;
+}
+
+/**
+ * Parameters for setting 12-hour clock preference
+ */
+export interface Set12HourClockParams extends UserLoginParams {
+  /** Whether the user should use 12-hour clock */
+  use12HourClock: boolean | string;
+}
 
 export class LanguagesManagerModule {
   constructor(private client: CoreReportingClient) {}
@@ -17,13 +57,11 @@ export class LanguagesManagerModule {
   /**
    * Check if a language is available in this Matomo installation
    *
-   * @param languageCode The language code to check (e.g., 'en', 'fr', 'de')
+   * @param params Parameters containing the language code
    * @returns Promise with boolean result indicating if the language is available
    */
-  async isLanguageAvailable(languageCode: string): Promise<any> {
-    return this.client.request('LanguagesManager.isLanguageAvailable', {
-      languageCode,
-    });
+  async isLanguageAvailable(params: LanguageCodeParams): Promise<any> {
+    return this.client.request("LanguagesManager.isLanguageAvailable", params);
   }
 
   /**
@@ -32,21 +70,22 @@ export class LanguagesManagerModule {
    * @returns Promise with an array of available language codes
    */
   async getAvailableLanguages(): Promise<any> {
-    return this.client.request('LanguagesManager.getAvailableLanguages');
+    return this.client.request("LanguagesManager.getAvailableLanguages");
   }
 
   /**
    * Get available languages information
    *
-   * @param excludeNonCorePlugins Whether to exclude non-core plugins (defaults to '1')
+   * @param params Parameters for getting language information
    * @returns Promise with an array of available languages with their information
    */
   async getAvailableLanguagesInfo(
-    excludeNonCorePlugins: string | boolean = '1'
+    params: LanguageInfoParams = {}
   ): Promise<any> {
-    return this.client.request('LanguagesManager.getAvailableLanguagesInfo', {
-      excludeNonCorePlugins,
-    });
+    return this.client.request(
+      "LanguagesManager.getAvailableLanguagesInfo",
+      params
+    );
   }
 
   /**
@@ -55,73 +94,65 @@ export class LanguagesManagerModule {
    * @returns Promise with object mapping language codes to language names
    */
   async getAvailableLanguageNames(): Promise<any> {
-    return this.client.request('LanguagesManager.getAvailableLanguageNames');
+    return this.client.request("LanguagesManager.getAvailableLanguageNames");
   }
 
   /**
    * Get all translations for a language
    *
-   * @param languageCode The language code to get translations for (e.g., 'en', 'fr', 'de')
+   * @param params Parameters containing the language code
    * @returns Promise with all translations for the specified language
    */
-  async getTranslationsForLanguage(languageCode: string): Promise<any> {
-    return this.client.request('LanguagesManager.getTranslationsForLanguage', {
-      languageCode,
-    });
+  async getTranslationsForLanguage(params: LanguageCodeParams): Promise<any> {
+    return this.client.request(
+      "LanguagesManager.getTranslationsForLanguage",
+      params
+    );
   }
 
   /**
    * Get the language for a user
    *
-   * @param login User login
+   * @param params Parameters containing the user login
    * @returns Promise with the user's language code
    */
-  async getLanguageForUser(login: string): Promise<any> {
-    return this.client.request('LanguagesManager.getLanguageForUser', {
-      login,
-    });
+  async getLanguageForUser(params: UserLoginParams): Promise<any> {
+    return this.client.request("LanguagesManager.getLanguageForUser", params);
   }
 
   /**
    * Set the language for a user
    *
-   * @param login User login
-   * @param languageCode The language code to set (e.g., 'en', 'fr', 'de')
+   * @param params Parameters for setting user's language
    * @returns Promise with success status
    */
-  async setLanguageForUser(login: string, languageCode: string): Promise<any> {
-    return this.client.request('LanguagesManager.setLanguageForUser', {
-      login,
-      languageCode,
-    });
+  async setLanguageForUser(params: SetLanguageParams): Promise<any> {
+    return this.client.request("LanguagesManager.setLanguageForUser", params);
   }
 
   /**
    * Check if a user uses 12-hour clock
    *
-   * @param login User login
+   * @param params Parameters containing the user login
    * @returns Promise with boolean result indicating if the user uses 12-hour clock
    */
-  async uses12HourClockForUser(login: string): Promise<any> {
-    return this.client.request('LanguagesManager.uses12HourClockForUser', {
-      login,
-    });
+  async uses12HourClockForUser(params: UserLoginParams): Promise<any> {
+    return this.client.request(
+      "LanguagesManager.uses12HourClockForUser",
+      params
+    );
   }
 
   /**
    * Set 12-hour clock preference for a user
    *
-   * @param login User login
-   * @param use12HourClock Whether the user should use 12-hour clock (boolean or string)
+   * @param params Parameters for setting user's clock preference
    * @returns Promise with success status
    */
-  async set12HourClockForUser(
-    login: string,
-    use12HourClock: boolean | string
-  ): Promise<any> {
-    return this.client.request('LanguagesManager.set12HourClockForUser', {
-      login,
-      use12HourClock,
-    });
+  async set12HourClockForUser(params: Set12HourClockParams): Promise<any> {
+    return this.client.request(
+      "LanguagesManager.set12HourClockForUser",
+      params
+    );
   }
 }

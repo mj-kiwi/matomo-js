@@ -3,7 +3,51 @@
  * Lets you request key metrics (visits, page views, revenue) for all Websites in Matomo
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for MultiSites API methods
+ */
+export interface MultiSitesParams extends RequestParams {
+  /** The period to analyze */
+  period?: string;
+  /** The date to analyze */
+  date?: string;
+  /** Segment to apply */
+  segment?: string;
+}
+
+/**
+ * Parameters for getting metrics for all sites
+ */
+export interface GetAllParams extends MultiSitesParams {
+  /** Whether to include enhanced metrics */
+  enhanced?: boolean;
+  /** Pattern to filter sites by */
+  pattern?: string;
+  /** Columns to include in the response */
+  showColumns?: string[];
+}
+
+/**
+ * Parameters for getting metrics for a specific site
+ */
+export interface GetOneParams extends MultiSitesParams {
+  /** The ID of the site */
+  idSite: number | string;
+  /** Whether to include enhanced metrics */
+  enhanced?: boolean;
+}
+
+/**
+ * Parameters for getting metrics for all sites grouped by site groups
+ */
+export interface GetAllWithGroupsParams extends MultiSitesParams {
+  /** Pattern to filter sites by */
+  pattern?: string;
+  /** Limit the number of results */
+  filter_limit?: number;
+}
 
 export class MultiSitesModule {
   /**
@@ -14,78 +58,27 @@ export class MultiSitesModule {
   /**
    * Get metrics for all sites
    *
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param enhanced Whether to include enhanced metrics
-   * @param pattern Pattern to filter sites by
-   * @param showColumns Columns to include in the response
+   * @param params Parameters for getting metrics for all sites
    */
-  async getAll(
-    period: string,
-    date: string,
-    segment?: string,
-    enhanced: boolean = false,
-    pattern?: string,
-    showColumns: string[] = []
-  ): Promise<any[]> {
-    return this.core.request<any[]>('MultiSites.getAll', {
-      period,
-      date,
-      segment,
-      enhanced,
-      pattern,
-      showColumns,
-    });
+  async getAll(params: GetAllParams): Promise<any[]> {
+    return this.core.request<any[]>("MultiSites.getAll", params);
   }
 
   /**
    * Get metrics for a specific site
    *
-   * @param idSite The ID of the site
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param enhanced Whether to include enhanced metrics
+   * @param params Parameters for getting metrics for a specific site
    */
-  async getOne(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment?: string,
-    enhanced: boolean = false
-  ): Promise<any> {
-    return this.core.request<any>('MultiSites.getOne', {
-      idSite,
-      period,
-      date,
-      segment,
-      enhanced,
-    });
+  async getOne(params: GetOneParams): Promise<any> {
+    return this.core.request<any>("MultiSites.getOne", params);
   }
 
   /**
    * Get metrics for all sites grouped by site groups
    *
-   * @param period The period to analyze
-   * @param date The date to analyze
-   * @param segment Segment to apply
-   * @param pattern Pattern to filter sites by
-   * @param filter_limit Limit the number of results
+   * @param params Parameters for getting metrics for all sites grouped by site groups
    */
-  async getAllWithGroups(
-    period?: string,
-    date?: string,
-    segment?: string,
-    pattern: string = '',
-    filter_limit: number = 0
-  ): Promise<any[]> {
-    return this.core.request<any[]>('MultiSites.getAllWithGroups', {
-      period,
-      date,
-      segment,
-      pattern,
-      filter_limit,
-    });
+  async getAllWithGroups(params: GetAllWithGroupsParams = {}): Promise<any[]> {
+    return this.core.request<any[]>("MultiSites.getAllWithGroups", params);
   }
 }

@@ -35,12 +35,12 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForPageTitle(
-        "Home Page",
-        1,
-        "day",
-        "today"
-      );
+      const result = await transitionsModule.getTransitionsForPageTitle({
+        pageTitle: "Home Page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForPageTitle",
@@ -58,14 +58,41 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForPageTitle(
-        "Home Page",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        100
+      const result = await transitionsModule.getTransitionsForPageTitle({
+        pageTitle: "Home Page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Transitions.getTransitionsForPageTitle",
+        {
+          pageTitle: "Home Page",
+          idSite: 1,
+          period: "day",
+          date: "today",
+          segment: "deviceType==desktop",
+          limitBeforeGrouping: 100,
+        }
       );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with object parameters", async () => {
+      const mockResponse = { data: "test" };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await transitionsModule.getTransitionsForPageTitle({
+        pageTitle: "Home Page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForPageTitle",
@@ -87,12 +114,12 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForPageUrl(
-        "https://example.org/home",
-        1,
-        "day",
-        "today"
-      );
+      const result = await transitionsModule.getTransitionsForPageUrl({
+        pageUrl: "https://example.org/home",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForPageUrl",
@@ -110,14 +137,41 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForPageUrl(
-        "https://example.org/home",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        100
+      const result = await transitionsModule.getTransitionsForPageUrl({
+        pageUrl: "https://example.org/home",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Transitions.getTransitionsForPageUrl",
+        {
+          pageUrl: "https://example.org/home",
+          idSite: 1,
+          period: "day",
+          date: "today",
+          segment: "deviceType==desktop",
+          limitBeforeGrouping: 100,
+        }
       );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with object parameters", async () => {
+      const mockResponse = { data: "test" };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await transitionsModule.getTransitionsForPageUrl({
+        pageUrl: "https://example.org/home",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForPageUrl",
@@ -139,13 +193,13 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForAction(
-        "Home",
-        "page",
-        1,
-        "day",
-        "today"
-      );
+      const result = await transitionsModule.getTransitionsForAction({
+        actionName: "Home",
+        actionType: "page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForAction",
@@ -164,16 +218,47 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.getTransitionsForAction(
-        "Home",
-        "page",
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        100,
-        "followingPages"
+      const result = await transitionsModule.getTransitionsForAction({
+        actionName: "Home",
+        actionType: "page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+        parts: "followingPages",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Transitions.getTransitionsForAction",
+        {
+          actionName: "Home",
+          actionType: "page",
+          idSite: 1,
+          period: "day",
+          date: "today",
+          segment: "deviceType==desktop",
+          limitBeforeGrouping: 100,
+          parts: "followingPages",
+        }
       );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with object parameters", async () => {
+      const mockResponse = { data: "test" };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await transitionsModule.getTransitionsForAction({
+        actionName: "Home",
+        actionType: "page",
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        limitBeforeGrouping: 100,
+        parts: "followingPages",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.getTransitionsForAction",
@@ -212,7 +297,32 @@ describe("TransitionsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await transitionsModule.isPeriodAllowed(1, "day", "today");
+      const result = await transitionsModule.isPeriodAllowed({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        "Transitions.isPeriodAllowed",
+        {
+          idSite: 1,
+          period: "day",
+          date: "today",
+        }
+      );
+      expect(result).toEqual(mockResponse);
+    });
+
+    it("should call the API with object parameters", async () => {
+      const mockResponse = { data: "test" };
+      mockClient.request.mockResolvedValueOnce(mockResponse);
+
+      const result = await transitionsModule.isPeriodAllowed({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Transitions.isPeriodAllowed",

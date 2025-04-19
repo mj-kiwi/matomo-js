@@ -35,7 +35,9 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.isLanguageAvailable("en");
+      const result = await languagesManagerModule.isLanguageAvailable({
+        languageCode: "en",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.isLanguageAvailable",
@@ -69,7 +71,9 @@ describe("LanguagesManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.getAvailableLanguagesInfo();
+      const result = await languagesManagerModule.getAvailableLanguagesInfo({
+        excludeNonCorePlugins: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.getAvailableLanguagesInfo",
@@ -87,8 +91,9 @@ describe("LanguagesManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await languagesManagerModule.getAvailableLanguagesInfo(false);
+      const result = await languagesManagerModule.getAvailableLanguagesInfo({
+        excludeNonCorePlugins: false,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.getAvailableLanguagesInfo",
@@ -131,8 +136,9 @@ describe("LanguagesManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await languagesManagerModule.getTranslationsForLanguage("en");
+      const result = await languagesManagerModule.getTranslationsForLanguage({
+        languageCode: "en",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.getTranslationsForLanguage",
@@ -149,7 +155,9 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = "en";
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.getLanguageForUser("admin");
+      const result = await languagesManagerModule.getLanguageForUser({
+        login: "admin",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.getLanguageForUser",
@@ -166,10 +174,10 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.setLanguageForUser(
-        "admin",
-        "fr"
-      );
+      const result = await languagesManagerModule.setLanguageForUser({
+        login: "admin",
+        languageCode: "fr",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.setLanguageForUser",
@@ -187,8 +195,9 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = true;
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await languagesManagerModule.uses12HourClockForUser("admin");
+      const result = await languagesManagerModule.uses12HourClockForUser({
+        login: "admin",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.uses12HourClockForUser",
@@ -205,10 +214,10 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.set12HourClockForUser(
-        "admin",
-        true
-      );
+      const result = await languagesManagerModule.set12HourClockForUser({
+        login: "admin",
+        use12HourClock: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.set12HourClockForUser",
@@ -224,10 +233,10 @@ describe("LanguagesManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await languagesManagerModule.set12HourClockForUser(
-        "admin",
-        "1"
-      );
+      const result = await languagesManagerModule.set12HourClockForUser({
+        login: "admin",
+        use12HourClock: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "LanguagesManager.set12HourClockForUser",

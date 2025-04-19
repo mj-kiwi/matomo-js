@@ -3,7 +3,77 @@
  * Access to video and audio analytics data for websites and apps
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for site-specific operations
+ */
+export interface SiteParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Basic parameters for media reports
+ */
+export interface MediaReportParams extends SiteParams {
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for media analytics data
+ */
+export interface MediaAnalyticsParams extends MediaReportParams {
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
+
+/**
+ * Parameters for current media metrics
+ */
+export interface CurrentMediaParams extends SiteParams {
+  /** Number of minutes to look back */
+  lastMinutes: number | string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for current most plays
+ */
+export interface CurrentMostPlaysParams extends CurrentMediaParams {
+  /** Maximum number of results to return */
+  filter_limit?: number | string;
+}
+
+/**
+ * Parameters for media resources
+ */
+export interface MediaResourcesParams extends MediaReportParams {
+  /** Optional subtable ID */
+  idSubtable?: string | number;
+  /** Optional secondary dimension */
+  secondaryDimension?: string;
+  /** Whether to expand the resources report */
+  expanded?: string | boolean;
+  /** Whether to return a flattened report */
+  flat?: string | boolean;
+}
+
+/**
+ * Parameters for media titles
+ */
+export interface MediaTitlesParams extends MediaReportParams {
+  /** Optional subtable ID */
+  idSubtable?: string | number;
+  /** Optional secondary dimension */
+  secondaryDimension?: string;
+}
 
 export class MediaAnalyticsModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,279 +81,99 @@ export class MediaAnalyticsModule {
   /**
    * Check if there are any recorded media analytics data
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async hasRecords(idSite: number | string): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    return this.client.request('MediaAnalytics.hasRecords', params);
+  async hasRecords(params: SiteParams): Promise<any> {
+    return this.client.request("MediaAnalytics.hasRecords", params);
   }
 
   /**
    * Get media analytics data
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for media analytics data
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('MediaAnalytics.get', params);
+  async get(params: MediaAnalyticsParams): Promise<any> {
+    return this.client.request("MediaAnalytics.get", params);
   }
 
   /**
    * Get the number of media plays in the last N minutes
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back
-   * @param segment Optional segment definition
+   * @param params Parameters for current media metrics
    */
-  async getCurrentNumPlays(
-    idSite: number | string,
-    lastMinutes: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getCurrentNumPlays', params);
+  async getCurrentNumPlays(params: CurrentMediaParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getCurrentNumPlays", params);
   }
 
   /**
    * Get the sum of time spent watching media in the last N minutes
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back
-   * @param segment Optional segment definition
+   * @param params Parameters for current media metrics
    */
-  async getCurrentSumTimeSpent(
-    idSite: number | string,
-    lastMinutes: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getCurrentSumTimeSpent', params);
+  async getCurrentSumTimeSpent(params: CurrentMediaParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getCurrentSumTimeSpent", params);
   }
 
   /**
    * Get the most played media in the last N minutes
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back
-   * @param filter_limit Maximum number of results to return
-   * @param segment Optional segment definition
+   * @param params Parameters for current most plays
    */
-  async getCurrentMostPlays(
-    idSite: number | string,
-    lastMinutes: number | string,
-    filter_limit: number | string = '5',
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-      filter_limit,
+  async getCurrentMostPlays(params: CurrentMostPlaysParams): Promise<any> {
+    const requestParams = {
+      filter_limit: "5",
+      ...params,
     };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getCurrentMostPlays', params);
+    return this.client.request(
+      "MediaAnalytics.getCurrentMostPlays",
+      requestParams
+    );
   }
 
   /**
    * Get video resources
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
-   * @param expanded Whether to expand the resources report
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for media resources
    */
-  async getVideoResources(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = '',
-    expanded: string | boolean = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-    if (expanded !== '') params.expanded = expanded;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('MediaAnalytics.getVideoResources', params);
+  async getVideoResources(params: MediaResourcesParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getVideoResources", params);
   }
 
   /**
    * Get audio resources
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
-   * @param expanded Whether to expand the resources report
-   * @param flat Whether to return a flattened report
+   * @param params Parameters for media resources
    */
-  async getAudioResources(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = '',
-    expanded: string | boolean = '',
-    flat: string | boolean = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-    if (expanded !== '') params.expanded = expanded;
-    if (flat !== '') params.flat = flat;
-
-    return this.client.request('MediaAnalytics.getAudioResources', params);
+  async getAudioResources(params: MediaResourcesParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getAudioResources", params);
   }
 
   /**
    * Get video titles
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
+   * @param params Parameters for media titles
    */
-  async getVideoTitles(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-
-    return this.client.request('MediaAnalytics.getVideoTitles', params);
+  async getVideoTitles(params: MediaTitlesParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getVideoTitles", params);
   }
 
   /**
    * Get audio titles
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
+   * @param params Parameters for media titles
    */
-  async getAudioTitles(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-
-    return this.client.request('MediaAnalytics.getAudioTitles', params);
+  async getAudioTitles(params: MediaTitlesParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getAudioTitles", params);
   }
 
   /**
    * Get grouped video resources
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
+   * @param params Parameters for media titles
    */
-  async getGroupedVideoResources(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-
+  async getGroupedVideoResources(params: MediaTitlesParams): Promise<any> {
     return this.client.request(
-      'MediaAnalytics.getGroupedVideoResources',
+      "MediaAnalytics.getGroupedVideoResources",
       params
     );
   }
@@ -291,33 +181,11 @@ export class MediaAnalyticsModule {
   /**
    * Get grouped audio resources
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param idSubtable Optional subtable ID
-   * @param secondaryDimension Optional secondary dimension
+   * @param params Parameters for media titles
    */
-  async getGroupedAudioResources(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    idSubtable: string | number = '',
-    secondaryDimension: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (idSubtable !== '') params.idSubtable = idSubtable;
-    if (secondaryDimension) params.secondaryDimension = secondaryDimension;
-
+  async getGroupedAudioResources(params: MediaTitlesParams): Promise<any> {
     return this.client.request(
-      'MediaAnalytics.getGroupedAudioResources',
+      "MediaAnalytics.getGroupedAudioResources",
       params
     );
   }
@@ -325,100 +193,36 @@ export class MediaAnalyticsModule {
   /**
    * Get video hours (videos watched by hour)
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for media report
    */
-  async getVideoHours(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getVideoHours', params);
+  async getVideoHours(params: MediaReportParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getVideoHours", params);
   }
 
   /**
    * Get audio hours (audio listened by hour)
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for media report
    */
-  async getAudioHours(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getAudioHours', params);
+  async getAudioHours(params: MediaReportParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getAudioHours", params);
   }
 
   /**
    * Get video resolutions
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for media report
    */
-  async getVideoResolutions(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getVideoResolutions', params);
+  async getVideoResolutions(params: MediaReportParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getVideoResolutions", params);
   }
 
   /**
    * Get players used for media playback
    *
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   * @param params Parameters for media report
    */
-  async getPlayers(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('MediaAnalytics.getPlayers', params);
+  async getPlayers(params: MediaReportParams): Promise<any> {
+    return this.client.request("MediaAnalytics.getPlayers", params);
   }
 }

@@ -3,27 +3,128 @@
  * Provides access to general API information and metadata
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for API.get method
+ */
+export interface ApiGetParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for (day, week, month, year, range) */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional columns to restrict the returned data */
+  columns?: string;
+}
+
+/**
+ * Parameters for API.getMetadata method
+ */
+export interface MetadataParams extends RequestParams {
+  /** Site ID */
+  idSite?: number | string;
+  /** API module name */
+  apiModule?: string;
+  /** API action name */
+  apiAction?: string;
+  /** API parameters */
+  apiParameters?: Record<string, any> | string;
+  /** Language */
+  language?: string;
+  /** Period to request data for */
+  period?: string;
+  /** Date string */
+  date?: string;
+  /** Whether to hide metrics documentation */
+  hideMetricsDoc?: boolean;
+  /** Whether to show subtable reports */
+  showSubtableReports?: boolean;
+}
+
+/**
+ * Parameters for API.getReportPagesMetadata and API.getWidgetMetadata methods
+ */
+export interface SiteIdParam extends RequestParams {
+  /** Site ID */
+  idSite?: number | string;
+}
+
+/**
+ * Parameters for API.getSuggestedValuesForSegment method
+ */
+export interface SegmentSuggestionParams extends RequestParams {
+  /** Segment name */
+  segmentName: string;
+  /** Site ID */
+  idSite?: number | string;
+}
+
+/**
+ * Parameters for API.getGlossaryReports and API.getGlossaryMetrics methods
+ */
+export interface GlossaryParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for API.getSegmentsMetadata method
+ */
+export interface SegmentsMetadataParams extends RequestParams {
+  /** Site IDs to get segments for */
+  idSites?: number[] | string;
+}
+
+/**
+ * Parameters for API.isPluginActivated method
+ */
+export interface PluginActivatedParams extends RequestParams {
+  /** Name of the plugin to check */
+  pluginName: string;
+}
+
+/**
+ * Parameters for API.getBulkRequest method
+ */
+export interface BulkRequestParams extends RequestParams {
+  /** Array of API request URLs or request objects */
+  urls: string[] | Record<string, any>[];
+}
+
+/**
+ * Empty parameters interface for methods that don't require specific parameters
+ */
+export interface EmptyParams extends RequestParams {}
 
 export class ApiModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
    * Get the Matomo version
+   *
+   * @param params Empty parameters object
    */
-  async getMatomoVersion(): Promise<string> {
+  async getMatomoVersion(params: EmptyParams = {}): Promise<string> {
     const result = await this.client.request<{ value: string }>(
-      'API.getMatomoVersion'
+      "API.getMatomoVersion",
+      params
     );
     return result.value;
   }
 
   /**
    * Get the PHP version Matomo is using
+   *
+   * @param params Empty parameters object
    */
-  async getPhpVersion(): Promise<string> {
+  async getPhpVersion(params: EmptyParams = {}): Promise<string> {
     const result = await this.client.request<{ value: string }>(
-      'API.getPhpVersion'
+      "API.getPhpVersion",
+      params
     );
     return result.value;
   }
@@ -31,10 +132,13 @@ export class ApiModule {
   /**
    * Get the IP address from header
    * This can be useful for debugging proxy configurations
+   *
+   * @param params Empty parameters object
    */
-  async getIpFromHeader(): Promise<string> {
+  async getIpFromHeader(params: EmptyParams = {}): Promise<string> {
     const result = await this.client.request<{ value: string }>(
-      'API.getIpFromHeader'
+      "API.getIpFromHeader",
+      params
     );
     return result.value;
   }
@@ -42,50 +146,29 @@ export class ApiModule {
   /**
    * Get Matomo settings
    * Returns configuration settings of the Matomo instance
+   *
+   * @param params Empty parameters object
    */
-  async getSettings(): Promise<any> {
-    return this.client.request('API.getSettings');
+  async getSettings(params: EmptyParams = {}): Promise<any> {
+    return this.client.request("API.getSettings", params);
   }
 
   /**
    * Get the list of segments metadata
    *
-   * @param idSites Site IDs to get segments for
+   * @param params Parameters with optional site IDs
    */
-  async getSegmentsMetadata(idSites?: number[] | string): Promise<any> {
-    return this.client.request('API.getSegmentsMetadata', {
-      idSites: idSites,
-    });
+  async getSegmentsMetadata(params: SegmentsMetadataParams = {}): Promise<any> {
+    return this.client.request("API.getSegmentsMetadata", params);
   }
 
   /**
    * Get all available metrics that can be used
+   *
+   * @param params Parameters for getting metadata
    */
-  async getMetadata(
-    idSite?: number | string,
-    apiModule?: string,
-    apiAction?: string,
-    apiParameters?: Record<string, any> | string,
-    language?: string,
-    period?: string,
-    date?: string,
-    hideMetricsDoc?: boolean,
-    showSubtableReports?: boolean
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (idSite !== undefined) params.idSite = idSite;
-    if (apiModule !== undefined) params.apiModule = apiModule;
-    if (apiAction !== undefined) params.apiAction = apiAction;
-    if (apiParameters !== undefined) params.apiParameters = apiParameters;
-    if (language !== undefined) params.language = language;
-    if (period !== undefined) params.period = period;
-    if (date !== undefined) params.date = date;
-    if (hideMetricsDoc !== undefined) params.hideMetricsDoc = hideMetricsDoc;
-    if (showSubtableReports !== undefined)
-      params.showSubtableReports = showSubtableReports;
-
-    return this.client.request('API.getMetadata', params);
+  async getMetadata(params: MetadataParams = {}): Promise<any> {
+    return this.client.request("API.getMetadata", params);
   }
 
   /**
@@ -100,7 +183,7 @@ export class ApiModule {
       showSubtableReports?: boolean;
     } = {}
   ): Promise<any> {
-    return this.client.request('API.getReportMetadata', params);
+    return this.client.request("API.getReportMetadata", params);
   }
 
   /**
@@ -108,7 +191,7 @@ export class ApiModule {
    */
   async getProcessedReport(params: {
     idSite: number | string;
-    period: 'day' | 'week' | 'month' | 'year' | 'range';
+    period: "day" | "week" | "month" | "year" | "range";
     date: string;
     apiModule: string;
     apiAction: string;
@@ -123,61 +206,36 @@ export class ApiModule {
     format_metrics?: string | boolean;
     idDimension?: string | number;
   }): Promise<any> {
-    return this.client.request('API.getProcessedReport', params);
+    return this.client.request("API.getProcessedReport", params);
   }
 
   /**
    * Get all report pages
    * Returns metadata about report pages for all plugins
+   *
+   * @param params Parameters with optional site ID
    */
-  async getReportPagesMetadata(idSite?: number | string): Promise<any> {
-    const params: RequestParams = {};
-    if (idSite !== undefined) {
-      params.idSite = idSite;
-    }
-    return this.client.request('API.getReportPagesMetadata', params);
+  async getReportPagesMetadata(params: SiteIdParam = {}): Promise<any> {
+    return this.client.request("API.getReportPagesMetadata", params);
   }
 
   /**
    * Get widgets metadata
    * Get the list of all available widgets with their associated parameters
    *
-   * @param idSite Site ID
+   * @param params Parameters with optional site ID
    */
-  async getWidgetMetadata(idSite?: number | string): Promise<any> {
-    const params: RequestParams = {};
-    if (idSite !== undefined) {
-      params.idSite = idSite;
-    }
-    return this.client.request('API.getWidgetMetadata', params);
+  async getWidgetMetadata(params: SiteIdParam = {}): Promise<any> {
+    return this.client.request("API.getWidgetMetadata", params);
   }
 
   /**
    * Get API data for multiple periods or sites
    *
-   * @param idSite Site ID
-   * @param period Period to request data for (day, week, month, year, range)
-   * @param date Date string
-   * @param segment Optional segment definition
-   * @param columns Optional columns to restrict the returned data
+   * @param params Parameters for getting API data
    */
-  async get(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = '',
-    columns: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-    if (columns) params.columns = columns;
-
-    return this.client.request('API.get', params);
+  async get(params: ApiGetParams): Promise<any> {
+    return this.client.request("API.get", params);
   }
 
   /**
@@ -185,7 +243,7 @@ export class ApiModule {
    */
   async getRowEvolution(params: {
     idSite: number | string;
-    period: 'day' | 'week' | 'month' | 'year' | 'range';
+    period: "day" | "week" | "month" | "year" | "range";
     date: string;
     apiModule: string;
     apiAction: string;
@@ -200,27 +258,27 @@ export class ApiModule {
     labelSeries?: string;
     showGoalMetricsForGoal?: string | number;
   }): Promise<any> {
-    return this.client.request('API.getRowEvolution', params);
+    return this.client.request("API.getRowEvolution", params);
   }
 
   /**
    * Execute multiple API requests in a single HTTP request
    *
-   * @param urls Array of API request URLs or request objects
+   * @param params Parameters containing the array of API requests
    */
-  async getBulkRequest(urls: string[] | Record<string, any>[]): Promise<any> {
-    return this.client.request('API.getBulkRequest', { urls });
+  async getBulkRequest(params: BulkRequestParams): Promise<any> {
+    return this.client.request("API.getBulkRequest", { urls: params.urls });
   }
 
   /**
    * Check if a plugin is activated in Matomo
    *
-   * @param pluginName Name of the plugin to check
+   * @param params Parameters containing the plugin name
    */
-  async isPluginActivated(pluginName: string): Promise<boolean> {
+  async isPluginActivated(params: PluginActivatedParams): Promise<boolean> {
     const result = await this.client.request<{ value: boolean }>(
-      'API.isPluginActivated',
-      { pluginName }
+      "API.isPluginActivated",
+      { pluginName: params.pluginName }
     );
     return result.value;
   }
@@ -229,45 +287,41 @@ export class ApiModule {
    * Get API suggestions
    * Return suggested values for a specific report, segment, etc.
    *
-   * @param segmentName Segment name
-   * @param idSite Site ID
+   * @param params Parameters for getting segment suggestions
    */
   async getSuggestedValuesForSegment(
-    segmentName: string,
-    idSite?: number | string
+    params: SegmentSuggestionParams
   ): Promise<any> {
-    const params: RequestParams = { segmentName };
-    if (idSite !== undefined) {
-      params.idSite = idSite;
-    }
-    return this.client.request('API.getSuggestedValuesForSegment', params);
+    return this.client.request("API.getSuggestedValuesForSegment", params);
   }
 
   /**
    * Get a list of pages for which comparisons are disabled
    * Returns a list of plugins that don't support comparison features
+   *
+   * @param params Empty parameters object
    */
-  async getPagesComparisonsDisabledFor(): Promise<any> {
-    return this.client.request('API.getPagesComparisonsDisabledFor');
+  async getPagesComparisonsDisabledFor(params: EmptyParams = {}): Promise<any> {
+    return this.client.request("API.getPagesComparisonsDisabledFor", params);
   }
 
   /**
    * Get glossary for reports in Matomo
    * Returns a list of reports with their descriptions and definitions
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getGlossaryReports(idSite: number | string): Promise<any> {
-    return this.client.request('API.getGlossaryReports', { idSite });
+  async getGlossaryReports(params: GlossaryParams): Promise<any> {
+    return this.client.request("API.getGlossaryReports", params);
   }
 
   /**
    * Get glossary for metrics in Matomo
    * Returns a list of metrics with their descriptions and definitions
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    */
-  async getGlossaryMetrics(idSite: number | string): Promise<any> {
-    return this.client.request('API.getGlossaryMetrics', { idSite });
+  async getGlossaryMetrics(params: GlossaryParams): Promise<any> {
+    return this.client.request("API.getGlossaryMetrics", params);
   }
 }

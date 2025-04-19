@@ -35,7 +35,7 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { result: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.hasRecords(1);
+      const result = await mediaModule.hasRecords({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.hasRecords",
@@ -52,7 +52,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.get(1, "day", "today");
+      const result = await mediaModule.get({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MediaAnalytics.get", {
         idSite: 1,
@@ -66,13 +70,13 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.get(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        "nb_plays,nb_impressions"
-      );
+      const result = await mediaModule.get({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        columns: "nb_plays,nb_impressions",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("MediaAnalytics.get", {
         idSite: 1,
@@ -90,7 +94,10 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { value: 42 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentNumPlays(1, 30);
+      const result = await mediaModule.getCurrentNumPlays({
+        idSite: 1,
+        lastMinutes: 30,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentNumPlays",
@@ -106,11 +113,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { value: 42 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentNumPlays(
-        1,
-        30,
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getCurrentNumPlays({
+        idSite: 1,
+        lastMinutes: 30,
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentNumPlays",
@@ -129,7 +136,10 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { value: 3600 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentSumTimeSpent(1, 30);
+      const result = await mediaModule.getCurrentSumTimeSpent({
+        idSite: 1,
+        lastMinutes: 30,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentSumTimeSpent",
@@ -145,11 +155,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { value: 3600 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentSumTimeSpent(
-        1,
-        30,
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getCurrentSumTimeSpent({
+        idSite: 1,
+        lastMinutes: 30,
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentSumTimeSpent",
@@ -168,7 +178,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentMostPlays(1, 30);
+      const result = await mediaModule.getCurrentMostPlays({
+        idSite: 1,
+        lastMinutes: 30,
+        filter_limit: "5",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentMostPlays",
@@ -185,12 +199,12 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getCurrentMostPlays(
-        1,
-        30,
-        10,
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getCurrentMostPlays({
+        idSite: 1,
+        lastMinutes: 30,
+        filter_limit: 10,
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getCurrentMostPlays",
@@ -210,7 +224,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoResources(1, "day", "today");
+      const result = await mediaModule.getVideoResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoResources",
@@ -227,16 +245,16 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoResources(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "resolution",
-        true,
-        true
-      );
+      const result = await mediaModule.getVideoResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "resolution",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoResources",
@@ -260,7 +278,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioResources(1, "day", "today");
+      const result = await mediaModule.getAudioResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioResources",
@@ -277,16 +299,16 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioResources(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "player",
-        true,
-        true
-      );
+      const result = await mediaModule.getAudioResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "player",
+        expanded: true,
+        flat: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioResources",
@@ -310,7 +332,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoTitles(1, "day", "today");
+      const result = await mediaModule.getVideoTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoTitles",
@@ -327,14 +353,14 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoTitles(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "resolution"
-      );
+      const result = await mediaModule.getVideoTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "resolution",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoTitles",
@@ -356,7 +382,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioTitles(1, "day", "today");
+      const result = await mediaModule.getAudioTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioTitles",
@@ -373,14 +403,14 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioTitles(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "player"
-      );
+      const result = await mediaModule.getAudioTitles({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "player",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioTitles",
@@ -402,11 +432,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getGroupedVideoResources(
-        1,
-        "day",
-        "today"
-      );
+      const result = await mediaModule.getGroupedVideoResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getGroupedVideoResources",
@@ -423,14 +453,14 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getGroupedVideoResources(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "resolution"
-      );
+      const result = await mediaModule.getGroupedVideoResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "resolution",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getGroupedVideoResources",
@@ -452,11 +482,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getGroupedAudioResources(
-        1,
-        "day",
-        "today"
-      );
+      const result = await mediaModule.getGroupedAudioResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getGroupedAudioResources",
@@ -473,14 +503,14 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getGroupedAudioResources(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop",
-        5,
-        "player"
-      );
+      const result = await mediaModule.getGroupedAudioResources({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+        idSubtable: 5,
+        secondaryDimension: "player",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getGroupedAudioResources",
@@ -502,7 +532,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoHours(1, "day", "today");
+      const result = await mediaModule.getVideoHours({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoHours",
@@ -519,12 +553,12 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoHours(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getVideoHours({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoHours",
@@ -544,7 +578,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioHours(1, "day", "today");
+      const result = await mediaModule.getAudioHours({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioHours",
@@ -561,12 +599,12 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getAudioHours(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getAudioHours({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getAudioHours",
@@ -586,7 +624,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoResolutions(1, "day", "today");
+      const result = await mediaModule.getVideoResolutions({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoResolutions",
@@ -603,12 +645,12 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getVideoResolutions(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getVideoResolutions({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getVideoResolutions",
@@ -628,7 +670,11 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getPlayers(1, "day", "today");
+      const result = await mediaModule.getPlayers({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getPlayers",
@@ -645,12 +691,12 @@ describe("MediaAnalyticsModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await mediaModule.getPlayers(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await mediaModule.getPlayers({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "MediaAnalytics.getPlayers",

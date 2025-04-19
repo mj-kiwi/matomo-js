@@ -32,24 +32,26 @@ describe("FormAnalyticsModule", () => {
 
   describe("addForm", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.addForm(1, "Contact Form");
+      await formAnalyticsModule.addForm({
+        idSite: 1,
+        name: "Contact Form",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("FormAnalytics.addForm", {
         idSite: 1,
         name: "Contact Form",
-        conversionRuleOption: "page_visit",
       });
     });
 
     it("should include optional parameters when provided", async () => {
-      await formAnalyticsModule.addForm(
-        1,
-        "Contact Form",
-        "Form Description",
-        "form[id=contact]",
-        "page.url=contact",
-        "form_submit",
-        "thank-you"
-      );
+      await formAnalyticsModule.addForm({
+        idSite: 1,
+        name: "Contact Form",
+        description: "Form Description",
+        matchFormRules: "form[id=contact]",
+        matchPageRules: "page.url=contact",
+        conversionRuleOption: "form_submit",
+        conversionRules: "thank-you",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("FormAnalytics.addForm", {
         idSite: 1,
         name: "Contact Form",
@@ -64,29 +66,32 @@ describe("FormAnalyticsModule", () => {
 
   describe("updateForm", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.updateForm(1, 123, "Updated Form");
+      await formAnalyticsModule.updateForm({
+        idSite: 1,
+        idForm: 123,
+        name: "Updated Form",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.updateForm",
         {
           idSite: 1,
           idForm: 123,
           name: "Updated Form",
-          conversionRuleOption: "page_visit",
         }
       );
     });
 
     it("should include optional parameters when provided", async () => {
-      await formAnalyticsModule.updateForm(
-        1,
-        123,
-        "Updated Form",
-        "Updated Description",
-        "form[id=updated]",
-        "page.url=updated",
-        "form_submit",
-        "success-page"
-      );
+      await formAnalyticsModule.updateForm({
+        idSite: 1,
+        idForm: 123,
+        name: "Updated Form",
+        description: "Updated Description",
+        matchFormRules: "form[id=updated]",
+        matchPageRules: "page.url=updated",
+        conversionRuleOption: "form_submit",
+        conversionRules: "success-page",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.updateForm",
         {
@@ -105,7 +110,10 @@ describe("FormAnalyticsModule", () => {
 
   describe("getForm", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getForm(1, 123);
+      await formAnalyticsModule.getForm({
+        idSite: 1,
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith("FormAnalytics.getForm", {
         idSite: 1,
         idForm: 123,
@@ -115,7 +123,9 @@ describe("FormAnalyticsModule", () => {
 
   describe("getForms", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getForms(1);
+      await formAnalyticsModule.getForms({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getForms",
         {
@@ -127,7 +137,10 @@ describe("FormAnalyticsModule", () => {
 
   describe("getFormsByStatuses", () => {
     it("should call the API with array of statuses", async () => {
-      await formAnalyticsModule.getFormsByStatuses(1, ["active", "archived"]);
+      await formAnalyticsModule.getFormsByStatuses({
+        idSite: 1,
+        statuses: ["active", "archived"],
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFormsByStatuses",
         {
@@ -138,7 +151,10 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should call the API with string status", async () => {
-      await formAnalyticsModule.getFormsByStatuses(1, "active");
+      await formAnalyticsModule.getFormsByStatuses({
+        idSite: 1,
+        statuses: "active",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFormsByStatuses",
         {
@@ -151,7 +167,10 @@ describe("FormAnalyticsModule", () => {
 
   describe("deleteForm", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.deleteForm(1, 123);
+      await formAnalyticsModule.deleteForm({
+        idSite: 1,
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.deleteForm",
         {
@@ -164,7 +183,10 @@ describe("FormAnalyticsModule", () => {
 
   describe("archiveForm", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.archiveForm(1, 123);
+      await formAnalyticsModule.archiveForm({
+        idSite: 1,
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.archiveForm",
         {
@@ -177,7 +199,11 @@ describe("FormAnalyticsModule", () => {
 
   describe("get", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.get(1, "day", "yesterday");
+      await formAnalyticsModule.get({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("FormAnalytics.get", {
         idSite: 1,
         period: "day",
@@ -186,14 +212,14 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await formAnalyticsModule.get(
-        1,
-        "week",
-        "last7",
-        123,
-        "deviceType==mobile",
-        "form_views,form_conversions"
-      );
+      await formAnalyticsModule.get({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        idForm: 123,
+        segment: "deviceType==mobile",
+        columns: "form_views,form_conversions",
+      });
       expect(mockClient.request).toHaveBeenCalledWith("FormAnalytics.get", {
         idSite: 1,
         period: "week",
@@ -207,7 +233,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getEntryFields", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getEntryFields(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getEntryFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getEntryFields",
         {
@@ -220,13 +251,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getEntryFields(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getEntryFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getEntryFields",
         {
@@ -242,7 +273,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getDropOffFields", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getDropOffFields(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getDropOffFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getDropOffFields",
         {
@@ -255,13 +291,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getDropOffFields(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getDropOffFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getDropOffFields",
         {
@@ -277,7 +313,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getPageUrls", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getPageUrls(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getPageUrls",
         {
@@ -290,13 +331,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getPageUrls(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getPageUrls({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getPageUrls",
         {
@@ -312,7 +353,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getFieldTimings", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getFieldTimings(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getFieldTimings({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldTimings",
         {
@@ -325,13 +371,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getFieldTimings(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getFieldTimings({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldTimings",
         {
@@ -347,7 +393,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getFieldSize", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getFieldSize(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getFieldSize({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldSize",
         {
@@ -360,13 +411,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getFieldSize(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getFieldSize({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldSize",
         {
@@ -382,7 +433,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getUneededFields", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getUneededFields(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getUneededFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getUneededFields",
         {
@@ -395,13 +451,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getUneededFields(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getUneededFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getUneededFields",
         {
@@ -417,7 +473,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getMostUsedFields", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getMostUsedFields(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getMostUsedFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getMostUsedFields",
         {
@@ -430,13 +491,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getMostUsedFields(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getMostUsedFields({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getMostUsedFields",
         {
@@ -452,7 +513,12 @@ describe("FormAnalyticsModule", () => {
 
   describe("getFieldCorrections", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getFieldCorrections(1, "day", "yesterday", 123);
+      await formAnalyticsModule.getFieldCorrections({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldCorrections",
         {
@@ -465,13 +531,13 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getFieldCorrections(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getFieldCorrections({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idForm: 123,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getFieldCorrections",
         {
@@ -491,7 +557,11 @@ describe("FormAnalyticsModule", () => {
         email: "Email Address",
         first_name: "First Name",
       };
-      await formAnalyticsModule.updateFormFieldDisplayName(1, 123, fields);
+      await formAnalyticsModule.updateFormFieldDisplayName({
+        idSite: 1,
+        idForm: 123,
+        fields: fields,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.updateFormFieldDisplayName",
         {
@@ -503,7 +573,11 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should call the API with empty fields", async () => {
-      await formAnalyticsModule.updateFormFieldDisplayName(1, 123);
+      await formAnalyticsModule.updateFormFieldDisplayName({
+        idSite: 1,
+        idForm: 123,
+        fields: {},
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.updateFormFieldDisplayName",
         {
@@ -517,7 +591,10 @@ describe("FormAnalyticsModule", () => {
 
   describe("getCounters", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getCounters(1, 30);
+      await formAnalyticsModule.getCounters({
+        idSite: 1,
+        lastMinutes: 30,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getCounters",
         {
@@ -528,7 +605,11 @@ describe("FormAnalyticsModule", () => {
     });
 
     it("should include segment parameter when provided", async () => {
-      await formAnalyticsModule.getCounters(1, 30, "deviceType==mobile");
+      await formAnalyticsModule.getCounters({
+        idSite: 1,
+        lastMinutes: 30,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getCounters",
         {
@@ -578,7 +659,9 @@ describe("FormAnalyticsModule", () => {
 
   describe("getAutoCreationSettings", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getAutoCreationSettings(1);
+      await formAnalyticsModule.getAutoCreationSettings({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getAutoCreationSettings",
         {
@@ -590,24 +673,26 @@ describe("FormAnalyticsModule", () => {
 
   describe("getCurrentMostPopularForms", () => {
     it("should call the API with required parameters", async () => {
-      await formAnalyticsModule.getCurrentMostPopularForms(1, 30);
+      await formAnalyticsModule.getCurrentMostPopularForms({
+        idSite: 1,
+        lastMinutes: 30,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getCurrentMostPopularForms",
         {
           idSite: 1,
           lastMinutes: 30,
-          filter_limit: "5",
         }
       );
     });
 
     it("should include optional parameters when provided", async () => {
-      await formAnalyticsModule.getCurrentMostPopularForms(
-        1,
-        30,
-        10,
-        "deviceType==mobile"
-      );
+      await formAnalyticsModule.getCurrentMostPopularForms({
+        idSite: 1,
+        lastMinutes: 30,
+        filter_limit: 10,
+        segment: "deviceType==mobile",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "FormAnalytics.getCurrentMostPopularForms",
         {

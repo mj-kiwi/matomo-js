@@ -35,7 +35,11 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getCountry(1, "day", "today");
+      const result = await userCountryModule.getCountry({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getCountry",
@@ -52,12 +56,12 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getCountry(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userCountryModule.getCountry({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getCountry",
@@ -77,7 +81,11 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getContinent(1, "day", "today");
+      const result = await userCountryModule.getContinent({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getContinent",
@@ -94,12 +102,12 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getContinent(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userCountryModule.getContinent({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getContinent",
@@ -119,7 +127,11 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getRegion(1, "day", "today");
+      const result = await userCountryModule.getRegion({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserCountry.getRegion", {
         idSite: 1,
@@ -133,12 +145,12 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getRegion(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userCountryModule.getRegion({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserCountry.getRegion", {
         idSite: 1,
@@ -155,7 +167,11 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getCity(1, "day", "today");
+      const result = await userCountryModule.getCity({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserCountry.getCity", {
         idSite: 1,
@@ -169,12 +185,12 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getCity(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userCountryModule.getCity({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("UserCountry.getCity", {
         idSite: 1,
@@ -191,7 +207,7 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getCountryCodeMapping();
+      const result = await userCountryModule.getCountryCodeMapping({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getCountryCodeMapping",
@@ -206,7 +222,7 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getLocationFromIP();
+      const result = await userCountryModule.getLocationFromIP({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getLocationFromIP",
@@ -219,10 +235,10 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getLocationFromIP(
-        "192.0.2.0",
-        "geoip2php"
-      );
+      const result = await userCountryModule.getLocationFromIP({
+        ip: "192.0.2.0",
+        provider: "geoip2php",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getLocationFromIP",
@@ -240,7 +256,9 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.setLocationProvider("geoip2php");
+      const result = await userCountryModule.setLocationProvider({
+        providerId: "geoip2php",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.setLocationProvider",
@@ -257,11 +275,11 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getNumberOfDistinctCountries(
-        1,
-        "day",
-        "today"
-      );
+      const result = await userCountryModule.getNumberOfDistinctCountries({
+        idSite: 1,
+        period: "day",
+        date: "today",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getNumberOfDistinctCountries",
@@ -278,12 +296,12 @@ describe("UserCountryModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await userCountryModule.getNumberOfDistinctCountries(
-        1,
-        "day",
-        "today",
-        "deviceType==desktop"
-      );
+      const result = await userCountryModule.getNumberOfDistinctCountries({
+        idSite: 1,
+        period: "day",
+        date: "today",
+        segment: "deviceType==desktop",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "UserCountry.getNumberOfDistinctCountries",

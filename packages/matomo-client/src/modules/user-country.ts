@@ -3,171 +3,113 @@
  * The UserCountry API lets you access reports about your visitors' Countries and Continents.
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for UserCountry API methods
+ */
+export interface UserCountryParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+  /** Period to request data for */
+  period: string;
+  /** Date string */
+  date: string;
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for IP location lookup
+ */
+export interface LocationFromIPParams extends RequestParams {
+  /** IP address to look up */
+  ip?: string;
+  /** Location provider to use */
+  provider?: string;
+}
+
+/**
+ * Parameters for setting location provider
+ */
+export interface SetLocationProviderParams extends RequestParams {
+  /** The ID of the provider to use */
+  providerId: string;
+}
 
 export class UserCountryModule {
   constructor(private client: CoreReportingClient) {}
 
   /**
    * Get country-specific visit information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting country data
    */
-  async getCountry(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserCountry.getCountry', params);
+  async getCountry(params: UserCountryParams): Promise<any> {
+    return this.client.request("UserCountry.getCountry", params);
   }
 
   /**
    * Get continent-specific visit information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting continent data
    */
-  async getContinent(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserCountry.getContinent', params);
+  async getContinent(params: UserCountryParams): Promise<any> {
+    return this.client.request("UserCountry.getContinent", params);
   }
 
   /**
    * Get region-specific visit information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting region data
    */
-  async getRegion(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserCountry.getRegion', params);
+  async getRegion(params: UserCountryParams): Promise<any> {
+    return this.client.request("UserCountry.getRegion", params);
   }
 
   /**
    * Get city-specific visit information
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting city data
    */
-  async getCity(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserCountry.getCity', params);
+  async getCity(params: UserCountryParams): Promise<any> {
+    return this.client.request("UserCountry.getCity", params);
   }
 
   /**
    * Get the mapping between country codes and country names
    */
   async getCountryCodeMapping(): Promise<any> {
-    return this.client.request('UserCountry.getCountryCodeMapping', {});
+    return this.client.request("UserCountry.getCountryCodeMapping", {});
   }
 
   /**
    * Get the location information for a specific IP address
-   * 
-   * @param ip IP address to look up
-   * @param provider Location provider to use
+   *
+   * @param params Parameters for getting location from IP
    */
-  async getLocationFromIP(
-    ip: string = '',
-    provider: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {};
-
-    if (ip) params.ip = ip;
-    if (provider) params.provider = provider;
-
-    return this.client.request('UserCountry.getLocationFromIP', params);
+  async getLocationFromIP(params: LocationFromIPParams = {}): Promise<any> {
+    return this.client.request("UserCountry.getLocationFromIP", params);
   }
 
   /**
    * Set the location provider to use
-   * 
-   * @param providerId The ID of the provider to use
+   *
+   * @param params Parameters for setting location provider
    */
-  async setLocationProvider(providerId: string): Promise<any> {
-    const params: RequestParams = {
-      providerId,
-    };
-
-    return this.client.request('UserCountry.setLocationProvider', params);
+  async setLocationProvider(params: SetLocationProviderParams): Promise<any> {
+    return this.client.request("UserCountry.setLocationProvider", params);
   }
 
   /**
    * Get the number of distinct countries
-   * 
-   * @param idSite Site ID
-   * @param period Period to request data for
-   * @param date Date string
-   * @param segment Optional segment definition
+   *
+   * @param params Parameters for getting number of distinct countries
    */
-  async getNumberOfDistinctCountries(
-    idSite: number | string,
-    period: string,
-    date: string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      period,
-      date,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('UserCountry.getNumberOfDistinctCountries', params);
+  async getNumberOfDistinctCountries(params: UserCountryParams): Promise<any> {
+    return this.client.request(
+      "UserCountry.getNumberOfDistinctCountries",
+      params
+    );
   }
 }

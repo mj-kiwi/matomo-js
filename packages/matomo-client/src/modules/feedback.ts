@@ -3,7 +3,31 @@
  * API for plugin Feedback
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Parameters for sending feature feedback
+ */
+export interface SendFeatureFeedbackParams {
+  /** Name of the feature */
+  featureName: string;
+  /** Whether the user likes the feature */
+  like?: string;
+  /** User's choice */
+  choice?: string;
+  /** Additional message from the user */
+  message?: string;
+}
+
+/**
+ * Parameters for sending survey feedback
+ */
+export interface SendSurveyFeedbackParams {
+  /** The survey question */
+  question: string;
+  /** Additional message from the user */
+  message?: string;
+}
 
 export class FeedbackModule {
   constructor(private client: CoreReportingClient) {}
@@ -11,47 +35,40 @@ export class FeedbackModule {
   /**
    * Send feedback for a feature
    *
-   * @param featureName Name of the feature
-   * @param like Whether the user likes the feature
-   * @param choice User's choice
-   * @param message Additional message from the user
+   * @param params Parameters for sending feedback for a feature
    * @returns Promise with the API response
    */
   async sendFeedbackForFeature(
-    featureName: string,
-    like: string = '',
-    choice: string = '',
-    message: string = ''
+    params: SendFeatureFeedbackParams
   ): Promise<any> {
-    const params: RequestParams = {
-      featureName,
+    const requestParams: RequestParams = {
+      featureName: params.featureName,
     };
 
-    if (like) params.like = like;
-    if (choice) params.choice = choice;
-    if (message) params.message = message;
+    if (params.like) requestParams.like = params.like;
+    if (params.choice) requestParams.choice = params.choice;
+    if (params.message) requestParams.message = params.message;
 
-    return this.client.request('Feedback.sendFeedbackForFeature', params);
+    return this.client.request(
+      "Feedback.sendFeedbackForFeature",
+      requestParams
+    );
   }
 
   /**
    * Send feedback for a survey
    *
-   * @param question The survey question
-   * @param message Additional message from the user
+   * @param params Parameters for sending feedback for a survey
    * @returns Promise with the API response
    */
-  async sendFeedbackForSurvey(
-    question: string,
-    message: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      question,
+  async sendFeedbackForSurvey(params: SendSurveyFeedbackParams): Promise<any> {
+    const requestParams: RequestParams = {
+      question: params.question,
     };
 
-    if (message) params.message = message;
+    if (params.message) requestParams.message = params.message;
 
-    return this.client.request('Feedback.sendFeedbackForSurvey', params);
+    return this.client.request("Feedback.sendFeedbackForSurvey", requestParams);
   }
 
   /**
@@ -60,6 +77,6 @@ export class FeedbackModule {
    * @returns Promise with the API response
    */
   async updateFeedbackReminderDate(): Promise<any> {
-    return this.client.request('Feedback.updateFeedbackReminderDate', {});
+    return this.client.request("Feedback.updateFeedbackReminderDate", {});
   }
 }

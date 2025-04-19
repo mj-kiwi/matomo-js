@@ -13,7 +13,81 @@
  * various dates & times format to make it easier for API users... and more!
  */
 
-import { CoreReportingClient, RequestParams } from './core.js';
+import { CoreReportingClient, RequestParams } from "./core.js";
+
+/**
+ * Common parameters for Live API methods
+ */
+export interface LiveParams extends RequestParams {
+  /** Site ID */
+  idSite: number | string;
+}
+
+/**
+ * Parameters for visitor counters
+ */
+export interface LiveCountersParams extends LiveParams {
+  /** Number of minutes to look back when retrieving counters */
+  lastMinutes: number | string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional columns to show */
+  showColumns?: string | string[];
+  /** Optional columns to hide */
+  hideColumns?: string | string[];
+}
+
+/**
+ * Parameters for getting last visit details
+ */
+export interface LastVisitsDetailsParams extends LiveParams {
+  /** Optional period to request data for */
+  period?: string;
+  /** Optional date string */
+  date?: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional number of visitors to fetch */
+  countVisitorsToFetch?: number | string;
+  /** Optional minimum timestamp */
+  minTimestamp?: number | string;
+  /** Optional flat parameter */
+  flat?: boolean | string;
+  /** Optional parameter to skip fetching actions */
+  doNotFetchActions?: boolean | string;
+  /** Optional parameter to get enhanced data */
+  enhanced?: boolean | string;
+}
+
+/**
+ * Parameters for visitor profile
+ */
+export interface VisitorProfileParams extends LiveParams {
+  /** Optional visitor ID */
+  visitorId?: string;
+  /** Optional segment definition */
+  segment?: string;
+  /** Optional limit on number of visits */
+  limitVisits?: number | string;
+}
+
+/**
+ * Parameters for most recent visitor ID
+ */
+export interface MostRecentVisitorParams extends LiveParams {
+  /** Optional segment definition */
+  segment?: string;
+}
+
+/**
+ * Parameters for most recent visits date time
+ */
+export interface MostRecentDateTimeParams extends LiveParams {
+  /** Optional period to request data for */
+  period?: string | null;
+  /** Optional date string */
+  date?: string | null;
+}
 
 export class LiveModule {
   constructor(private client: CoreReportingClient) {}
@@ -21,160 +95,72 @@ export class LiveModule {
   /**
    * Get visitor counters
    *
-   * @param idSite Site ID
-   * @param lastMinutes Number of minutes to look back when retrieving counters
-   * @param segment Optional segment definition
-   * @param showColumns Optional columns to show
-   * @param hideColumns Optional columns to hide
+   * @param params Parameters for getting visitor counters
    * @returns Promise with visitor counters
    */
-  async getCounters(
-    idSite: number | string,
-    lastMinutes: number | string,
-    segment: string = '',
-    showColumns: string | string[] = '',
-    hideColumns: string | string[] = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-      lastMinutes,
-    };
+  async getCounters(params: LiveCountersParams): Promise<any> {
+    const formattedParams = { ...params };
 
-    if (segment) params.segment = segment;
-    if (showColumns) {
-      params.showColumns = Array.isArray(showColumns)
-        ? showColumns.join(',')
-        : showColumns;
-    }
-    if (hideColumns) {
-      params.hideColumns = Array.isArray(hideColumns)
-        ? hideColumns.join(',')
-        : hideColumns;
+    if (Array.isArray(formattedParams.showColumns)) {
+      formattedParams.showColumns = formattedParams.showColumns.join(",");
     }
 
-    return this.client.request('Live.getCounters', params);
+    if (Array.isArray(formattedParams.hideColumns)) {
+      formattedParams.hideColumns = formattedParams.hideColumns.join(",");
+    }
+
+    return this.client.request("Live.getCounters", formattedParams);
   }
 
   /**
    * Check if visitor profile is enabled
    *
-   * @param idSite Site ID
+   * @param params Parameters containing the site ID
    * @returns Promise with boolean result indicating if visitor profile is enabled
    */
-  async isVisitorProfileEnabled(idSite: number | string): Promise<any> {
-    return this.client.request('Live.isVisitorProfileEnabled', {
-      idSite,
-    });
+  async isVisitorProfileEnabled(params: LiveParams): Promise<any> {
+    return this.client.request("Live.isVisitorProfileEnabled", params);
   }
 
   /**
    * Get details about the last visits
    *
-   * @param idSite Site ID
-   * @param period Optional period to request data for
-   * @param date Optional date string
-   * @param segment Optional segment definition
-   * @param countVisitorsToFetch Optional number of visitors to fetch
-   * @param minTimestamp Optional minimum timestamp
-   * @param flat Optional flat parameter
-   * @param doNotFetchActions Optional parameter to skip fetching actions
-   * @param enhanced Optional parameter to get enhanced data
+   * @param params Parameters for getting last visits details
    * @returns Promise with visit details
    */
-  async getLastVisitsDetails(
-    idSite: number | string,
-    period: string = '',
-    date: string = '',
-    segment: string = '',
-    countVisitorsToFetch: number | string = '',
-    minTimestamp: number | string = '',
-    flat: boolean | string = '',
-    doNotFetchActions: boolean | string = '',
-    enhanced: boolean | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (period) params.period = period;
-    if (date) params.date = date;
-    if (segment) params.segment = segment;
-    if (countVisitorsToFetch !== '')
-      params.countVisitorsToFetch = countVisitorsToFetch;
-    if (minTimestamp !== '') params.minTimestamp = minTimestamp;
-    if (flat !== '') params.flat = flat;
-    if (doNotFetchActions !== '') params.doNotFetchActions = doNotFetchActions;
-    if (enhanced !== '') params.enhanced = enhanced;
-
-    return this.client.request('Live.getLastVisitsDetails', params);
+  async getLastVisitsDetails(params: LastVisitsDetailsParams): Promise<any> {
+    return this.client.request("Live.getLastVisitsDetails", params);
   }
 
   /**
    * Get visitor profile information
    *
-   * @param idSite Site ID
-   * @param visitorId Optional visitor ID
-   * @param segment Optional segment definition
-   * @param limitVisits Optional limit on number of visits
+   * @param params Parameters for getting visitor profile
    * @returns Promise with visitor profile information
    */
-  async getVisitorProfile(
-    idSite: number | string,
-    visitorId: string = '',
-    segment: string = '',
-    limitVisits: number | string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (visitorId) params.visitorId = visitorId;
-    if (segment) params.segment = segment;
-    if (limitVisits !== '') params.limitVisits = limitVisits;
-
-    return this.client.request('Live.getVisitorProfile', params);
+  async getVisitorProfile(params: VisitorProfileParams): Promise<any> {
+    return this.client.request("Live.getVisitorProfile", params);
   }
 
   /**
    * Get the most recent visitor ID
    *
-   * @param idSite Site ID
-   * @param segment Optional segment definition
+   * @param params Parameters for getting most recent visitor ID
    * @returns Promise with the most recent visitor ID
    */
-  async getMostRecentVisitorId(
-    idSite: number | string,
-    segment: string = ''
-  ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (segment) params.segment = segment;
-
-    return this.client.request('Live.getMostRecentVisitorId', params);
+  async getMostRecentVisitorId(params: MostRecentVisitorParams): Promise<any> {
+    return this.client.request("Live.getMostRecentVisitorId", params);
   }
 
   /**
    * Get most recent visits date time
    *
-   * @param idSite Site ID
-   * @param period Optional period to request data for
-   * @param date Optional date string
+   * @param params Parameters for getting most recent visits date time
    * @returns Promise with the most recent visits date time
    */
   async getMostRecentVisitsDateTime(
-    idSite: number | string,
-    period: string | null = null,
-    date: string | null = null
+    params: MostRecentDateTimeParams
   ): Promise<any> {
-    const params: RequestParams = {
-      idSite,
-    };
-
-    if (period !== null) params.period = period;
-    if (date !== null) params.date = date;
-
-    return this.client.request('Live.getMostRecentVisitsDateTime', params);
+    return this.client.request("Live.getMostRecentVisitsDateTime", params);
   }
 }

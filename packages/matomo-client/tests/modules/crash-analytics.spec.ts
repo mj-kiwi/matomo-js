@@ -44,16 +44,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(1);
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.searchCrashMessagesForMerge",
         {
           idSite: 1,
-          resourceUri: "",
-          searchTerm: "",
-          limit: "10",
-          offset: "0",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -65,14 +63,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(
-        1,
-        "main.js",
-        "TypeError",
-        5,
-        10,
-        [1, 2]
-      );
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge({
+        idSite: 1,
+        resourceUri: "main.js",
+        searchTerm: "TypeError",
+        limit: 5,
+        offset: 10,
+        excludeIdLogCrashes: [1, 2],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.searchCrashMessagesForMerge",
@@ -92,14 +90,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = [{ id: 3, message: "TypeError: string test" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(
-        1,
-        "main.js",
-        "TypeError",
-        5,
-        10,
-        "1,2,3"
-      );
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge({
+        idSite: 1,
+        resourceUri: "main.js",
+        searchTerm: "TypeError",
+        limit: 5,
+        offset: 10,
+        excludeIdLogCrashes: "1,2,3",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.searchCrashMessagesForMerge",
@@ -119,14 +117,13 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = [{ id: 3, message: "TypeError: empty array test" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.searchCrashMessagesForMerge(
-        1,
-        "main.js",
-        "TypeError",
-        5,
-        10,
-        []
-      );
+      const result = await crashAnalyticsModule.searchCrashMessagesForMerge({
+        idSite: 1,
+        resourceUri: "main.js",
+        searchTerm: "TypeError",
+        limit: 5,
+        offset: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.searchCrashMessagesForMerge",
@@ -147,7 +144,10 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.mergeCrashes(1, [10, 11, 12]);
+      const result = await crashAnalyticsModule.mergeCrashes({
+        idSite: 1,
+        idLogCrashes: [10, 11, 12],
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.mergeCrashes",
@@ -165,7 +165,10 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.unmergeCrashGroup(1, 10);
+      const result = await crashAnalyticsModule.unmergeCrashGroup({
+        idSite: 1,
+        idLogCrash: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.unmergeCrashGroup",
@@ -186,7 +189,7 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashGroups(1);
+      const result = await crashAnalyticsModule.getCrashGroups({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashGroups",
@@ -203,7 +206,7 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["TypeError", "ReferenceError", "SyntaxError"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashTypes(1);
+      const result = await crashAnalyticsModule.getCrashTypes({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashTypes",
@@ -218,7 +221,10 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["TypeError", "ReferenceError"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashTypes(1, 2);
+      const result = await crashAnalyticsModule.getCrashTypes({
+        idSite: 1,
+        filter_limit: 2,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashTypes",
@@ -236,14 +242,16 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.setIgnoreCrash(1, 10);
+      const result = await crashAnalyticsModule.setIgnoreCrash({
+        idSite: 1,
+        idLogCrash: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.setIgnoreCrash",
         {
           idSite: 1,
           idLogCrash: 10,
-          ignore: "1",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -253,7 +261,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.setIgnoreCrash(1, 10, 0);
+      const result = await crashAnalyticsModule.setIgnoreCrash({
+        idSite: 1,
+        idLogCrash: 10,
+        ignore: 0,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.setIgnoreCrash",
@@ -275,7 +287,9 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getIgnoredCrashes(1);
+      const result = await crashAnalyticsModule.getIgnoredCrashes({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getIgnoredCrashes",
@@ -298,7 +312,10 @@ describe("CrashAnalyticsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashSummary(1, 10);
+      const result = await crashAnalyticsModule.getCrashSummary({
+        idSite: 1,
+        idLogCrash: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashSummary",
@@ -322,12 +339,12 @@ describe("CrashAnalyticsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashVisitContext(
-        10,
-        1,
-        "day",
-        "2023-04-01"
-      );
+      const result = await crashAnalyticsModule.getCrashVisitContext({
+        idLogCrash: 10,
+        idSite: 1,
+        period: "day",
+        date: "2023-04-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashVisitContext",
@@ -336,9 +353,6 @@ describe("CrashAnalyticsModule", () => {
           idSite: 1,
           period: "day",
           date: "2023-04-01",
-          filter_limit: "5",
-          filter_offset: "0",
-          fetchRecentActions: "1",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -350,16 +364,16 @@ describe("CrashAnalyticsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashVisitContext(
-        10,
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        10,
-        5,
-        0
-      );
+      const result = await crashAnalyticsModule.getCrashVisitContext({
+        idLogCrash: 10,
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        filter_limit: 10,
+        filter_offset: 5,
+        fetchRecentActions: 0,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashVisitContext",
@@ -387,16 +401,12 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getAllCrashes(1);
+      const result = await crashAnalyticsModule.getAllCrashes({ idSite: 1 });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getAllCrashes",
         {
           idSite: 1,
-          filter_sort_column: "datetime_last_seen",
-          filter_sort_order: "desc",
-          filter_limit: "10",
-          filter_offset: "0",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -409,13 +419,13 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getAllCrashes(
-        1,
-        "count",
-        "asc",
-        20,
-        5
-      );
+      const result = await crashAnalyticsModule.getAllCrashes({
+        idSite: 1,
+        filter_sort_column: "count",
+        filter_sort_order: "asc",
+        filter_limit: 20,
+        filter_offset: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getAllCrashes",
@@ -439,7 +449,11 @@ describe("CrashAnalyticsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.get(1, "day", "yesterday");
+      const result = await crashAnalyticsModule.get({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("CrashAnalytics.get", {
         idSite: 1,
@@ -456,13 +470,13 @@ describe("CrashAnalyticsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.get(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        "nb_crashes,nb_crashes_unique"
-      );
+      const result = await crashAnalyticsModule.get({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        columns: "nb_crashes,nb_crashes_unique",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("CrashAnalytics.get", {
         idSite: 1,
@@ -480,11 +494,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getAllCrashMessages(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getAllCrashMessages({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getAllCrashMessages",
@@ -501,12 +515,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getAllCrashMessages(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getAllCrashMessages({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getAllCrashMessages",
@@ -526,11 +540,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashMessages(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashMessages({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashMessages",
@@ -547,12 +561,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashMessages(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashMessages({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashMessages",
@@ -572,11 +586,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getUnidentifiedCrashMessages",
@@ -593,12 +607,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getUnidentifiedCrashMessages({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getUnidentifiedCrashMessages",
@@ -618,11 +632,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getDisappearedCrashes(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getDisappearedCrashes({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getDisappearedCrashes",
@@ -639,12 +653,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getDisappearedCrashes(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getDisappearedCrashes({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getDisappearedCrashes",
@@ -664,11 +678,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getReappearedCrashes(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getReappearedCrashes({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getReappearedCrashes",
@@ -685,12 +699,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getReappearedCrashes(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getReappearedCrashes({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getReappearedCrashes",
@@ -710,11 +724,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getNewCrashes(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getNewCrashes({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getNewCrashes",
@@ -731,12 +745,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getNewCrashes(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getNewCrashes({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getNewCrashes",
@@ -756,11 +770,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "/page1": 5, "/page2": 2 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByPageUrl(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesByPageUrl({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByPageUrl",
@@ -777,14 +791,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "/page1": 5 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByPageUrl(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        1,
-        1
-      );
+      const result = await crashAnalyticsModule.getCrashesByPageUrl({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        expanded: 1,
+        flat: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByPageUrl",
@@ -806,12 +820,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForPageUrl(
-        1,
-        "day",
-        "yesterday",
-        5
-      );
+      const result = await crashAnalyticsModule.getCrashesForPageUrl({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForPageUrl",
@@ -829,13 +843,13 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForPageUrl(
-        1,
-        "week",
-        "last7",
-        5,
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesForPageUrl({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        idSubtable: 5,
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForPageUrl",
@@ -856,11 +870,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "Home Page": 5, "Contact Page": 2 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByPageTitle(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesByPageTitle({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByPageTitle",
@@ -877,14 +891,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "Home Page": 5 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByPageTitle(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        1,
-        1
-      );
+      const result = await crashAnalyticsModule.getCrashesByPageTitle({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        expanded: 1,
+        flat: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByPageTitle",
@@ -906,12 +920,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForPageTitle(
-        1,
-        "day",
-        "yesterday",
-        5
-      );
+      const result = await crashAnalyticsModule.getCrashesForPageTitle({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForPageTitle",
@@ -929,13 +943,13 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForPageTitle(
-        1,
-        "week",
-        "last7",
-        5,
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesForPageTitle({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        idSubtable: 5,
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForPageTitle",
@@ -956,11 +970,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "main.js": 5, "vendor.js": 2 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesBySource(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesBySource({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesBySource",
@@ -977,14 +991,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { "main.js": 5 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesBySource(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        1,
-        1
-      );
+      const result = await crashAnalyticsModule.getCrashesBySource({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        expanded: 1,
+        flat: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesBySource",
@@ -1006,12 +1020,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForSource(
-        1,
-        "day",
-        "yesterday",
-        5
-      );
+      const result = await crashAnalyticsModule.getCrashesForSource({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForSource",
@@ -1029,13 +1043,13 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForSource(
-        1,
-        "week",
-        "last7",
-        5,
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesForSource({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        idSubtable: 5,
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForSource",
@@ -1056,11 +1070,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { JavaScript: 5, Browser: 2 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByCategory(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesByCategory({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByCategory",
@@ -1077,14 +1091,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { JavaScript: 5 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByCategory(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile",
-        1,
-        1
-      );
+      const result = await crashAnalyticsModule.getCrashesByCategory({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+        expanded: 1,
+        flat: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByCategory",
@@ -1106,12 +1120,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForCategory(
-        1,
-        "day",
-        "yesterday",
-        5
-      );
+      const result = await crashAnalyticsModule.getCrashesForCategory({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSubtable: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForCategory",
@@ -1129,13 +1143,13 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesForCategory(
-        1,
-        "week",
-        "last7",
-        5,
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesForCategory({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        idSubtable: 5,
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesForCategory",
@@ -1156,11 +1170,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByFirstParty(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesByFirstParty({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByFirstParty",
@@ -1177,12 +1191,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByFirstParty(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesByFirstParty({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByFirstParty",
@@ -1202,11 +1216,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1", "Error 2"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByThirdParty(
-        1,
-        "day",
-        "yesterday"
-      );
+      const result = await crashAnalyticsModule.getCrashesByThirdParty({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByThirdParty",
@@ -1223,12 +1237,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = ["Error 1"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getCrashesByThirdParty(
-        1,
-        "week",
-        "last7",
-        "deviceType==mobile"
-      );
+      const result = await crashAnalyticsModule.getCrashesByThirdParty({
+        idSite: 1,
+        period: "week",
+        date: "last7",
+        segment: "deviceType==mobile",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getCrashesByThirdParty",
@@ -1248,13 +1262,14 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { count: 5, newCount: 1, reappearedCount: 0 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastCrashesOverview(1);
+      const result = await crashAnalyticsModule.getLastCrashesOverview({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastCrashesOverview",
         {
           idSite: 1,
-          lastMinutes: "30",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1264,11 +1279,11 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = { count: 10, newCount: 3, reappearedCount: 1 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastCrashesOverview(
-        1,
-        "deviceType==mobile",
-        60
-      );
+      const result = await crashAnalyticsModule.getLastCrashesOverview({
+        idSite: 1,
+        segment: "deviceType==mobile",
+        lastMinutes: 60,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastCrashesOverview",
@@ -1290,14 +1305,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastTopCrashes(1);
+      const result = await crashAnalyticsModule.getLastTopCrashes({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastTopCrashes",
         {
           idSite: 1,
-          lastMinutes: "30",
-          filter_limit: "5",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1311,12 +1326,12 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastTopCrashes(
-        1,
-        "deviceType==mobile",
-        60,
-        10
-      );
+      const result = await crashAnalyticsModule.getLastTopCrashes({
+        idSite: 1,
+        segment: "deviceType==mobile",
+        lastMinutes: 60,
+        filter_limit: 10,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastTopCrashes",
@@ -1339,14 +1354,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastNewCrashes(1);
+      const result = await crashAnalyticsModule.getLastNewCrashes({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastNewCrashes",
         {
           idSite: 1,
-          lastMinutes: "30",
-          filter_limit: "10",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1356,12 +1371,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = [{ message: "Error 1", count: 5 }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastNewCrashes(
-        1,
-        "deviceType==mobile",
-        60,
-        5
-      );
+      const result = await crashAnalyticsModule.getLastNewCrashes({
+        idSite: 1,
+        segment: "deviceType==mobile",
+        lastMinutes: 60,
+        filter_limit: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastNewCrashes",
@@ -1384,14 +1399,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastReappearedCrashes(1);
+      const result = await crashAnalyticsModule.getLastReappearedCrashes({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastReappearedCrashes",
         {
           idSite: 1,
-          lastMinutes: "30",
-          filter_limit: "10",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1401,12 +1416,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = [{ message: "Error 1", count: 5 }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastReappearedCrashes(
-        1,
-        "deviceType==mobile",
-        60,
-        5
-      );
+      const result = await crashAnalyticsModule.getLastReappearedCrashes({
+        idSite: 1,
+        segment: "deviceType==mobile",
+        lastMinutes: 60,
+        filter_limit: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastReappearedCrashes",
@@ -1429,14 +1444,14 @@ describe("CrashAnalyticsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastDisappearedCrashes(1);
+      const result = await crashAnalyticsModule.getLastDisappearedCrashes({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastDisappearedCrashes",
         {
           idSite: 1,
-          lastMinutes: "30",
-          filter_limit: "10",
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1446,12 +1461,12 @@ describe("CrashAnalyticsModule", () => {
       const mockResponse = [{ message: "Error 1", lastSeen: "2023-01-01" }];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await crashAnalyticsModule.getLastDisappearedCrashes(
-        1,
-        "deviceType==mobile",
-        60,
-        5
-      );
+      const result = await crashAnalyticsModule.getLastDisappearedCrashes({
+        idSite: 1,
+        segment: "deviceType==mobile",
+        lastMinutes: 60,
+        filter_limit: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CrashAnalytics.getLastDisappearedCrashes",

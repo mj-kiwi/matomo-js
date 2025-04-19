@@ -35,7 +35,7 @@ describe("TourModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tourModule.getChallenges();
+      const result = await tourModule.getChallenges({});
 
       expect(mockClient.request).toHaveBeenCalledWith("Tour.getChallenges", {});
       expect(result).toEqual(mockResponse);
@@ -47,7 +47,7 @@ describe("TourModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tourModule.skipChallenge("challenge1");
+      const result = await tourModule.skipChallenge({ id: "challenge1" });
 
       expect(mockClient.request).toHaveBeenCalledWith("Tour.skipChallenge", {
         id: "challenge1",
@@ -61,7 +61,7 @@ describe("TourModule", () => {
       const mockResponse = { data: "test" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tourModule.getLevel();
+      const result = await tourModule.getLevel({});
 
       expect(mockClient.request).toHaveBeenCalledWith("Tour.getLevel", {});
       expect(result).toEqual(mockResponse);

@@ -41,11 +41,11 @@ describe("AnnotationsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.add(
-        1,
-        "2023-05-15",
-        "Website redesign launched"
-      );
+      const result = await annotationsModule.add({
+        idSite: 1,
+        date: "2023-05-15",
+        note: "Website redesign launched",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.add", {
         idSite: 1,
@@ -66,12 +66,12 @@ describe("AnnotationsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.add(
-        1,
-        "2023-05-15",
-        "Important update",
-        true
-      );
+      const result = await annotationsModule.add({
+        idSite: 1,
+        date: "2023-05-15",
+        note: "Important update",
+        starred: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.add", {
         idSite: 1,
@@ -88,7 +88,10 @@ describe("AnnotationsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.save(1, 123);
+      const result = await annotationsModule.save({
+        idSite: 1,
+        idNote: 123,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.save", {
         idSite: 1,
@@ -101,13 +104,13 @@ describe("AnnotationsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.save(
-        1,
-        123,
-        "2023-06-01",
-        "Updated note text",
-        true
-      );
+      const result = await annotationsModule.save({
+        idSite: 1,
+        idNote: 123,
+        date: "2023-06-01",
+        note: "Updated note text",
+        starred: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.save", {
         idSite: 1,
@@ -125,7 +128,10 @@ describe("AnnotationsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.delete(1, 123);
+      const result = await annotationsModule.delete({
+        idSite: 1,
+        idNote: 123,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.delete", {
         idSite: 1,
@@ -140,7 +146,9 @@ describe("AnnotationsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.deleteAll(1);
+      const result = await annotationsModule.deleteAll({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.deleteAll", {
         idSite: 1,
@@ -160,7 +168,10 @@ describe("AnnotationsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.get(1, 123);
+      const result = await annotationsModule.get({
+        idSite: 1,
+        idNote: 123,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.get", {
         idSite: 1,
@@ -190,7 +201,9 @@ describe("AnnotationsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.getAll("1");
+      const result = await annotationsModule.getAll({
+        idSite: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.getAll", {
         idSite: "1",
@@ -211,12 +224,12 @@ describe("AnnotationsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.getAll(
-        "1",
-        "2023-05-01",
-        "month",
-        3
-      );
+      const result = await annotationsModule.getAll({
+        idSite: "1",
+        date: "2023-05-01",
+        period: "month",
+        lastN: 3,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.getAll", {
         idSite: "1",
@@ -237,11 +250,11 @@ describe("AnnotationsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.getAnnotationCountForDates(
-        "1",
-        "2023-05-15,2023-05-17",
-        "day"
-      );
+      const result = await annotationsModule.getAnnotationCountForDates({
+        idSite: "1",
+        date: "2023-05-15,2023-05-17",
+        period: "day",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Annotations.getAnnotationCountForDates",
@@ -268,13 +281,13 @@ describe("AnnotationsModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await annotationsModule.getAnnotationCountForDates(
-        "1",
-        "2023-05-15,2023-05-16",
-        "day",
-        2,
-        true
-      );
+      const result = await annotationsModule.getAnnotationCountForDates({
+        idSite: "1",
+        date: "2023-05-15,2023-05-16",
+        period: "day",
+        lastN: 2,
+        getAnnotationText: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "Annotations.getAnnotationCountForDates",

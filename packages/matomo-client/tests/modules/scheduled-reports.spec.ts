@@ -38,16 +38,16 @@ describe("ScheduledReportsModule", () => {
       const reports = ["Actions.getPageUrls", "Actions.getDownloads"];
       const parameters = { displayFormat: "tables_only" };
 
-      const result = await scheduledReportsModule.addReport(
-        1,
-        "Weekly Overview",
-        "week",
-        8,
-        "email",
-        "pdf",
-        reports,
-        parameters
-      );
+      const result = await scheduledReportsModule.addReport({
+        idSite: 1,
+        description: "Weekly Overview",
+        period: "week",
+        hour: 8,
+        reportType: "email",
+        reportFormat: "pdf",
+        reports: reports,
+        parameters: parameters,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.addReport",
@@ -58,7 +58,7 @@ describe("ScheduledReportsModule", () => {
           hour: 8,
           reportType: "email",
           reportFormat: "pdf",
-          reports: JSON.stringify(reports),
+          reports: reports,
           parameters: JSON.stringify(parameters),
         }
       );
@@ -72,20 +72,20 @@ describe("ScheduledReportsModule", () => {
       const reports = ["Actions.getPageTitles"];
       const parameters = { displayFormat: "graphs_only" };
 
-      const result = await scheduledReportsModule.addReport(
-        1,
-        "Monthly Report",
-        "month",
-        9,
-        "email",
-        "pdf",
-        reports,
-        parameters,
-        "1",
-        "each",
-        "3",
-        "range"
-      );
+      const result = await scheduledReportsModule.addReport({
+        idSite: 1,
+        description: "Monthly Report",
+        period: "month",
+        hour: 9,
+        reportType: "email",
+        reportFormat: "pdf",
+        reports: reports,
+        parameters: parameters,
+        idSegment: "1",
+        evolutionPeriodFor: "each",
+        evolutionPeriodN: "3",
+        periodParam: "range",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.addReport",
@@ -96,7 +96,7 @@ describe("ScheduledReportsModule", () => {
           hour: 9,
           reportType: "email",
           reportFormat: "pdf",
-          reports: JSON.stringify(reports),
+          reports: reports,
           parameters: JSON.stringify(parameters),
           idSegment: "1",
           evolutionPeriodFor: "each",
@@ -116,17 +116,17 @@ describe("ScheduledReportsModule", () => {
       const reports = ["Referrers.getWebsites"];
       const parameters = { displayFormat: "tables_and_graphs" };
 
-      const result = await scheduledReportsModule.updateReport(
-        1,
-        2,
-        "Updated Report",
-        "day",
-        10,
-        "email",
-        "html",
-        reports,
-        parameters
-      );
+      const result = await scheduledReportsModule.updateReport({
+        idReport: 1,
+        idSite: 2,
+        description: "Updated Report",
+        period: "day",
+        hour: 10,
+        reportType: "email",
+        reportFormat: "html",
+        reports: reports,
+        parameters: parameters,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.updateReport",
@@ -138,7 +138,7 @@ describe("ScheduledReportsModule", () => {
           hour: 10,
           reportType: "email",
           reportFormat: "html",
-          reports: JSON.stringify(reports),
+          reports: reports,
           parameters: JSON.stringify(parameters),
         }
       );
@@ -152,21 +152,21 @@ describe("ScheduledReportsModule", () => {
       const reports = ["VisitsSummary.get"];
       const parameters = { displayFormat: "graphs_only" };
 
-      const result = await scheduledReportsModule.updateReport(
-        2,
-        1,
-        "Updated Weekly Report",
-        "week",
-        11,
-        "email",
-        "csv",
-        reports,
-        parameters,
-        "2",
-        "all",
-        "4",
-        "day"
-      );
+      const result = await scheduledReportsModule.updateReport({
+        idReport: 2,
+        idSite: 1,
+        description: "Updated Weekly Report",
+        period: "week",
+        hour: 11,
+        reportType: "email",
+        reportFormat: "csv",
+        reports: reports,
+        parameters: parameters,
+        idSegment: "2",
+        evolutionPeriodFor: "all",
+        evolutionPeriodN: "4",
+        periodParam: "day",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.updateReport",
@@ -178,7 +178,7 @@ describe("ScheduledReportsModule", () => {
           hour: 11,
           reportType: "email",
           reportFormat: "csv",
-          reports: JSON.stringify(reports),
+          reports: reports,
           parameters: JSON.stringify(parameters),
           idSegment: "2",
           evolutionPeriodFor: "all",
@@ -195,7 +195,9 @@ describe("ScheduledReportsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.deleteReport(1);
+      const result = await scheduledReportsModule.deleteReport({
+        idReport: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.deleteReport",
@@ -221,7 +223,7 @@ describe("ScheduledReportsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.getReports();
+      const result = await scheduledReportsModule.getReports({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.getReports",
@@ -240,13 +242,13 @@ describe("ScheduledReportsModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.getReports(
-        1,
-        "week",
-        1,
-        true,
-        "1"
-      );
+      const result = await scheduledReportsModule.getReports({
+        idSite: 1,
+        period: "week",
+        idReport: 1,
+        ifSuperUserReturnOnlySuperUserReports: true,
+        idSegment: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.getReports",
@@ -267,10 +269,10 @@ describe("ScheduledReportsModule", () => {
       const mockResponse = { contents: "base64_encoded_report_content" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.generateReport(
-        1,
-        "2023-01-01"
-      );
+      const result = await scheduledReportsModule.generateReport({
+        idReport: 1,
+        date: "2023-01-01",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.generateReport",
@@ -288,15 +290,15 @@ describe("ScheduledReportsModule", () => {
 
       const parameters = { displayFormat: "graphs_only" };
 
-      const result = await scheduledReportsModule.generateReport(
-        2,
-        "2023-02-01",
-        "en",
-        "download",
-        "week",
-        "pdf",
-        parameters
-      );
+      const result = await scheduledReportsModule.generateReport({
+        idReport: 2,
+        date: "2023-02-01",
+        language: "en",
+        outputType: "download",
+        period: "week",
+        reportFormat: "pdf",
+        parameters: parameters,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.generateReport",
@@ -319,7 +321,9 @@ describe("ScheduledReportsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.sendReport(1);
+      const result = await scheduledReportsModule.sendReport({
+        idReport: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.sendReport",
@@ -332,12 +336,12 @@ describe("ScheduledReportsModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await scheduledReportsModule.sendReport(
-        2,
-        "week",
-        "2023-01-01",
-        true
-      );
+      const result = await scheduledReportsModule.sendReport({
+        idReport: 2,
+        period: "week",
+        date: "2023-01-01",
+        force: true,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "ScheduledReports.sendReport",

@@ -37,34 +37,34 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("addHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.addHeatmap(1, "Homepage Heatmap", [
-        "example.org",
-      ]);
+      await heatmapSessionRecordingModule.addHeatmap({
+        idSite: 1,
+        name: "Homepage Heatmap",
+        matchPageRules: ["example.org"],
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.addHeatmap",
         {
           idSite: 1,
           name: "Homepage Heatmap",
           matchPageRules: ["example.org"],
-          sampleLimit: "1000",
-          sampleRate: "5",
         }
       );
     });
 
     it("should include optional parameters when provided", async () => {
-      await heatmapSessionRecordingModule.addHeatmap(
-        1,
-        "Homepage Heatmap",
-        ["example.org"],
-        "2000",
-        "10",
-        ".no-track",
-        "https://example.org/screenshot.jpg",
-        "576",
-        "768",
-        true
-      );
+      await heatmapSessionRecordingModule.addHeatmap({
+        idSite: 1,
+        name: "Homepage Heatmap",
+        matchPageRules: ["example.org"],
+        sampleLimit: "2000",
+        sampleRate: "10",
+        excludedElements: ".no-track",
+        screenshotUrl: "https://example.org/screenshot.jpg",
+        breakpointMobile: "576",
+        breakpointTablet: "768",
+        captureDomManually: true,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.addHeatmap",
         {
@@ -85,12 +85,12 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("updateHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.updateHeatmap(
-        1,
-        123,
-        "Homepage Heatmap",
-        ["example.org"]
-      );
+      await heatmapSessionRecordingModule.updateHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+        name: "Homepage Heatmap",
+        matchPageRules: ["example.org"],
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.updateHeatmap",
         {
@@ -98,8 +98,6 @@ describe("HeatmapSessionRecordingModule", () => {
           idSiteHsr: 123,
           name: "Homepage Heatmap",
           matchPageRules: ["example.org"],
-          sampleLimit: "1000",
-          sampleRate: "5",
         }
       );
     });
@@ -107,7 +105,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("deleteHeatmapScreenshot", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.deleteHeatmapScreenshot(1, 123);
+      await heatmapSessionRecordingModule.deleteHeatmapScreenshot({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.deleteHeatmapScreenshot",
         {
@@ -120,36 +121,30 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("addSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.addSessionRecording(
-        1,
-        "Session Recording"
-      );
+      await heatmapSessionRecordingModule.addSessionRecording({
+        idSite: 1,
+        name: "Session Recording",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.addSessionRecording",
         {
           idSite: 1,
           name: "Session Recording",
-          matchPageRules: "Array",
-          sampleLimit: "1000",
-          sampleRate: "10",
-          minSessionTime: "0",
-          requiresActivity: "1",
-          captureKeystrokes: "1",
         }
       );
     });
 
     it("should include custom parameters when provided", async () => {
-      await heatmapSessionRecordingModule.addSessionRecording(
-        1,
-        "Session Recording",
-        ["example.org"],
-        "2000",
-        "20",
-        "30",
-        false,
-        false
-      );
+      await heatmapSessionRecordingModule.addSessionRecording({
+        idSite: 1,
+        name: "Session Recording",
+        matchPageRules: ["example.org"],
+        sampleLimit: "2000",
+        sampleRate: "20",
+        minSessionTime: "30",
+        requiresActivity: false,
+        captureKeystrokes: false,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.addSessionRecording",
         {
@@ -168,23 +163,17 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("updateSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.updateSessionRecording(
-        1,
-        123,
-        "Session Recording"
-      );
+      await heatmapSessionRecordingModule.updateSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+        name: "Session Recording",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.updateSessionRecording",
         {
           idSite: 1,
           idSiteHsr: 123,
           name: "Session Recording",
-          matchPageRules: "Array",
-          sampleLimit: "1000",
-          sampleRate: "10",
-          minSessionTime: "0",
-          requiresActivity: "1",
-          captureKeystrokes: "1",
         }
       );
     });
@@ -192,7 +181,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getHeatmap(1, 123);
+      await heatmapSessionRecordingModule.getHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getHeatmap",
         {
@@ -205,7 +197,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getSessionRecording(1, 123);
+      await heatmapSessionRecordingModule.getSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getSessionRecording",
         {
@@ -218,7 +213,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("pauseHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.pauseHeatmap(1, 123);
+      await heatmapSessionRecordingModule.pauseHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.pauseHeatmap",
         {
@@ -231,7 +229,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("resumeHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.resumeHeatmap(1, 123);
+      await heatmapSessionRecordingModule.resumeHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.resumeHeatmap",
         {
@@ -244,7 +245,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("deleteHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.deleteHeatmap(1, 123);
+      await heatmapSessionRecordingModule.deleteHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.deleteHeatmap",
         {
@@ -257,7 +261,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("endHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.endHeatmap(1, 123);
+      await heatmapSessionRecordingModule.endHeatmap({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.endHeatmap",
         {
@@ -270,7 +277,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("pauseSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.pauseSessionRecording(1, 123);
+      await heatmapSessionRecordingModule.pauseSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.pauseSessionRecording",
         {
@@ -283,7 +293,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("resumeSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.resumeSessionRecording(1, 123);
+      await heatmapSessionRecordingModule.resumeSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.resumeSessionRecording",
         {
@@ -296,7 +309,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("deleteSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.deleteSessionRecording(1, 123);
+      await heatmapSessionRecordingModule.deleteSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.deleteSessionRecording",
         {
@@ -309,7 +325,10 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("endSessionRecording", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.endSessionRecording(1, 123);
+      await heatmapSessionRecordingModule.endSessionRecording({
+        idSite: 1,
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.endSessionRecording",
         {
@@ -322,7 +341,9 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getHeatmaps", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getHeatmaps(1);
+      await heatmapSessionRecordingModule.getHeatmaps({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getHeatmaps",
         {
@@ -332,7 +353,10 @@ describe("HeatmapSessionRecordingModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await heatmapSessionRecordingModule.getHeatmaps(1, false);
+      await heatmapSessionRecordingModule.getHeatmaps({
+        idSite: 1,
+        includePageTreeMirror: false,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getHeatmaps",
         {
@@ -345,7 +369,9 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getSessionRecordings", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getSessionRecordings(1);
+      await heatmapSessionRecordingModule.getSessionRecordings({
+        idSite: 1,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getSessionRecordings",
         {
@@ -357,12 +383,12 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getRecordedSessions", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getRecordedSessions(
-        1,
-        "day",
-        "yesterday",
-        123
-      );
+      await heatmapSessionRecordingModule.getRecordedSessions({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedSessions",
         {
@@ -375,14 +401,14 @@ describe("HeatmapSessionRecordingModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await heatmapSessionRecordingModule.getRecordedSessions(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==mobile",
-        "456"
-      );
+      await heatmapSessionRecordingModule.getRecordedSessions({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+        segment: "deviceType==mobile",
+        idSubtable: "456",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedSessions",
         {
@@ -399,7 +425,11 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getRecordedSession", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getRecordedSession(1, 123, 456);
+      await heatmapSessionRecordingModule.getRecordedSession({
+        idSite: 1,
+        idSiteHsr: 123,
+        idLogHsr: 456,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedSession",
         {
@@ -413,7 +443,11 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("deleteRecordedSession", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.deleteRecordedSession(1, 123, 456);
+      await heatmapSessionRecordingModule.deleteRecordedSession({
+        idSite: 1,
+        idSiteHsr: 123,
+        idVisit: 456,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.deleteRecordedSession",
         {
@@ -427,7 +461,11 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("deleteRecordedPageview", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.deleteRecordedPageview(1, 123, 456);
+      await heatmapSessionRecordingModule.deleteRecordedPageview({
+        idSite: 1,
+        idSiteHsr: 123,
+        idLogHsr: 456,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.deleteRecordedPageview",
         {
@@ -441,12 +479,12 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getRecordedHeatmapMetadata", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getRecordedHeatmapMetadata(
-        1,
-        "day",
-        "yesterday",
-        123
-      );
+      await heatmapSessionRecordingModule.getRecordedHeatmapMetadata({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedHeatmapMetadata",
         {
@@ -459,13 +497,13 @@ describe("HeatmapSessionRecordingModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await heatmapSessionRecordingModule.getRecordedHeatmapMetadata(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "deviceType==desktop"
-      );
+      await heatmapSessionRecordingModule.getRecordedHeatmapMetadata({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+        segment: "deviceType==desktop",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedHeatmapMetadata",
         {
@@ -481,14 +519,14 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getRecordedHeatmap", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getRecordedHeatmap(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "click",
-        "desktop"
-      );
+      await heatmapSessionRecordingModule.getRecordedHeatmap({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+        heatmapType: "click",
+        deviceType: "desktop",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedHeatmap",
         {
@@ -503,15 +541,15 @@ describe("HeatmapSessionRecordingModule", () => {
     });
 
     it("should include optional parameters when provided", async () => {
-      await heatmapSessionRecordingModule.getRecordedHeatmap(
-        1,
-        "day",
-        "yesterday",
-        123,
-        "click",
-        "desktop",
-        "deviceType==desktop"
-      );
+      await heatmapSessionRecordingModule.getRecordedHeatmap({
+        idSite: 1,
+        period: "day",
+        date: "yesterday",
+        idSiteHsr: 123,
+        heatmapType: "click",
+        deviceType: "desktop",
+        segment: "deviceType==desktop",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getRecordedHeatmap",
         {
@@ -529,7 +567,11 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("getEmbedSessionInfo", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.getEmbedSessionInfo(1, 123, 456);
+      await heatmapSessionRecordingModule.getEmbedSessionInfo({
+        idSite: 1,
+        idSiteHsr: 123,
+        idLogHsr: 456,
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.getEmbedSessionInfo",
         {
@@ -543,23 +585,22 @@ describe("HeatmapSessionRecordingModule", () => {
 
   describe("testUrlMatchPages", () => {
     it("should call the API with required parameters", async () => {
-      await heatmapSessionRecordingModule.testUrlMatchPages(
-        "https://example.org/page"
-      );
+      await heatmapSessionRecordingModule.testUrlMatchPages({
+        url: "https://example.org/page",
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.testUrlMatchPages",
         {
           url: "https://example.org/page",
-          matchPageRules: "Array",
         }
       );
     });
 
     it("should include custom match rules when provided", async () => {
-      await heatmapSessionRecordingModule.testUrlMatchPages(
-        "https://example.org/page",
-        ["example.org"]
-      );
+      await heatmapSessionRecordingModule.testUrlMatchPages({
+        url: "https://example.org/page",
+        matchPageRules: ["example.org"],
+      });
       expect(mockClient.request).toHaveBeenCalledWith(
         "HeatmapSessionRecording.testUrlMatchPages",
         {

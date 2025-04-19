@@ -38,7 +38,7 @@ describe("CoreAdminHomeModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.deleteAllTrackingFailures();
+      const result = await coreAdminHomeModule.deleteAllTrackingFailures({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.deleteAllTrackingFailures"
@@ -55,7 +55,10 @@ describe("CoreAdminHomeModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.deleteTrackingFailure(1, 123);
+      const result = await coreAdminHomeModule.deleteTrackingFailure({
+        idSite: 1,
+        idFailure: 123,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.deleteTrackingFailure",
@@ -88,7 +91,7 @@ describe("CoreAdminHomeModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await coreAdminHomeModule.getTrackingFailures();
+      const result = await coreAdminHomeModule.getTrackingFailures({});
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "CoreAdminHome.getTrackingFailures"

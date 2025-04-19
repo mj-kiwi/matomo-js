@@ -66,7 +66,9 @@ describe("TagManagerModule", () => {
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
       const result =
-        await tagManagerModule.getAvailableEnvironmentsWithPublishCapability(1);
+        await tagManagerModule.getAvailableEnvironmentsWithPublishCapability({
+          idSite: 1,
+        });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getAvailableEnvironmentsWithPublishCapability",
@@ -127,8 +129,9 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await tagManagerModule.getAvailableTagTypesInContext("web");
+      const result = await tagManagerModule.getAvailableTagTypesInContext({
+        idContext: "web",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getAvailableTagTypesInContext",
@@ -143,8 +146,9 @@ describe("TagManagerModule", () => {
       const mockResponse = ["PageView", "DomReady", "Click", "FormSubmit"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await tagManagerModule.getAvailableTriggerTypesInContext("web");
+      const result = await tagManagerModule.getAvailableTriggerTypesInContext({
+        idContext: "web",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getAvailableTriggerTypesInContext",
@@ -159,8 +163,9 @@ describe("TagManagerModule", () => {
       const mockResponse = ["DataLayer", "Cookie", "CustomJs", "Dom"];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result =
-        await tagManagerModule.getAvailableVariableTypesInContext("web");
+      const result = await tagManagerModule.getAvailableVariableTypesInContext({
+        idContext: "web",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getAvailableVariableTypesInContext",
@@ -177,11 +182,11 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerEmbedCode(
-        1,
-        "abcdef",
-        "live"
-      );
+      const result = await tagManagerModule.getContainerEmbedCode({
+        idSite: 1,
+        idContainer: "abcdef",
+        environment: "live",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerEmbedCode",
@@ -200,11 +205,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { code: "<!-- Instructions for installation -->" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerInstallInstructions(
-        1,
-        "abcdef",
-        "live"
-      );
+      const result = await tagManagerModule.getContainerInstallInstructions({
+        idSite: 1,
+        idContainer: "abcdef",
+        environment: "live",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerInstallInstructions",
@@ -223,12 +228,12 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerInstallInstructions(
-        1,
-        "abcdef",
-        "live",
-        "react"
-      );
+      const result = await tagManagerModule.getContainerInstallInstructions({
+        idSite: 1,
+        idContainer: "abcdef",
+        environment: "live",
+        jsFramework: "react",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerInstallInstructions",
@@ -251,7 +256,11 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerTags(1, "abcdef", 5);
+      const result = await tagManagerModule.getContainerTags({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerTags",
@@ -270,7 +279,9 @@ describe("TagManagerModule", () => {
       const mockResponse = { idContainer: "abcdef" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.createDefaultContainerForSite(1);
+      const result = await tagManagerModule.createDefaultContainerForSite({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.createDefaultContainerForSite",
@@ -285,13 +296,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idTag: 3 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerTag(
-        1,
-        "abcdef",
-        5,
-        "Matomo",
-        "Analytics Tag"
-      );
+      const result = await tagManagerModule.addContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "Matomo",
+        name: "Analytics Tag",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerTag",
@@ -310,23 +321,23 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idTag: 3 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerTag(
-        1,
-        "abcdef",
-        5,
-        "Matomo",
-        "Analytics Tag",
-        { siteId: 1, trackingType: "pageview" },
-        ["trigger1", "trigger2"],
-        ["blocktrigger1"],
-        "once_per_page",
-        "500",
-        "100",
-        "2023-01-01",
-        "2023-12-31",
-        "Tag description",
-        "active"
-      );
+      const result = await tagManagerModule.addContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "Matomo",
+        name: "Analytics Tag",
+        parameters: { siteId: 1, trackingType: "pageview" },
+        fireTriggerIds: ["trigger1", "trigger2"],
+        blockTriggerIds: ["blocktrigger1"],
+        fireLimit: "once_per_page",
+        fireDelay: "500",
+        priority: "100",
+        startDate: "2023-01-01",
+        endDate: "2023-12-31",
+        description: "Tag description",
+        status: "active",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerTag",
@@ -357,13 +368,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123",
-        "Updated Analytics Tag"
-      );
+      const result = await tagManagerModule.updateContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+        name: "Updated Analytics Tag",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerTag",
@@ -382,22 +393,22 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123",
-        "Updated Analytics Tag",
-        { siteId: 1, trackingType: "event" },
-        ["trigger1", "trigger3"],
-        ["blocktrigger2"],
-        "once_per_event",
-        "300",
-        "200",
-        "2023-02-01",
-        "2024-01-31",
-        "Updated tag description"
-      );
+      const result = await tagManagerModule.updateContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+        name: "Updated Analytics Tag",
+        parameters: { siteId: 1, trackingType: "event" },
+        fireTriggerIds: ["trigger1", "trigger3"],
+        blockTriggerIds: ["blocktrigger2"],
+        fireLimit: "once_per_event",
+        fireDelay: "300",
+        priority: "200",
+        startDate: "2023-02-01",
+        endDate: "2024-01-31",
+        description: "Updated tag description",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerTag",
@@ -427,12 +438,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.deleteContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123"
-      );
+      const result = await tagManagerModule.deleteContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.deleteContainerTag",
@@ -452,12 +463,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.pauseContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123"
-      );
+      const result = await tagManagerModule.pauseContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.pauseContainerTag",
@@ -477,12 +488,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.resumeContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123"
-      );
+      const result = await tagManagerModule.resumeContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.resumeContainerTag",
@@ -506,12 +517,12 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerTag(
-        1,
-        "abcdef",
-        5,
-        "tag123"
-      );
+      const result = await tagManagerModule.getContainerTag({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTag: "tag123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerTag",
@@ -534,12 +545,12 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerTriggerReferences(
-        1,
-        "abcdef",
-        5,
-        "trigger123"
-      );
+      const result = await tagManagerModule.getContainerTriggerReferences({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTrigger: "trigger123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerTriggerReferences",
@@ -562,11 +573,11 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerTriggers(
-        1,
-        "abcdef",
-        5
-      );
+      const result = await tagManagerModule.getContainerTriggers({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerTriggers",
@@ -585,13 +596,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idTrigger: "trig123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "Click",
-        "Button Click"
-      );
+      const result = await tagManagerModule.addContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "Click",
+        name: "Button Click",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerTrigger",
@@ -610,16 +621,16 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idTrigger: "trig123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "Click",
-        "Button Click",
-        { clickElementId: "submit-button" },
-        [{ type: "contains", attribute: "id", value: "submit" }],
-        "Trigger when submit button is clicked"
-      );
+      const result = await tagManagerModule.addContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "Click",
+        name: "Button Click",
+        parameters: { clickElementId: "submit-button" },
+        conditions: [{ type: "contains", attribute: "id", value: "submit" }],
+        description: "Trigger when submit button is clicked",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerTrigger",
@@ -643,13 +654,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "trigger123",
-        "Updated Button Click"
-      );
+      const result = await tagManagerModule.updateContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTrigger: "trigger123",
+        name: "Updated Button Click",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerTrigger",
@@ -668,16 +679,16 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "trigger123",
-        "Updated Button Click",
-        { clickElementId: "cta-button" },
-        [{ type: "equals", attribute: "id", value: "cta-button" }],
-        "Trigger when CTA button is clicked"
-      );
+      const result = await tagManagerModule.updateContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTrigger: "trigger123",
+        name: "Updated Button Click",
+        parameters: { clickElementId: "cta-button" },
+        conditions: [{ type: "equals", attribute: "id", value: "cta-button" }],
+        description: "Trigger when CTA button is clicked",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerTrigger",
@@ -703,12 +714,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.deleteContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "trigger123"
-      );
+      const result = await tagManagerModule.deleteContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTrigger: "trigger123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.deleteContainerTrigger",
@@ -733,12 +744,12 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerTrigger(
-        1,
-        "abcdef",
-        5,
-        "trigger123"
-      );
+      const result = await tagManagerModule.getContainerTrigger({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idTrigger: "trigger123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerTrigger",
@@ -761,12 +772,12 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerVariableReferences(
-        1,
-        "abcdef",
-        5,
-        "var123"
-      );
+      const result = await tagManagerModule.getContainerVariableReferences({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idVariable: "var123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerVariableReferences",
@@ -789,11 +800,11 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerVariables(
-        1,
-        "abcdef",
-        5
-      );
+      const result = await tagManagerModule.getContainerVariables({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerVariables",
@@ -816,11 +827,11 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getAvailableContainerVariables(
-        1,
-        "abcdef",
-        5
-      );
+      const result = await tagManagerModule.getAvailableContainerVariables({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getAvailableContainerVariables",
@@ -839,13 +850,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idVariable: "var123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "DataLayer",
-        "User ID Variable"
-      );
+      const result = await tagManagerModule.addContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "DataLayer",
+        name: "User ID Variable",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerVariable",
@@ -864,23 +875,23 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idVariable: "var123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "DataLayer",
-        "User ID Variable",
-        { dataLayerName: "userId" },
-        "unknown",
-        [
+      const result = await tagManagerModule.addContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        type: "DataLayer",
+        name: "User ID Variable",
+        parameters: { dataLayerName: "userId" },
+        defaultValue: "unknown",
+        lookupTable: [
           {
             matchValue: "admin",
             outValue: "Administrator",
             comparison: "equals",
           },
         ],
-        "Variable to get user ID from data layer"
-      );
+        description: "Variable to get user ID from data layer",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainerVariable",
@@ -911,13 +922,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "var123",
-        "Updated User ID"
-      );
+      const result = await tagManagerModule.updateContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idVariable: "var123",
+        name: "Updated User ID",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerVariable",
@@ -936,15 +947,15 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "var123",
-        "Updated User ID",
-        { dataLayerName: "user.id" },
-        "guest",
-        [
+      const result = await tagManagerModule.updateContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idVariable: "var123",
+        name: "Updated User ID",
+        parameters: { dataLayerName: "user.id" },
+        defaultValue: "guest",
+        lookupTable: [
           {
             matchValue: "admin",
             outValue: "Administrator",
@@ -952,8 +963,8 @@ describe("TagManagerModule", () => {
           },
           { matchValue: "mod", outValue: "Moderator", comparison: "equals" },
         ],
-        "Updated variable description"
-      );
+        description: "Updated variable description",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerVariable",
@@ -985,12 +996,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.deleteContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "var123"
-      );
+      const result = await tagManagerModule.deleteContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idVariable: "var123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.deleteContainerVariable",
@@ -1015,12 +1026,12 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerVariable(
-        1,
-        "abcdef",
-        5,
-        "var123"
-      );
+      const result = await tagManagerModule.getContainerVariable({
+        idSite: 1,
+        idContainer: "abcdef",
+        idContainerVersion: 5,
+        idVariable: "var123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerVariable",
@@ -1043,7 +1054,9 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainers(1);
+      const result = await tagManagerModule.getContainers({
+        idSite: 1,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainers",
@@ -1058,11 +1071,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainer: "cont123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainer(
-        1,
-        "web",
-        "New Web Container"
-      );
+      const result = await tagManagerModule.addContainer({
+        idSite: 1,
+        context: "web",
+        name: "New Web Container",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainer",
@@ -1079,15 +1092,15 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainer: "cont123" };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.addContainer(
-        1,
-        "web",
-        "New Web Container",
-        "Container description",
-        "1",
-        "1",
-        "1"
-      );
+      const result = await tagManagerModule.addContainer({
+        idSite: 1,
+        context: "web",
+        name: "New Web Container",
+        description: "Container description",
+        ignoreGtmDataLayer: "1",
+        isTagFireLimitAllowedInPreviewMode: "1",
+        activelySyncGtmDataLayer: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.addContainer",
@@ -1110,11 +1123,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainer(
-        1,
-        "cont123",
-        "Updated Container Name"
-      );
+      const result = await tagManagerModule.updateContainer({
+        idSite: 1,
+        idContainer: "cont123",
+        name: "Updated Container Name",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainer",
@@ -1131,15 +1144,15 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainer(
-        1,
-        "cont123",
-        "Updated Container Name",
-        "Updated description",
-        "1",
-        "1",
-        "1"
-      );
+      const result = await tagManagerModule.updateContainer({
+        idSite: 1,
+        idContainer: "cont123",
+        name: "Updated Container Name",
+        description: "Updated description",
+        ignoreGtmDataLayer: "1",
+        isTagFireLimitAllowedInPreviewMode: "1",
+        activelySyncGtmDataLayer: "1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainer",
@@ -1162,11 +1175,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainerVersion: 6 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.createContainerVersion(
-        1,
-        "cont123",
-        "v1.0"
-      );
+      const result = await tagManagerModule.createContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        name: "v1.0",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.createContainerVersion",
@@ -1183,13 +1196,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainerVersion: 6 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.createContainerVersion(
-        1,
-        "cont123",
-        "v1.0",
-        "First stable version",
-        "5"
-      );
+      const result = await tagManagerModule.createContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        name: "v1.0",
+        description: "First stable version",
+        idContainerVersion: "5",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.createContainerVersion",
@@ -1210,12 +1223,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerVersion(
-        1,
-        "cont123",
-        6,
-        "v1.1"
-      );
+      const result = await tagManagerModule.updateContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: 6,
+        name: "v1.1",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerVersion",
@@ -1233,13 +1246,13 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.updateContainerVersion(
-        1,
-        "cont123",
-        6,
-        "v1.1",
-        "Updated version description"
-      );
+      const result = await tagManagerModule.updateContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: 6,
+        name: "v1.1",
+        description: "Updated version description",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.updateContainerVersion",
@@ -1263,7 +1276,10 @@ describe("TagManagerModule", () => {
       ];
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerVersions(1, "cont123");
+      const result = await tagManagerModule.getContainerVersions({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerVersions",
@@ -1287,11 +1303,11 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainerVersion(
-        1,
-        "cont123",
-        6
-      );
+      const result = await tagManagerModule.getContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: 6,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainerVersion",
@@ -1310,11 +1326,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.deleteContainerVersion(
-        1,
-        "cont123",
-        6
-      );
+      const result = await tagManagerModule.deleteContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: 6,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.deleteContainerVersion",
@@ -1333,12 +1349,12 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.publishContainerVersion(
-        1,
-        "cont123",
-        6,
-        "live"
-      );
+      const result = await tagManagerModule.publishContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: 6,
+        environment: "live",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.publishContainerVersion",
@@ -1358,7 +1374,10 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.deleteContainer(1, "cont123");
+      const result = await tagManagerModule.deleteContainer({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.deleteContainer",
@@ -1394,7 +1413,10 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.getContainer(1, "cont123");
+      const result = await tagManagerModule.getContainer({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.getContainer",
@@ -1412,7 +1434,10 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.enablePreviewMode(1, "cont123");
+      const result = await tagManagerModule.enablePreviewMode({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.enablePreviewMode",
@@ -1428,11 +1453,11 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.enablePreviewMode(
-        1,
-        "cont123",
-        "6"
-      );
+      const result = await tagManagerModule.enablePreviewMode({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: "6",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.enablePreviewMode",
@@ -1451,7 +1476,10 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.disablePreviewMode(1, "cont123");
+      const result = await tagManagerModule.disablePreviewMode({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.disablePreviewMode",
@@ -1469,10 +1497,10 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.changeDebugUrl(
-        1,
-        "https://example.org/checkout"
-      );
+      const result = await tagManagerModule.changeDebugUrl({
+        idSite: 1,
+        url: "https://example.org/checkout",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.changeDebugUrl",
@@ -1496,10 +1524,10 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.exportContainerVersion(
-        1,
-        "cont123"
-      );
+      const result = await tagManagerModule.exportContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.exportContainerVersion",
@@ -1521,11 +1549,11 @@ describe("TagManagerModule", () => {
       };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.exportContainerVersion(
-        1,
-        "cont123",
-        "6"
-      );
+      const result = await tagManagerModule.exportContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        idContainerVersion: "6",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.exportContainerVersion",
@@ -1550,18 +1578,18 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainerVersion: 8 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.importContainerVersion(
-        containerJson,
-        1,
-        "cont123"
-      );
+      const result = await tagManagerModule.importContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        exportedContainerVersion: containerJson,
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.importContainerVersion",
         {
-          exportedContainerVersion: containerJson,
           idSite: 1,
           idContainer: "cont123",
+          exportedContainerVersion: containerJson,
         }
       );
       expect(result).toEqual(mockResponse);
@@ -1577,19 +1605,19 @@ describe("TagManagerModule", () => {
       const mockResponse = { success: true, idContainerVersion: 8 };
       mockClient.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await tagManagerModule.importContainerVersion(
-        containerJson,
-        1,
-        "cont123",
-        "Backup before import"
-      );
+      const result = await tagManagerModule.importContainerVersion({
+        idSite: 1,
+        idContainer: "cont123",
+        exportedContainerVersion: containerJson,
+        backupName: "Backup before import",
+      });
 
       expect(mockClient.request).toHaveBeenCalledWith(
         "TagManager.importContainerVersion",
         {
-          exportedContainerVersion: containerJson,
           idSite: 1,
           idContainer: "cont123",
+          exportedContainerVersion: containerJson,
           backupName: "Backup before import",
         }
       );
