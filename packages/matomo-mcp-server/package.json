@@ -1,0 +1,34 @@
+{
+  "name": "@mj-kiwi/matomo-mcp-server",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./build/index.js",
+  "bin": {
+    "matomo-mcp-server": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "author": {
+    "name": "MJ Kiwi",
+    "email": "me@mj.kiwi"
+  },
+  "description": "",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.1",
+    "@mj-kiwi/matomo-client": "workspace:*",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "typescript": "^5.8.3"
+  }
+}
