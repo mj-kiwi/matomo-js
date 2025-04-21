@@ -9,7 +9,7 @@
     "check-types": "turbo run check-types",
     "test": "turbo run test",
     "release": "changeset publish",
-    "ci:publish": "pnpm publish -r --access public",
+    "ci:publish": "pnpm publish -r --access public --no-git-checks",
     "version": "changeset version"
   },
   "devDependencies": {
