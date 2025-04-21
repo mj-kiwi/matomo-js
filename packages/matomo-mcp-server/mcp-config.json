@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "matomo-mcp-server": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "env": {
+        "MATOMO_URL": "http://localhost:8080",
+        "MATOMO_AUTH_TOKEN": "your_token",
+        "MATOMO_SITE_ID": "1"
+      }
+    }
+  }
+}

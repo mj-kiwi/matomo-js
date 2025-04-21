@@ -1,0 +1,43 @@
+{
+  "name": "@mj-kiwi/matomo-mcp-server",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./build/index.js",
+  "bin": {
+    "matomo-mcp-server": "./build/index.js"
+  },
+  "scripts": {
+    "build": "npm run update-version && tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc --watch",
+    "debug": "npx -y @modelcontextprotocol/inspector --config ./mcp-config.json --server matomo-mcp-server",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "update-version": "node scripts/update-version.js"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "author": {
+    "name": "MJ Kiwi",
+    "email": "me@mj.kiwi"
+  },
+  "description": "",
+  "dependencies": {
+    "@mj-kiwi/matomo-client": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.10.1",
+    "@t3-oss/env-core": "^0.12.0",
+    "zod": "catalog:",
+    "axios": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

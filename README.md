@@ -89,6 +89,27 @@ The reporting client includes modules for all major Matomo API endpoints, includ
 
 And many more modules for comprehensive Matomo API coverage.
 
+### MCP Server (`@mj-kiwi/matomo-mcp-server`)
+
+A Model Context Protocol (MCP) server that acts as a bridge between AI agents (like large language models) and Matomo analytics. This package exposes Matomo Reporting API functionalities as MCP tools.
+
+#### Features
+
+- Implements the Model Context Protocol specification
+- Provides AI agents with direct access to Matomo data
+- Easy configuration via environment variables
+- Modular design mirroring the Matomo API structure
+
+#### Implementation Status
+
+Currently, the MCP server has implemented 4 out of 47 Matomo API modules (8.5% complete):
+- SitesManager
+- TagManager
+- Tour
+- UserId
+
+More modules are being actively implemented.
+
 ## Getting Started
 
 ### Prerequisites
