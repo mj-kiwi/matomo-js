@@ -7,7 +7,7 @@ async function main() {
   // Create server instance
   const server = new McpServer({
     name: "matomo-mcp-server",
-    version: "0.1.0",
+    version: "0.1.1",
     capabilities: {
       resources: {},
       tools: {},
