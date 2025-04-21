@@ -1,6 +1,7 @@
 {
   "name": "@mj-kiwi/matomo-mcp-server",
   "version": "0.1.1",
+  "description": "Model Context Protocol server for Matomo analytics integration",
   "type": "module",
   "main": "./build/index.js",
   "bin": {
@@ -19,13 +20,35 @@
   "files": [
     "build"
   ],
-  "keywords": [],
+  "keywords": [
+    "matomo",
+    "analytics",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "server",
+    "tracking"
+  ],
   "license": "MIT",
   "author": {
     "name": "MJ Kiwi",
     "email": "me@mj.kiwi"
   },
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mj-kiwi/matomo-js.git",
+    "directory": "packages/matomo-mcp-server"
+  },
+  "homepage": "https://github.com/mj-kiwi/matomo-js/tree/main/packages/matomo-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/mj-kiwi/matomo-js/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@mj-kiwi/matomo-client": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.10.1",
