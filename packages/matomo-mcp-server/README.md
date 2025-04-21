@@ -19,7 +19,7 @@ If these variables are not set, the server will use placeholder values and print
 You can run the server directly using Node.js:
 
 ```bash
-node dist/index.js
+node build/index.js
 ```
 
 Or, if you have configured it as an executable in `package.json`:
@@ -32,8 +32,68 @@ The server communicates over standard input/output (stdio).
 
 ## Available Tools
 
-Currently implemented tools:
 
-*   `sitesManager_getAllSites`: Retrieves a list of all websites configured in Matomo.
+## Module Implementation Status
 
-*(More tools can be added by extending `src/index.ts`)*
+Below is a checklist showing the implementation status of all Matomo API modules in the MCP server:
+
+- [X] **SitesManager**
+- [ ] **AbTesting**
+- [ ] **Actions**
+- [ ] **ActivityLog**
+- [ ] **AdvertisingConversionExport**
+- [ ] **Annotations**
+- [ ] **Api**
+- [ ] **ConnectAccounts**
+- [ ] **Contents**
+- [ ] **CoreAdminHome**
+- [ ] **CrashAnalytics**
+- [ ] **CustomAlerts**
+- [ ] **CustomDimensions**
+- [ ] **CustomJsTracker**
+- [ ] **CustomReports**
+- [ ] **CustomVariables**
+- [ ] **Dashboard**
+- [ ] **DevicePlugins**
+- [ ] **DevicesDetection**
+- [ ] **Events**
+- [ ] **Feedback**
+- [ ] **FormAnalytics**
+- [ ] **Funnels**
+- [ ] **Goals**
+- [ ] **HeatmapSessionRecording**
+- [ ] **ImageGraph**
+- [ ] **Insights**
+- [ ] **LanguagesManager**
+- [ ] **Live**
+- [ ] **Login**
+- [ ] **MarketingCampaignsReporting**
+- [ ] **MediaAnalytics**
+- [ ] **MobileMessaging**
+- [ ] **MultiChannelConversionAttribution**
+- [ ] **MultiSites** 
+- [ ] **Overlay**
+- [ ] **PagePerformance**
+- [ ] **PrivacyManager**
+- [ ] **Referrers**
+- [ ] **Resolution**
+- [ ] **RollUpReporting**
+- [ ] **ScheduledReports**
+- [ ] **SearchEngineKeywordsPerformance**
+- [ ] **SegmentEditor**
+- [ ] **Seo**
+- [X] **TagManager**
+- [X] **Tour**
+- [ ] **Transitions**
+- [ ] **TwoFactorAuth**
+- [ ] **UserCountry**
+- [X] **UserId**
+- [ ] **UserLanguage**
+- [ ] **UsersFlow**
+- [ ] **UsersManager**
+- [ ] **VisitFrequency**
+- [ ] **VisitTime**
+- [ ] **VisitorInterest**
+- [ ] **VisitsSummary**
+
+Overall progress: 4 modules implemented out of 47 total modules (8.5% complete).

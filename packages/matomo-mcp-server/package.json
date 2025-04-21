@@ -10,7 +10,7 @@
     "build": "npm run update-version && tsc && chmod 755 build/index.js",
     "start": "node build/index.js",
     "dev": "tsc --watch",
-    "debug": "npx -y @modelcontextprotocol/inspector node build/index.js",
+    "debug": "npm run build && npx -y @modelcontextprotocol/inspector --config ./mcp-config.json --server matomo-mcp-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update-version": "node scripts/update-version.js"
   },
