@@ -9,6 +9,7 @@
     "check-types": "turbo run check-types",
     "test": "turbo run test",
     "release": "changeset publish",
+    "ci:publish": "pnpm publish -r",
     "version": "changeset version"
   },
   "devDependencies": {
@@ -16,7 +17,7 @@
     "@changesets/changelog-github": "^0.5.1",
     "prettier": "^3.5.3",
     "turbo": "^2.5.0",
-    "typescript": "5.8.2"
+    "typescript": "^5.8.2"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

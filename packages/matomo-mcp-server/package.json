@@ -10,8 +10,10 @@
     "build": "npm run update-version && tsc && chmod 755 build/index.js",
     "start": "node build/index.js",
     "dev": "tsc --watch",
-    "debug": "npm run build && npx -y @modelcontextprotocol/inspector --config ./mcp-config.json --server matomo-mcp-server",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "npx -y @modelcontextprotocol/inspector --config ./mcp-config.json --server matomo-mcp-server",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "update-version": "node scripts/update-version.js"
   },
   "files": [
@@ -28,10 +30,14 @@
     "@mj-kiwi/matomo-client": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.10.1",
     "@t3-oss/env-core": "^0.12.0",
-    "zod": "^3.24.3"
+    "zod": "catalog:",
+    "axios": "catalog:"
   },
   "devDependencies": {
-    "@types/node": "^20.8.0",
-    "typescript": "^5.8.3"
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
