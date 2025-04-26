@@ -73,7 +73,7 @@ export class ActivityLogModule {
    *
    * Returns the total number of activities matching the specified filters
    */
-  async getEntryCount(params: GetEntryCountParams = {}): Promise<any> {
+  async getEntryCount(params: GetEntryCountParams = {}): Promise<number> {
     const requestParams: RequestParams = {};
 
     if (params.filterByUserLogin)
