@@ -232,7 +232,7 @@ export class CoreReportingClient {
   async batchRequest(
     requests: Array<{ method: string; params: Record<string, any> }>
   ): Promise<any[]> {
-    const batchParams = {
+    const batchParams: RequestParams = {
       module: "API",
       method: "API.getBulkRequest",
       format: this.format,
