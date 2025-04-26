@@ -6,6 +6,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for form-specific operations
@@ -130,7 +131,7 @@ export interface FormsByStatusesParams extends FormParams {
 }
 
 export class FormAnalyticsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new form to be tracked
@@ -139,6 +140,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the API response
    */
   addForm(params: AddFormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.addForm", params);
+    }
     return this.client.request("FormAnalytics.addForm", params);
   }
 
@@ -149,6 +153,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the API response
    */
   updateForm(params: UpdateFormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.updateForm", params);
+    }
     return this.client.request("FormAnalytics.updateForm", params);
   }
 
@@ -159,6 +166,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the form details
    */
   getForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getForm", params);
+    }
     return this.client.request("FormAnalytics.getForm", params);
   }
 
@@ -169,6 +179,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of forms
    */
   getForms(params: FormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getForms", params);
+    }
     return this.client.request("FormAnalytics.getForms", params);
   }
 
@@ -179,6 +192,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the filtered list of forms
    */
   getFormsByStatuses(params: FormsByStatusesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFormsByStatuses", params);
+    }
     return this.client.request("FormAnalytics.getFormsByStatuses", params);
   }
 
@@ -189,6 +205,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the API response
    */
   deleteForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.deleteForm", params);
+    }
     return this.client.request("FormAnalytics.deleteForm", params);
   }
 
@@ -199,6 +218,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the API response
    */
   archiveForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.archiveForm", params);
+    }
     return this.client.request("FormAnalytics.archiveForm", params);
   }
 
@@ -209,6 +231,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the form analytics data
    */
   get(params: FormAnalyticsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.get", params);
+    }
     return this.client.request("FormAnalytics.get", params);
   }
 
@@ -219,6 +244,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the entry fields report
    */
   getEntryFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getEntryFields", params);
+    }
     return this.client.request("FormAnalytics.getEntryFields", params);
   }
 
@@ -229,6 +257,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the drop off fields report
    */
   getDropOffFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getDropOffFields", params);
+    }
     return this.client.request("FormAnalytics.getDropOffFields", params);
   }
 
@@ -239,6 +270,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the page URLs report
    */
   getPageUrls(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getPageUrls", params);
+    }
     return this.client.request("FormAnalytics.getPageUrls", params);
   }
 
@@ -249,6 +283,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the field timings report
    */
   getFieldTimings(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFieldTimings", params);
+    }
     return this.client.request("FormAnalytics.getFieldTimings", params);
   }
 
@@ -259,6 +296,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the field size report
    */
   getFieldSize(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFieldSize", params);
+    }
     return this.client.request("FormAnalytics.getFieldSize", params);
   }
 
@@ -269,6 +309,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the unneeded fields report
    */
   getUneededFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getUneededFields", params);
+    }
     return this.client.request("FormAnalytics.getUneededFields", params);
   }
 
@@ -279,6 +322,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the most used fields report
    */
   getMostUsedFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getMostUsedFields", params);
+    }
     return this.client.request("FormAnalytics.getMostUsedFields", params);
   }
 
@@ -289,6 +335,12 @@ export class FormAnalyticsModule {
    * @returns Promise with the field corrections report
    */
   getFieldCorrections(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getFieldCorrections",
+        params
+      );
+    }
     return this.client.request("FormAnalytics.getFieldCorrections", params);
   }
 
@@ -301,6 +353,12 @@ export class FormAnalyticsModule {
   updateFormFieldDisplayName(
     params: UpdateFieldDisplayNameParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.updateFormFieldDisplayName",
+        params
+      );
+    }
     return this.client.request(
       "FormAnalytics.updateFormFieldDisplayName",
       params
@@ -314,6 +372,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the counters
    */
   getCounters(params: FormCountersParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getCounters", params);
+    }
     return this.client.request("FormAnalytics.getCounters", params);
   }
 
@@ -324,6 +385,12 @@ export class FormAnalyticsModule {
    * @returns Promise with the popular forms list
    */
   getCurrentMostPopularForms(params: PopularFormsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getCurrentMostPopularForms",
+        params
+      );
+    }
     return this.client.request(
       "FormAnalytics.getCurrentMostPopularForms",
       params
@@ -337,6 +404,12 @@ export class FormAnalyticsModule {
    * @returns Promise with the auto creation settings
    */
   getAutoCreationSettings(params: FormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getAutoCreationSettings",
+        params
+      );
+    }
     return this.client.request("FormAnalytics.getAutoCreationSettings", params);
   }
 
@@ -346,6 +419,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available statuses
    */
   getAvailableStatuses(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailableStatuses", {});
+    }
     return this.client.request("FormAnalytics.getAvailableStatuses");
   }
 
@@ -355,6 +431,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available form rules
    */
   getAvailableFormRules(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailableFormRules", {});
+    }
     return this.client.request("FormAnalytics.getAvailableFormRules");
   }
 
@@ -364,6 +443,9 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available page rules
    */
   getAvailablePageRules(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailablePageRules", {});
+    }
     return this.client.request("FormAnalytics.getAvailablePageRules");
   }
 
@@ -373,6 +455,12 @@ export class FormAnalyticsModule {
    * @returns Promise with the list of available conversion rule options
    */
   getAvailableConversionRuleOptions(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getAvailableConversionRuleOptions",
+        {}
+      );
+    }
     return this.client.request(
       "FormAnalytics.getAvailableConversionRuleOptions"
     );

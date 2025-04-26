@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for adding a roll-up
@@ -37,9 +38,9 @@ export interface UpdateRollUpParams extends RequestParams {
 
 export class RollUpReportingModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new roll-up
@@ -47,6 +48,9 @@ export class RollUpReportingModule {
    * @param params Parameters for adding a roll-up
    */
   async addRollUp(params: AddRollUpParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("RollUpReporting.addRollUp", params);
+    }
     return this.core.request<any>("RollUpReporting.addRollUp", params);
   }
 
@@ -56,6 +60,9 @@ export class RollUpReportingModule {
    * @param params Parameters for updating a roll-up
    */
   async updateRollUp(params: UpdateRollUpParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("RollUpReporting.updateRollUp", params);
+    }
     return this.core.request<any>("RollUpReporting.updateRollUp", params);
   }
 
@@ -63,6 +70,9 @@ export class RollUpReportingModule {
    * Get all roll-ups
    */
   async getRollUps(): Promise<any[]> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("RollUpReporting.getRollUps", {});
+    }
     return this.core.request<any[]>("RollUpReporting.getRollUps");
   }
 }

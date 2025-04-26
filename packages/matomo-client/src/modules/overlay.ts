@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for the getTranslations method
@@ -31,9 +32,9 @@ export interface FollowingPagesParams extends RequestParams {
 
 export class OverlayModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get translations for overlay
@@ -41,6 +42,9 @@ export class OverlayModule {
    * @param params Parameters containing the site ID
    */
   async getTranslations(params: SiteParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Overlay.getTranslations", params);
+    }
     return this.core.request<any>("Overlay.getTranslations", params);
   }
 
@@ -50,6 +54,9 @@ export class OverlayModule {
    * @param params Parameters for getting following pages
    */
   async getFollowingPages(params: FollowingPagesParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Overlay.getFollowingPages", params);
+    }
     return this.core.request<any>("Overlay.getFollowingPages", params);
   }
 }

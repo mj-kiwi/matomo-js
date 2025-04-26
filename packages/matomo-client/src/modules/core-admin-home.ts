@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for tracking failure operations
@@ -16,7 +17,7 @@ export interface TrackingFailureParams extends RequestParams {
 }
 
 export class CoreAdminHomeModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Delete all tracking failures
@@ -24,6 +25,12 @@ export class CoreAdminHomeModule {
    * @returns Success status of the operation
    */
   async deleteAllTrackingFailures(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CoreAdminHome.deleteAllTrackingFailures",
+        {}
+      );
+    }
     return this.client.request("CoreAdminHome.deleteAllTrackingFailures");
   }
 
@@ -34,6 +41,12 @@ export class CoreAdminHomeModule {
    * @returns Success status of the operation
    */
   async deleteTrackingFailure(params: TrackingFailureParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CoreAdminHome.deleteTrackingFailure",
+        params
+      );
+    }
     return this.client.request("CoreAdminHome.deleteTrackingFailure", params);
   }
 
@@ -43,6 +56,9 @@ export class CoreAdminHomeModule {
    * @returns List of tracking failures in the system
    */
   async getTrackingFailures(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CoreAdminHome.getTrackingFailures", {});
+    }
     return this.client.request("CoreAdminHome.getTrackingFailures");
   }
 }

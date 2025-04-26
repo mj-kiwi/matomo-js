@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for DevicesDetection API methods
@@ -20,7 +21,7 @@ export interface DevicesDetectionParams extends RequestParams {
 }
 
 export class DevicesDetectionModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get device types
@@ -29,6 +30,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing device type data
    */
   async getType(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getType", params);
+    }
     return this.client.request("DevicesDetection.getType", params);
   }
 
@@ -39,6 +43,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing device brand data
    */
   async getBrand(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getBrand", params);
+    }
     return this.client.request("DevicesDetection.getBrand", params);
   }
 
@@ -49,6 +56,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing device model data
    */
   async getModel(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getModel", params);
+    }
     return this.client.request("DevicesDetection.getModel", params);
   }
 
@@ -59,6 +69,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing OS family data
    */
   async getOsFamilies(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getOsFamilies", params);
+    }
     return this.client.request("DevicesDetection.getOsFamilies", params);
   }
 
@@ -69,6 +82,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing OS version data
    */
   async getOsVersions(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getOsVersions", params);
+    }
     return this.client.request("DevicesDetection.getOsVersions", params);
   }
 
@@ -79,6 +95,9 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing browser data
    */
   async getBrowsers(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicesDetection.getBrowsers", params);
+    }
     return this.client.request("DevicesDetection.getBrowsers", params);
   }
 
@@ -89,6 +108,12 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing browser version data
    */
   async getBrowserVersions(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "DevicesDetection.getBrowserVersions",
+        params
+      );
+    }
     return this.client.request("DevicesDetection.getBrowserVersions", params);
   }
 
@@ -99,6 +124,12 @@ export class DevicesDetectionModule {
    * @returns Promise with the API response containing browser engine data
    */
   async getBrowserEngines(params: DevicesDetectionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "DevicesDetection.getBrowserEngines",
+        params
+      );
+    }
     return this.client.request("DevicesDetection.getBrowserEngines", params);
   }
 }

@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for alert-specific operations
@@ -82,7 +83,7 @@ export interface GetTriggeredAlertsParams extends RequestParams {
 }
 
 export class CustomAlertsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get historical values for an alert
@@ -91,6 +92,12 @@ export class CustomAlertsModule {
    * @returns Historical alert values
    */
   async getValuesForAlertInPast(params: AlertHistoryParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomAlerts.getValuesForAlertInPast",
+        params
+      );
+    }
     return this.client.request("CustomAlerts.getValuesForAlertInPast", params);
   }
 
@@ -101,6 +108,9 @@ export class CustomAlertsModule {
    * @returns Alert details
    */
   async getAlert(params: AlertParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomAlerts.getAlert", params);
+    }
     return this.client.request("CustomAlerts.getAlert", params);
   }
 
@@ -124,6 +134,9 @@ export class CustomAlertsModule {
         params.ifSuperUserReturnAllAlerts;
     }
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomAlerts.getAlerts", requestParams);
+    }
     return this.client.request("CustomAlerts.getAlerts", requestParams);
   }
 
@@ -171,6 +184,9 @@ export class CustomAlertsModule {
       requestParams.reportValue = params.reportValue;
     }
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomAlerts.addAlert", requestParams);
+    }
     return this.client.request("CustomAlerts.addAlert", requestParams);
   }
 
@@ -219,6 +235,9 @@ export class CustomAlertsModule {
       requestParams.reportValue = params.reportValue;
     }
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomAlerts.editAlert", requestParams);
+    }
     return this.client.request("CustomAlerts.editAlert", requestParams);
   }
 
@@ -229,6 +248,9 @@ export class CustomAlertsModule {
    * @returns Success status
    */
   async deleteAlert(params: AlertParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomAlerts.deleteAlert", params);
+    }
     return this.client.request("CustomAlerts.deleteAlert", params);
   }
 
@@ -247,6 +269,12 @@ export class CustomAlertsModule {
       requestParams.idSites = params.idSites;
     }
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomAlerts.getTriggeredAlerts",
+        requestParams
+      );
+    }
     return this.client.request(
       "CustomAlerts.getTriggeredAlerts",
       requestParams

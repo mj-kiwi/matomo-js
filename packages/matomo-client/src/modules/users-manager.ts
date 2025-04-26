@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for user preference operations
@@ -230,12 +231,15 @@ export interface InviteParams extends RequestParams {
 }
 
 export class UsersManagerModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get available user roles
    */
   async getAvailableRoles(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getAvailableRoles", {});
+    }
     return this.client.request("UsersManager.getAvailableRoles", {});
   }
 
@@ -243,6 +247,12 @@ export class UsersManagerModule {
    * Get available capabilities
    */
   async getAvailableCapabilities(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getAvailableCapabilities",
+        {}
+      );
+    }
     return this.client.request("UsersManager.getAvailableCapabilities", {});
   }
 
@@ -252,6 +262,9 @@ export class UsersManagerModule {
    * @param params Parameters for setting a user preference
    */
   async setUserPreference(params: UserPreferenceParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.setUserPreference", params);
+    }
     return this.client.request("UsersManager.setUserPreference", params);
   }
 
@@ -261,6 +274,9 @@ export class UsersManagerModule {
    * @param params Parameters for getting a user preference
    */
   async getUserPreference(params: GetUserPreferenceParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUserPreference", params);
+    }
     return this.client.request("UsersManager.getUserPreference", params);
   }
 
@@ -270,6 +286,9 @@ export class UsersManagerModule {
    * @param params Parameters for getting users with roles
    */
   async getUsersPlusRole(params: GetUsersPlusRoleParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUsersPlusRole", params);
+    }
     return this.client.request("UsersManager.getUsersPlusRole", params);
   }
 
@@ -279,6 +298,9 @@ export class UsersManagerModule {
    * @param params Parameters for getting users
    */
   async getUsers(params: GetUsersParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUsers", params);
+    }
     return this.client.request("UsersManager.getUsers", params);
   }
 
@@ -286,6 +308,9 @@ export class UsersManagerModule {
    * Get the list of user logins
    */
   async getUsersLogin(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUsersLogin", {});
+    }
     return this.client.request("UsersManager.getUsersLogin", {});
   }
 
@@ -295,6 +320,12 @@ export class UsersManagerModule {
    * @param params Parameters containing the access level
    */
   async getUsersSitesFromAccess(params: AccessParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getUsersSitesFromAccess",
+        params
+      );
+    }
     return this.client.request("UsersManager.getUsersSitesFromAccess", params);
   }
 
@@ -304,6 +335,12 @@ export class UsersManagerModule {
    * @param params Parameters containing the site ID
    */
   async getUsersAccessFromSite(params: SiteAccessParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getUsersAccessFromSite",
+        params
+      );
+    }
     return this.client.request("UsersManager.getUsersAccessFromSite", params);
   }
 
@@ -313,6 +350,12 @@ export class UsersManagerModule {
    * @param params Parameters for getting users with site access
    */
   async getUsersWithSiteAccess(params: UserSiteAccessParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getUsersWithSiteAccess",
+        params
+      );
+    }
     return this.client.request("UsersManager.getUsersWithSiteAccess", params);
   }
 
@@ -322,6 +365,12 @@ export class UsersManagerModule {
    * @param params Parameters containing the user login
    */
   async getSitesAccessFromUser(params: UserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getSitesAccessFromUser",
+        params
+      );
+    }
     return this.client.request("UsersManager.getSitesAccessFromUser", params);
   }
 
@@ -331,6 +380,12 @@ export class UsersManagerModule {
    * @param params Parameters for getting sites access for a user
    */
   async getSitesAccessForUser(params: SitesAccessForUserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getSitesAccessForUser",
+        params
+      );
+    }
     return this.client.request("UsersManager.getSitesAccessForUser", params);
   }
 
@@ -340,6 +395,9 @@ export class UsersManagerModule {
    * @param params Parameters containing the user login
    */
   async getUser(params: UserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUser", params);
+    }
     return this.client.request("UsersManager.getUser", params);
   }
 
@@ -349,6 +407,9 @@ export class UsersManagerModule {
    * @param params Parameters containing the user email
    */
   async getUserByEmail(params: UserEmailParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.getUserByEmail", params);
+    }
     return this.client.request("UsersManager.getUserByEmail", params);
   }
 
@@ -358,6 +419,9 @@ export class UsersManagerModule {
    * @param params Parameters for adding a new user
    */
   async addUser(params: AddUserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.addUser", params);
+    }
     return this.client.request("UsersManager.addUser", params);
   }
 
@@ -367,6 +431,9 @@ export class UsersManagerModule {
    * @param params Parameters for inviting a user
    */
   async inviteUser(params: InviteUserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.inviteUser", params);
+    }
     return this.client.request("UsersManager.inviteUser", params);
   }
 
@@ -376,6 +443,9 @@ export class UsersManagerModule {
    * @param params Parameters for setting superuser access
    */
   async setSuperUserAccess(params: SetSuperUserAccessParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.setSuperUserAccess", params);
+    }
     return this.client.request("UsersManager.setSuperUserAccess", params);
   }
 
@@ -383,6 +453,9 @@ export class UsersManagerModule {
    * Check if the current user has superuser access
    */
   async hasSuperUserAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.hasSuperUserAccess", {});
+    }
     return this.client.request("UsersManager.hasSuperUserAccess", {});
   }
 
@@ -390,6 +463,12 @@ export class UsersManagerModule {
    * Get the list of users with superuser access
    */
   async getUsersHavingSuperUserAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getUsersHavingSuperUserAccess",
+        {}
+      );
+    }
     return this.client.request(
       "UsersManager.getUsersHavingSuperUserAccess",
       {}
@@ -402,6 +481,9 @@ export class UsersManagerModule {
    * @param params Parameters for updating a user
    */
   async updateUser(params: UpdateUserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.updateUser", params);
+    }
     return this.client.request("UsersManager.updateUser", params);
   }
 
@@ -411,6 +493,9 @@ export class UsersManagerModule {
    * @param params Parameters for deleting a user
    */
   async deleteUser(params: DeleteUserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.deleteUser", params);
+    }
     return this.client.request("UsersManager.deleteUser", params);
   }
 
@@ -420,6 +505,9 @@ export class UsersManagerModule {
    * @param params Parameters containing the user login
    */
   async userExists(params: UserParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.userExists", params);
+    }
     return this.client.request("UsersManager.userExists", params);
   }
 
@@ -429,6 +517,9 @@ export class UsersManagerModule {
    * @param params Parameters containing the user email
    */
   async userEmailExists(params: UserEmailParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.userEmailExists", params);
+    }
     return this.client.request("UsersManager.userEmailExists", params);
   }
 
@@ -438,6 +529,12 @@ export class UsersManagerModule {
    * @param params Parameters containing the user email
    */
   async getUserLoginFromUserEmail(params: UserEmailParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.getUserLoginFromUserEmail",
+        params
+      );
+    }
     return this.client.request(
       "UsersManager.getUserLoginFromUserEmail",
       params
@@ -450,6 +547,9 @@ export class UsersManagerModule {
    * @param params Parameters for setting user access
    */
   async setUserAccess(params: SetUserAccessParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.setUserAccess", params);
+    }
     return this.client.request("UsersManager.setUserAccess", params);
   }
 
@@ -459,6 +559,9 @@ export class UsersManagerModule {
    * @param params Parameters for adding capabilities
    */
   async addCapabilities(params: CapabilitiesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.addCapabilities", params);
+    }
     return this.client.request("UsersManager.addCapabilities", params);
   }
 
@@ -468,6 +571,9 @@ export class UsersManagerModule {
    * @param params Parameters for removing capabilities
    */
   async removeCapabilities(params: CapabilitiesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.removeCapabilities", params);
+    }
     return this.client.request("UsersManager.removeCapabilities", params);
   }
 
@@ -477,6 +583,12 @@ export class UsersManagerModule {
    * @param params Parameters for creating app-specific tokens
    */
   async createAppSpecificTokenAuth(params: AppTokenParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UsersManager.createAppSpecificTokenAuth",
+        params
+      );
+    }
     return this.client.request(
       "UsersManager.createAppSpecificTokenAuth",
       params
@@ -487,6 +599,9 @@ export class UsersManagerModule {
    * Sign up for the Matomo newsletter
    */
   async newsletterSignup(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.newsletterSignup", {});
+    }
     return this.client.request("UsersManager.newsletterSignup", {});
   }
 
@@ -496,6 +611,9 @@ export class UsersManagerModule {
    * @param params Parameters for resending an invite
    */
   async resendInvite(params: InviteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.resendInvite", params);
+    }
     return this.client.request("UsersManager.resendInvite", params);
   }
 
@@ -505,6 +623,9 @@ export class UsersManagerModule {
    * @param params Parameters for generating an invite link
    */
   async generateInviteLink(params: InviteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersManager.generateInviteLink", params);
+    }
     return this.client.request("UsersManager.generateInviteLink", params);
   }
 }

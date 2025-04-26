@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for UsersFlow API methods
@@ -61,7 +62,7 @@ export interface InteractionActionsParams extends UsersFlowParams {
 }
 
 export class UsersFlowModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a formatted user flow report
@@ -69,6 +70,9 @@ export class UsersFlowModule {
    * @param params Parameters for getting a formatted user flow
    */
   async getUsersFlowPretty(params: UsersFlowPrettyParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getUsersFlowPretty", params);
+    }
     return this.client.request("UsersFlow.getUsersFlowPretty", params);
   }
 
@@ -78,6 +82,9 @@ export class UsersFlowModule {
    * @param params Parameters for getting raw user flow data
    */
   async getUsersFlow(params: GetUsersFlowParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getUsersFlow", params);
+    }
     return this.client.request("UsersFlow.getUsersFlow", params);
   }
 
@@ -87,6 +94,9 @@ export class UsersFlowModule {
    * @param params Parameters for getting interaction actions
    */
   async getInteractionActions(params: InteractionActionsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getInteractionActions", params);
+    }
     return this.client.request("UsersFlow.getInteractionActions", params);
   }
 
@@ -94,6 +104,9 @@ export class UsersFlowModule {
    * Get the available data sources for users flow reports
    */
   async getAvailableDataSources(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getAvailableDataSources", {});
+    }
     return this.client.request("UsersFlow.getAvailableDataSources", {});
   }
 }

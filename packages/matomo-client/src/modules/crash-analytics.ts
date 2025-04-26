@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for site-specific operations
@@ -158,7 +159,7 @@ export interface RecentCrashesParams extends SiteParams {
 }
 
 export class CrashAnalyticsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Search for crash messages that could be merged
@@ -169,6 +170,12 @@ export class CrashAnalyticsModule {
   async searchCrashMessagesForMerge(
     params: SearchCrashMessagesForMergeParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.searchCrashMessagesForMerge",
+        params
+      );
+    }
     return this.client.request(
       "CrashAnalytics.searchCrashMessagesForMerge",
       params
@@ -182,6 +189,9 @@ export class CrashAnalyticsModule {
    * @returns Result of the merge operation
    */
   async mergeCrashes(params: MergeCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.mergeCrashes", params);
+    }
     return this.client.request("CrashAnalytics.mergeCrashes", params);
   }
 
@@ -192,6 +202,9 @@ export class CrashAnalyticsModule {
    * @returns Result of the unmerge operation
    */
   async unmergeCrashGroup(params: UnmergeCrashGroupParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.unmergeCrashGroup", params);
+    }
     return this.client.request("CrashAnalytics.unmergeCrashGroup", params);
   }
 
@@ -202,6 +215,9 @@ export class CrashAnalyticsModule {
    * @returns List of crash groups
    */
   async getCrashGroups(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getCrashGroups", params);
+    }
     return this.client.request("CrashAnalytics.getCrashGroups", params);
   }
 
@@ -212,6 +228,9 @@ export class CrashAnalyticsModule {
    * @returns List of crash types
    */
   async getCrashTypes(params: GetCrashTypesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getCrashTypes", params);
+    }
     return this.client.request("CrashAnalytics.getCrashTypes", params);
   }
 
@@ -222,6 +241,9 @@ export class CrashAnalyticsModule {
    * @returns Result of the operation
    */
   async setIgnoreCrash(params: SetIgnoreCrashParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.setIgnoreCrash", params);
+    }
     return this.client.request("CrashAnalytics.setIgnoreCrash", params);
   }
 
@@ -232,6 +254,9 @@ export class CrashAnalyticsModule {
    * @returns List of ignored crashes
    */
   async getIgnoredCrashes(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getIgnoredCrashes", params);
+    }
     return this.client.request("CrashAnalytics.getIgnoredCrashes", params);
   }
 
@@ -242,6 +267,9 @@ export class CrashAnalyticsModule {
    * @returns Summary information about the crash
    */
   async getCrashSummary(params: GetCrashSummaryParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getCrashSummary", params);
+    }
     return this.client.request("CrashAnalytics.getCrashSummary", params);
   }
 
@@ -252,6 +280,12 @@ export class CrashAnalyticsModule {
    * @returns Visit context information for the crash
    */
   async getCrashVisitContext(params: GetCrashVisitContextParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashVisitContext",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashVisitContext", params);
   }
 
@@ -262,6 +296,9 @@ export class CrashAnalyticsModule {
    * @returns List of all crashes
    */
   async getAllCrashes(params: GetAllCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getAllCrashes", params);
+    }
     return this.client.request("CrashAnalytics.getAllCrashes", params);
   }
 
@@ -272,6 +309,9 @@ export class CrashAnalyticsModule {
    * @returns Crash analytics metrics
    */
   async get(params: GetCrashAnalyticsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.get", params);
+    }
     return this.client.request("CrashAnalytics.get", params);
   }
 
@@ -282,6 +322,12 @@ export class CrashAnalyticsModule {
    * @returns All crash messages
    */
   async getAllCrashMessages(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getAllCrashMessages",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getAllCrashMessages", params);
   }
 
@@ -292,6 +338,9 @@ export class CrashAnalyticsModule {
    * @returns Crash messages
    */
   async getCrashMessages(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getCrashMessages", params);
+    }
     return this.client.request("CrashAnalytics.getCrashMessages", params);
   }
 
@@ -302,6 +351,12 @@ export class CrashAnalyticsModule {
    * @returns Unidentified crash messages
    */
   async getUnidentifiedCrashMessages(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getUnidentifiedCrashMessages",
+        params
+      );
+    }
     return this.client.request(
       "CrashAnalytics.getUnidentifiedCrashMessages",
       params
@@ -315,6 +370,12 @@ export class CrashAnalyticsModule {
    * @returns Disappeared crashes
    */
   async getDisappearedCrashes(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getDisappearedCrashes",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getDisappearedCrashes", params);
   }
 
@@ -325,6 +386,12 @@ export class CrashAnalyticsModule {
    * @returns Reappeared crashes
    */
   async getReappearedCrashes(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getReappearedCrashes",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getReappearedCrashes", params);
   }
 
@@ -335,6 +402,9 @@ export class CrashAnalyticsModule {
    * @returns New crashes
    */
   async getNewCrashes(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getNewCrashes", params);
+    }
     return this.client.request("CrashAnalytics.getNewCrashes", params);
   }
 
@@ -345,6 +415,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes by page URL
    */
   async getCrashesByPageUrl(params: CrashesByParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesByPageUrl",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesByPageUrl", params);
   }
 
@@ -355,6 +431,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes for the specified page URL
    */
   async getCrashesForPageUrl(params: CrashesForParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesForPageUrl",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesForPageUrl", params);
   }
 
@@ -365,6 +447,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes by page title
    */
   async getCrashesByPageTitle(params: CrashesByParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesByPageTitle",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesByPageTitle", params);
   }
 
@@ -375,6 +463,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes for the specified page title
    */
   async getCrashesForPageTitle(params: CrashesForParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesForPageTitle",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesForPageTitle", params);
   }
 
@@ -385,6 +479,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes by source file
    */
   async getCrashesBySource(params: CrashesByParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesBySource",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesBySource", params);
   }
 
@@ -395,6 +495,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes for the specified source file
    */
   async getCrashesForSource(params: CrashesForParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesForSource",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesForSource", params);
   }
 
@@ -405,6 +511,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes by category
    */
   async getCrashesByCategory(params: CrashesByParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesByCategory",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesByCategory", params);
   }
 
@@ -415,6 +527,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes for the specified category
    */
   async getCrashesForCategory(params: CrashesForParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesForCategory",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesForCategory", params);
   }
 
@@ -425,6 +543,12 @@ export class CrashAnalyticsModule {
    * @returns First-party crashes
    */
   async getCrashesByFirstParty(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesByFirstParty",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesByFirstParty", params);
   }
 
@@ -435,6 +559,12 @@ export class CrashAnalyticsModule {
    * @returns Third-party crashes
    */
   async getCrashesByThirdParty(params: CrashReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getCrashesByThirdParty",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getCrashesByThirdParty", params);
   }
 
@@ -445,6 +575,12 @@ export class CrashAnalyticsModule {
    * @returns Overview of recent crashes
    */
   async getLastCrashesOverview(params: RecentCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getLastCrashesOverview",
+        params
+      );
+    }
     return this.client.request("CrashAnalytics.getLastCrashesOverview", params);
   }
 
@@ -455,6 +591,9 @@ export class CrashAnalyticsModule {
    * @returns Most frequent recent crashes
    */
   async getLastTopCrashes(params: RecentCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getLastTopCrashes", params);
+    }
     return this.client.request("CrashAnalytics.getLastTopCrashes", params);
   }
 
@@ -465,6 +604,9 @@ export class CrashAnalyticsModule {
    * @returns New crashes that occurred recently
    */
   async getLastNewCrashes(params: RecentCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CrashAnalytics.getLastNewCrashes", params);
+    }
     return this.client.request("CrashAnalytics.getLastNewCrashes", params);
   }
 
@@ -475,6 +617,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes that reappeared recently
    */
   async getLastReappearedCrashes(params: RecentCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getLastReappearedCrashes",
+        params
+      );
+    }
     return this.client.request(
       "CrashAnalytics.getLastReappearedCrashes",
       params
@@ -488,6 +636,12 @@ export class CrashAnalyticsModule {
    * @returns Crashes that disappeared recently
    */
   async getLastDisappearedCrashes(params: RecentCrashesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CrashAnalytics.getLastDisappearedCrashes",
+        params
+      );
+    }
     return this.client.request(
       "CrashAnalytics.getLastDisappearedCrashes",
       params

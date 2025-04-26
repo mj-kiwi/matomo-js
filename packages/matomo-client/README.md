@@ -170,6 +170,47 @@ async function getVisitSummary() {
 getVisitSummary();
 ```
 
+### Example: Using Batch Requests
+
+Batch requests allow you to send multiple API requests in a single HTTP call, which can be more efficient.
+
+```typescript
+async function getMultipleDataPoints() {
+  try {
+    // Prepare a batch request
+    const batch = client.prepareRequests();
+
+    // Add requests to the batch using the module methods
+    // Note: When using batch requests, the methods return the BatchRequest instance
+    // for chaining, not the actual data directly.
+    batch.api.getMatomoVersion(); // Request 1: Get Matomo version
+    batch.visitsSummary.get({      // Request 2: Get visits summary
+      idSite: 1,
+      period: 'day',
+      date: 'yesterday',
+    });
+    batch.sitesManager.getAllSites(); // Request 3: Get all sites
+
+    // Send the batch request
+    const results = await batch.send();
+
+    // Results is an array containing the response for each request in order
+    const matomoVersion = results[0].value; // Accessing result for request 1
+    const visitsSummary = results[1];       // Accessing result for request 2
+    const allSites = results[2];            // Accessing result for request 3
+
+    console.log('Matomo Version (Batch):', matomoVersion);
+    console.log('Visits Summary (Batch):', visitsSummary);
+    console.log('All Sites (Batch):', allSites);
+
+  } catch (error) {
+    console.error('Error fetching batch data:', error);
+  }
+}
+
+getMultipleDataPoints();
+```
+
 *Note: The examples above assume you have already initialized the `ReportingClient` as shown in the Usage section.*
 
 ## Contributing

@@ -1,9 +1,10 @@
 /**
  * Matomo UserCountry Module
- * The UserCountry API lets you access reports about your visitors' Countries and Continents.
+ * Provides access to visitor location data
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for UserCountry API methods
@@ -37,42 +38,64 @@ export interface SetLocationProviderParams extends RequestParams {
   providerId: string;
 }
 
+/**
+ * Parameters for location report methods
+ */
+export interface LocationReportParams extends UserCountryParams {}
+
+/**
+ * Parameters for IP methods
+ */
+export interface IpParams extends LocationFromIPParams {}
+
 export class UserCountryModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
-   * Get country-specific visit information
+   * Get visitor location data
    *
-   * @param params Parameters for getting country data
+   * @param params Parameters for getting location data
    */
-  async getCountry(params: UserCountryParams): Promise<any> {
+  async getCountry(params: LocationReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getCountry", params);
+    }
     return this.client.request("UserCountry.getCountry", params);
   }
 
   /**
-   * Get continent-specific visit information
+   * Get visitor continent data
    *
    * @param params Parameters for getting continent data
    */
-  async getContinent(params: UserCountryParams): Promise<any> {
+  async getContinent(params: LocationReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getContinent", params);
+    }
     return this.client.request("UserCountry.getContinent", params);
   }
 
   /**
-   * Get region-specific visit information
+   * Get visitor region data
    *
    * @param params Parameters for getting region data
    */
-  async getRegion(params: UserCountryParams): Promise<any> {
+  async getRegion(params: LocationReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getRegion", params);
+    }
     return this.client.request("UserCountry.getRegion", params);
   }
 
   /**
-   * Get city-specific visit information
+   * Get visitor city data
    *
    * @param params Parameters for getting city data
    */
-  async getCity(params: UserCountryParams): Promise<any> {
+  async getCity(params: LocationReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getCity", params);
+    }
     return this.client.request("UserCountry.getCity", params);
   }
 
@@ -84,11 +107,14 @@ export class UserCountryModule {
   }
 
   /**
-   * Get the location information for a specific IP address
+   * Get location from IP address
    *
-   * @param params Parameters for getting location from IP
+   * @param params Parameters with IP address
    */
-  async getLocationFromIP(params: LocationFromIPParams = {}): Promise<any> {
+  async getLocationFromIP(params: IpParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getLocationFromIP", params);
+    }
     return this.client.request("UserCountry.getLocationFromIP", params);
   }
 
@@ -102,11 +128,19 @@ export class UserCountryModule {
   }
 
   /**
-   * Get the number of distinct countries
+   * Get number of distinct countries
    *
-   * @param params Parameters for getting number of distinct countries
+   * @param params Parameters for getting distinct countries
    */
-  async getNumberOfDistinctCountries(params: UserCountryParams): Promise<any> {
+  async getNumberOfDistinctCountries(
+    params: LocationReportParams
+  ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "UserCountry.getNumberOfDistinctCountries",
+        params
+      );
+    }
     return this.client.request(
       "UserCountry.getNumberOfDistinctCountries",
       params

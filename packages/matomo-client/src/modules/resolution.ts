@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Resolution API methods
@@ -21,9 +22,9 @@ export interface ResolutionParams extends RequestParams {
 
 export class ResolutionModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get screen resolution data
@@ -31,6 +32,9 @@ export class ResolutionModule {
    * @param params Parameters for getting screen resolution data
    */
   async getResolution(params: ResolutionParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Resolution.getResolution", params);
+    }
     return this.core.request<any>("Resolution.getResolution", params);
   }
 
@@ -40,6 +44,9 @@ export class ResolutionModule {
    * @param params Parameters for getting device configuration data
    */
   async getConfiguration(params: ResolutionParams): Promise<any> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Resolution.getConfiguration", params);
+    }
     return this.core.request<any>("Resolution.getConfiguration", params);
   }
 }

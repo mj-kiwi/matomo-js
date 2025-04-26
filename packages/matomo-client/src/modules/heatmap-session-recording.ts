@@ -14,6 +14,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Base parameters for site operations
@@ -194,7 +195,7 @@ export interface TestUrlMatchPagesParams extends RequestParams {
 }
 
 export class HeatmapSessionRecordingModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new heatmap
@@ -203,6 +204,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   addHeatmap(params: AddHeatmapParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.addHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.addHeatmap", params);
   }
 
@@ -213,6 +220,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   updateHeatmap(params: UpdateHeatmapParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.updateHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.updateHeatmap", params);
   }
 
@@ -223,6 +236,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   deleteHeatmapScreenshot(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.deleteHeatmapScreenshot",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.deleteHeatmapScreenshot",
       params
@@ -236,6 +255,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   addSessionRecording(params: AddSessionRecordingParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.addSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.addSessionRecording",
       params
@@ -249,6 +274,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   updateSessionRecording(params: UpdateSessionRecordingParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.updateSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.updateSessionRecording",
       params
@@ -262,6 +293,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the heatmap details
    */
   getHeatmap(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.getHeatmap", params);
   }
 
@@ -272,6 +309,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the session recording details
    */
   getSessionRecording(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getSessionRecording",
       params
@@ -285,6 +328,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   pauseHeatmap(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.pauseHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.pauseHeatmap", params);
   }
 
@@ -295,6 +344,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   resumeHeatmap(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.resumeHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.resumeHeatmap", params);
   }
 
@@ -305,6 +360,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   deleteHeatmap(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.deleteHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.deleteHeatmap", params);
   }
 
@@ -315,6 +376,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   endHeatmap(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.endHeatmap",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.endHeatmap", params);
   }
 
@@ -325,6 +392,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   pauseSessionRecording(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.pauseSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.pauseSessionRecording",
       params
@@ -338,6 +411,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   resumeSessionRecording(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.resumeSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.resumeSessionRecording",
       params
@@ -351,6 +430,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   deleteSessionRecording(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.deleteSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.deleteSessionRecording",
       params
@@ -364,6 +449,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   endSessionRecording(params: HSRConfigParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.endSessionRecording",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.endSessionRecording",
       params
@@ -377,6 +468,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the list of heatmaps
    */
   getHeatmaps(params: GetHeatmapsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getHeatmaps",
+        params
+      );
+    }
     return this.client.request("HeatmapSessionRecording.getHeatmaps", params);
   }
 
@@ -387,6 +484,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the list of session recordings
    */
   getSessionRecordings(params: HSRSiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getSessionRecordings",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getSessionRecordings",
       params
@@ -400,6 +503,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the list of recorded sessions
    */
   getRecordedSessions(params: RecordedSessionsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getRecordedSessions",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getRecordedSessions",
       params
@@ -413,6 +522,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the recorded session details
    */
   getRecordedSession(params: RecordedSessionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getRecordedSession",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getRecordedSession",
       params
@@ -426,6 +541,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   deleteRecordedSession(params: VisitParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.deleteRecordedSession",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.deleteRecordedSession",
       params
@@ -439,6 +560,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the API response
    */
   deleteRecordedPageview(params: RecordedSessionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.deleteRecordedPageview",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.deleteRecordedPageview",
       params
@@ -454,6 +581,12 @@ export class HeatmapSessionRecordingModule {
   getRecordedHeatmapMetadata(
     params: RecordedHeatmapMetadataParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getRecordedHeatmapMetadata",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getRecordedHeatmapMetadata",
       params
@@ -467,6 +600,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with the heatmap data
    */
   getRecordedHeatmap(params: RecordedHeatmapParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getRecordedHeatmap",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getRecordedHeatmap",
       params
@@ -480,6 +619,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with embedding info
    */
   getEmbedSessionInfo(params: RecordedSessionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getEmbedSessionInfo",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getEmbedSessionInfo",
       params
@@ -493,6 +638,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with test results
    */
   testUrlMatchPages(params: TestUrlMatchPagesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.testUrlMatchPages",
+        params
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.testUrlMatchPages",
       params
@@ -505,6 +656,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available statuses
    */
   getAvailableStatuses(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getAvailableStatuses",
+        {}
+      );
+    }
     return this.client.request("HeatmapSessionRecording.getAvailableStatuses");
   }
 
@@ -514,6 +671,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available target page rules
    */
   getAvailableTargetPageRules(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getAvailableTargetPageRules",
+        {}
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getAvailableTargetPageRules"
     );
@@ -525,6 +688,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available device types
    */
   getAvailableDeviceTypes(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getAvailableDeviceTypes",
+        {}
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getAvailableDeviceTypes"
     );
@@ -536,6 +705,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available heatmap types
    */
   getAvailableHeatmapTypes(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getAvailableHeatmapTypes",
+        {}
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getAvailableHeatmapTypes"
     );
@@ -547,6 +722,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available sample limits
    */
   getAvailableSessionRecordingSampleLimits(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits",
+        {}
+      );
+    }
     return this.client.request(
       "HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits"
     );
@@ -558,6 +739,12 @@ export class HeatmapSessionRecordingModule {
    * @returns Promise with available event types
    */
   getEventTypes(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "HeatmapSessionRecording.getEventTypes",
+        {}
+      );
+    }
     return this.client.request("HeatmapSessionRecording.getEventTypes");
   }
 }

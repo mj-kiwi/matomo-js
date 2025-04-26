@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for site-specific operations
@@ -316,7 +317,7 @@ export interface PatternMatchParams extends RequestParams {
 }
 
 export class SitesManagerModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get JavaScript tracking code for a site
@@ -324,6 +325,9 @@ export class SitesManagerModule {
    * @param params Parameters for getting JavaScript tracking code
    */
   async getJavascriptTag(params: JavascriptTagParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getJavascriptTag", params);
+    }
     return this.client.request("SitesManager.getJavascriptTag", params);
   }
 
@@ -333,6 +337,12 @@ export class SitesManagerModule {
    * @param params Parameters for getting image tracking code
    */
   async getImageTrackingCode(params: ImageTrackingCodeParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getImageTrackingCode",
+        params
+      );
+    }
     return this.client.request("SitesManager.getImageTrackingCode", params);
   }
 
@@ -342,6 +352,9 @@ export class SitesManagerModule {
    * @param params Parameters for getting sites from a group
    */
   async getSitesFromGroup(params: GroupParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSitesFromGroup", params);
+    }
     return this.client.request("SitesManager.getSitesFromGroup", params);
   }
 
@@ -349,6 +362,9 @@ export class SitesManagerModule {
    * Get all site groups available
    */
   async getSitesGroups(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSitesGroups", {});
+    }
     return this.client.request("SitesManager.getSitesGroups", {});
   }
 
@@ -358,6 +374,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the site ID
    */
   async getSiteFromId(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSiteFromId", params);
+    }
     return this.client.request("SitesManager.getSiteFromId", params);
   }
 
@@ -367,6 +386,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the site ID
    */
   async getSiteUrlsFromId(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSiteUrlsFromId", params);
+    }
     return this.client.request("SitesManager.getSiteUrlsFromId", params);
   }
 
@@ -374,6 +396,9 @@ export class SitesManagerModule {
    * Get all sites
    */
   async getAllSites(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getAllSites", {});
+    }
     return this.client.request("SitesManager.getAllSites", {});
   }
 
@@ -381,6 +406,9 @@ export class SitesManagerModule {
    * Get IDs of all available sites
    */
   async getAllSitesId(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getAllSitesId", {});
+    }
     return this.client.request("SitesManager.getAllSitesId", {});
   }
 
@@ -390,6 +418,12 @@ export class SitesManagerModule {
    * @param params Parameters for getting sites with admin access
    */
   async getSitesWithAdminAccess(params: AdminAccessParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesWithAdminAccess",
+        params
+      );
+    }
     return this.client.request("SitesManager.getSitesWithAdminAccess", params);
   }
 
@@ -397,6 +431,9 @@ export class SitesManagerModule {
    * Get sites where the current user has view access
    */
   async getSitesWithViewAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSitesWithViewAccess", {});
+    }
     return this.client.request("SitesManager.getSitesWithViewAccess", {});
   }
 
@@ -406,6 +443,12 @@ export class SitesManagerModule {
    * @param params Parameters specifying the limit
    */
   async getSitesWithAtLeastViewAccess(params: LimitParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesWithAtLeastViewAccess",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.getSitesWithAtLeastViewAccess",
       params
@@ -416,6 +459,12 @@ export class SitesManagerModule {
    * Get IDs of sites where the current user has admin access
    */
   async getSitesIdWithAdminAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesIdWithAdminAccess",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getSitesIdWithAdminAccess", {});
   }
 
@@ -423,6 +472,12 @@ export class SitesManagerModule {
    * Get IDs of sites where the current user has view access
    */
   async getSitesIdWithViewAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesIdWithViewAccess",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getSitesIdWithViewAccess", {});
   }
 
@@ -430,6 +485,12 @@ export class SitesManagerModule {
    * Get IDs of sites where the current user has write access
    */
   async getSitesIdWithWriteAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesIdWithWriteAccess",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getSitesIdWithWriteAccess", {});
   }
 
@@ -437,6 +498,12 @@ export class SitesManagerModule {
    * Get IDs of sites where the current user has at least view access
    */
   async getSitesIdWithAtLeastViewAccess(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesIdWithAtLeastViewAccess",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getSitesIdWithAtLeastViewAccess",
       {}
@@ -449,6 +516,12 @@ export class SitesManagerModule {
    * @param params Parameters containing the URL to search for
    */
   async getSitesIdFromSiteUrl(params: UrlParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSitesIdFromSiteUrl",
+        params
+      );
+    }
     return this.client.request("SitesManager.getSitesIdFromSiteUrl", params);
   }
 
@@ -458,6 +531,9 @@ export class SitesManagerModule {
    * @param params Parameters for adding a new site
    */
   async addSite(params: AddSiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.addSite", params);
+    }
     return this.client.request("SitesManager.addSite", params);
   }
 
@@ -467,6 +543,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the site ID
    */
   async getSiteSettings(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getSiteSettings", params);
+    }
     return this.client.request("SitesManager.getSiteSettings", params);
   }
 
@@ -476,6 +555,9 @@ export class SitesManagerModule {
    * @param params Parameters for deleting a site
    */
   async deleteSite(params: DeleteSiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.deleteSite", params);
+    }
     return this.client.request("SitesManager.deleteSite", params);
   }
 
@@ -485,6 +567,9 @@ export class SitesManagerModule {
    * @param params Parameters for adding site alias URLs
    */
   async addSiteAliasUrls(params: SiteAliasParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.addSiteAliasUrls", params);
+    }
     return this.client.request("SitesManager.addSiteAliasUrls", params);
   }
 
@@ -494,6 +579,9 @@ export class SitesManagerModule {
    * @param params Parameters for setting site alias URLs
    */
   async setSiteAliasUrls(params: SiteAliasParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.setSiteAliasUrls", params);
+    }
     return this.client.request("SitesManager.setSiteAliasUrls", params);
   }
 
@@ -503,6 +591,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the IP range
    */
   async getIpsForRange(params: IpRangeParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getIpsForRange", params);
+    }
     return this.client.request("SitesManager.getIpsForRange", params);
   }
 
@@ -512,6 +603,12 @@ export class SitesManagerModule {
    * @param params Parameters containing the IPs to exclude
    */
   async setGlobalExcludedIps(params: ExcludedIpsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setGlobalExcludedIps",
+        params
+      );
+    }
     return this.client.request("SitesManager.setGlobalExcludedIps", params);
   }
 
@@ -521,6 +618,12 @@ export class SitesManagerModule {
    * @param params Parameters containing the search parameters
    */
   async setGlobalSearchParameters(params: SearchParamsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setGlobalSearchParameters",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.setGlobalSearchParameters",
       params
@@ -531,6 +634,12 @@ export class SitesManagerModule {
    * Get global search keyword parameters
    */
   async getSearchKeywordParametersGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSearchKeywordParametersGlobal",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getSearchKeywordParametersGlobal",
       {}
@@ -541,6 +650,12 @@ export class SitesManagerModule {
    * Get global search category parameters
    */
   async getSearchCategoryParametersGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getSearchCategoryParametersGlobal",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getSearchCategoryParametersGlobal",
       {}
@@ -553,6 +668,12 @@ export class SitesManagerModule {
    * @param params Parameters containing the site ID
    */
   async getExcludedQueryParameters(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExcludedQueryParameters",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.getExcludedQueryParameters",
       params
@@ -563,6 +684,12 @@ export class SitesManagerModule {
    * Get global excluded query parameters
    */
   async getExcludedQueryParametersGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExcludedQueryParametersGlobal",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getExcludedQueryParametersGlobal",
       {}
@@ -573,6 +700,12 @@ export class SitesManagerModule {
    * Get global excluded user agents
    */
   async getExcludedUserAgentsGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExcludedUserAgentsGlobal",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getExcludedUserAgentsGlobal", {});
   }
 
@@ -584,6 +717,12 @@ export class SitesManagerModule {
   async setGlobalExcludedUserAgents(
     params: ExcludedUserAgentsParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setGlobalExcludedUserAgents",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.setGlobalExcludedUserAgents",
       params
@@ -596,6 +735,12 @@ export class SitesManagerModule {
    * @param params Parameters containing the site ID
    */
   async getExcludedReferrers(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExcludedReferrers",
+        params
+      );
+    }
     return this.client.request("SitesManager.getExcludedReferrers", params);
   }
 
@@ -603,6 +748,12 @@ export class SitesManagerModule {
    * Get globally excluded referrers
    */
   async getExcludedReferrersGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExcludedReferrersGlobal",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getExcludedReferrersGlobal", {});
   }
 
@@ -614,6 +765,12 @@ export class SitesManagerModule {
   async setGlobalExcludedReferrers(
     params: ExcludedReferrersParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setGlobalExcludedReferrers",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.setGlobalExcludedReferrers",
       params
@@ -624,6 +781,12 @@ export class SitesManagerModule {
    * Get global setting for keeping URL fragments
    */
   async getKeepURLFragmentsGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getKeepURLFragmentsGlobal",
+        {}
+      );
+    }
     return this.client.request("SitesManager.getKeepURLFragmentsGlobal", {});
   }
 
@@ -633,6 +796,12 @@ export class SitesManagerModule {
    * @param params Parameters for setting URL fragments
    */
   async setKeepURLFragmentsGlobal(params: UrlFragmentsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setKeepURLFragmentsGlobal",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.setKeepURLFragmentsGlobal",
       params
@@ -643,6 +812,9 @@ export class SitesManagerModule {
    * Get globally excluded IPs
    */
   async getExcludedIpsGlobal(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getExcludedIpsGlobal", {});
+    }
     return this.client.request("SitesManager.getExcludedIpsGlobal", {});
   }
 
@@ -650,6 +822,9 @@ export class SitesManagerModule {
    * Get default currency
    */
   async getDefaultCurrency(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getDefaultCurrency", {});
+    }
     return this.client.request("SitesManager.getDefaultCurrency", {});
   }
 
@@ -659,6 +834,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the default currency
    */
   async setDefaultCurrency(params: DefaultCurrencyParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.setDefaultCurrency", params);
+    }
     return this.client.request("SitesManager.setDefaultCurrency", params);
   }
 
@@ -666,6 +844,9 @@ export class SitesManagerModule {
    * Get default timezone
    */
   async getDefaultTimezone(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getDefaultTimezone", {});
+    }
     return this.client.request("SitesManager.getDefaultTimezone", {});
   }
 
@@ -675,6 +856,9 @@ export class SitesManagerModule {
    * @param params Parameters containing the default timezone
    */
   async setDefaultTimezone(params: DefaultTimezoneParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.setDefaultTimezone", params);
+    }
     return this.client.request("SitesManager.setDefaultTimezone", params);
   }
 
@@ -686,6 +870,12 @@ export class SitesManagerModule {
   async setGlobalQueryParamExclusion(
     params: QueryParamExclusionParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.setGlobalQueryParamExclusion",
+        params
+      );
+    }
     return this.client.request(
       "SitesManager.setGlobalQueryParamExclusion",
       params
@@ -696,6 +886,12 @@ export class SitesManagerModule {
    * Get exclusion type for query parameters
    */
   async getExclusionTypeForQueryParams(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getExclusionTypeForQueryParams",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getExclusionTypeForQueryParams",
       {}
@@ -708,6 +904,9 @@ export class SitesManagerModule {
    * @param params Parameters for updating a site
    */
   async updateSite(params: UpdateSiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.updateSite", params);
+    }
     return this.client.request("SitesManager.updateSite", params);
   }
 
@@ -715,6 +914,9 @@ export class SitesManagerModule {
    * Get list of available currencies
    */
   async getCurrencyList(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getCurrencyList", {});
+    }
     return this.client.request("SitesManager.getCurrencyList", {});
   }
 
@@ -722,6 +924,9 @@ export class SitesManagerModule {
    * Get currency symbols
    */
   async getCurrencySymbols(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getCurrencySymbols", {});
+    }
     return this.client.request("SitesManager.getCurrencySymbols", {});
   }
 
@@ -729,6 +934,12 @@ export class SitesManagerModule {
    * Check if timezone support is enabled
    */
   async isTimezoneSupportEnabled(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.isTimezoneSupportEnabled",
+        {}
+      );
+    }
     return this.client.request("SitesManager.isTimezoneSupportEnabled", {});
   }
 
@@ -736,6 +947,9 @@ export class SitesManagerModule {
    * Get list of available timezones
    */
   async getTimezonesList(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getTimezonesList", {});
+    }
     return this.client.request("SitesManager.getTimezonesList", {});
   }
 
@@ -745,6 +959,9 @@ export class SitesManagerModule {
    * @param params Parameters for getting timezone name
    */
   async getTimezoneName(params: TimezoneNameParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getTimezoneName", params);
+    }
     return this.client.request("SitesManager.getTimezoneName", params);
   }
 
@@ -752,6 +969,9 @@ export class SitesManagerModule {
    * Get unique site timezones
    */
   async getUniqueSiteTimezones(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.getUniqueSiteTimezones", {});
+    }
     return this.client.request("SitesManager.getUniqueSiteTimezones", {});
   }
 
@@ -761,6 +981,9 @@ export class SitesManagerModule {
    * @param params Parameters for renaming a group
    */
   async renameGroup(params: RenameGroupParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SitesManager.renameGroup", params);
+    }
     return this.client.request("SitesManager.renameGroup", params);
   }
 
@@ -770,6 +993,12 @@ export class SitesManagerModule {
    * @param params Parameters for pattern matching
    */
   async getPatternMatchSites(params: PatternMatchParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getPatternMatchSites",
+        params
+      );
+    }
     return this.client.request("SitesManager.getPatternMatchSites", params);
   }
 
@@ -777,6 +1006,12 @@ export class SitesManagerModule {
    * Get number of websites to display per page
    */
   async getNumWebsitesToDisplayPerPage(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SitesManager.getNumWebsitesToDisplayPerPage",
+        {}
+      );
+    }
     return this.client.request(
       "SitesManager.getNumWebsitesToDisplayPerPage",
       {}

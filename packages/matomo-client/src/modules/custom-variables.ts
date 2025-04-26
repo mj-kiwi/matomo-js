@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 export interface SlotUsage {
   name: string;
@@ -45,7 +46,7 @@ export interface SlotsUsageParams extends RequestParams {
 }
 
 export class CustomVariablesModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get custom variables reports
@@ -54,6 +55,12 @@ export class CustomVariablesModule {
    * @returns Custom variables report data
    */
   async getCustomVariables(params: CustomVariablesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomVariables.getCustomVariables",
+        params
+      );
+    }
     return this.client.request("CustomVariables.getCustomVariables", params);
   }
 
@@ -66,6 +73,12 @@ export class CustomVariablesModule {
   async getCustomVariablesValuesFromNameId(
     params: CustomVariableValuesParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomVariables.getCustomVariablesValuesFromNameId",
+        params
+      );
+    }
     return this.client.request(
       "CustomVariables.getCustomVariablesValuesFromNameId",
       params
@@ -78,9 +91,10 @@ export class CustomVariablesModule {
    * @param params Parameters containing site ID
    * @returns Information about custom variable slots usage
    */
-  async getUsagesOfSlots(
-    params: SlotsUsageParams
-  ): Promise<Record<string, SlotUsage>> {
+  async getUsagesOfSlots(params: SlotsUsageParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomVariables.getUsagesOfSlots", params);
+    }
     return this.client.request("CustomVariables.getUsagesOfSlots", params);
   }
 }

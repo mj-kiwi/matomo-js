@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for annotation operations that require site ID and note ID
@@ -80,113 +81,83 @@ export interface GetAnnotationCountParams extends RequestParams {
 }
 
 export class AnnotationsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
-   * Add a new annotation
-   *
-   * @param params Parameters for adding a new annotation
-   * @returns Information about the created annotation
+   * Add an annotation
    */
   async add(params: AddAnnotationParams): Promise<any> {
-    const requestParams: RequestParams = {
-      idSite: params.idSite,
-      date: params.date,
-      note: params.note,
-      starred: params.starred ?? false,
-    };
-
-    return this.client.request("Annotations.add", requestParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.add", params);
+    }
+    return this.client.request("Annotations.add", params);
   }
 
   /**
-   * Save (update) an existing annotation
-   *
-   * @param params Parameters for saving an existing annotation
-   * @returns Success status of the operation
+   * Save an annotation
    */
   async save(params: SaveAnnotationParams): Promise<any> {
-    const requestParams: RequestParams = {
-      idSite: params.idSite,
-      idNote: params.idNote,
-    };
-
-    if (params.date !== undefined) requestParams.date = params.date;
-    if (params.note !== undefined) requestParams.note = params.note;
-    if (params.starred !== undefined) requestParams.starred = params.starred;
-
-    return this.client.request("Annotations.save", requestParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.save", params);
+    }
+    return this.client.request("Annotations.save", params);
   }
 
   /**
    * Delete an annotation
-   *
-   * @param params Parameters containing site ID and note ID
-   * @returns Success status of the operation
    */
   async delete(params: AnnotationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.delete", params);
+    }
     return this.client.request("Annotations.delete", params);
   }
 
   /**
    * Delete all annotations for a site
-   *
-   * @param params Parameters containing the site ID
-   * @returns Success status of the operation
    */
   async deleteAll(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.deleteAll", params);
+    }
     return this.client.request("Annotations.deleteAll", params);
   }
 
   /**
-   * Get a specific annotation
-   *
-   * @param params Parameters containing site ID and note ID
-   * @returns Details of the requested annotation
+   * Get an annotation by ID
    */
   async get(params: AnnotationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.get", params);
+    }
     return this.client.request("Annotations.get", params);
   }
 
   /**
-   * Get all annotations for a site
-   *
-   * @param params Parameters for getting all annotations
-   * @returns List of annotations for the specified site(s) and period
+   * Get all annotations for a site and date range
    */
   async getAll(params: GetAllAnnotationsParams): Promise<any> {
-    const requestParams: RequestParams = {
-      idSite: params.idSite,
-      period: params.period ?? "day",
-    };
-
-    if (params.date !== undefined) requestParams.date = params.date;
-    if (params.lastN !== undefined) requestParams.lastN = params.lastN;
-
-    return this.client.request("Annotations.getAll", requestParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Annotations.getAll", params);
+    }
+    return this.client.request("Annotations.getAll", params);
   }
 
   /**
-   * Get annotation counts for a date range
-   *
-   * @param params Parameters for getting annotation counts
-   * @returns Counts of annotations by date
+   * Get the count of annotations for the last N days
    */
   async getAnnotationCountForDates(
     params: GetAnnotationCountParams
   ): Promise<any> {
-    const requestParams: RequestParams = {
-      idSite: params.idSite,
-      date: params.date,
-      period: params.period,
-      getAnnotationText: params.getAnnotationText ?? false,
-    };
-
-    if (params.lastN !== undefined) requestParams.lastN = params.lastN;
-
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Annotations.getAnnotationCountForDates",
+        params
+      );
+    }
     return this.client.request(
       "Annotations.getAnnotationCountForDates",
-      requestParams
+      params
     );
   }
 }

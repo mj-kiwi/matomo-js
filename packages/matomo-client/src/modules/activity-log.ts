@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 export interface GetEntriesParams {
   /** Result offset (default: 0) */
@@ -37,7 +38,7 @@ export interface GetAllActivityTypesParams {
 }
 
 export class ActivityLogModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get activity log entries
@@ -61,6 +62,9 @@ export class ActivityLogModule {
     if (params.period) requestParams.period = params.period;
     if (params.date) requestParams.date = params.date;
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ActivityLog.getEntries", requestParams);
+    }
     return this.client.request("ActivityLog.getEntries", requestParams);
   }
 
@@ -69,7 +73,7 @@ export class ActivityLogModule {
    *
    * Returns the total number of activities matching the specified filters
    */
-  async getEntryCount(params: GetEntryCountParams = {}): Promise<number> {
+  async getEntryCount(params: GetEntryCountParams = {}): Promise<any> {
     const requestParams: RequestParams = {};
 
     if (params.filterByUserLogin)
@@ -79,6 +83,9 @@ export class ActivityLogModule {
     if (params.period) requestParams.period = params.period;
     if (params.date) requestParams.date = params.date;
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ActivityLog.getEntryCount", requestParams);
+    }
     const result = await this.client.request<{ value: number }>(
       "ActivityLog.getEntryCount",
       requestParams
@@ -93,12 +100,18 @@ export class ActivityLogModule {
    */
   async getAllActivityTypes(
     params: GetAllActivityTypesParams = {}
-  ): Promise<string[]> {
+  ): Promise<any> {
     const requestParams: RequestParams = {
       filterLimit: "-1",
       ...params,
     };
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "ActivityLog.getAllActivityTypes",
+        requestParams
+      );
+    }
     return this.client.request<string[]>(
       "ActivityLog.getAllActivityTypes",
       requestParams

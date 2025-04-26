@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for phone number operations
@@ -41,14 +42,20 @@ export interface DelegatedManagementParams extends RequestParams {
 
 export class MobileMessagingModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Check if SMS API credentials are provided
    */
   async areSMSAPICredentialProvided(): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MobileMessaging.areSMSAPICredentialProvided",
+        {}
+      );
+    }
     return this.core.request<boolean>(
       "MobileMessaging.areSMSAPICredentialProvided"
     );
@@ -58,6 +65,9 @@ export class MobileMessagingModule {
    * Get the SMS Provider
    */
   async getSMSProvider(): Promise<string> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.getSMSProvider", {});
+    }
     return this.core.request<string>("MobileMessaging.getSMSProvider");
   }
 
@@ -67,6 +77,12 @@ export class MobileMessagingModule {
    * @param params Parameters containing provider and credentials
    */
   async setSMSAPICredential(params: CredentialParams): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MobileMessaging.setSMSAPICredential",
+        params
+      );
+    }
     return this.core.request<boolean>(
       "MobileMessaging.setSMSAPICredential",
       params
@@ -79,6 +95,9 @@ export class MobileMessagingModule {
    * @param params Parameters containing the phone number to add
    */
   async addPhoneNumber(params: PhoneNumberParams): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.addPhoneNumber", params);
+    }
     return this.core.request<boolean>("MobileMessaging.addPhoneNumber", params);
   }
 
@@ -88,6 +107,12 @@ export class MobileMessagingModule {
    * @param params Parameters containing the phone number to resend verification to
    */
   async resendVerificationCode(params: PhoneNumberParams): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MobileMessaging.resendVerificationCode",
+        params
+      );
+    }
     return this.core.request<boolean>(
       "MobileMessaging.resendVerificationCode",
       params
@@ -98,6 +123,9 @@ export class MobileMessagingModule {
    * Get remaining SMS credit
    */
   async getCreditLeft(): Promise<number> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.getCreditLeft", {});
+    }
     return this.core.request<number>("MobileMessaging.getCreditLeft");
   }
 
@@ -105,6 +133,9 @@ export class MobileMessagingModule {
    * Get registered phone numbers
    */
   async getPhoneNumbers(): Promise<Record<string, string>> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.getPhoneNumbers", {});
+    }
     return this.core.request<Record<string, string>>(
       "MobileMessaging.getPhoneNumbers"
     );
@@ -116,6 +147,9 @@ export class MobileMessagingModule {
    * @param params Parameters containing the phone number to remove
    */
   async removePhoneNumber(params: PhoneNumberParams): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.removePhoneNumber", params);
+    }
     return this.core.request<boolean>(
       "MobileMessaging.removePhoneNumber",
       params
@@ -128,6 +162,12 @@ export class MobileMessagingModule {
    * @param params Parameters containing the phone number and verification code
    */
   async validatePhoneNumber(params: ValidatePhoneParams): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MobileMessaging.validatePhoneNumber",
+        params
+      );
+    }
     return this.core.request<boolean>(
       "MobileMessaging.validatePhoneNumber",
       params
@@ -138,6 +178,9 @@ export class MobileMessagingModule {
    * Delete SMS API credential
    */
   async deleteSMSAPICredential(): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.deleteSMSAPICredential", {});
+    }
     return this.core.request<boolean>("MobileMessaging.deleteSMSAPICredential");
   }
 
@@ -149,6 +192,12 @@ export class MobileMessagingModule {
   async setDelegatedManagement(
     params: DelegatedManagementParams
   ): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MobileMessaging.setDelegatedManagement",
+        params
+      );
+    }
     return this.core.request<boolean>(
       "MobileMessaging.setDelegatedManagement",
       params
@@ -159,6 +208,9 @@ export class MobileMessagingModule {
    * Get delegated management status
    */
   async getDelegatedManagement(): Promise<boolean> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MobileMessaging.getDelegatedManagement", {});
+    }
     return this.core.request<boolean>("MobileMessaging.getDelegatedManagement");
   }
 }

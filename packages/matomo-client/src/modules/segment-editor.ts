@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for segment operations that require a segment ID
@@ -55,7 +56,7 @@ export interface UpdateSegmentParams extends SegmentParams {
 }
 
 export class SegmentEditorModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Check if the current user can add new segments
@@ -66,6 +67,12 @@ export class SegmentEditorModule {
   async isUserCanAddNewSegment(
     params: UserCanAddSegmentParams = {}
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SegmentEditor.isUserCanAddNewSegment",
+        params
+      );
+    }
     return this.client.request("SegmentEditor.isUserCanAddNewSegment", params);
   }
 
@@ -76,6 +83,9 @@ export class SegmentEditorModule {
    * @returns Promise with the result of the API call
    */
   async delete(params: SegmentIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SegmentEditor.delete", params);
+    }
     return this.client.request("SegmentEditor.delete", params);
   }
 
@@ -86,6 +96,9 @@ export class SegmentEditorModule {
    * @returns Promise with the result of the API call
    */
   async update(params: UpdateSegmentParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SegmentEditor.update", params);
+    }
     return this.client.request("SegmentEditor.update", params);
   }
 
@@ -96,6 +109,9 @@ export class SegmentEditorModule {
    * @returns Promise with the result of the API call
    */
   async add(params: SegmentParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SegmentEditor.add", params);
+    }
     return this.client.request("SegmentEditor.add", params);
   }
 
@@ -106,6 +122,9 @@ export class SegmentEditorModule {
    * @returns Promise with the segment data
    */
   async get(params: SegmentIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SegmentEditor.get", params);
+    }
     return this.client.request("SegmentEditor.get", params);
   }
 
@@ -116,6 +135,9 @@ export class SegmentEditorModule {
    * @returns Promise with the list of segments
    */
   async getAll(params: GetAllSegmentsParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SegmentEditor.getAll", params);
+    }
     return this.client.request("SegmentEditor.getAll", params);
   }
 }

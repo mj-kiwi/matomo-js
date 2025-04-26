@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for device plugin reports
@@ -20,7 +21,7 @@ export interface DevicePluginParams extends RequestParams {
 }
 
 export class DevicePluginsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get browser plugin usage
@@ -29,6 +30,9 @@ export class DevicePluginsModule {
    * @returns Promise with the API response containing plugin usage data
    */
   async getPlugin(params: DevicePluginParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("DevicePlugins.getPlugin", params);
+    }
     return this.client.request("DevicePlugins.getPlugin", params);
   }
 }

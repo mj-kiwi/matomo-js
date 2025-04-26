@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for sending feature feedback
@@ -30,7 +31,7 @@ export interface SendSurveyFeedbackParams {
 }
 
 export class FeedbackModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Send feedback for a feature
@@ -49,6 +50,12 @@ export class FeedbackModule {
     if (params.choice) requestParams.choice = params.choice;
     if (params.message) requestParams.message = params.message;
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Feedback.sendFeedbackForFeature",
+        requestParams
+      );
+    }
     return this.client.request(
       "Feedback.sendFeedbackForFeature",
       requestParams
@@ -68,6 +75,12 @@ export class FeedbackModule {
 
     if (params.message) requestParams.message = params.message;
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Feedback.sendFeedbackForSurvey",
+        requestParams
+      );
+    }
     return this.client.request("Feedback.sendFeedbackForSurvey", requestParams);
   }
 
@@ -77,6 +90,9 @@ export class FeedbackModule {
    * @returns Promise with the API response
    */
   async updateFeedbackReminderDate(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Feedback.updateFeedbackReminderDate", {});
+    }
     return this.client.request("Feedback.updateFeedbackReminderDate", {});
   }
 }

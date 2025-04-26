@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for SEO rank requests
@@ -15,9 +16,9 @@ export interface SeoRankParams extends RequestParams {
 
 export class SeoModule {
   /**
-   * @param core Core reporting client instance
+   * @param client Core reporting client or batch request instance
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get SEO rank data for a URL
@@ -26,6 +27,9 @@ export class SeoModule {
    * @param params Parameters containing the URL to analyze
    */
   async getRank(params: SeoRankParams): Promise<any> {
-    return this.core.request<any>("SEO.getRank", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("SEO.getRank", params);
+    }
+    return this.client.request<any>("SEO.getRank", params);
   }
 }

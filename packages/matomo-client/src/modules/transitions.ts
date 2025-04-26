@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Transitions API methods
@@ -62,7 +63,7 @@ export interface PeriodAllowedParams extends RequestParams {
 }
 
 export class TransitionsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get transitions for a page title
@@ -72,6 +73,12 @@ export class TransitionsModule {
   async getTransitionsForPageTitle(
     params: PageTitleTransitionsParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Transitions.getTransitionsForPageTitle",
+        params
+      );
+    }
     return this.client.request(
       "Transitions.getTransitionsForPageTitle",
       params
@@ -86,6 +93,12 @@ export class TransitionsModule {
   async getTransitionsForPageUrl(
     params: PageUrlTransitionsParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Transitions.getTransitionsForPageUrl",
+        params
+      );
+    }
     return this.client.request("Transitions.getTransitionsForPageUrl", params);
   }
 
@@ -95,6 +108,12 @@ export class TransitionsModule {
    * @param params Parameters for getting transitions for an action
    */
   async getTransitionsForAction(params: ActionTransitionsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Transitions.getTransitionsForAction",
+        params
+      );
+    }
     return this.client.request("Transitions.getTransitionsForAction", params);
   }
 
@@ -102,6 +121,9 @@ export class TransitionsModule {
    * Get translations for transition metrics
    */
   async getTranslations(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Transitions.getTranslations", {});
+    }
     return this.client.request("Transitions.getTranslations", {});
   }
 
@@ -111,6 +133,9 @@ export class TransitionsModule {
    * @param params Parameters for checking if a period is allowed
    */
   async isPeriodAllowed(params: PeriodAllowedParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Transitions.isPeriodAllowed", params);
+    }
     return this.client.request("Transitions.isPeriodAllowed", params);
   }
 }

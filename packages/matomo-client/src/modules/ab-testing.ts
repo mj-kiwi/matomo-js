@@ -1,9 +1,10 @@
 /**
  * Matomo A/B Testing Module
- * Provides access to A/B testing functionality in Matomo
+ * Provides access to A/B Testing data
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for the getMetricsOverview method
@@ -131,7 +132,7 @@ export interface SiteParams extends RequestParams {
 export interface EmptyParams extends RequestParams {}
 
 export class AbTestingModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get metrics overview for an experiment
@@ -139,6 +140,9 @@ export class AbTestingModule {
    * @param params Parameters for getting metrics overview
    */
   async getMetricsOverview(params: GetMetricsOverviewParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getMetricsOverview", params);
+    }
     return this.client.request("AbTesting.getMetricsOverview", params);
   }
 
@@ -148,6 +152,9 @@ export class AbTestingModule {
    * @param params Parameters for getting metric details
    */
   async getMetricDetails(params: GetMetricDetailsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getMetricDetails", params);
+    }
     return this.client.request("AbTesting.getMetricDetails", params);
   }
 
@@ -157,6 +164,9 @@ export class AbTestingModule {
    * @param params Parameters for adding a new experiment
    */
   async addExperiment(params: AddExperimentParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.addExperiment", params);
+    }
     return this.client.request("AbTesting.addExperiment", params);
   }
 
@@ -166,6 +176,9 @@ export class AbTestingModule {
    * @param params Parameters for updating an experiment
    */
   async updateExperiment(params: UpdateExperimentParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.updateExperiment", params);
+    }
     return this.client.request("AbTesting.updateExperiment", params);
   }
 
@@ -175,6 +188,9 @@ export class AbTestingModule {
    * @param params Parameters specifying experiment and site IDs
    */
   async startExperiment(params: ExperimentOperationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.startExperiment", params);
+    }
     return this.client.request("AbTesting.startExperiment", params);
   }
 
@@ -184,6 +200,9 @@ export class AbTestingModule {
    * @param params Parameters specifying experiment and site IDs
    */
   async finishExperiment(params: ExperimentOperationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.finishExperiment", params);
+    }
     return this.client.request("AbTesting.finishExperiment", params);
   }
 
@@ -193,6 +212,9 @@ export class AbTestingModule {
    * @param params Parameters specifying experiment and site IDs
    */
   async archiveExperiment(params: ExperimentOperationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.archiveExperiment", params);
+    }
     return this.client.request("AbTesting.archiveExperiment", params);
   }
 
@@ -203,6 +225,9 @@ export class AbTestingModule {
    * @param params Empty parameters object
    */
   async getJsIncludeTemplate(params: EmptyParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getJsIncludeTemplate", params);
+    }
     return this.client.request("AbTesting.getJsIncludeTemplate", params);
   }
 
@@ -215,6 +240,12 @@ export class AbTestingModule {
   async getJsExperimentTemplate(
     params: ExperimentOperationParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AbTesting.getJsExperimentTemplate",
+        params
+      );
+    }
     return this.client.request("AbTesting.getJsExperimentTemplate", params);
   }
 
@@ -224,6 +255,9 @@ export class AbTestingModule {
    * @param params Parameters specifying site ID
    */
   async getAllExperiments(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getAllExperiments", params);
+    }
     return this.client.request("AbTesting.getAllExperiments", params);
   }
 
@@ -233,6 +267,9 @@ export class AbTestingModule {
    * @param params Parameters specifying site ID
    */
   async getActiveExperiments(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getActiveExperiments", params);
+    }
     return this.client.request("AbTesting.getActiveExperiments", params);
   }
 
@@ -244,6 +281,12 @@ export class AbTestingModule {
   async getExperimentsByStatuses(
     params: GetExperimentsByStatusesParams
   ): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AbTesting.getExperimentsByStatuses",
+        params
+      );
+    }
     return this.client.request("AbTesting.getExperimentsByStatuses", params);
   }
 
@@ -253,6 +296,9 @@ export class AbTestingModule {
    * @param params Parameters specifying experiment and site IDs
    */
   async getExperiment(params: ExperimentOperationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getExperiment", params);
+    }
     return this.client.request("AbTesting.getExperiment", params);
   }
 
@@ -262,6 +308,9 @@ export class AbTestingModule {
    * @param params Parameters specifying experiment and site IDs
    */
   async deleteExperiment(params: ExperimentOperationParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.deleteExperiment", params);
+    }
     return this.client.request("AbTesting.deleteExperiment", params);
   }
 
@@ -271,6 +320,9 @@ export class AbTestingModule {
    * @param params Parameters specifying site ID
    */
   async getAvailableStatuses(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AbTesting.getAvailableStatuses", params);
+    }
     return this.client.request("AbTesting.getAvailableStatuses", params);
   }
 
@@ -280,6 +332,12 @@ export class AbTestingModule {
    * @param params Parameters specifying site ID
    */
   async getAvailableSuccessMetrics(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AbTesting.getAvailableSuccessMetrics",
+        params
+      );
+    }
     return this.client.request("AbTesting.getAvailableSuccessMetrics", params);
   }
 
@@ -290,6 +348,12 @@ export class AbTestingModule {
    * @param params Empty parameters object
    */
   async getAvailableTargetAttributes(params: EmptyParams = {}): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AbTesting.getAvailableTargetAttributes",
+        params
+      );
+    }
     return this.client.request(
       "AbTesting.getAvailableTargetAttributes",
       params
@@ -302,6 +366,12 @@ export class AbTestingModule {
    * @param params Parameters specifying site ID
    */
   async getExperimentsWithReports(params: SiteParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AbTesting.getExperimentsWithReports",
+        params
+      );
+    }
     return this.client.request("AbTesting.getExperimentsWithReports", params);
   }
 }

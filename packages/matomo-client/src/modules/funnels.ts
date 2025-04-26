@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for funnel reporting methods
@@ -129,7 +130,7 @@ export interface TestUrlMatchesStepsParams extends RequestParams {
 }
 
 export class FunnelsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get funnel metrics
@@ -138,6 +139,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel metrics
    */
   getMetrics(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getMetrics", params);
+    }
     return this.client.request("Funnels.getMetrics", params);
   }
 
@@ -148,6 +152,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel flow data for visualization
    */
   getFunnelFlow(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelFlow", params);
+    }
     return this.client.request("Funnels.getFunnelFlow", params);
   }
 
@@ -158,6 +165,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel flow data in table format
    */
   getFunnelFlowTable(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelFlowTable", params);
+    }
     return this.client.request("Funnels.getFunnelFlowTable", params);
   }
 
@@ -168,6 +178,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel step subtable data
    */
   getFunnelStepSubtable(params: FunnelStepSubtableParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelStepSubtable", params);
+    }
     return this.client.request("Funnels.getFunnelStepSubtable", params);
   }
 
@@ -178,6 +191,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel entries data
    */
   getFunnelEntries(params: FunnelEntriesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelEntries", params);
+    }
     return this.client.request("Funnels.getFunnelEntries", params);
   }
 
@@ -188,6 +204,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel exits data
    */
   getFunnelExits(params: FunnelExitsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelExits", params);
+    }
     return this.client.request("Funnels.getFunnelExits", params);
   }
 
@@ -198,6 +217,9 @@ export class FunnelsModule {
    * @returns Promise with the goal funnel configuration
    */
   getGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getGoalFunnel", params);
+    }
     return this.client.request("Funnels.getGoalFunnel", params);
   }
 
@@ -208,6 +230,9 @@ export class FunnelsModule {
    * @returns Promise with the sales funnel data
    */
   getSalesFunnelForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getSalesFunnelForSite", params);
+    }
     return this.client.request("Funnels.getSalesFunnelForSite", params);
   }
 
@@ -218,6 +243,9 @@ export class FunnelsModule {
    * @returns Promise with the funnel configuration
    */
   getFunnel(params: FunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnel", params);
+    }
     return this.client.request("Funnels.getFunnel", params);
   }
 
@@ -228,6 +256,12 @@ export class FunnelsModule {
    * @returns Promise with the list of activated funnels
    */
   getAllActivatedFunnelsForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Funnels.getAllActivatedFunnelsForSite",
+        params
+      );
+    }
     return this.client.request("Funnels.getAllActivatedFunnelsForSite", params);
   }
 
@@ -237,7 +271,13 @@ export class FunnelsModule {
    * @param params Parameters with site ID
    * @returns Promise with boolean result
    */
-  hasAnyActivatedFunnelForSite(params: SiteIdParams): Promise<boolean> {
+  hasAnyActivatedFunnelForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Funnels.hasAnyActivatedFunnelForSite",
+        params
+      );
+    }
     return this.client.request("Funnels.hasAnyActivatedFunnelForSite", params);
   }
 
@@ -248,6 +288,9 @@ export class FunnelsModule {
    * @returns Promise with the API response
    */
   deleteGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.deleteGoalFunnel", params);
+    }
     return this.client.request("Funnels.deleteGoalFunnel", params);
   }
 
@@ -258,6 +301,9 @@ export class FunnelsModule {
    * @returns Promise with the API response
    */
   deleteNonGoalFunnel(params: FunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.deleteNonGoalFunnel", params);
+    }
     return this.client.request("Funnels.deleteNonGoalFunnel", params);
   }
 
@@ -268,6 +314,9 @@ export class FunnelsModule {
    * @returns Promise with the API response
    */
   setGoalFunnel(params: SetGoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.setGoalFunnel", params);
+    }
     return this.client.request("Funnels.setGoalFunnel", params);
   }
 
@@ -278,6 +327,9 @@ export class FunnelsModule {
    * @returns Promise with the API response
    */
   saveNonGoalFunnel(params: SaveNonGoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.saveNonGoalFunnel", params);
+    }
     return this.client.request("Funnels.saveNonGoalFunnel", params);
   }
 
@@ -287,6 +339,9 @@ export class FunnelsModule {
    * @returns Promise with the list of available pattern matches
    */
   getAvailablePatternMatches(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getAvailablePatternMatches", {});
+    }
     return this.client.request("Funnels.getAvailablePatternMatches");
   }
 
@@ -297,6 +352,9 @@ export class FunnelsModule {
    * @returns Promise with the matching results
    */
   testUrlMatchesSteps(params: TestUrlMatchesStepsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.testUrlMatchesSteps", params);
+    }
     return this.client.request("Funnels.testUrlMatchesSteps", params);
   }
 }

@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Contents module methods
@@ -22,25 +23,31 @@ export interface ContentsParams extends RequestParams {
 }
 
 export class ContentsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
-   * Get content names with their metrics
+   * Get content names
    *
    * @param params Parameters for getting content names
    * @returns Content names with metrics
    */
   async getContentNames(params: ContentsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Contents.getContentNames", params);
+    }
     return this.client.request("Contents.getContentNames", params);
   }
 
   /**
-   * Get content pieces with their metrics
+   * Get content pieces
    *
    * @param params Parameters for getting content pieces
    * @returns Content pieces with metrics
    */
   async getContentPieces(params: ContentsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Contents.getContentPieces", params);
+    }
     return this.client.request("Contents.getContentPieces", params);
   }
 }

@@ -4,9 +4,10 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 export class TwoFactorAuthModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Reset a user's two-factor authentication
@@ -26,6 +27,9 @@ export class TwoFactorAuthModule {
     if (options.passwordConfirmation)
       params.passwordConfirmation = options.passwordConfirmation;
 
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TwoFactorAuth.resetTwoFactorAuth", params);
+    }
     return this.client.request("TwoFactorAuth.resetTwoFactorAuth", params);
   }
 }
