@@ -1,5 +1,11 @@
 # @mj-kiwi/matomo-client
 
+## 2.0.0
+
+### Major Changes
+
+- [#9](https://github.com/mj-kiwi/matomo-js/pull/9) [`ce5cf23`](https://github.com/mj-kiwi/matomo-js/commit/ce5cf239c98e0b799172e3308c39cc08f29e9015) Thanks [@mj-kiwi](https://github.com/mj-kiwi)! - feat: Enhance API modules to support BatchRequest for improved request handling
+
 ## 1.0.0
 
 ### Major Changes

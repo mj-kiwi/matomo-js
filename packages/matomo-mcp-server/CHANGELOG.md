@@ -1,5 +1,12 @@
 # @mj-kiwi/matomo-mcp-server
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`ce5cf23`](https://github.com/mj-kiwi/matomo-js/commit/ce5cf239c98e0b799172e3308c39cc08f29e9015)]:
+  - @mj-kiwi/matomo-client@2.0.0
+
 ## 0.1.2
 
 ### Patch Changes
