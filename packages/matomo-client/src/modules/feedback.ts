@@ -56,7 +56,7 @@ export class FeedbackModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "Feedback.sendFeedbackForFeature",
       requestParams
     );
@@ -81,7 +81,10 @@ export class FeedbackModule {
         requestParams
       );
     }
-    return this.client.request("Feedback.sendFeedbackForSurvey", requestParams);
+    return await this.client.request(
+      "Feedback.sendFeedbackForSurvey",
+      requestParams
+    );
   }
 
   /**
@@ -93,6 +96,6 @@ export class FeedbackModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Feedback.updateFeedbackReminderDate", {});
     }
-    return this.client.request("Feedback.updateFeedbackReminderDate", {});
+    return await this.client.request("Feedback.updateFeedbackReminderDate", {});
   }
 }

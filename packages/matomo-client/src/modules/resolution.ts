@@ -35,7 +35,7 @@ export class ResolutionModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Resolution.getResolution", params);
     }
-    return this.core.request<any>("Resolution.getResolution", params);
+    return await this.core.request<any>("Resolution.getResolution", params);
   }
 
   /**
@@ -47,6 +47,6 @@ export class ResolutionModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Resolution.getConfiguration", params);
     }
-    return this.core.request<any>("Resolution.getConfiguration", params);
+    return await this.core.request<any>("Resolution.getConfiguration", params);
   }
 }

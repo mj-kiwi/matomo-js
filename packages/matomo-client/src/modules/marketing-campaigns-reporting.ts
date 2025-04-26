@@ -55,7 +55,10 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request("MarketingCampaignsReporting.getId", params);
+    return await this.client.request(
+      "MarketingCampaignsReporting.getId",
+      params
+    );
   }
 
   /**
@@ -70,7 +73,10 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request("MarketingCampaignsReporting.getName", params);
+    return await this.client.request(
+      "MarketingCampaignsReporting.getName",
+      params
+    );
   }
 
   /**
@@ -87,7 +93,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getKeywordContentFromNameId",
       params
     );
@@ -105,7 +111,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getKeyword",
       params
     );
@@ -123,7 +129,10 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request("MarketingCampaignsReporting.getSource", params);
+    return await this.client.request(
+      "MarketingCampaignsReporting.getSource",
+      params
+    );
   }
 
   /**
@@ -138,7 +147,10 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request("MarketingCampaignsReporting.getMedium", params);
+    return await this.client.request(
+      "MarketingCampaignsReporting.getMedium",
+      params
+    );
   }
 
   /**
@@ -153,7 +165,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getContent",
       params
     );
@@ -171,7 +183,10 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request("MarketingCampaignsReporting.getGroup", params);
+    return await this.client.request(
+      "MarketingCampaignsReporting.getGroup",
+      params
+    );
   }
 
   /**
@@ -186,7 +201,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getPlacement",
       params
     );
@@ -204,7 +219,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getSourceMedium",
       params
     );
@@ -224,7 +239,7 @@ export class MarketingCampaignsReportingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MarketingCampaignsReporting.getNameFromSourceMediumId",
       params
     );

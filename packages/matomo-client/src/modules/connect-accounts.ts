@@ -102,7 +102,10 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getGtmContainersList", params);
+    return await this.client.request(
+      "ConnectAccounts.getGtmContainersList",
+      params
+    );
   }
 
   /**
@@ -118,7 +121,10 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getGtmWorkspaceList", params);
+    return await this.client.request(
+      "ConnectAccounts.getGtmWorkspaceList",
+      params
+    );
   }
 
   /**
@@ -140,7 +146,7 @@ export class ConnectAccountsModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "ConnectAccounts.createMatomoTag",
       requestParams
     );
@@ -156,7 +162,10 @@ export class ConnectAccountsModule {
         {}
       );
     }
-    return this.client.request("ConnectAccounts.getAvailableProviders", {});
+    return await this.client.request(
+      "ConnectAccounts.getAvailableProviders",
+      {}
+    );
   }
 
   /**
@@ -169,7 +178,10 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getConnectedAccounts", params);
+    return await this.client.request(
+      "ConnectAccounts.getConnectedAccounts",
+      params
+    );
   }
 
   /**
@@ -182,7 +194,10 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getConnectedAccount", params);
+    return await this.client.request(
+      "ConnectAccounts.getConnectedAccount",
+      params
+    );
   }
 
   /**
@@ -197,7 +212,7 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "ConnectAccounts.deleteConnectedAccount",
       params
     );
@@ -213,7 +228,10 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getOAuthConnectUrl", params);
+    return await this.client.request(
+      "ConnectAccounts.getOAuthConnectUrl",
+      params
+    );
   }
 
   /**
@@ -228,6 +246,9 @@ export class ConnectAccountsModule {
         params
       );
     }
-    return this.client.request("ConnectAccounts.getOAuthDisconnectUrl", params);
+    return await this.client.request(
+      "ConnectAccounts.getOAuthDisconnectUrl",
+      params
+    );
   }
 }

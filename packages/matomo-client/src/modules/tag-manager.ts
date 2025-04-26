@@ -318,7 +318,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getAvailableContexts", {});
     }
-    return this.client.request("TagManager.getAvailableContexts", {});
+    return await this.client.request("TagManager.getAvailableContexts", {});
   }
 
   /**
@@ -328,7 +328,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getAvailableEnvironments", {});
     }
-    return this.client.request("TagManager.getAvailableEnvironments", {});
+    return await this.client.request("TagManager.getAvailableEnvironments", {});
   }
 
   /**
@@ -343,7 +343,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getAvailableEnvironmentsWithPublishCapability",
       params
     );
@@ -356,7 +356,10 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getAvailableTagFireLimits", {});
     }
-    return this.client.request("TagManager.getAvailableTagFireLimits", {});
+    return await this.client.request(
+      "TagManager.getAvailableTagFireLimits",
+      {}
+    );
   }
 
   /**
@@ -366,7 +369,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getAvailableComparisons", {});
     }
-    return this.client.request("TagManager.getAvailableComparisons", {});
+    return await this.client.request("TagManager.getAvailableComparisons", {});
   }
 
   /**
@@ -379,7 +382,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getAvailableTagTypesInContext",
       params
     );
@@ -395,7 +398,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getAvailableTriggerTypesInContext",
       params
     );
@@ -413,7 +416,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getAvailableVariableTypesInContext",
       params
     );
@@ -426,7 +429,10 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerEmbedCode", params);
     }
-    return this.client.request("TagManager.getContainerEmbedCode", params);
+    return await this.client.request(
+      "TagManager.getContainerEmbedCode",
+      params
+    );
   }
 
   /**
@@ -441,7 +447,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getContainerInstallInstructions",
       params
     );
@@ -454,7 +460,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerTags", params);
     }
-    return this.client.request("TagManager.getContainerTags", params);
+    return await this.client.request("TagManager.getContainerTags", params);
   }
 
   /**
@@ -469,7 +475,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.createDefaultContainerForSite",
       params
     );
@@ -482,7 +488,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.addContainerTag", params);
     }
-    return this.client.request("TagManager.addContainerTag", params);
+    return await this.client.request("TagManager.addContainerTag", params);
   }
 
   /**
@@ -492,7 +498,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.updateContainerTag", params);
     }
-    return this.client.request("TagManager.updateContainerTag", params);
+    return await this.client.request("TagManager.updateContainerTag", params);
   }
 
   /**
@@ -504,7 +510,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.deleteContainerTag", params);
     }
-    return this.client.request("TagManager.deleteContainerTag", params);
+    return await this.client.request("TagManager.deleteContainerTag", params);
   }
 
   /**
@@ -516,7 +522,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.pauseContainerTag", params);
     }
-    return this.client.request("TagManager.pauseContainerTag", params);
+    return await this.client.request("TagManager.pauseContainerTag", params);
   }
 
   /**
@@ -528,7 +534,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.resumeContainerTag", params);
     }
-    return this.client.request("TagManager.resumeContainerTag", params);
+    return await this.client.request("TagManager.resumeContainerTag", params);
   }
 
   /**
@@ -540,7 +546,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerTag", params);
     }
-    return this.client.request("TagManager.getContainerTag", params);
+    return await this.client.request("TagManager.getContainerTag", params);
   }
 
   /**
@@ -555,7 +561,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getContainerTriggerReferences",
       params
     );
@@ -568,7 +574,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerTriggers", params);
     }
-    return this.client.request("TagManager.getContainerTriggers", params);
+    return await this.client.request("TagManager.getContainerTriggers", params);
   }
 
   /**
@@ -578,7 +584,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.addContainerTrigger", params);
     }
-    return this.client.request("TagManager.addContainerTrigger", params);
+    return await this.client.request("TagManager.addContainerTrigger", params);
   }
 
   /**
@@ -593,7 +599,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.updateContainerTrigger", params);
+    return await this.client.request(
+      "TagManager.updateContainerTrigger",
+      params
+    );
   }
 
   /**
@@ -608,7 +617,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.deleteContainerTrigger", params);
+    return await this.client.request(
+      "TagManager.deleteContainerTrigger",
+      params
+    );
   }
 
   /**
@@ -620,7 +632,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerTrigger", params);
     }
-    return this.client.request("TagManager.getContainerTrigger", params);
+    return await this.client.request("TagManager.getContainerTrigger", params);
   }
 
   /**
@@ -635,7 +647,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getContainerVariableReferences",
       params
     );
@@ -648,7 +660,10 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerVariables", params);
     }
-    return this.client.request("TagManager.getContainerVariables", params);
+    return await this.client.request(
+      "TagManager.getContainerVariables",
+      params
+    );
   }
 
   /**
@@ -663,7 +678,7 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "TagManager.getAvailableContainerVariables",
       params
     );
@@ -676,7 +691,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.addContainerVariable", params);
     }
-    return this.client.request("TagManager.addContainerVariable", params);
+    return await this.client.request("TagManager.addContainerVariable", params);
   }
 
   /**
@@ -691,7 +706,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.updateContainerVariable", params);
+    return await this.client.request(
+      "TagManager.updateContainerVariable",
+      params
+    );
   }
 
   /**
@@ -706,7 +724,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.deleteContainerVariable", params);
+    return await this.client.request(
+      "TagManager.deleteContainerVariable",
+      params
+    );
   }
 
   /**
@@ -718,7 +739,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerVariable", params);
     }
-    return this.client.request("TagManager.getContainerVariable", params);
+    return await this.client.request("TagManager.getContainerVariable", params);
   }
 
   /**
@@ -728,7 +749,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainers", params);
     }
-    return this.client.request("TagManager.getContainers", params);
+    return await this.client.request("TagManager.getContainers", params);
   }
 
   /**
@@ -738,7 +759,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.addContainer", params);
     }
-    return this.client.request("TagManager.addContainer", params);
+    return await this.client.request("TagManager.addContainer", params);
   }
 
   /**
@@ -748,7 +769,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.updateContainer", params);
     }
-    return this.client.request("TagManager.updateContainer", params);
+    return await this.client.request("TagManager.updateContainer", params);
   }
 
   /**
@@ -763,7 +784,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.createContainerVersion", params);
+    return await this.client.request(
+      "TagManager.createContainerVersion",
+      params
+    );
   }
 
   /**
@@ -778,7 +802,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.updateContainerVersion", params);
+    return await this.client.request(
+      "TagManager.updateContainerVersion",
+      params
+    );
   }
 
   /**
@@ -788,7 +815,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerVersions", params);
     }
-    return this.client.request("TagManager.getContainerVersions", params);
+    return await this.client.request("TagManager.getContainerVersions", params);
   }
 
   /**
@@ -798,7 +825,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainerVersion", params);
     }
-    return this.client.request("TagManager.getContainerVersion", params);
+    return await this.client.request("TagManager.getContainerVersion", params);
   }
 
   /**
@@ -811,7 +838,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.deleteContainerVersion", params);
+    return await this.client.request(
+      "TagManager.deleteContainerVersion",
+      params
+    );
   }
 
   /**
@@ -826,7 +856,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.publishContainerVersion", params);
+    return await this.client.request(
+      "TagManager.publishContainerVersion",
+      params
+    );
   }
 
   /**
@@ -836,7 +869,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.deleteContainer", params);
     }
-    return this.client.request("TagManager.deleteContainer", params);
+    return await this.client.request("TagManager.deleteContainer", params);
   }
 
   /**
@@ -846,7 +879,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.getContainer", params);
     }
-    return this.client.request("TagManager.getContainer", params);
+    return await this.client.request("TagManager.getContainer", params);
   }
 
   /**
@@ -856,7 +889,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.enablePreviewMode", params);
     }
-    return this.client.request("TagManager.enablePreviewMode", params);
+    return await this.client.request("TagManager.enablePreviewMode", params);
   }
 
   /**
@@ -866,7 +899,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.disablePreviewMode", params);
     }
-    return this.client.request("TagManager.disablePreviewMode", params);
+    return await this.client.request("TagManager.disablePreviewMode", params);
   }
 
   /**
@@ -876,7 +909,7 @@ export class TagManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TagManager.changeDebugUrl", params);
     }
-    return this.client.request("TagManager.changeDebugUrl", params);
+    return await this.client.request("TagManager.changeDebugUrl", params);
   }
 
   /**
@@ -891,7 +924,10 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.exportContainerVersion", params);
+    return await this.client.request(
+      "TagManager.exportContainerVersion",
+      params
+    );
   }
 
   /**
@@ -906,6 +942,9 @@ export class TagManagerModule {
         params
       );
     }
-    return this.client.request("TagManager.importContainerVersion", params);
+    return await this.client.request(
+      "TagManager.importContainerVersion",
+      params
+    );
   }
 }

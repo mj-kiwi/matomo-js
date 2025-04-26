@@ -113,7 +113,7 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.getCounters", formattedParams);
     }
-    return this.client.request("Live.getCounters", formattedParams);
+    return await this.client.request("Live.getCounters", formattedParams);
   }
 
   /**
@@ -126,7 +126,7 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.isVisitorProfileEnabled", params);
     }
-    return this.client.request("Live.isVisitorProfileEnabled", params);
+    return await this.client.request("Live.isVisitorProfileEnabled", params);
   }
 
   /**
@@ -139,7 +139,7 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.getLastVisitsDetails", params);
     }
-    return this.client.request("Live.getLastVisitsDetails", params);
+    return await this.client.request("Live.getLastVisitsDetails", params);
   }
 
   /**
@@ -152,7 +152,7 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.getVisitorProfile", params);
     }
-    return this.client.request("Live.getVisitorProfile", params);
+    return await this.client.request("Live.getVisitorProfile", params);
   }
 
   /**
@@ -165,7 +165,7 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.getMostRecentVisitorId", params);
     }
-    return this.client.request("Live.getMostRecentVisitorId", params);
+    return await this.client.request("Live.getMostRecentVisitorId", params);
   }
 
   /**
@@ -180,6 +180,9 @@ export class LiveModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Live.getMostRecentVisitsDateTime", params);
     }
-    return this.client.request("Live.getMostRecentVisitsDateTime", params);
+    return await this.client.request(
+      "Live.getMostRecentVisitsDateTime",
+      params
+    );
   }
 }

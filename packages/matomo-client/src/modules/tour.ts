@@ -24,7 +24,7 @@ export class TourModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Tour.getChallenges", {});
     }
-    return this.client.request("Tour.getChallenges", {});
+    return await this.client.request("Tour.getChallenges", {});
   }
 
   /**
@@ -36,7 +36,7 @@ export class TourModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Tour.skipChallenge", params);
     }
-    return this.client.request("Tour.skipChallenge", params);
+    return await this.client.request("Tour.skipChallenge", params);
   }
 
   /**
@@ -46,6 +46,6 @@ export class TourModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Tour.getLevel", {});
     }
-    return this.client.request("Tour.getLevel", {});
+    return await this.client.request("Tour.getLevel", {});
   }
 }

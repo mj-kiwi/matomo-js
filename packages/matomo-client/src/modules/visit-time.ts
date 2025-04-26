@@ -43,7 +43,7 @@ export class VisitTimeModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitTime.getVisitInformationPerLocalTime",
       params
     );
@@ -63,7 +63,7 @@ export class VisitTimeModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitTime.getVisitInformationPerServerTime",
       params
     );
@@ -78,6 +78,6 @@ export class VisitTimeModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitTime.getByDayOfWeek", params);
     }
-    return this.client.request("VisitTime.getByDayOfWeek", params);
+    return await this.client.request("VisitTime.getByDayOfWeek", params);
   }
 }

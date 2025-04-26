@@ -60,7 +60,7 @@ export class UserCountryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserCountry.getCountry", params);
     }
-    return this.client.request("UserCountry.getCountry", params);
+    return await this.client.request("UserCountry.getCountry", params);
   }
 
   /**
@@ -72,7 +72,7 @@ export class UserCountryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserCountry.getContinent", params);
     }
-    return this.client.request("UserCountry.getContinent", params);
+    return await this.client.request("UserCountry.getContinent", params);
   }
 
   /**
@@ -84,7 +84,7 @@ export class UserCountryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserCountry.getRegion", params);
     }
-    return this.client.request("UserCountry.getRegion", params);
+    return await this.client.request("UserCountry.getRegion", params);
   }
 
   /**
@@ -96,14 +96,17 @@ export class UserCountryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserCountry.getCity", params);
     }
-    return this.client.request("UserCountry.getCity", params);
+    return await this.client.request("UserCountry.getCity", params);
   }
 
   /**
    * Get the mapping between country codes and country names
    */
   async getCountryCodeMapping(): Promise<any> {
-    return this.client.request("UserCountry.getCountryCodeMapping", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.getCountryCodeMapping", {});
+    }
+    return await this.client.request("UserCountry.getCountryCodeMapping", {});
   }
 
   /**
@@ -115,7 +118,7 @@ export class UserCountryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserCountry.getLocationFromIP", params);
     }
-    return this.client.request("UserCountry.getLocationFromIP", params);
+    return await this.client.request("UserCountry.getLocationFromIP", params);
   }
 
   /**
@@ -124,7 +127,10 @@ export class UserCountryModule {
    * @param params Parameters for setting location provider
    */
   async setLocationProvider(params: SetLocationProviderParams): Promise<any> {
-    return this.client.request("UserCountry.setLocationProvider", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserCountry.setLocationProvider", params);
+    }
+    return await this.client.request("UserCountry.setLocationProvider", params);
   }
 
   /**
@@ -141,7 +147,7 @@ export class UserCountryModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "UserCountry.getNumberOfDistinctCountries",
       params
     );

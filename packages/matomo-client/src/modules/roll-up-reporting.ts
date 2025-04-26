@@ -51,7 +51,7 @@ export class RollUpReportingModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("RollUpReporting.addRollUp", params);
     }
-    return this.core.request<any>("RollUpReporting.addRollUp", params);
+    return await this.core.request<any>("RollUpReporting.addRollUp", params);
   }
 
   /**
@@ -63,16 +63,16 @@ export class RollUpReportingModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("RollUpReporting.updateRollUp", params);
     }
-    return this.core.request<any>("RollUpReporting.updateRollUp", params);
+    return await this.core.request<any>("RollUpReporting.updateRollUp", params);
   }
 
   /**
    * Get all roll-ups
    */
-  async getRollUps(): Promise<any[]> {
+  async getRollUps(): Promise<any[] | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("RollUpReporting.getRollUps", {});
     }
-    return this.core.request<any[]>("RollUpReporting.getRollUps");
+    return await this.core.request<any[]>("RollUpReporting.getRollUps");
   }
 }

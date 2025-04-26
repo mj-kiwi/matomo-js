@@ -328,7 +328,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getJavascriptTag", params);
     }
-    return this.client.request("SitesManager.getJavascriptTag", params);
+    return await this.client.request("SitesManager.getJavascriptTag", params);
   }
 
   /**
@@ -343,7 +343,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.getImageTrackingCode", params);
+    return await this.client.request(
+      "SitesManager.getImageTrackingCode",
+      params
+    );
   }
 
   /**
@@ -355,7 +358,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSitesFromGroup", params);
     }
-    return this.client.request("SitesManager.getSitesFromGroup", params);
+    return await this.client.request("SitesManager.getSitesFromGroup", params);
   }
 
   /**
@@ -365,7 +368,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSitesGroups", {});
     }
-    return this.client.request("SitesManager.getSitesGroups", {});
+    return await this.client.request("SitesManager.getSitesGroups", {});
   }
 
   /**
@@ -377,7 +380,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSiteFromId", params);
     }
-    return this.client.request("SitesManager.getSiteFromId", params);
+    return await this.client.request("SitesManager.getSiteFromId", params);
   }
 
   /**
@@ -389,7 +392,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSiteUrlsFromId", params);
     }
-    return this.client.request("SitesManager.getSiteUrlsFromId", params);
+    return await this.client.request("SitesManager.getSiteUrlsFromId", params);
   }
 
   /**
@@ -399,7 +402,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getAllSites", {});
     }
-    return this.client.request("SitesManager.getAllSites", {});
+    return await this.client.request("SitesManager.getAllSites", {});
   }
 
   /**
@@ -409,7 +412,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getAllSitesId", {});
     }
-    return this.client.request("SitesManager.getAllSitesId", {});
+    return await this.client.request("SitesManager.getAllSitesId", {});
   }
 
   /**
@@ -424,7 +427,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.getSitesWithAdminAccess", params);
+    return await this.client.request(
+      "SitesManager.getSitesWithAdminAccess",
+      params
+    );
   }
 
   /**
@@ -434,7 +440,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSitesWithViewAccess", {});
     }
-    return this.client.request("SitesManager.getSitesWithViewAccess", {});
+    return await this.client.request("SitesManager.getSitesWithViewAccess", {});
   }
 
   /**
@@ -449,7 +455,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getSitesWithAtLeastViewAccess",
       params
     );
@@ -465,7 +471,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getSitesIdWithAdminAccess", {});
+    return await this.client.request(
+      "SitesManager.getSitesIdWithAdminAccess",
+      {}
+    );
   }
 
   /**
@@ -478,7 +487,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getSitesIdWithViewAccess", {});
+    return await this.client.request(
+      "SitesManager.getSitesIdWithViewAccess",
+      {}
+    );
   }
 
   /**
@@ -491,7 +503,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getSitesIdWithWriteAccess", {});
+    return await this.client.request(
+      "SitesManager.getSitesIdWithWriteAccess",
+      {}
+    );
   }
 
   /**
@@ -504,7 +519,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getSitesIdWithAtLeastViewAccess",
       {}
     );
@@ -522,7 +537,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.getSitesIdFromSiteUrl", params);
+    return await this.client.request(
+      "SitesManager.getSitesIdFromSiteUrl",
+      params
+    );
   }
 
   /**
@@ -534,7 +552,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.addSite", params);
     }
-    return this.client.request("SitesManager.addSite", params);
+    return await this.client.request("SitesManager.addSite", params);
   }
 
   /**
@@ -546,7 +564,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getSiteSettings", params);
     }
-    return this.client.request("SitesManager.getSiteSettings", params);
+    return await this.client.request("SitesManager.getSiteSettings", params);
   }
 
   /**
@@ -558,7 +576,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.deleteSite", params);
     }
-    return this.client.request("SitesManager.deleteSite", params);
+    return await this.client.request("SitesManager.deleteSite", params);
   }
 
   /**
@@ -570,7 +588,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.addSiteAliasUrls", params);
     }
-    return this.client.request("SitesManager.addSiteAliasUrls", params);
+    return await this.client.request("SitesManager.addSiteAliasUrls", params);
   }
 
   /**
@@ -582,7 +600,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.setSiteAliasUrls", params);
     }
-    return this.client.request("SitesManager.setSiteAliasUrls", params);
+    return await this.client.request("SitesManager.setSiteAliasUrls", params);
   }
 
   /**
@@ -594,7 +612,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getIpsForRange", params);
     }
-    return this.client.request("SitesManager.getIpsForRange", params);
+    return await this.client.request("SitesManager.getIpsForRange", params);
   }
 
   /**
@@ -609,7 +627,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.setGlobalExcludedIps", params);
+    return await this.client.request(
+      "SitesManager.setGlobalExcludedIps",
+      params
+    );
   }
 
   /**
@@ -624,7 +645,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.setGlobalSearchParameters",
       params
     );
@@ -640,7 +661,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getSearchKeywordParametersGlobal",
       {}
     );
@@ -656,7 +677,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getSearchCategoryParametersGlobal",
       {}
     );
@@ -674,7 +695,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getExcludedQueryParameters",
       params
     );
@@ -690,7 +711,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getExcludedQueryParametersGlobal",
       {}
     );
@@ -706,7 +727,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getExcludedUserAgentsGlobal", {});
+    return await this.client.request(
+      "SitesManager.getExcludedUserAgentsGlobal",
+      {}
+    );
   }
 
   /**
@@ -723,7 +747,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.setGlobalExcludedUserAgents",
       params
     );
@@ -741,7 +765,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.getExcludedReferrers", params);
+    return await this.client.request(
+      "SitesManager.getExcludedReferrers",
+      params
+    );
   }
 
   /**
@@ -754,7 +781,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getExcludedReferrersGlobal", {});
+    return await this.client.request(
+      "SitesManager.getExcludedReferrersGlobal",
+      {}
+    );
   }
 
   /**
@@ -771,7 +801,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.setGlobalExcludedReferrers",
       params
     );
@@ -787,7 +817,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.getKeepURLFragmentsGlobal", {});
+    return await this.client.request(
+      "SitesManager.getKeepURLFragmentsGlobal",
+      {}
+    );
   }
 
   /**
@@ -802,7 +835,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.setKeepURLFragmentsGlobal",
       params
     );
@@ -815,7 +848,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getExcludedIpsGlobal", {});
     }
-    return this.client.request("SitesManager.getExcludedIpsGlobal", {});
+    return await this.client.request("SitesManager.getExcludedIpsGlobal", {});
   }
 
   /**
@@ -825,7 +858,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getDefaultCurrency", {});
     }
-    return this.client.request("SitesManager.getDefaultCurrency", {});
+    return await this.client.request("SitesManager.getDefaultCurrency", {});
   }
 
   /**
@@ -837,7 +870,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.setDefaultCurrency", params);
     }
-    return this.client.request("SitesManager.setDefaultCurrency", params);
+    return await this.client.request("SitesManager.setDefaultCurrency", params);
   }
 
   /**
@@ -847,7 +880,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getDefaultTimezone", {});
     }
-    return this.client.request("SitesManager.getDefaultTimezone", {});
+    return await this.client.request("SitesManager.getDefaultTimezone", {});
   }
 
   /**
@@ -859,7 +892,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.setDefaultTimezone", params);
     }
-    return this.client.request("SitesManager.setDefaultTimezone", params);
+    return await this.client.request("SitesManager.setDefaultTimezone", params);
   }
 
   /**
@@ -876,7 +909,7 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.setGlobalQueryParamExclusion",
       params
     );
@@ -892,7 +925,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getExclusionTypeForQueryParams",
       {}
     );
@@ -907,7 +940,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.updateSite", params);
     }
-    return this.client.request("SitesManager.updateSite", params);
+    return await this.client.request("SitesManager.updateSite", params);
   }
 
   /**
@@ -917,7 +950,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getCurrencyList", {});
     }
-    return this.client.request("SitesManager.getCurrencyList", {});
+    return await this.client.request("SitesManager.getCurrencyList", {});
   }
 
   /**
@@ -927,7 +960,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getCurrencySymbols", {});
     }
-    return this.client.request("SitesManager.getCurrencySymbols", {});
+    return await this.client.request("SitesManager.getCurrencySymbols", {});
   }
 
   /**
@@ -940,7 +973,10 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request("SitesManager.isTimezoneSupportEnabled", {});
+    return await this.client.request(
+      "SitesManager.isTimezoneSupportEnabled",
+      {}
+    );
   }
 
   /**
@@ -950,7 +986,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getTimezonesList", {});
     }
-    return this.client.request("SitesManager.getTimezonesList", {});
+    return await this.client.request("SitesManager.getTimezonesList", {});
   }
 
   /**
@@ -962,7 +998,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getTimezoneName", params);
     }
-    return this.client.request("SitesManager.getTimezoneName", params);
+    return await this.client.request("SitesManager.getTimezoneName", params);
   }
 
   /**
@@ -972,7 +1008,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.getUniqueSiteTimezones", {});
     }
-    return this.client.request("SitesManager.getUniqueSiteTimezones", {});
+    return await this.client.request("SitesManager.getUniqueSiteTimezones", {});
   }
 
   /**
@@ -984,7 +1020,7 @@ export class SitesManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SitesManager.renameGroup", params);
     }
-    return this.client.request("SitesManager.renameGroup", params);
+    return await this.client.request("SitesManager.renameGroup", params);
   }
 
   /**
@@ -999,7 +1035,10 @@ export class SitesManagerModule {
         params
       );
     }
-    return this.client.request("SitesManager.getPatternMatchSites", params);
+    return await this.client.request(
+      "SitesManager.getPatternMatchSites",
+      params
+    );
   }
 
   /**
@@ -1012,7 +1051,7 @@ export class SitesManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SitesManager.getNumWebsitesToDisplayPerPage",
       {}
     );

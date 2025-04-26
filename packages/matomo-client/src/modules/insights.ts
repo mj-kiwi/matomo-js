@@ -69,11 +69,11 @@ export class InsightsModule {
    * @param params Parameters for checking generation capabilities
    * @returns Promise with the result whether insights can be generated
    */
-  canGenerateInsights(params: CanGenerateInsightsParams): Promise<any> {
+  async canGenerateInsights(params: CanGenerateInsightsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Insights.canGenerateInsights", params);
     }
-    return this.client.request("Insights.canGenerateInsights", params);
+    return await this.client.request("Insights.canGenerateInsights", params);
   }
 
   /**
@@ -82,11 +82,11 @@ export class InsightsModule {
    * @param params Parameters for site insights
    * @returns Promise with the insights overview
    */
-  getInsightsOverview(params: SiteInsightsParams): Promise<any> {
+  async getInsightsOverview(params: SiteInsightsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Insights.getInsightsOverview", params);
     }
-    return this.client.request("Insights.getInsightsOverview", params);
+    return await this.client.request("Insights.getInsightsOverview", params);
   }
 
   /**
@@ -95,14 +95,17 @@ export class InsightsModule {
    * @param params Parameters for site insights
    * @returns Promise with movers and shakers overview
    */
-  getMoversAndShakersOverview(params: SiteInsightsParams): Promise<any> {
+  async getMoversAndShakersOverview(params: SiteInsightsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "Insights.getMoversAndShakersOverview",
         params
       );
     }
-    return this.client.request("Insights.getMoversAndShakersOverview", params);
+    return await this.client.request(
+      "Insights.getMoversAndShakersOverview",
+      params
+    );
   }
 
   /**
@@ -111,11 +114,11 @@ export class InsightsModule {
    * @param params Parameters for movers and shakers data
    * @returns Promise with movers and shakers data
    */
-  getMoversAndShakers(params: MoversAndShakersParams): Promise<any> {
+  async getMoversAndShakers(params: MoversAndShakersParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Insights.getMoversAndShakers", params);
     }
-    return this.client.request("Insights.getMoversAndShakers", params);
+    return await this.client.request("Insights.getMoversAndShakers", params);
   }
 
   /**
@@ -124,10 +127,10 @@ export class InsightsModule {
    * @param params Parameters for insights data
    * @returns Promise with insights data
    */
-  getInsights(params: InsightsParams): Promise<any> {
+  async getInsights(params: InsightsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Insights.getInsights", params);
     }
-    return this.client.request("Insights.getInsights", params);
+    return await this.client.request("Insights.getInsights", params);
   }
 }

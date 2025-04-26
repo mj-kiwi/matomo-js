@@ -73,7 +73,7 @@ export class UsersFlowModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersFlow.getUsersFlowPretty", params);
     }
-    return this.client.request("UsersFlow.getUsersFlowPretty", params);
+    return await this.client.request("UsersFlow.getUsersFlowPretty", params);
   }
 
   /**
@@ -85,7 +85,7 @@ export class UsersFlowModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersFlow.getUsersFlow", params);
     }
-    return this.client.request("UsersFlow.getUsersFlow", params);
+    return await this.client.request("UsersFlow.getUsersFlow", params);
   }
 
   /**
@@ -97,7 +97,7 @@ export class UsersFlowModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersFlow.getInteractionActions", params);
     }
-    return this.client.request("UsersFlow.getInteractionActions", params);
+    return await this.client.request("UsersFlow.getInteractionActions", params);
   }
 
   /**
@@ -107,6 +107,6 @@ export class UsersFlowModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersFlow.getAvailableDataSources", {});
     }
-    return this.client.request("UsersFlow.getAvailableDataSources", {});
+    return await this.client.request("UsersFlow.getAvailableDataSources", {});
   }
 }

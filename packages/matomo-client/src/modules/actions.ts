@@ -68,7 +68,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.get", params);
     }
-    return this.client.request("Actions.get", params);
+    return await this.client.request("Actions.get", params);
   }
 
   /**
@@ -80,7 +80,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getPageUrls", params);
     }
-    return this.client.request("Actions.getPageUrls", params);
+    return await this.client.request("Actions.getPageUrls", params);
   }
 
   /**
@@ -95,7 +95,7 @@ export class ActionsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "Actions.getPageUrlsFollowingSiteSearch",
       params
     );
@@ -115,7 +115,7 @@ export class ActionsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "Actions.getPageTitlesFollowingSiteSearch",
       params
     );
@@ -130,7 +130,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getEntryPageUrls", params);
     }
-    return this.client.request("Actions.getEntryPageUrls", params);
+    return await this.client.request("Actions.getEntryPageUrls", params);
   }
 
   /**
@@ -142,7 +142,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getExitPageUrls", params);
     }
-    return this.client.request("Actions.getExitPageUrls", params);
+    return await this.client.request("Actions.getExitPageUrls", params);
   }
 
   /**
@@ -156,7 +156,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getPageUrl", params);
     }
-    return this.client.request("Actions.getPageUrl", params);
+    return await this.client.request("Actions.getPageUrl", params);
   }
 
   /**
@@ -168,7 +168,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getPageTitles", params);
     }
-    return this.client.request("Actions.getPageTitles", params);
+    return await this.client.request("Actions.getPageTitles", params);
   }
 
   /**
@@ -180,7 +180,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getEntryPageTitles", params);
     }
-    return this.client.request("Actions.getEntryPageTitles", params);
+    return await this.client.request("Actions.getEntryPageTitles", params);
   }
 
   /**
@@ -192,7 +192,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getExitPageTitles", params);
     }
-    return this.client.request("Actions.getExitPageTitles", params);
+    return await this.client.request("Actions.getExitPageTitles", params);
   }
 
   /**
@@ -206,7 +206,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getPageTitle", params);
     }
-    return this.client.request("Actions.getPageTitle", params);
+    return await this.client.request("Actions.getPageTitle", params);
   }
 
   /**
@@ -218,7 +218,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getDownloads", params);
     }
-    return this.client.request("Actions.getDownloads", params);
+    return await this.client.request("Actions.getDownloads", params);
   }
 
   /**
@@ -232,7 +232,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getDownload", params);
     }
-    return this.client.request("Actions.getDownload", params);
+    return await this.client.request("Actions.getDownload", params);
   }
 
   /**
@@ -244,7 +244,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getOutlinks", params);
     }
-    return this.client.request("Actions.getOutlinks", params);
+    return await this.client.request("Actions.getOutlinks", params);
   }
 
   /**
@@ -258,7 +258,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getOutlink", params);
     }
-    return this.client.request("Actions.getOutlink", params);
+    return await this.client.request("Actions.getOutlink", params);
   }
 
   /**
@@ -270,7 +270,7 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getSiteSearchKeywords", params);
     }
-    return this.client.request("Actions.getSiteSearchKeywords", params);
+    return await this.client.request("Actions.getSiteSearchKeywords", params);
   }
 
   /**
@@ -287,7 +287,10 @@ export class ActionsModule {
         params
       );
     }
-    return this.client.request("Actions.getSiteSearchNoResultKeywords", params);
+    return await this.client.request(
+      "Actions.getSiteSearchNoResultKeywords",
+      params
+    );
   }
 
   /**
@@ -299,6 +302,6 @@ export class ActionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Actions.getSiteSearchCategories", params);
     }
-    return this.client.request("Actions.getSiteSearchCategories", params);
+    return await this.client.request("Actions.getSiteSearchCategories", params);
   }
 }

@@ -31,7 +31,7 @@ export class CoreAdminHomeModule {
         {}
       );
     }
-    return this.client.request("CoreAdminHome.deleteAllTrackingFailures");
+    return await this.client.request("CoreAdminHome.deleteAllTrackingFailures");
   }
 
   /**
@@ -47,7 +47,10 @@ export class CoreAdminHomeModule {
         params
       );
     }
-    return this.client.request("CoreAdminHome.deleteTrackingFailure", params);
+    return await this.client.request(
+      "CoreAdminHome.deleteTrackingFailure",
+      params
+    );
   }
 
   /**
@@ -59,6 +62,6 @@ export class CoreAdminHomeModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CoreAdminHome.getTrackingFailures", {});
     }
-    return this.client.request("CoreAdminHome.getTrackingFailures");
+    return await this.client.request("CoreAdminHome.getTrackingFailures");
   }
 }

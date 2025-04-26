@@ -53,7 +53,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getCategory", params);
     }
-    return this.client.request("Events.getCategory", params);
+    return await this.client.request("Events.getCategory", params);
   }
 
   /**
@@ -66,7 +66,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getAction", params);
     }
-    return this.client.request("Events.getAction", params);
+    return await this.client.request("Events.getAction", params);
   }
 
   /**
@@ -79,7 +79,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getName", params);
     }
-    return this.client.request("Events.getName", params);
+    return await this.client.request("Events.getName", params);
   }
 
   /**
@@ -92,7 +92,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getActionFromCategoryId", params);
     }
-    return this.client.request("Events.getActionFromCategoryId", params);
+    return await this.client.request("Events.getActionFromCategoryId", params);
   }
 
   /**
@@ -105,7 +105,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getNameFromCategoryId", params);
     }
-    return this.client.request("Events.getNameFromCategoryId", params);
+    return await this.client.request("Events.getNameFromCategoryId", params);
   }
 
   /**
@@ -118,7 +118,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getCategoryFromActionId", params);
     }
-    return this.client.request("Events.getCategoryFromActionId", params);
+    return await this.client.request("Events.getCategoryFromActionId", params);
   }
 
   /**
@@ -131,7 +131,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getNameFromActionId", params);
     }
-    return this.client.request("Events.getNameFromActionId", params);
+    return await this.client.request("Events.getNameFromActionId", params);
   }
 
   /**
@@ -144,7 +144,7 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getActionFromNameId", params);
     }
-    return this.client.request("Events.getActionFromNameId", params);
+    return await this.client.request("Events.getActionFromNameId", params);
   }
 
   /**
@@ -157,6 +157,6 @@ export class EventsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Events.getCategoryFromNameId", params);
     }
-    return this.client.request("Events.getCategoryFromNameId", params);
+    return await this.client.request("Events.getCategoryFromNameId", params);
   }
 }

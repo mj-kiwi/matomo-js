@@ -45,7 +45,7 @@ export class OverlayModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Overlay.getTranslations", params);
     }
-    return this.core.request<any>("Overlay.getTranslations", params);
+    return await this.core.request<any>("Overlay.getTranslations", params);
   }
 
   /**
@@ -57,6 +57,6 @@ export class OverlayModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Overlay.getFollowingPages", params);
     }
-    return this.core.request<any>("Overlay.getFollowingPages", params);
+    return await this.core.request<any>("Overlay.getFollowingPages", params);
   }
 }

@@ -143,7 +143,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getMetricsOverview", params);
     }
-    return this.client.request("AbTesting.getMetricsOverview", params);
+    return await this.client.request("AbTesting.getMetricsOverview", params);
   }
 
   /**
@@ -155,7 +155,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getMetricDetails", params);
     }
-    return this.client.request("AbTesting.getMetricDetails", params);
+    return await this.client.request("AbTesting.getMetricDetails", params);
   }
 
   /**
@@ -167,7 +167,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.addExperiment", params);
     }
-    return this.client.request("AbTesting.addExperiment", params);
+    return await this.client.request("AbTesting.addExperiment", params);
   }
 
   /**
@@ -179,7 +179,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.updateExperiment", params);
     }
-    return this.client.request("AbTesting.updateExperiment", params);
+    return await this.client.request("AbTesting.updateExperiment", params);
   }
 
   /**
@@ -191,7 +191,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.startExperiment", params);
     }
-    return this.client.request("AbTesting.startExperiment", params);
+    return await this.client.request("AbTesting.startExperiment", params);
   }
 
   /**
@@ -203,7 +203,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.finishExperiment", params);
     }
-    return this.client.request("AbTesting.finishExperiment", params);
+    return await this.client.request("AbTesting.finishExperiment", params);
   }
 
   /**
@@ -215,7 +215,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.archiveExperiment", params);
     }
-    return this.client.request("AbTesting.archiveExperiment", params);
+    return await this.client.request("AbTesting.archiveExperiment", params);
   }
 
   /**
@@ -228,7 +228,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getJsIncludeTemplate", params);
     }
-    return this.client.request("AbTesting.getJsIncludeTemplate", params);
+    return await this.client.request("AbTesting.getJsIncludeTemplate", params);
   }
 
   /**
@@ -246,7 +246,7 @@ export class AbTestingModule {
         params
       );
     }
-    return this.client.request("AbTesting.getJsExperimentTemplate", params);
+    return await this.client.request("AbTesting.getJsExperimentTemplate", params);
   }
 
   /**
@@ -258,7 +258,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getAllExperiments", params);
     }
-    return this.client.request("AbTesting.getAllExperiments", params);
+    return await this.client.request("AbTesting.getAllExperiments", params);
   }
 
   /**
@@ -270,7 +270,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getActiveExperiments", params);
     }
-    return this.client.request("AbTesting.getActiveExperiments", params);
+    return await this.client.request("AbTesting.getActiveExperiments", params);
   }
 
   /**
@@ -287,7 +287,7 @@ export class AbTestingModule {
         params
       );
     }
-    return this.client.request("AbTesting.getExperimentsByStatuses", params);
+    return await this.client.request("AbTesting.getExperimentsByStatuses", params);
   }
 
   /**
@@ -299,7 +299,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getExperiment", params);
     }
-    return this.client.request("AbTesting.getExperiment", params);
+    return await this.client.request("AbTesting.getExperiment", params);
   }
 
   /**
@@ -311,7 +311,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.deleteExperiment", params);
     }
-    return this.client.request("AbTesting.deleteExperiment", params);
+    return await this.client.request("AbTesting.deleteExperiment", params);
   }
 
   /**
@@ -323,7 +323,7 @@ export class AbTestingModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AbTesting.getAvailableStatuses", params);
     }
-    return this.client.request("AbTesting.getAvailableStatuses", params);
+    return await this.client.request("AbTesting.getAvailableStatuses", params);
   }
 
   /**
@@ -338,7 +338,7 @@ export class AbTestingModule {
         params
       );
     }
-    return this.client.request("AbTesting.getAvailableSuccessMetrics", params);
+    return await this.client.request("AbTesting.getAvailableSuccessMetrics", params);
   }
 
   /**
@@ -354,7 +354,7 @@ export class AbTestingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AbTesting.getAvailableTargetAttributes",
       params
     );
@@ -372,6 +372,6 @@ export class AbTestingModule {
         params
       );
     }
-    return this.client.request("AbTesting.getExperimentsWithReports", params);
+    return await this.client.request("AbTesting.getExperimentsWithReports", params);
   }
 }

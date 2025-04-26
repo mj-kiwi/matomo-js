@@ -76,10 +76,10 @@ export class ImageGraphModule {
    * @param params Parameters for generating the graph
    * @returns Promise with the image data
    */
-  get(params: ImageGraphParams): Promise<any> {
+  async get(params: ImageGraphParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("ImageGraph.get", params);
     }
-    return this.client.request("ImageGraph.get", params);
+    return await this.client.request("ImageGraph.get", params);
   }
 }

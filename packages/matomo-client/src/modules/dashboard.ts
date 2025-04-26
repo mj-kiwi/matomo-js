@@ -73,7 +73,7 @@ export class DashboardModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Dashboard.getDashboards", params);
     }
-    return this.client.request("Dashboard.getDashboards", params);
+    return await this.client.request("Dashboard.getDashboards", params);
   }
 
   /**
@@ -91,7 +91,10 @@ export class DashboardModule {
         params
       );
     }
-    return this.client.request("Dashboard.createNewDashboardForUser", params);
+    return await this.client.request(
+      "Dashboard.createNewDashboardForUser",
+      params
+    );
   }
 
   /**
@@ -104,7 +107,7 @@ export class DashboardModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Dashboard.removeDashboard", params);
     }
-    return this.client.request("Dashboard.removeDashboard", params);
+    return await this.client.request("Dashboard.removeDashboard", params);
   }
 
   /**
@@ -117,7 +120,7 @@ export class DashboardModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Dashboard.copyDashboardToUser", params);
     }
-    return this.client.request("Dashboard.copyDashboardToUser", params);
+    return await this.client.request("Dashboard.copyDashboardToUser", params);
   }
 
   /**
@@ -130,6 +133,6 @@ export class DashboardModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Dashboard.resetDashboardLayout", params);
     }
-    return this.client.request("Dashboard.resetDashboardLayout", params);
+    return await this.client.request("Dashboard.resetDashboardLayout", params);
   }
 }

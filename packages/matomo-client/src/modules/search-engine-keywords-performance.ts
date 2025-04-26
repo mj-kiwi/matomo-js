@@ -55,7 +55,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywords",
       params
     );
@@ -74,7 +74,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsImported",
       params
     );
@@ -93,7 +93,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogle",
       params
     );
@@ -112,7 +112,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsBing",
       params
     );
@@ -131,7 +131,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsYandex",
       params
     );
@@ -150,7 +150,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleWeb",
       params
     );
@@ -169,7 +169,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleImage",
       params
     );
@@ -188,7 +188,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleVideo",
       params
     );
@@ -207,7 +207,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleNews",
       params
     );
@@ -226,7 +226,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingOverviewBing",
       params
     );
@@ -245,7 +245,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingOverviewYandex",
       params
     );
@@ -266,7 +266,7 @@ export class SearchEngineKeywordsPerformanceModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingErrorExamplesBing",
       params
     );

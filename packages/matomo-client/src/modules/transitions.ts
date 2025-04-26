@@ -79,7 +79,7 @@ export class TransitionsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "Transitions.getTransitionsForPageTitle",
       params
     );
@@ -99,7 +99,10 @@ export class TransitionsModule {
         params
       );
     }
-    return this.client.request("Transitions.getTransitionsForPageUrl", params);
+    return await this.client.request(
+      "Transitions.getTransitionsForPageUrl",
+      params
+    );
   }
 
   /**
@@ -114,7 +117,10 @@ export class TransitionsModule {
         params
       );
     }
-    return this.client.request("Transitions.getTransitionsForAction", params);
+    return await this.client.request(
+      "Transitions.getTransitionsForAction",
+      params
+    );
   }
 
   /**
@@ -124,7 +130,7 @@ export class TransitionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Transitions.getTranslations", {});
     }
-    return this.client.request("Transitions.getTranslations", {});
+    return await this.client.request("Transitions.getTranslations", {});
   }
 
   /**
@@ -136,6 +142,6 @@ export class TransitionsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Transitions.isPeriodAllowed", params);
     }
-    return this.client.request("Transitions.isPeriodAllowed", params);
+    return await this.client.request("Transitions.isPeriodAllowed", params);
   }
 }

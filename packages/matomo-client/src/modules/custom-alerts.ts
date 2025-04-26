@@ -98,7 +98,10 @@ export class CustomAlertsModule {
         params
       );
     }
-    return this.client.request("CustomAlerts.getValuesForAlertInPast", params);
+    return await this.client.request(
+      "CustomAlerts.getValuesForAlertInPast",
+      params
+    );
   }
 
   /**
@@ -111,7 +114,7 @@ export class CustomAlertsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomAlerts.getAlert", params);
     }
-    return this.client.request("CustomAlerts.getAlert", params);
+    return await this.client.request("CustomAlerts.getAlert", params);
   }
 
   /**
@@ -137,7 +140,7 @@ export class CustomAlertsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomAlerts.getAlerts", requestParams);
     }
-    return this.client.request("CustomAlerts.getAlerts", requestParams);
+    return await this.client.request("CustomAlerts.getAlerts", requestParams);
   }
 
   /**
@@ -187,7 +190,7 @@ export class CustomAlertsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomAlerts.addAlert", requestParams);
     }
-    return this.client.request("CustomAlerts.addAlert", requestParams);
+    return await this.client.request("CustomAlerts.addAlert", requestParams);
   }
 
   /**
@@ -238,7 +241,7 @@ export class CustomAlertsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomAlerts.editAlert", requestParams);
     }
-    return this.client.request("CustomAlerts.editAlert", requestParams);
+    return await this.client.request("CustomAlerts.editAlert", requestParams);
   }
 
   /**
@@ -251,7 +254,7 @@ export class CustomAlertsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomAlerts.deleteAlert", params);
     }
-    return this.client.request("CustomAlerts.deleteAlert", params);
+    return await this.client.request("CustomAlerts.deleteAlert", params);
   }
 
   /**
@@ -275,7 +278,7 @@ export class CustomAlertsModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CustomAlerts.getTriggeredAlerts",
       requestParams
     );

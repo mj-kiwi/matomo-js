@@ -88,7 +88,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.hasRecords", params);
     }
-    return this.client.request("MediaAnalytics.hasRecords", params);
+    return await this.client.request("MediaAnalytics.hasRecords", params);
   }
 
   /**
@@ -100,7 +100,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.get", params);
     }
-    return this.client.request("MediaAnalytics.get", params);
+    return await this.client.request("MediaAnalytics.get", params);
   }
 
   /**
@@ -115,7 +115,10 @@ export class MediaAnalyticsModule {
         params
       );
     }
-    return this.client.request("MediaAnalytics.getCurrentNumPlays", params);
+    return await this.client.request(
+      "MediaAnalytics.getCurrentNumPlays",
+      params
+    );
   }
 
   /**
@@ -130,7 +133,10 @@ export class MediaAnalyticsModule {
         params
       );
     }
-    return this.client.request("MediaAnalytics.getCurrentSumTimeSpent", params);
+    return await this.client.request(
+      "MediaAnalytics.getCurrentSumTimeSpent",
+      params
+    );
   }
 
   /**
@@ -149,7 +155,7 @@ export class MediaAnalyticsModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MediaAnalytics.getCurrentMostPlays",
       requestParams
     );
@@ -164,7 +170,10 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getVideoResources", params);
     }
-    return this.client.request("MediaAnalytics.getVideoResources", params);
+    return await this.client.request(
+      "MediaAnalytics.getVideoResources",
+      params
+    );
   }
 
   /**
@@ -176,7 +185,10 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getAudioResources", params);
     }
-    return this.client.request("MediaAnalytics.getAudioResources", params);
+    return await this.client.request(
+      "MediaAnalytics.getAudioResources",
+      params
+    );
   }
 
   /**
@@ -188,7 +200,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getVideoTitles", params);
     }
-    return this.client.request("MediaAnalytics.getVideoTitles", params);
+    return await this.client.request("MediaAnalytics.getVideoTitles", params);
   }
 
   /**
@@ -200,7 +212,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getAudioTitles", params);
     }
-    return this.client.request("MediaAnalytics.getAudioTitles", params);
+    return await this.client.request("MediaAnalytics.getAudioTitles", params);
   }
 
   /**
@@ -215,7 +227,7 @@ export class MediaAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MediaAnalytics.getGroupedVideoResources",
       params
     );
@@ -233,7 +245,7 @@ export class MediaAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "MediaAnalytics.getGroupedAudioResources",
       params
     );
@@ -248,7 +260,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getVideoHours", params);
     }
-    return this.client.request("MediaAnalytics.getVideoHours", params);
+    return await this.client.request("MediaAnalytics.getVideoHours", params);
   }
 
   /**
@@ -260,7 +272,7 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getAudioHours", params);
     }
-    return this.client.request("MediaAnalytics.getAudioHours", params);
+    return await this.client.request("MediaAnalytics.getAudioHours", params);
   }
 
   /**
@@ -275,7 +287,10 @@ export class MediaAnalyticsModule {
         params
       );
     }
-    return this.client.request("MediaAnalytics.getVideoResolutions", params);
+    return await this.client.request(
+      "MediaAnalytics.getVideoResolutions",
+      params
+    );
   }
 
   /**
@@ -287,6 +302,6 @@ export class MediaAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("MediaAnalytics.getPlayers", params);
     }
-    return this.client.request("MediaAnalytics.getPlayers", params);
+    return await this.client.request("MediaAnalytics.getPlayers", params);
   }
 }

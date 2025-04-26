@@ -90,7 +90,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.get", params);
     }
-    return this.core.request<any>("Referrers.get", params);
+    return await this.core.request<any>("Referrers.get", params);
   }
 
   /**
@@ -102,7 +102,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getReferrerType", params);
     }
-    return this.core.request<any>("Referrers.getReferrerType", params);
+    return await this.core.request<any>("Referrers.getReferrerType", params);
   }
 
   /**
@@ -114,7 +114,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getAll", params);
     }
-    return this.core.request<any>("Referrers.getAll", params);
+    return await this.core.request<any>("Referrers.getAll", params);
   }
 
   /**
@@ -126,7 +126,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getDirectEntry", params);
     }
-    return this.core.request<any>("Referrers.getDirectEntry", params);
+    return await this.core.request<any>("Referrers.getDirectEntry", params);
   }
 
   /**
@@ -138,7 +138,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getSearchEngines", params);
     }
-    return this.core.request<any>("Referrers.getSearchEngines", params);
+    return await this.core.request<any>("Referrers.getSearchEngines", params);
   }
 
   /**
@@ -155,7 +155,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getKeywordsFromSearchEngineId",
       params
     );
@@ -170,7 +170,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getCampaigns", params);
     }
-    return this.core.request<any>("Referrers.getCampaigns", params);
+    return await this.core.request<any>("Referrers.getCampaigns", params);
   }
 
   /**
@@ -187,7 +187,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getKeywordsFromCampaignId",
       params
     );
@@ -202,7 +202,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getWebsites", params);
     }
-    return this.core.request<any>("Referrers.getWebsites", params);
+    return await this.core.request<any>("Referrers.getWebsites", params);
   }
 
   /**
@@ -214,7 +214,10 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getUrlsFromWebsiteId", params);
     }
-    return this.core.request<any>("Referrers.getUrlsFromWebsiteId", params);
+    return await this.core.request<any>(
+      "Referrers.getUrlsFromWebsiteId",
+      params
+    );
   }
 
   /**
@@ -226,7 +229,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getSocials", params);
     }
-    return this.core.request<any>("Referrers.getSocials", params);
+    return await this.core.request<any>("Referrers.getSocials", params);
   }
 
   /**
@@ -238,7 +241,7 @@ export class ReferrersModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("Referrers.getUrlsForSocial", params);
     }
-    return this.core.request<any>("Referrers.getUrlsForSocial", params);
+    return await this.core.request<any>("Referrers.getUrlsForSocial", params);
   }
 
   /**
@@ -253,7 +256,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctSearchEngines",
       params
     );
@@ -271,7 +274,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctKeywords",
       params
     );
@@ -289,7 +292,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctCampaigns",
       params
     );
@@ -307,7 +310,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctWebsites",
       params
     );
@@ -325,7 +328,7 @@ export class ReferrersModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctWebsitesUrls",
       params
     );

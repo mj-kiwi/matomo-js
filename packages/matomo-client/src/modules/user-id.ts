@@ -32,6 +32,6 @@ export class UserIdModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserId.getUsers", params);
     }
-    return this.client.request("UserId.getUsers", params);
+    return await this.client.request("UserId.getUsers", params);
   }
 }

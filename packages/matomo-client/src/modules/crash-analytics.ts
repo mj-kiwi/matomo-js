@@ -176,7 +176,7 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CrashAnalytics.searchCrashMessagesForMerge",
       params
     );
@@ -192,7 +192,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.mergeCrashes", params);
     }
-    return this.client.request("CrashAnalytics.mergeCrashes", params);
+    return await this.client.request("CrashAnalytics.mergeCrashes", params);
   }
 
   /**
@@ -205,7 +205,10 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.unmergeCrashGroup", params);
     }
-    return this.client.request("CrashAnalytics.unmergeCrashGroup", params);
+    return await this.client.request(
+      "CrashAnalytics.unmergeCrashGroup",
+      params
+    );
   }
 
   /**
@@ -218,7 +221,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getCrashGroups", params);
     }
-    return this.client.request("CrashAnalytics.getCrashGroups", params);
+    return await this.client.request("CrashAnalytics.getCrashGroups", params);
   }
 
   /**
@@ -231,7 +234,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getCrashTypes", params);
     }
-    return this.client.request("CrashAnalytics.getCrashTypes", params);
+    return await this.client.request("CrashAnalytics.getCrashTypes", params);
   }
 
   /**
@@ -244,7 +247,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.setIgnoreCrash", params);
     }
-    return this.client.request("CrashAnalytics.setIgnoreCrash", params);
+    return await this.client.request("CrashAnalytics.setIgnoreCrash", params);
   }
 
   /**
@@ -257,7 +260,10 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getIgnoredCrashes", params);
     }
-    return this.client.request("CrashAnalytics.getIgnoredCrashes", params);
+    return await this.client.request(
+      "CrashAnalytics.getIgnoredCrashes",
+      params
+    );
   }
 
   /**
@@ -270,7 +276,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getCrashSummary", params);
     }
-    return this.client.request("CrashAnalytics.getCrashSummary", params);
+    return await this.client.request("CrashAnalytics.getCrashSummary", params);
   }
 
   /**
@@ -286,7 +292,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashVisitContext", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashVisitContext",
+      params
+    );
   }
 
   /**
@@ -299,7 +308,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getAllCrashes", params);
     }
-    return this.client.request("CrashAnalytics.getAllCrashes", params);
+    return await this.client.request("CrashAnalytics.getAllCrashes", params);
   }
 
   /**
@@ -312,7 +321,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.get", params);
     }
-    return this.client.request("CrashAnalytics.get", params);
+    return await this.client.request("CrashAnalytics.get", params);
   }
 
   /**
@@ -328,7 +337,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getAllCrashMessages", params);
+    return await this.client.request(
+      "CrashAnalytics.getAllCrashMessages",
+      params
+    );
   }
 
   /**
@@ -341,7 +353,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getCrashMessages", params);
     }
-    return this.client.request("CrashAnalytics.getCrashMessages", params);
+    return await this.client.request("CrashAnalytics.getCrashMessages", params);
   }
 
   /**
@@ -357,7 +369,7 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CrashAnalytics.getUnidentifiedCrashMessages",
       params
     );
@@ -376,7 +388,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getDisappearedCrashes", params);
+    return await this.client.request(
+      "CrashAnalytics.getDisappearedCrashes",
+      params
+    );
   }
 
   /**
@@ -392,7 +407,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getReappearedCrashes", params);
+    return await this.client.request(
+      "CrashAnalytics.getReappearedCrashes",
+      params
+    );
   }
 
   /**
@@ -405,7 +423,7 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getNewCrashes", params);
     }
-    return this.client.request("CrashAnalytics.getNewCrashes", params);
+    return await this.client.request("CrashAnalytics.getNewCrashes", params);
   }
 
   /**
@@ -421,7 +439,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesByPageUrl", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesByPageUrl",
+      params
+    );
   }
 
   /**
@@ -437,7 +458,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesForPageUrl", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesForPageUrl",
+      params
+    );
   }
 
   /**
@@ -453,7 +477,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesByPageTitle", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesByPageTitle",
+      params
+    );
   }
 
   /**
@@ -469,7 +496,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesForPageTitle", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesForPageTitle",
+      params
+    );
   }
 
   /**
@@ -485,7 +515,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesBySource", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesBySource",
+      params
+    );
   }
 
   /**
@@ -501,7 +534,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesForSource", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesForSource",
+      params
+    );
   }
 
   /**
@@ -517,7 +553,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesByCategory", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesByCategory",
+      params
+    );
   }
 
   /**
@@ -533,7 +572,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesForCategory", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesForCategory",
+      params
+    );
   }
 
   /**
@@ -549,7 +591,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesByFirstParty", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesByFirstParty",
+      params
+    );
   }
 
   /**
@@ -565,7 +610,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getCrashesByThirdParty", params);
+    return await this.client.request(
+      "CrashAnalytics.getCrashesByThirdParty",
+      params
+    );
   }
 
   /**
@@ -581,7 +629,10 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request("CrashAnalytics.getLastCrashesOverview", params);
+    return await this.client.request(
+      "CrashAnalytics.getLastCrashesOverview",
+      params
+    );
   }
 
   /**
@@ -594,7 +645,10 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getLastTopCrashes", params);
     }
-    return this.client.request("CrashAnalytics.getLastTopCrashes", params);
+    return await this.client.request(
+      "CrashAnalytics.getLastTopCrashes",
+      params
+    );
   }
 
   /**
@@ -607,7 +661,10 @@ export class CrashAnalyticsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CrashAnalytics.getLastNewCrashes", params);
     }
-    return this.client.request("CrashAnalytics.getLastNewCrashes", params);
+    return await this.client.request(
+      "CrashAnalytics.getLastNewCrashes",
+      params
+    );
   }
 
   /**
@@ -623,7 +680,7 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CrashAnalytics.getLastReappearedCrashes",
       params
     );
@@ -642,7 +699,7 @@ export class CrashAnalyticsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CrashAnalytics.getLastDisappearedCrashes",
       params
     );

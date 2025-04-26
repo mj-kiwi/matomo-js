@@ -68,7 +68,10 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request("LanguagesManager.isLanguageAvailable", params);
+    return await this.client.request(
+      "LanguagesManager.isLanguageAvailable",
+      params
+    );
   }
 
   /**
@@ -83,7 +86,7 @@ export class LanguagesManagerModule {
         {}
       );
     }
-    return this.client.request("LanguagesManager.getAvailableLanguages");
+    return await this.client.request("LanguagesManager.getAvailableLanguages");
   }
 
   /**
@@ -101,7 +104,7 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "LanguagesManager.getAvailableLanguagesInfo",
       params
     );
@@ -119,7 +122,9 @@ export class LanguagesManagerModule {
         {}
       );
     }
-    return this.client.request("LanguagesManager.getAvailableLanguageNames");
+    return await this.client.request(
+      "LanguagesManager.getAvailableLanguageNames"
+    );
   }
 
   /**
@@ -135,7 +140,7 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "LanguagesManager.getTranslationsForLanguage",
       params
     );
@@ -154,7 +159,10 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request("LanguagesManager.getLanguageForUser", params);
+    return await this.client.request(
+      "LanguagesManager.getLanguageForUser",
+      params
+    );
   }
 
   /**
@@ -170,7 +178,10 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request("LanguagesManager.setLanguageForUser", params);
+    return await this.client.request(
+      "LanguagesManager.setLanguageForUser",
+      params
+    );
   }
 
   /**
@@ -186,7 +197,7 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "LanguagesManager.uses12HourClockForUser",
       params
     );
@@ -205,7 +216,7 @@ export class LanguagesManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "LanguagesManager.set12HourClockForUser",
       params
     );

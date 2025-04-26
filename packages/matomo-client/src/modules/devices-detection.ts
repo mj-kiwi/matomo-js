@@ -33,7 +33,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getType", params);
     }
-    return this.client.request("DevicesDetection.getType", params);
+    return await this.client.request("DevicesDetection.getType", params);
   }
 
   /**
@@ -46,7 +46,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getBrand", params);
     }
-    return this.client.request("DevicesDetection.getBrand", params);
+    return await this.client.request("DevicesDetection.getBrand", params);
   }
 
   /**
@@ -59,7 +59,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getModel", params);
     }
-    return this.client.request("DevicesDetection.getModel", params);
+    return await this.client.request("DevicesDetection.getModel", params);
   }
 
   /**
@@ -72,7 +72,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getOsFamilies", params);
     }
-    return this.client.request("DevicesDetection.getOsFamilies", params);
+    return await this.client.request("DevicesDetection.getOsFamilies", params);
   }
 
   /**
@@ -85,7 +85,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getOsVersions", params);
     }
-    return this.client.request("DevicesDetection.getOsVersions", params);
+    return await this.client.request("DevicesDetection.getOsVersions", params);
   }
 
   /**
@@ -98,7 +98,7 @@ export class DevicesDetectionModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicesDetection.getBrowsers", params);
     }
-    return this.client.request("DevicesDetection.getBrowsers", params);
+    return await this.client.request("DevicesDetection.getBrowsers", params);
   }
 
   /**
@@ -114,7 +114,10 @@ export class DevicesDetectionModule {
         params
       );
     }
-    return this.client.request("DevicesDetection.getBrowserVersions", params);
+    return await this.client.request(
+      "DevicesDetection.getBrowserVersions",
+      params
+    );
   }
 
   /**
@@ -130,6 +133,9 @@ export class DevicesDetectionModule {
         params
       );
     }
-    return this.client.request("DevicesDetection.getBrowserEngines", params);
+    return await this.client.request(
+      "DevicesDetection.getBrowserEngines",
+      params
+    );
   }
 }

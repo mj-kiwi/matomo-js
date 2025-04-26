@@ -90,7 +90,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.add", params);
     }
-    return this.client.request("Annotations.add", params);
+    return await this.client.request("Annotations.add", params);
   }
 
   /**
@@ -100,7 +100,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.save", params);
     }
-    return this.client.request("Annotations.save", params);
+    return await this.client.request("Annotations.save", params);
   }
 
   /**
@@ -110,7 +110,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.delete", params);
     }
-    return this.client.request("Annotations.delete", params);
+    return await this.client.request("Annotations.delete", params);
   }
 
   /**
@@ -120,7 +120,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.deleteAll", params);
     }
-    return this.client.request("Annotations.deleteAll", params);
+    return await this.client.request("Annotations.deleteAll", params);
   }
 
   /**
@@ -130,7 +130,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.get", params);
     }
-    return this.client.request("Annotations.get", params);
+    return await this.client.request("Annotations.get", params);
   }
 
   /**
@@ -140,7 +140,7 @@ export class AnnotationsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Annotations.getAll", params);
     }
-    return this.client.request("Annotations.getAll", params);
+    return await this.client.request("Annotations.getAll", params);
   }
 
   /**
@@ -155,7 +155,7 @@ export class AnnotationsModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "Annotations.getAnnotationCountForDates",
       params
     );

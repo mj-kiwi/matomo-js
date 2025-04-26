@@ -92,7 +92,7 @@ export class AdvertisingConversionExportModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.getConversionExports",
       params
     );
@@ -111,7 +111,7 @@ export class AdvertisingConversionExportModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.getConversionExport",
       params
     );
@@ -130,7 +130,7 @@ export class AdvertisingConversionExportModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.deleteConversionExport",
       params
     );
@@ -155,7 +155,7 @@ export class AdvertisingConversionExportModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.addConversionExport",
       requestParams
     );
@@ -174,7 +174,7 @@ export class AdvertisingConversionExportModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.regenerateAccessToken",
       params
     );
@@ -199,7 +199,7 @@ export class AdvertisingConversionExportModule {
         requestParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "AdvertisingConversionExport.updateConversionExport",
       requestParams
     );
@@ -214,6 +214,6 @@ export class AdvertisingConversionExportModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("AdvertisingConversionExport.get", params);
     }
-    return this.client.request("AdvertisingConversionExport.get", params);
+    return await this.client.request("AdvertisingConversionExport.get", params);
   }
 }

@@ -176,7 +176,7 @@ export class ApiModule {
       return this.client.addRequest("API.getSettings", params);
     }
 
-    return this.client.request("API.getSettings", params);
+    return await this.client.request("API.getSettings", params);
   }
 
   /**
@@ -189,7 +189,7 @@ export class ApiModule {
       return this.client.addRequest("API.getSegmentsMetadata", params);
     }
 
-    return this.client.request("API.getSegmentsMetadata", params);
+    return await this.client.request("API.getSegmentsMetadata", params);
   }
 
   /**
@@ -202,7 +202,7 @@ export class ApiModule {
       return this.client.addRequest("API.getMetadata", params);
     }
 
-    return this.client.request("API.getMetadata", params);
+    return await this.client.request("API.getMetadata", params);
   }
 
   /**
@@ -221,7 +221,7 @@ export class ApiModule {
       return this.client.addRequest("API.getReportMetadata", params);
     }
 
-    return this.client.request("API.getReportMetadata", params);
+    return await this.client.request("API.getReportMetadata", params);
   }
 
   /**
@@ -248,7 +248,7 @@ export class ApiModule {
       return this.client.addRequest("API.getProcessedReport", params);
     }
 
-    return this.client.request("API.getProcessedReport", params);
+    return await this.client.request("API.getProcessedReport", params);
   }
 
   /**
@@ -262,7 +262,7 @@ export class ApiModule {
       return this.client.addRequest("API.getReportPagesMetadata", params);
     }
 
-    return this.client.request("API.getReportPagesMetadata", params);
+    return await this.client.request("API.getReportPagesMetadata", params);
   }
 
   /**
@@ -276,7 +276,7 @@ export class ApiModule {
       return this.client.addRequest("API.getWidgetMetadata", params);
     }
 
-    return this.client.request("API.getWidgetMetadata", params);
+    return await this.client.request("API.getWidgetMetadata", params);
   }
 
   /**
@@ -289,7 +289,7 @@ export class ApiModule {
       return this.client.addRequest("API.get", params);
     }
 
-    return this.client.request("API.get", params);
+    return await this.client.request("API.get", params);
   }
 
   /**
@@ -316,7 +316,7 @@ export class ApiModule {
       return this.client.addRequest("API.getRowEvolution", params);
     }
 
-    return this.client.request("API.getRowEvolution", params);
+    return await this.client.request("API.getRowEvolution", params);
   }
 
   /**
@@ -331,7 +331,9 @@ export class ApiModule {
       });
     }
 
-    return this.client.request("API.getBulkRequest", { urls: params.urls });
+    return await this.client.request("API.getBulkRequest", {
+      urls: params.urls,
+    });
   }
 
   /**
@@ -366,7 +368,10 @@ export class ApiModule {
       return this.client.addRequest("API.getSuggestedValuesForSegment", params);
     }
 
-    return this.client.request("API.getSuggestedValuesForSegment", params);
+    return await this.client.request(
+      "API.getSuggestedValuesForSegment",
+      params
+    );
   }
 
   /**
@@ -383,7 +388,10 @@ export class ApiModule {
       );
     }
 
-    return this.client.request("API.getPagesComparisonsDisabledFor", params);
+    return await this.client.request(
+      "API.getPagesComparisonsDisabledFor",
+      params
+    );
   }
 
   /**
@@ -397,7 +405,7 @@ export class ApiModule {
       return this.client.addRequest("API.getGlossaryReports", params);
     }
 
-    return this.client.request("API.getGlossaryReports", params);
+    return await this.client.request("API.getGlossaryReports", params);
   }
 
   /**
@@ -411,6 +419,6 @@ export class ApiModule {
       return this.client.addRequest("API.getGlossaryMetrics", params);
     }
 
-    return this.client.request("API.getGlossaryMetrics", params);
+    return await this.client.request("API.getGlossaryMetrics", params);
   }
 }

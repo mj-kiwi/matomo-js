@@ -38,7 +38,7 @@ export class VisitorInterestModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsPerVisitDuration",
       params
     );
@@ -56,7 +56,7 @@ export class VisitorInterestModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsPerPage",
       params
     );
@@ -76,7 +76,7 @@ export class VisitorInterestModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
       params
     );
@@ -96,7 +96,7 @@ export class VisitorInterestModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsByVisitCount",
       params
     );

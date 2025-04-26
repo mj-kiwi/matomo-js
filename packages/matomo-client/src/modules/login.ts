@@ -19,6 +19,6 @@ export class LoginModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Login.unblockBruteForceIPs", {});
     }
-    return this.client.request("Login.unblockBruteForceIPs");
+    return await this.client.request("Login.unblockBruteForceIPs");
   }
 }

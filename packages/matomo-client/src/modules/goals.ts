@@ -115,7 +115,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getGoal", params);
     }
-    return this.client.request("Goals.getGoal", params);
+    return await this.client.request("Goals.getGoal", params);
   }
 
   /**
@@ -128,7 +128,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getGoals", params);
     }
-    return this.client.request("Goals.getGoals", params);
+    return await this.client.request("Goals.getGoals", params);
   }
 
   /**
@@ -141,7 +141,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.addGoal", params);
     }
-    return this.client.request("Goals.addGoal", params);
+    return await this.client.request("Goals.addGoal", params);
   }
 
   /**
@@ -154,7 +154,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.updateGoal", params);
     }
-    return this.client.request("Goals.updateGoal", params);
+    return await this.client.request("Goals.updateGoal", params);
   }
 
   /**
@@ -167,7 +167,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.deleteGoal", params);
     }
-    return this.client.request("Goals.deleteGoal", params);
+    return await this.client.request("Goals.deleteGoal", params);
   }
 
   /**
@@ -180,7 +180,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getItemsSku", params);
     }
-    return this.client.request("Goals.getItemsSku", params);
+    return await this.client.request("Goals.getItemsSku", params);
   }
 
   /**
@@ -193,7 +193,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getItemsName", params);
     }
-    return this.client.request("Goals.getItemsName", params);
+    return await this.client.request("Goals.getItemsName", params);
   }
 
   /**
@@ -206,7 +206,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getItemsCategory", params);
     }
-    return this.client.request("Goals.getItemsCategory", params);
+    return await this.client.request("Goals.getItemsCategory", params);
   }
 
   /**
@@ -229,7 +229,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.get", formattedParams);
     }
-    return this.client.request("Goals.get", formattedParams);
+    return await this.client.request("Goals.get", formattedParams);
   }
 
   /**
@@ -242,7 +242,7 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getDaysToConversion", params);
     }
-    return this.client.request("Goals.getDaysToConversion", params);
+    return await this.client.request("Goals.getDaysToConversion", params);
   }
 
   /**
@@ -255,6 +255,6 @@ export class GoalsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Goals.getVisitsUntilConversion", params);
     }
-    return this.client.request("Goals.getVisitsUntilConversion", params);
+    return await this.client.request("Goals.getVisitsUntilConversion", params);
   }
 }

@@ -44,7 +44,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.get", params);
     }
-    return this.client.request("VisitsSummary.get", params);
+    return await this.client.request("VisitsSummary.get", params);
   }
 
   /**
@@ -57,7 +57,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getVisits", params);
     }
-    return this.client.request("VisitsSummary.getVisits", params);
+    return await this.client.request("VisitsSummary.getVisits", params);
   }
 
   /**
@@ -70,7 +70,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getUniqueVisitors", params);
     }
-    return this.client.request("VisitsSummary.getUniqueVisitors", params);
+    return await this.client.request("VisitsSummary.getUniqueVisitors", params);
   }
 
   /**
@@ -80,7 +80,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing user counts
    */
   async getUsers(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getUsers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getUsers", params);
+    }
+    return await this.client.request("VisitsSummary.getUsers", params);
   }
 
   /**
@@ -93,7 +96,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getActions", params);
     }
-    return this.client.request("VisitsSummary.getActions", params);
+    return await this.client.request("VisitsSummary.getActions", params);
   }
 
   /**
@@ -106,7 +109,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getMaxActions", params);
     }
-    return this.client.request("VisitsSummary.getMaxActions", params);
+    return await this.client.request("VisitsSummary.getMaxActions", params);
   }
 
   /**
@@ -119,7 +122,7 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getBounceCount", params);
     }
-    return this.client.request("VisitsSummary.getBounceCount", params);
+    return await this.client.request("VisitsSummary.getBounceCount", params);
   }
 
   /**
@@ -129,7 +132,13 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing counts of converted visits
    */
   async getVisitsConverted(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getVisitsConverted", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getVisitsConverted", params);
+    }
+    return await this.client.request(
+      "VisitsSummary.getVisitsConverted",
+      params
+    );
   }
 
   /**
@@ -142,7 +151,10 @@ export class VisitsSummaryModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitsSummary.getSumVisitsLength", params);
     }
-    return this.client.request("VisitsSummary.getSumVisitsLength", params);
+    return await this.client.request(
+      "VisitsSummary.getSumVisitsLength",
+      params
+    );
   }
 
   /**
@@ -158,7 +170,7 @@ export class VisitsSummaryModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "VisitsSummary.getSumVisitsLengthPretty",
       params
     );

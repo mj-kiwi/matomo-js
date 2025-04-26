@@ -61,11 +61,11 @@ export class MultiSitesModule {
    *
    * @param params Parameters for getting metrics for all sites
    */
-  async getAll(params: GetAllParams): Promise<any[]> {
+  async getAll(params: GetAllParams): Promise<any[] | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("MultiSites.getAll", params);
     }
-    return this.core.request<any[]>("MultiSites.getAll", params);
+    return await this.core.request<any[]>("MultiSites.getAll", params);
   }
 
   /**
@@ -77,7 +77,7 @@ export class MultiSitesModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("MultiSites.getOne", params);
     }
-    return this.core.request<any>("MultiSites.getOne", params);
+    return await this.core.request<any>("MultiSites.getOne", params);
   }
 
   /**
@@ -85,10 +85,15 @@ export class MultiSitesModule {
    *
    * @param params Parameters for getting metrics for all sites grouped by site groups
    */
-  async getAllWithGroups(params: GetAllWithGroupsParams = {}): Promise<any[]> {
+  async getAllWithGroups(
+    params: GetAllWithGroupsParams = {}
+  ): Promise<any[] | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("MultiSites.getAllWithGroups", params);
     }
-    return this.core.request<any[]>("MultiSites.getAllWithGroups", params);
+    return await this.core.request<any[]>(
+      "MultiSites.getAllWithGroups",
+      params
+    );
   }
 }

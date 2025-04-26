@@ -61,7 +61,10 @@ export class PrivacyManagerModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("PrivacyManager.deleteDataSubjects", params);
     }
-    return this.core.request<any>("PrivacyManager.deleteDataSubjects", params);
+    return await this.core.request<any>(
+      "PrivacyManager.deleteDataSubjects",
+      params
+    );
   }
 
   /**
@@ -73,7 +76,10 @@ export class PrivacyManagerModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("PrivacyManager.exportDataSubjects", params);
     }
-    return this.core.request<any>("PrivacyManager.exportDataSubjects", params);
+    return await this.core.request<any>(
+      "PrivacyManager.exportDataSubjects",
+      params
+    );
   }
 
   /**
@@ -85,7 +91,10 @@ export class PrivacyManagerModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("PrivacyManager.findDataSubjects", params);
     }
-    return this.core.request<any>("PrivacyManager.findDataSubjects", params);
+    return await this.core.request<any>(
+      "PrivacyManager.findDataSubjects",
+      params
+    );
   }
 
   /**
@@ -100,7 +109,7 @@ export class PrivacyManagerModule {
         params
       );
     }
-    return this.core.request<any>(
+    return await this.core.request<any>(
       "PrivacyManager.anonymizeSomeRawData",
       params
     );
@@ -109,14 +118,16 @@ export class PrivacyManagerModule {
   /**
    * Get available visit columns to anonymize
    */
-  async getAvailableVisitColumnsToAnonymize(): Promise<string[]> {
+  async getAvailableVisitColumnsToAnonymize(): Promise<
+    string[] | BatchRequest
+  > {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "PrivacyManager.getAvailableVisitColumnsToAnonymize",
         {}
       );
     }
-    return this.core.request<string[]>(
+    return await this.core.request<string[]>(
       "PrivacyManager.getAvailableVisitColumnsToAnonymize"
     );
   }
@@ -124,14 +135,16 @@ export class PrivacyManagerModule {
   /**
    * Get available link visit action columns to anonymize
    */
-  async getAvailableLinkVisitActionColumnsToAnonymize(): Promise<string[]> {
+  async getAvailableLinkVisitActionColumnsToAnonymize(): Promise<
+    string[] | BatchRequest
+  > {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize",
         {}
       );
     }
-    return this.core.request<string[]>(
+    return await this.core.request<string[]>(
       "PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize"
     );
   }

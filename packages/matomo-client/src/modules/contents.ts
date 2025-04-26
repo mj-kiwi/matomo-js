@@ -35,7 +35,7 @@ export class ContentsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Contents.getContentNames", params);
     }
-    return this.client.request("Contents.getContentNames", params);
+    return await this.client.request("Contents.getContentNames", params);
   }
 
   /**
@@ -48,6 +48,6 @@ export class ContentsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("Contents.getContentPieces", params);
     }
-    return this.client.request("Contents.getContentPieces", params);
+    return await this.client.request("Contents.getContentPieces", params);
   }
 }

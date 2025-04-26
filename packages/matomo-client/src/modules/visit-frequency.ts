@@ -34,6 +34,6 @@ export class VisitFrequencyModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("VisitFrequency.get", params);
     }
-    return this.client.request("VisitFrequency.get", params);
+    return await this.client.request("VisitFrequency.get", params);
   }
 }

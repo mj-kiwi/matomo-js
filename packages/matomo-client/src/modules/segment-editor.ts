@@ -73,7 +73,10 @@ export class SegmentEditorModule {
         params
       );
     }
-    return this.client.request("SegmentEditor.isUserCanAddNewSegment", params);
+    return await this.client.request(
+      "SegmentEditor.isUserCanAddNewSegment",
+      params
+    );
   }
 
   /**
@@ -86,7 +89,7 @@ export class SegmentEditorModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SegmentEditor.delete", params);
     }
-    return this.client.request("SegmentEditor.delete", params);
+    return await this.client.request("SegmentEditor.delete", params);
   }
 
   /**
@@ -99,7 +102,7 @@ export class SegmentEditorModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SegmentEditor.update", params);
     }
-    return this.client.request("SegmentEditor.update", params);
+    return await this.client.request("SegmentEditor.update", params);
   }
 
   /**
@@ -112,7 +115,7 @@ export class SegmentEditorModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SegmentEditor.add", params);
     }
-    return this.client.request("SegmentEditor.add", params);
+    return await this.client.request("SegmentEditor.add", params);
   }
 
   /**
@@ -125,7 +128,7 @@ export class SegmentEditorModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SegmentEditor.get", params);
     }
-    return this.client.request("SegmentEditor.get", params);
+    return await this.client.request("SegmentEditor.get", params);
   }
 
   /**
@@ -138,6 +141,6 @@ export class SegmentEditorModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SegmentEditor.getAll", params);
     }
-    return this.client.request("SegmentEditor.getAll", params);
+    return await this.client.request("SegmentEditor.getAll", params);
   }
 }

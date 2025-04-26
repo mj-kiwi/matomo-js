@@ -30,6 +30,9 @@ export class TwoFactorAuthModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("TwoFactorAuth.resetTwoFactorAuth", params);
     }
-    return this.client.request("TwoFactorAuth.resetTwoFactorAuth", params);
+    return await this.client.request(
+      "TwoFactorAuth.resetTwoFactorAuth",
+      params
+    );
   }
 }

@@ -61,14 +61,16 @@ export class MultiChannelConversionAttributionModule {
    *
    * @param params Parameters for setting goal attribution
    */
-  async setGoalAttribution(params: SetGoalAttributionParams): Promise<boolean> {
+  async setGoalAttribution(
+    params: SetGoalAttributionParams
+  ): Promise<boolean | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "MultiChannelConversionAttribution.setGoalAttribution",
         params
       );
     }
-    return this.core.request<boolean>(
+    return await this.core.request<boolean>(
       "MultiChannelConversionAttribution.setGoalAttribution",
       params
     );
@@ -79,14 +81,16 @@ export class MultiChannelConversionAttributionModule {
    *
    * @param params Parameters for goal attribution
    */
-  async getGoalAttribution(params: GoalAttributionParams): Promise<boolean> {
+  async getGoalAttribution(
+    params: GoalAttributionParams
+  ): Promise<boolean | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "MultiChannelConversionAttribution.getGoalAttribution",
         params
       );
     }
-    return this.core.request<boolean>(
+    return await this.core.request<boolean>(
       "MultiChannelConversionAttribution.getGoalAttribution",
       params
     );
@@ -104,7 +108,7 @@ export class MultiChannelConversionAttributionModule {
         params
       );
     }
-    return this.core.request(
+    return await this.core.request(
       "MultiChannelConversionAttribution.getChannelAttribution",
       params
     );
@@ -113,14 +117,16 @@ export class MultiChannelConversionAttributionModule {
   /**
    * Get available campaign dimension combinations
    */
-  async getAvailableCampaignDimensionCombinations(): Promise<any[]> {
+  async getAvailableCampaignDimensionCombinations(): Promise<
+    any[] | BatchRequest
+  > {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "MultiChannelConversionAttribution.getAvailableCampaignDimensionCombinations",
         {}
       );
     }
-    return this.core.request<any[]>(
+    return await this.core.request<any[]>(
       "MultiChannelConversionAttribution.getAvailableCampaignDimensionCombinations"
     );
   }
@@ -130,14 +136,16 @@ export class MultiChannelConversionAttributionModule {
    *
    * @param params Parameters containing the site ID
    */
-  async getSiteAttributionGoals(params: SiteParams): Promise<any[]> {
+  async getSiteAttributionGoals(
+    params: SiteParams
+  ): Promise<any[] | BatchRequest> {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest(
         "MultiChannelConversionAttribution.getSiteAttributionGoals",
         params
       );
     }
-    return this.core.request<any[]>(
+    return await this.core.request<any[]>(
       "MultiChannelConversionAttribution.getSiteAttributionGoals",
       params
     );

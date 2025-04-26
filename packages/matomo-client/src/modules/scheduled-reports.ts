@@ -138,7 +138,10 @@ export class ScheduledReportsModule {
         formattedParams
       );
     }
-    return this.client.request("ScheduledReports.addReport", formattedParams);
+    return await this.client.request(
+      "ScheduledReports.addReport",
+      formattedParams
+    );
   }
 
   /**
@@ -167,7 +170,7 @@ export class ScheduledReportsModule {
         formattedParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "ScheduledReports.updateReport",
       formattedParams
     );
@@ -183,7 +186,7 @@ export class ScheduledReportsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("ScheduledReports.deleteReport", params);
     }
-    return this.client.request("ScheduledReports.deleteReport", params);
+    return await this.client.request("ScheduledReports.deleteReport", params);
   }
 
   /**
@@ -196,7 +199,7 @@ export class ScheduledReportsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("ScheduledReports.getReports", params);
     }
-    return this.client.request("ScheduledReports.getReports", params);
+    return await this.client.request("ScheduledReports.getReports", params);
   }
 
   /**
@@ -221,7 +224,7 @@ export class ScheduledReportsModule {
         formattedParams
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "ScheduledReports.generateReport",
       formattedParams
     );
@@ -237,6 +240,6 @@ export class ScheduledReportsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("ScheduledReports.sendReport", params);
     }
-    return this.client.request("ScheduledReports.sendReport", params);
+    return await this.client.request("ScheduledReports.sendReport", params);
   }
 }

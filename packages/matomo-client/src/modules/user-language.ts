@@ -32,7 +32,7 @@ export class UserLanguageModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserLanguage.getLanguage", params);
     }
-    return this.client.request("UserLanguage.getLanguage", params);
+    return await this.client.request("UserLanguage.getLanguage", params);
   }
 
   /**
@@ -44,6 +44,6 @@ export class UserLanguageModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UserLanguage.getLanguageCode", params);
     }
-    return this.client.request("UserLanguage.getLanguageCode", params);
+    return await this.client.request("UserLanguage.getLanguageCode", params);
   }
 }

@@ -30,6 +30,6 @@ export class SeoModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("SEO.getRank", params);
     }
-    return this.client.request<any>("SEO.getRank", params);
+    return await this.client.request<any>("SEO.getRank", params);
   }
 }

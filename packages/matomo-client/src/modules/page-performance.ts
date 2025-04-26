@@ -35,6 +35,6 @@ export class PagePerformanceModule {
     if (this.core instanceof BatchRequest) {
       return this.core.addRequest("PagePerformance.get", params);
     }
-    return this.core.request<any>("PagePerformance.get", params);
+    return await this.core.request<any>("PagePerformance.get", params);
   }
 }

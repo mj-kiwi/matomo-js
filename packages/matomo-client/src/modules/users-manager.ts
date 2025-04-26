@@ -240,7 +240,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getAvailableRoles", {});
     }
-    return this.client.request("UsersManager.getAvailableRoles", {});
+    return await this.client.request("UsersManager.getAvailableRoles", {});
   }
 
   /**
@@ -253,7 +253,10 @@ export class UsersManagerModule {
         {}
       );
     }
-    return this.client.request("UsersManager.getAvailableCapabilities", {});
+    return await this.client.request(
+      "UsersManager.getAvailableCapabilities",
+      {}
+    );
   }
 
   /**
@@ -265,7 +268,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.setUserPreference", params);
     }
-    return this.client.request("UsersManager.setUserPreference", params);
+    return await this.client.request("UsersManager.setUserPreference", params);
   }
 
   /**
@@ -277,7 +280,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUserPreference", params);
     }
-    return this.client.request("UsersManager.getUserPreference", params);
+    return await this.client.request("UsersManager.getUserPreference", params);
   }
 
   /**
@@ -289,7 +292,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUsersPlusRole", params);
     }
-    return this.client.request("UsersManager.getUsersPlusRole", params);
+    return await this.client.request("UsersManager.getUsersPlusRole", params);
   }
 
   /**
@@ -301,7 +304,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUsers", params);
     }
-    return this.client.request("UsersManager.getUsers", params);
+    return await this.client.request("UsersManager.getUsers", params);
   }
 
   /**
@@ -311,7 +314,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUsersLogin", {});
     }
-    return this.client.request("UsersManager.getUsersLogin", {});
+    return await this.client.request("UsersManager.getUsersLogin", {});
   }
 
   /**
@@ -326,7 +329,10 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request("UsersManager.getUsersSitesFromAccess", params);
+    return await this.client.request(
+      "UsersManager.getUsersSitesFromAccess",
+      params
+    );
   }
 
   /**
@@ -341,7 +347,10 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request("UsersManager.getUsersAccessFromSite", params);
+    return await this.client.request(
+      "UsersManager.getUsersAccessFromSite",
+      params
+    );
   }
 
   /**
@@ -356,7 +365,10 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request("UsersManager.getUsersWithSiteAccess", params);
+    return await this.client.request(
+      "UsersManager.getUsersWithSiteAccess",
+      params
+    );
   }
 
   /**
@@ -371,7 +383,10 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request("UsersManager.getSitesAccessFromUser", params);
+    return await this.client.request(
+      "UsersManager.getSitesAccessFromUser",
+      params
+    );
   }
 
   /**
@@ -386,7 +401,10 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request("UsersManager.getSitesAccessForUser", params);
+    return await this.client.request(
+      "UsersManager.getSitesAccessForUser",
+      params
+    );
   }
 
   /**
@@ -398,7 +416,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUser", params);
     }
-    return this.client.request("UsersManager.getUser", params);
+    return await this.client.request("UsersManager.getUser", params);
   }
 
   /**
@@ -410,7 +428,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.getUserByEmail", params);
     }
-    return this.client.request("UsersManager.getUserByEmail", params);
+    return await this.client.request("UsersManager.getUserByEmail", params);
   }
 
   /**
@@ -422,7 +440,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.addUser", params);
     }
-    return this.client.request("UsersManager.addUser", params);
+    return await this.client.request("UsersManager.addUser", params);
   }
 
   /**
@@ -434,7 +452,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.inviteUser", params);
     }
-    return this.client.request("UsersManager.inviteUser", params);
+    return await this.client.request("UsersManager.inviteUser", params);
   }
 
   /**
@@ -446,7 +464,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.setSuperUserAccess", params);
     }
-    return this.client.request("UsersManager.setSuperUserAccess", params);
+    return await this.client.request("UsersManager.setSuperUserAccess", params);
   }
 
   /**
@@ -456,7 +474,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.hasSuperUserAccess", {});
     }
-    return this.client.request("UsersManager.hasSuperUserAccess", {});
+    return await this.client.request("UsersManager.hasSuperUserAccess", {});
   }
 
   /**
@@ -469,7 +487,7 @@ export class UsersManagerModule {
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "UsersManager.getUsersHavingSuperUserAccess",
       {}
     );
@@ -484,7 +502,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.updateUser", params);
     }
-    return this.client.request("UsersManager.updateUser", params);
+    return await this.client.request("UsersManager.updateUser", params);
   }
 
   /**
@@ -496,7 +514,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.deleteUser", params);
     }
-    return this.client.request("UsersManager.deleteUser", params);
+    return await this.client.request("UsersManager.deleteUser", params);
   }
 
   /**
@@ -508,7 +526,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.userExists", params);
     }
-    return this.client.request("UsersManager.userExists", params);
+    return await this.client.request("UsersManager.userExists", params);
   }
 
   /**
@@ -520,7 +538,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.userEmailExists", params);
     }
-    return this.client.request("UsersManager.userEmailExists", params);
+    return await this.client.request("UsersManager.userEmailExists", params);
   }
 
   /**
@@ -535,7 +553,7 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "UsersManager.getUserLoginFromUserEmail",
       params
     );
@@ -550,7 +568,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.setUserAccess", params);
     }
-    return this.client.request("UsersManager.setUserAccess", params);
+    return await this.client.request("UsersManager.setUserAccess", params);
   }
 
   /**
@@ -562,7 +580,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.addCapabilities", params);
     }
-    return this.client.request("UsersManager.addCapabilities", params);
+    return await this.client.request("UsersManager.addCapabilities", params);
   }
 
   /**
@@ -574,7 +592,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.removeCapabilities", params);
     }
-    return this.client.request("UsersManager.removeCapabilities", params);
+    return await this.client.request("UsersManager.removeCapabilities", params);
   }
 
   /**
@@ -589,7 +607,7 @@ export class UsersManagerModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "UsersManager.createAppSpecificTokenAuth",
       params
     );
@@ -602,7 +620,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.newsletterSignup", {});
     }
-    return this.client.request("UsersManager.newsletterSignup", {});
+    return await this.client.request("UsersManager.newsletterSignup", {});
   }
 
   /**
@@ -614,7 +632,7 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.resendInvite", params);
     }
-    return this.client.request("UsersManager.resendInvite", params);
+    return await this.client.request("UsersManager.resendInvite", params);
   }
 
   /**
@@ -626,6 +644,6 @@ export class UsersManagerModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("UsersManager.generateInviteLink", params);
     }
-    return this.client.request("UsersManager.generateInviteLink", params);
+    return await this.client.request("UsersManager.generateInviteLink", params);
   }
 }

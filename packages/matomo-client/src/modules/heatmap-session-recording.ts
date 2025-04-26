@@ -203,14 +203,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for adding a heatmap
    * @returns Promise with the API response
    */
-  addHeatmap(params: AddHeatmapParams): Promise<any> {
+  async addHeatmap(params: AddHeatmapParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.addHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.addHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.addHeatmap",
+      params
+    );
   }
 
   /**
@@ -219,14 +222,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for updating a heatmap
    * @returns Promise with the API response
    */
-  updateHeatmap(params: UpdateHeatmapParams): Promise<any> {
+  async updateHeatmap(params: UpdateHeatmapParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.updateHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.updateHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.updateHeatmap",
+      params
+    );
   }
 
   /**
@@ -235,14 +241,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteHeatmapScreenshot(params: HSRConfigParams): Promise<any> {
+  async deleteHeatmapScreenshot(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.deleteHeatmapScreenshot",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.deleteHeatmapScreenshot",
       params
     );
@@ -254,14 +260,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for adding a session recording
    * @returns Promise with the API response
    */
-  addSessionRecording(params: AddSessionRecordingParams): Promise<any> {
+  async addSessionRecording(params: AddSessionRecordingParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.addSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.addSessionRecording",
       params
     );
@@ -273,14 +279,16 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for updating a session recording
    * @returns Promise with the API response
    */
-  updateSessionRecording(params: UpdateSessionRecordingParams): Promise<any> {
+  async updateSessionRecording(
+    params: UpdateSessionRecordingParams
+  ): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.updateSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.updateSessionRecording",
       params
     );
@@ -292,14 +300,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the heatmap details
    */
-  getHeatmap(params: HSRConfigParams): Promise<any> {
+  async getHeatmap(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.getHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.getHeatmap",
+      params
+    );
   }
 
   /**
@@ -308,14 +319,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the session recording details
    */
-  getSessionRecording(params: HSRConfigParams): Promise<any> {
+  async getSessionRecording(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getSessionRecording",
       params
     );
@@ -327,14 +338,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  pauseHeatmap(params: HSRConfigParams): Promise<any> {
+  async pauseHeatmap(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.pauseHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.pauseHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.pauseHeatmap",
+      params
+    );
   }
 
   /**
@@ -343,14 +357,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  resumeHeatmap(params: HSRConfigParams): Promise<any> {
+  async resumeHeatmap(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.resumeHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.resumeHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.resumeHeatmap",
+      params
+    );
   }
 
   /**
@@ -359,14 +376,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteHeatmap(params: HSRConfigParams): Promise<any> {
+  async deleteHeatmap(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.deleteHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.deleteHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.deleteHeatmap",
+      params
+    );
   }
 
   /**
@@ -375,14 +395,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  endHeatmap(params: HSRConfigParams): Promise<any> {
+  async endHeatmap(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.endHeatmap",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.endHeatmap", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.endHeatmap",
+      params
+    );
   }
 
   /**
@@ -391,14 +414,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  pauseSessionRecording(params: HSRConfigParams): Promise<any> {
+  async pauseSessionRecording(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.pauseSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.pauseSessionRecording",
       params
     );
@@ -410,14 +433,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  resumeSessionRecording(params: HSRConfigParams): Promise<any> {
+  async resumeSessionRecording(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.resumeSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.resumeSessionRecording",
       params
     );
@@ -429,14 +452,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  deleteSessionRecording(params: HSRConfigParams): Promise<any> {
+  async deleteSessionRecording(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.deleteSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.deleteSessionRecording",
       params
     );
@@ -448,14 +471,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for specific heatmap or session recording
    * @returns Promise with the API response
    */
-  endSessionRecording(params: HSRConfigParams): Promise<any> {
+  async endSessionRecording(params: HSRConfigParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.endSessionRecording",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.endSessionRecording",
       params
     );
@@ -467,14 +490,17 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for getting heatmaps
    * @returns Promise with the list of heatmaps
    */
-  getHeatmaps(params: GetHeatmapsParams): Promise<any> {
+  async getHeatmaps(params: GetHeatmapsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getHeatmaps",
         params
       );
     }
-    return this.client.request("HeatmapSessionRecording.getHeatmaps", params);
+    return await this.client.request(
+      "HeatmapSessionRecording.getHeatmaps",
+      params
+    );
   }
 
   /**
@@ -483,14 +509,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for site operations
    * @returns Promise with the list of session recordings
    */
-  getSessionRecordings(params: HSRSiteParams): Promise<any> {
+  async getSessionRecordings(params: HSRSiteParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getSessionRecordings",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getSessionRecordings",
       params
     );
@@ -502,14 +528,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for getting recorded sessions
    * @returns Promise with the list of recorded sessions
    */
-  getRecordedSessions(params: RecordedSessionsParams): Promise<any> {
+  async getRecordedSessions(params: RecordedSessionsParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getRecordedSessions",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getRecordedSessions",
       params
     );
@@ -521,14 +547,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for recorded session operations
    * @returns Promise with the recorded session details
    */
-  getRecordedSession(params: RecordedSessionParams): Promise<any> {
+  async getRecordedSession(params: RecordedSessionParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getRecordedSession",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getRecordedSession",
       params
     );
@@ -540,14 +566,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for visit operations
    * @returns Promise with the API response
    */
-  deleteRecordedSession(params: VisitParams): Promise<any> {
+  async deleteRecordedSession(params: VisitParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.deleteRecordedSession",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.deleteRecordedSession",
       params
     );
@@ -559,14 +585,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for recorded session operations
    * @returns Promise with the API response
    */
-  deleteRecordedPageview(params: RecordedSessionParams): Promise<any> {
+  async deleteRecordedPageview(params: RecordedSessionParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.deleteRecordedPageview",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.deleteRecordedPageview",
       params
     );
@@ -578,7 +604,7 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for getting recorded heatmap metadata
    * @returns Promise with the heatmap metadata
    */
-  getRecordedHeatmapMetadata(
+  async getRecordedHeatmapMetadata(
     params: RecordedHeatmapMetadataParams
   ): Promise<any> {
     if (this.client instanceof BatchRequest) {
@@ -587,7 +613,7 @@ export class HeatmapSessionRecordingModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getRecordedHeatmapMetadata",
       params
     );
@@ -599,14 +625,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for getting recorded heatmap data
    * @returns Promise with the heatmap data
    */
-  getRecordedHeatmap(params: RecordedHeatmapParams): Promise<any> {
+  async getRecordedHeatmap(params: RecordedHeatmapParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getRecordedHeatmap",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getRecordedHeatmap",
       params
     );
@@ -618,14 +644,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for recorded session operations
    * @returns Promise with embedding info
    */
-  getEmbedSessionInfo(params: RecordedSessionParams): Promise<any> {
+  async getEmbedSessionInfo(params: RecordedSessionParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getEmbedSessionInfo",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getEmbedSessionInfo",
       params
     );
@@ -637,14 +663,14 @@ export class HeatmapSessionRecordingModule {
    * @param params Parameters for testing URL match
    * @returns Promise with test results
    */
-  testUrlMatchPages(params: TestUrlMatchPagesParams): Promise<any> {
+  async testUrlMatchPages(params: TestUrlMatchPagesParams): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.testUrlMatchPages",
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.testUrlMatchPages",
       params
     );
@@ -655,14 +681,16 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available statuses
    */
-  getAvailableStatuses(): Promise<any> {
+  async getAvailableStatuses(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getAvailableStatuses",
         {}
       );
     }
-    return this.client.request("HeatmapSessionRecording.getAvailableStatuses");
+    return await this.client.request(
+      "HeatmapSessionRecording.getAvailableStatuses"
+    );
   }
 
   /**
@@ -670,14 +698,14 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available target page rules
    */
-  getAvailableTargetPageRules(): Promise<any> {
+  async getAvailableTargetPageRules(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getAvailableTargetPageRules",
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getAvailableTargetPageRules"
     );
   }
@@ -687,14 +715,14 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available device types
    */
-  getAvailableDeviceTypes(): Promise<any> {
+  async getAvailableDeviceTypes(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getAvailableDeviceTypes",
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getAvailableDeviceTypes"
     );
   }
@@ -704,14 +732,14 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available heatmap types
    */
-  getAvailableHeatmapTypes(): Promise<any> {
+  async getAvailableHeatmapTypes(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getAvailableHeatmapTypes",
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getAvailableHeatmapTypes"
     );
   }
@@ -721,14 +749,14 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available sample limits
    */
-  getAvailableSessionRecordingSampleLimits(): Promise<any> {
+  async getAvailableSessionRecordingSampleLimits(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits",
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "HeatmapSessionRecording.getAvailableSessionRecordingSampleLimits"
     );
   }
@@ -738,13 +766,13 @@ export class HeatmapSessionRecordingModule {
    *
    * @returns Promise with available event types
    */
-  getEventTypes(): Promise<any> {
+  async getEventTypes(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "HeatmapSessionRecording.getEventTypes",
         {}
       );
     }
-    return this.client.request("HeatmapSessionRecording.getEventTypes");
+    return await this.client.request("HeatmapSessionRecording.getEventTypes");
   }
 }

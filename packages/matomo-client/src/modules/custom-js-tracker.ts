@@ -13,14 +13,14 @@ export class CustomJsTrackerModule {
    * Checks if the CustomJsTracker plugin includes plugin trackers automatically
    * @returns Promise with boolean value indicating if plugin trackers are included automatically
    */
-  doesIncludePluginTrackersAutomatically(): Promise<any> {
+  async doesIncludePluginTrackersAutomatically(): Promise<any> {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest(
         "CustomJsTracker.doesIncludePluginTrackersAutomatically",
         {}
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CustomJsTracker.doesIncludePluginTrackersAutomatically",
       {}
     );

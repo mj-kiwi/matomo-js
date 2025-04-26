@@ -65,7 +65,7 @@ export class ActivityLogModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("ActivityLog.getEntries", requestParams);
     }
-    return this.client.request("ActivityLog.getEntries", requestParams);
+    return await this.client.request("ActivityLog.getEntries", requestParams);
   }
 
   /**
@@ -73,7 +73,9 @@ export class ActivityLogModule {
    *
    * Returns the total number of activities matching the specified filters
    */
-  async getEntryCount(params: GetEntryCountParams = {}): Promise<number> {
+  async getEntryCount(
+    params: GetEntryCountParams = {}
+  ): Promise<number | BatchRequest> {
     const requestParams: RequestParams = {};
 
     if (params.filterByUserLogin)
@@ -112,7 +114,7 @@ export class ActivityLogModule {
         requestParams
       );
     }
-    return this.client.request<string[]>(
+    return await this.client.request<string[]>(
       "ActivityLog.getAllActivityTypes",
       requestParams
     );

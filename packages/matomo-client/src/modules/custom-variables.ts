@@ -61,7 +61,10 @@ export class CustomVariablesModule {
         params
       );
     }
-    return this.client.request("CustomVariables.getCustomVariables", params);
+    return await this.client.request(
+      "CustomVariables.getCustomVariables",
+      params
+    );
   }
 
   /**
@@ -79,7 +82,7 @@ export class CustomVariablesModule {
         params
       );
     }
-    return this.client.request(
+    return await this.client.request(
       "CustomVariables.getCustomVariablesValuesFromNameId",
       params
     );
@@ -95,6 +98,9 @@ export class CustomVariablesModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("CustomVariables.getUsagesOfSlots", params);
     }
-    return this.client.request("CustomVariables.getUsagesOfSlots", params);
+    return await this.client.request(
+      "CustomVariables.getUsagesOfSlots",
+      params
+    );
   }
 }

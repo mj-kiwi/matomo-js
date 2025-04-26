@@ -33,6 +33,6 @@ export class DevicePluginsModule {
     if (this.client instanceof BatchRequest) {
       return this.client.addRequest("DevicePlugins.getPlugin", params);
     }
-    return this.client.request("DevicePlugins.getPlugin", params);
+    return await this.client.request("DevicePlugins.getPlugin", params);
   }
 }
