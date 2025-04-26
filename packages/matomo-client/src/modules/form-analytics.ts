@@ -6,6 +6,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for form-specific operations
@@ -130,7 +131,7 @@ export interface FormsByStatusesParams extends FormParams {
 }
 
 export class FormAnalyticsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new form to be tracked
@@ -138,8 +139,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for adding a new form
    * @returns Promise with the API response
    */
-  addForm(params: AddFormParams): Promise<any> {
-    return this.client.request("FormAnalytics.addForm", params);
+  async addForm(params: AddFormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.addForm", params);
+    }
+    return await this.client.request("FormAnalytics.addForm", params);
   }
 
   /**
@@ -148,8 +152,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for updating a form
    * @returns Promise with the API response
    */
-  updateForm(params: UpdateFormParams): Promise<any> {
-    return this.client.request("FormAnalytics.updateForm", params);
+  async updateForm(params: UpdateFormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.updateForm", params);
+    }
+    return await this.client.request("FormAnalytics.updateForm", params);
   }
 
   /**
@@ -158,8 +165,11 @@ export class FormAnalyticsModule {
    * @param params Parameters containing site ID and form ID
    * @returns Promise with the form details
    */
-  getForm(params: FormIdParams): Promise<any> {
-    return this.client.request("FormAnalytics.getForm", params);
+  async getForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getForm", params);
+    }
+    return await this.client.request("FormAnalytics.getForm", params);
   }
 
   /**
@@ -168,8 +178,11 @@ export class FormAnalyticsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of forms
    */
-  getForms(params: FormParams): Promise<any> {
-    return this.client.request("FormAnalytics.getForms", params);
+  async getForms(params: FormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getForms", params);
+    }
+    return await this.client.request("FormAnalytics.getForms", params);
   }
 
   /**
@@ -178,8 +191,14 @@ export class FormAnalyticsModule {
    * @param params Parameters containing site ID and statuses
    * @returns Promise with the filtered list of forms
    */
-  getFormsByStatuses(params: FormsByStatusesParams): Promise<any> {
-    return this.client.request("FormAnalytics.getFormsByStatuses", params);
+  async getFormsByStatuses(params: FormsByStatusesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFormsByStatuses", params);
+    }
+    return await this.client.request(
+      "FormAnalytics.getFormsByStatuses",
+      params
+    );
   }
 
   /**
@@ -188,8 +207,11 @@ export class FormAnalyticsModule {
    * @param params Parameters containing site ID and form ID
    * @returns Promise with the API response
    */
-  deleteForm(params: FormIdParams): Promise<any> {
-    return this.client.request("FormAnalytics.deleteForm", params);
+  async deleteForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.deleteForm", params);
+    }
+    return await this.client.request("FormAnalytics.deleteForm", params);
   }
 
   /**
@@ -198,8 +220,11 @@ export class FormAnalyticsModule {
    * @param params Parameters containing site ID and form ID
    * @returns Promise with the API response
    */
-  archiveForm(params: FormIdParams): Promise<any> {
-    return this.client.request("FormAnalytics.archiveForm", params);
+  async archiveForm(params: FormIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.archiveForm", params);
+    }
+    return await this.client.request("FormAnalytics.archiveForm", params);
   }
 
   /**
@@ -208,8 +233,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for the general form analytics data
    * @returns Promise with the form analytics data
    */
-  get(params: FormAnalyticsParams): Promise<any> {
-    return this.client.request("FormAnalytics.get", params);
+  async get(params: FormAnalyticsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.get", params);
+    }
+    return await this.client.request("FormAnalytics.get", params);
   }
 
   /**
@@ -218,8 +246,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the entry fields report
    */
-  getEntryFields(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getEntryFields", params);
+  async getEntryFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getEntryFields", params);
+    }
+    return await this.client.request("FormAnalytics.getEntryFields", params);
   }
 
   /**
@@ -228,8 +259,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the drop off fields report
    */
-  getDropOffFields(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getDropOffFields", params);
+  async getDropOffFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getDropOffFields", params);
+    }
+    return await this.client.request("FormAnalytics.getDropOffFields", params);
   }
 
   /**
@@ -238,8 +272,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the page URLs report
    */
-  getPageUrls(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getPageUrls", params);
+  async getPageUrls(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getPageUrls", params);
+    }
+    return await this.client.request("FormAnalytics.getPageUrls", params);
   }
 
   /**
@@ -248,8 +285,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the field timings report
    */
-  getFieldTimings(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getFieldTimings", params);
+  async getFieldTimings(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFieldTimings", params);
+    }
+    return await this.client.request("FormAnalytics.getFieldTimings", params);
   }
 
   /**
@@ -258,8 +298,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the field size report
    */
-  getFieldSize(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getFieldSize", params);
+  async getFieldSize(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getFieldSize", params);
+    }
+    return await this.client.request("FormAnalytics.getFieldSize", params);
   }
 
   /**
@@ -268,8 +311,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the unneeded fields report
    */
-  getUneededFields(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getUneededFields", params);
+  async getUneededFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getUneededFields", params);
+    }
+    return await this.client.request("FormAnalytics.getUneededFields", params);
   }
 
   /**
@@ -278,8 +324,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the most used fields report
    */
-  getMostUsedFields(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getMostUsedFields", params);
+  async getMostUsedFields(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getMostUsedFields", params);
+    }
+    return await this.client.request("FormAnalytics.getMostUsedFields", params);
   }
 
   /**
@@ -288,8 +337,17 @@ export class FormAnalyticsModule {
    * @param params Parameters for form report
    * @returns Promise with the field corrections report
    */
-  getFieldCorrections(params: FormReportParams): Promise<any> {
-    return this.client.request("FormAnalytics.getFieldCorrections", params);
+  async getFieldCorrections(params: FormReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getFieldCorrections",
+        params
+      );
+    }
+    return await this.client.request(
+      "FormAnalytics.getFieldCorrections",
+      params
+    );
   }
 
   /**
@@ -298,10 +356,16 @@ export class FormAnalyticsModule {
    * @param params Parameters for updating field display names
    * @returns Promise with the API response
    */
-  updateFormFieldDisplayName(
+  async updateFormFieldDisplayName(
     params: UpdateFieldDisplayNameParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.updateFormFieldDisplayName",
+        params
+      );
+    }
+    return await this.client.request(
       "FormAnalytics.updateFormFieldDisplayName",
       params
     );
@@ -313,8 +377,11 @@ export class FormAnalyticsModule {
    * @param params Parameters for form counters
    * @returns Promise with the counters
    */
-  getCounters(params: FormCountersParams): Promise<any> {
-    return this.client.request("FormAnalytics.getCounters", params);
+  async getCounters(params: FormCountersParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getCounters", params);
+    }
+    return await this.client.request("FormAnalytics.getCounters", params);
   }
 
   /**
@@ -323,8 +390,14 @@ export class FormAnalyticsModule {
    * @param params Parameters for popular forms
    * @returns Promise with the popular forms list
    */
-  getCurrentMostPopularForms(params: PopularFormsParams): Promise<any> {
-    return this.client.request(
+  async getCurrentMostPopularForms(params: PopularFormsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getCurrentMostPopularForms",
+        params
+      );
+    }
+    return await this.client.request(
       "FormAnalytics.getCurrentMostPopularForms",
       params
     );
@@ -336,8 +409,17 @@ export class FormAnalyticsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the auto creation settings
    */
-  getAutoCreationSettings(params: FormParams): Promise<any> {
-    return this.client.request("FormAnalytics.getAutoCreationSettings", params);
+  async getAutoCreationSettings(params: FormParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getAutoCreationSettings",
+        params
+      );
+    }
+    return await this.client.request(
+      "FormAnalytics.getAutoCreationSettings",
+      params
+    );
   }
 
   /**
@@ -345,8 +427,11 @@ export class FormAnalyticsModule {
    *
    * @returns Promise with the list of available statuses
    */
-  getAvailableStatuses(): Promise<any> {
-    return this.client.request("FormAnalytics.getAvailableStatuses");
+  async getAvailableStatuses(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailableStatuses", {});
+    }
+    return await this.client.request("FormAnalytics.getAvailableStatuses");
   }
 
   /**
@@ -354,8 +439,11 @@ export class FormAnalyticsModule {
    *
    * @returns Promise with the list of available form rules
    */
-  getAvailableFormRules(): Promise<any> {
-    return this.client.request("FormAnalytics.getAvailableFormRules");
+  async getAvailableFormRules(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailableFormRules", {});
+    }
+    return await this.client.request("FormAnalytics.getAvailableFormRules");
   }
 
   /**
@@ -363,8 +451,11 @@ export class FormAnalyticsModule {
    *
    * @returns Promise with the list of available page rules
    */
-  getAvailablePageRules(): Promise<any> {
-    return this.client.request("FormAnalytics.getAvailablePageRules");
+  async getAvailablePageRules(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("FormAnalytics.getAvailablePageRules", {});
+    }
+    return await this.client.request("FormAnalytics.getAvailablePageRules");
   }
 
   /**
@@ -372,8 +463,14 @@ export class FormAnalyticsModule {
    *
    * @returns Promise with the list of available conversion rule options
    */
-  getAvailableConversionRuleOptions(): Promise<any> {
-    return this.client.request(
+  async getAvailableConversionRuleOptions(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "FormAnalytics.getAvailableConversionRuleOptions",
+        {}
+      );
+    }
+    return await this.client.request(
       "FormAnalytics.getAvailableConversionRuleOptions"
     );
   }

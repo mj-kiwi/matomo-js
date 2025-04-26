@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for site-specific operations
@@ -65,8 +66,18 @@ export interface UpdateExportParams extends RequestParams {
   description?: string;
 }
 
+/**
+ * Parameters for getting advertising conversion export data
+ */
+export interface GetParams extends RequestParams {
+  /** Site ID to get advertising conversion export data for */
+  idSite: string | number;
+  /** Export ID to get advertising conversion export data for */
+  idExport: string | number;
+}
+
 export class AdvertisingConversionExportModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a list of all conversion exports for a site
@@ -75,7 +86,13 @@ export class AdvertisingConversionExportModule {
    * @returns List of conversion exports
    */
   async getConversionExports(params: SiteParams = {}): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.getConversionExports",
+        params
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.getConversionExports",
       params
     );
@@ -88,7 +105,13 @@ export class AdvertisingConversionExportModule {
    * @returns Conversion export details
    */
   async getConversionExport(params: ExportParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.getConversionExport",
+        params
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.getConversionExport",
       params
     );
@@ -101,7 +124,13 @@ export class AdvertisingConversionExportModule {
    * @returns Success status of the operation
    */
   async deleteConversionExport(params: DeleteExportParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.deleteConversionExport",
+        params
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.deleteConversionExport",
       params
     );
@@ -120,7 +149,13 @@ export class AdvertisingConversionExportModule {
       requestParams.parameters = JSON.stringify(params.parameters);
     }
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.addConversionExport",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.addConversionExport",
       requestParams
     );
@@ -133,7 +168,13 @@ export class AdvertisingConversionExportModule {
    * @returns New access token
    */
   async regenerateAccessToken(params: ExportParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.regenerateAccessToken",
+        params
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.regenerateAccessToken",
       params
     );
@@ -152,9 +193,27 @@ export class AdvertisingConversionExportModule {
       requestParams.parameters = JSON.stringify(params.parameters);
     }
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "AdvertisingConversionExport.updateConversionExport",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "AdvertisingConversionExport.updateConversionExport",
       requestParams
     );
+  }
+
+  /**
+   * Get advertising conversion export data
+   *
+   * @param params Parameters for getting advertising conversion export data
+   */
+  async get(params: GetParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("AdvertisingConversionExport.get", params);
+    }
+    return await this.client.request("AdvertisingConversionExport.get", params);
   }
 }

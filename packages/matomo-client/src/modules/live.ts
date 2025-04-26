@@ -14,6 +14,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Live API methods
@@ -90,7 +91,7 @@ export interface MostRecentDateTimeParams extends LiveParams {
 }
 
 export class LiveModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get visitor counters
@@ -109,7 +110,10 @@ export class LiveModule {
       formattedParams.hideColumns = formattedParams.hideColumns.join(",");
     }
 
-    return this.client.request("Live.getCounters", formattedParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.getCounters", formattedParams);
+    }
+    return await this.client.request("Live.getCounters", formattedParams);
   }
 
   /**
@@ -119,7 +123,10 @@ export class LiveModule {
    * @returns Promise with boolean result indicating if visitor profile is enabled
    */
   async isVisitorProfileEnabled(params: LiveParams): Promise<any> {
-    return this.client.request("Live.isVisitorProfileEnabled", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.isVisitorProfileEnabled", params);
+    }
+    return await this.client.request("Live.isVisitorProfileEnabled", params);
   }
 
   /**
@@ -129,7 +136,10 @@ export class LiveModule {
    * @returns Promise with visit details
    */
   async getLastVisitsDetails(params: LastVisitsDetailsParams): Promise<any> {
-    return this.client.request("Live.getLastVisitsDetails", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.getLastVisitsDetails", params);
+    }
+    return await this.client.request("Live.getLastVisitsDetails", params);
   }
 
   /**
@@ -139,7 +149,10 @@ export class LiveModule {
    * @returns Promise with visitor profile information
    */
   async getVisitorProfile(params: VisitorProfileParams): Promise<any> {
-    return this.client.request("Live.getVisitorProfile", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.getVisitorProfile", params);
+    }
+    return await this.client.request("Live.getVisitorProfile", params);
   }
 
   /**
@@ -149,7 +162,10 @@ export class LiveModule {
    * @returns Promise with the most recent visitor ID
    */
   async getMostRecentVisitorId(params: MostRecentVisitorParams): Promise<any> {
-    return this.client.request("Live.getMostRecentVisitorId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.getMostRecentVisitorId", params);
+    }
+    return await this.client.request("Live.getMostRecentVisitorId", params);
   }
 
   /**
@@ -161,6 +177,12 @@ export class LiveModule {
   async getMostRecentVisitsDateTime(
     params: MostRecentDateTimeParams
   ): Promise<any> {
-    return this.client.request("Live.getMostRecentVisitsDateTime", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Live.getMostRecentVisitsDateTime", params);
+    }
+    return await this.client.request(
+      "Live.getMostRecentVisitsDateTime",
+      params
+    );
   }
 }

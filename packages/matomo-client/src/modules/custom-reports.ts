@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 export interface CustomReport {
   idcustomreport: string;
@@ -122,7 +123,7 @@ export interface GetCustomReportDataParams extends CustomReportIdParams {
 }
 
 export class CustomReportsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new custom report
@@ -130,8 +131,11 @@ export class CustomReportsModule {
    * @param params Parameters for adding a new custom report
    * @returns Promise with the new report details
    */
-  addCustomReport(params: AddCustomReportParams): Promise<any> {
-    return this.client.request("CustomReports.addCustomReport", params);
+  async addCustomReport(params: AddCustomReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.addCustomReport", params);
+    }
+    return await this.client.request("CustomReports.addCustomReport", params);
   }
 
   /**
@@ -140,8 +144,14 @@ export class CustomReportsModule {
    * @param params Parameters for updating an existing custom report
    * @returns Promise with the updated report details
    */
-  updateCustomReport(params: UpdateCustomReportParams): Promise<any> {
-    return this.client.request("CustomReports.updateCustomReport", params);
+  async updateCustomReport(params: UpdateCustomReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.updateCustomReport", params);
+    }
+    return await this.client.request(
+      "CustomReports.updateCustomReport",
+      params
+    );
   }
 
   /**
@@ -150,10 +160,17 @@ export class CustomReportsModule {
    * @param params Parameters for getting configured reports
    * @returns Promise with the list of configured custom reports
    */
-  getConfiguredReports(
-    params: GetConfiguredReportsParams
-  ): Promise<CustomReport[]> {
-    return this.client.request("CustomReports.getConfiguredReports", params);
+  async getConfiguredReports(params: GetConfiguredReportsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getConfiguredReports",
+        params
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getConfiguredReports",
+      params
+    );
   }
 
   /**
@@ -162,8 +179,17 @@ export class CustomReportsModule {
    * @param params Parameters containing site ID and custom report ID
    * @returns Promise with the custom report details
    */
-  getConfiguredReport(params: CustomReportIdParams): Promise<CustomReport> {
-    return this.client.request("CustomReports.getConfiguredReport", params);
+  async getConfiguredReport(params: CustomReportIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getConfiguredReport",
+        params
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getConfiguredReport",
+      params
+    );
   }
 
   /**
@@ -172,8 +198,14 @@ export class CustomReportsModule {
    * @param params Parameters containing site ID and custom report ID
    * @returns Promise with the deletion status
    */
-  deleteCustomReport(params: CustomReportIdParams): Promise<any> {
-    return this.client.request("CustomReports.deleteCustomReport", params);
+  async deleteCustomReport(params: CustomReportIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.deleteCustomReport", params);
+    }
+    return await this.client.request(
+      "CustomReports.deleteCustomReport",
+      params
+    );
   }
 
   /**
@@ -182,8 +214,11 @@ export class CustomReportsModule {
    * @param params Parameters containing site ID and custom report ID
    * @returns Promise with the pause status
    */
-  pauseCustomReport(params: CustomReportIdParams): Promise<any> {
-    return this.client.request("CustomReports.pauseCustomReport", params);
+  async pauseCustomReport(params: CustomReportIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.pauseCustomReport", params);
+    }
+    return await this.client.request("CustomReports.pauseCustomReport", params);
   }
 
   /**
@@ -192,8 +227,14 @@ export class CustomReportsModule {
    * @param params Parameters containing site ID and custom report ID
    * @returns Promise with the resume status
    */
-  resumeCustomReport(params: CustomReportIdParams): Promise<any> {
-    return this.client.request("CustomReports.resumeCustomReport", params);
+  async resumeCustomReport(params: CustomReportIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.resumeCustomReport", params);
+    }
+    return await this.client.request(
+      "CustomReports.resumeCustomReport",
+      params
+    );
   }
 
   /**
@@ -202,8 +243,17 @@ export class CustomReportsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of available categories
    */
-  getAvailableCategories(params: CustomReportsParams): Promise<Category[]> {
-    return this.client.request("CustomReports.getAvailableCategories", params);
+  async getAvailableCategories(params: CustomReportsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getAvailableCategories",
+        params
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getAvailableCategories",
+      params
+    );
   }
 
   /**
@@ -211,8 +261,17 @@ export class CustomReportsModule {
    *
    * @returns Promise with the list of available report types
    */
-  getAvailableReportTypes(): Promise<ReportType[]> {
-    return this.client.request("CustomReports.getAvailableReportTypes", {});
+  async getAvailableReportTypes(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getAvailableReportTypes",
+        {}
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getAvailableReportTypes",
+      {}
+    );
   }
 
   /**
@@ -221,8 +280,17 @@ export class CustomReportsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of available dimensions
    */
-  getAvailableDimensions(params: CustomReportsParams): Promise<Dimension[]> {
-    return this.client.request("CustomReports.getAvailableDimensions", params);
+  async getAvailableDimensions(params: CustomReportsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getAvailableDimensions",
+        params
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getAvailableDimensions",
+      params
+    );
   }
 
   /**
@@ -231,8 +299,17 @@ export class CustomReportsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of available metrics
    */
-  getAvailableMetrics(params: CustomReportsParams): Promise<Metric[]> {
-    return this.client.request("CustomReports.getAvailableMetrics", params);
+  async getAvailableMetrics(params: CustomReportsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomReports.getAvailableMetrics",
+        params
+      );
+    }
+    return await this.client.request(
+      "CustomReports.getAvailableMetrics",
+      params
+    );
   }
 
   /**
@@ -241,7 +318,10 @@ export class CustomReportsModule {
    * @param params Parameters for getting custom report data
    * @returns Promise with the custom report data
    */
-  getCustomReport(params: GetCustomReportDataParams): Promise<any> {
-    return this.client.request("CustomReports.getCustomReport", params);
+  async getCustomReport(params: GetCustomReportDataParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("CustomReports.getCustomReport", params);
+    }
+    return await this.client.request("CustomReports.getCustomReport", params);
   }
 }

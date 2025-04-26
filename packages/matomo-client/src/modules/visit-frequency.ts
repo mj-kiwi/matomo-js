@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for VisitFrequency API methods
@@ -22,7 +23,7 @@ export interface VisitFrequencyParams extends RequestParams {
 }
 
 export class VisitFrequencyModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get metrics about new and returning visitors
@@ -30,6 +31,9 @@ export class VisitFrequencyModule {
    * @param params Parameters for getting visitor frequency metrics
    */
   async get(params: VisitFrequencyParams): Promise<any> {
-    return this.client.request("VisitFrequency.get", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitFrequency.get", params);
+    }
+    return await this.client.request("VisitFrequency.get", params);
   }
 }

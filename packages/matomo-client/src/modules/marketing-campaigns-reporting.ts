@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Basic marketing campaign report parameters
@@ -40,7 +41,7 @@ export interface SubtableMarketingCampaignParams
 }
 
 export class MarketingCampaignsReportingModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get campaign IDs
@@ -48,7 +49,16 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getId(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request("MarketingCampaignsReporting.getId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getId",
+        params
+      );
+    }
+    return await this.client.request(
+      "MarketingCampaignsReporting.getId",
+      params
+    );
   }
 
   /**
@@ -57,7 +67,16 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getName(params: ExtendedMarketingCampaignParams): Promise<any> {
-    return this.client.request("MarketingCampaignsReporting.getName", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getName",
+        params
+      );
+    }
+    return await this.client.request(
+      "MarketingCampaignsReporting.getName",
+      params
+    );
   }
 
   /**
@@ -68,7 +87,13 @@ export class MarketingCampaignsReportingModule {
   async getKeywordContentFromNameId(
     params: SubtableMarketingCampaignParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getKeywordContentFromNameId",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getKeywordContentFromNameId",
       params
     );
@@ -80,7 +105,13 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getKeyword(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getKeyword",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getKeyword",
       params
     );
@@ -92,7 +123,16 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getSource(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request("MarketingCampaignsReporting.getSource", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getSource",
+        params
+      );
+    }
+    return await this.client.request(
+      "MarketingCampaignsReporting.getSource",
+      params
+    );
   }
 
   /**
@@ -101,7 +141,16 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getMedium(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request("MarketingCampaignsReporting.getMedium", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getMedium",
+        params
+      );
+    }
+    return await this.client.request(
+      "MarketingCampaignsReporting.getMedium",
+      params
+    );
   }
 
   /**
@@ -110,7 +159,13 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getContent(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getContent",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getContent",
       params
     );
@@ -122,7 +177,16 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getGroup(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request("MarketingCampaignsReporting.getGroup", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getGroup",
+        params
+      );
+    }
+    return await this.client.request(
+      "MarketingCampaignsReporting.getGroup",
+      params
+    );
   }
 
   /**
@@ -131,7 +195,13 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getPlacement(params: MarketingCampaignParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getPlacement",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getPlacement",
       params
     );
@@ -143,7 +213,13 @@ export class MarketingCampaignsReportingModule {
    * @param params Parameters for campaign report
    */
   async getSourceMedium(params: ExtendedMarketingCampaignParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getSourceMedium",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getSourceMedium",
       params
     );
@@ -157,7 +233,13 @@ export class MarketingCampaignsReportingModule {
   async getNameFromSourceMediumId(
     params: SubtableMarketingCampaignParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MarketingCampaignsReporting.getNameFromSourceMediumId",
+        params
+      );
+    }
+    return await this.client.request(
       "MarketingCampaignsReporting.getNameFromSourceMediumId",
       params
     );

@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 export interface CustomDimension {
   idcustomdimension: string;
@@ -101,14 +102,14 @@ export interface GetCustomDimensionsWithScopeParams {
 }
 
 export class CustomDimensionsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a specific Custom Dimension report
    * @param params Parameters for getting a custom dimension report
    * @returns Promise with the custom dimension data
    */
-  getCustomDimension(params: GetCustomDimensionParams): Promise<any> {
+  async getCustomDimension(params: GetCustomDimensionParams): Promise<any> {
     const requestParams: Record<string, any> = {
       idDimension: params.idDimension,
       idSite: params.idSite,
@@ -122,7 +123,13 @@ export class CustomDimensionsModule {
     if (params.idSubtable !== undefined)
       requestParams.idSubtable = params.idSubtable;
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.getCustomDimension",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "CustomDimensions.getCustomDimension",
       requestParams
     );
@@ -133,10 +140,10 @@ export class CustomDimensionsModule {
    * @param params Parameters for configuring a new custom dimension
    * @returns Promise with the response
    */
-  configureNewCustomDimension(
+  async configureNewCustomDimension(
     params: ConfigureNewCustomDimensionParams
   ): Promise<any> {
-    return this.client.request("CustomDimensions.configureNewCustomDimension", {
+    const requestParams = {
       idSite: params.idSite,
       name: params.name,
       scope: params.scope,
@@ -148,7 +155,18 @@ export class CustomDimensionsModule {
           : params.active,
       extractions: params.extractions ?? "Array",
       caseSensitive: params.caseSensitive ?? "1",
-    });
+    };
+
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.configureNewCustomDimension",
+        requestParams
+      );
+    }
+    return await this.client.request(
+      "CustomDimensions.configureNewCustomDimension",
+      requestParams
+    );
   }
 
   /**
@@ -156,7 +174,7 @@ export class CustomDimensionsModule {
    * @param params Parameters for configuring an existing custom dimension
    * @returns Promise with the response
    */
-  configureExistingCustomDimension(
+  async configureExistingCustomDimension(
     params: ConfigureExistingCustomDimensionParams
   ): Promise<any> {
     const requestParams: Record<string, any> = {
@@ -175,7 +193,13 @@ export class CustomDimensionsModule {
     if (params.caseSensitive !== undefined)
       requestParams.caseSensitive = params.caseSensitive;
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.configureExistingCustomDimension",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "CustomDimensions.configureExistingCustomDimension",
       requestParams
     );
@@ -186,14 +210,22 @@ export class CustomDimensionsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of configured custom dimensions
    */
-  getConfiguredCustomDimensions(
+  async getConfiguredCustomDimensions(
     params: GetCustomDimensionsParams
-  ): Promise<CustomDimension[]> {
-    return this.client.request(
+  ): Promise<any> {
+    const requestParams = {
+      idSite: params.idSite,
+    };
+
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.getConfiguredCustomDimensions",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "CustomDimensions.getConfiguredCustomDimensions",
-      {
-        idSite: params.idSite,
-      }
+      requestParams
     );
   }
 
@@ -202,15 +234,23 @@ export class CustomDimensionsModule {
    * @param params Parameters for getting custom dimensions with a specific scope
    * @returns Promise with the list of configured custom dimensions with the given scope
    */
-  getConfiguredCustomDimensionsHavingScope(
+  async getConfiguredCustomDimensionsHavingScope(
     params: GetCustomDimensionsWithScopeParams
-  ): Promise<CustomDimension[]> {
-    return this.client.request(
+  ): Promise<any> {
+    const requestParams = {
+      idSite: params.idSite,
+      scope: params.scope,
+    };
+
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.getConfiguredCustomDimensionsHavingScope",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "CustomDimensions.getConfiguredCustomDimensionsHavingScope",
-      {
-        idSite: params.idSite,
-        scope: params.scope,
-      }
+      requestParams
     );
   }
 
@@ -219,18 +259,35 @@ export class CustomDimensionsModule {
    * @param params Parameters containing the site ID
    * @returns Promise with the list of available scopes
    */
-  getAvailableScopes(params: GetCustomDimensionsParams): Promise<Scope[]> {
-    return this.client.request("CustomDimensions.getAvailableScopes", {
+  async getAvailableScopes(params: GetCustomDimensionsParams): Promise<any> {
+    const requestParams = {
       idSite: params.idSite,
-    });
+    };
+
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.getAvailableScopes",
+        requestParams
+      );
+    }
+    return await this.client.request(
+      "CustomDimensions.getAvailableScopes",
+      requestParams
+    );
   }
 
   /**
    * Get available extraction dimensions
    * @returns Promise with the list of available extraction dimensions
    */
-  getAvailableExtractionDimensions(): Promise<ExtractionDimension[]> {
-    return this.client.request(
+  async getAvailableExtractionDimensions(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "CustomDimensions.getAvailableExtractionDimensions",
+        {}
+      );
+    }
+    return await this.client.request(
       "CustomDimensions.getAvailableExtractionDimensions",
       {}
     );

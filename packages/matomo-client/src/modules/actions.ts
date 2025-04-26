@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Action module methods
@@ -56,7 +57,7 @@ export interface ActionsGetParams extends ActionReportParams {
 }
 
 export class ActionsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get actions data for multiple periods or sites
@@ -64,7 +65,10 @@ export class ActionsModule {
    * @param params Parameters for getting actions data
    */
   async get(params: ActionsGetParams): Promise<any> {
-    return this.client.request("Actions.get", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.get", params);
+    }
+    return await this.client.request("Actions.get", params);
   }
 
   /**
@@ -73,7 +77,10 @@ export class ActionsModule {
    * @param params Parameters for getting page URLs
    */
   async getPageUrls(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getPageUrls", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getPageUrls", params);
+    }
+    return await this.client.request("Actions.getPageUrls", params);
   }
 
   /**
@@ -82,7 +89,13 @@ export class ActionsModule {
    * @param params Parameters for getting page URLs following site search
    */
   async getPageUrlsFollowingSiteSearch(params: PageReportParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Actions.getPageUrlsFollowingSiteSearch",
+        params
+      );
+    }
+    return await this.client.request(
       "Actions.getPageUrlsFollowingSiteSearch",
       params
     );
@@ -96,7 +109,13 @@ export class ActionsModule {
   async getPageTitlesFollowingSiteSearch(
     params: PageReportParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Actions.getPageTitlesFollowingSiteSearch",
+        params
+      );
+    }
+    return await this.client.request(
       "Actions.getPageTitlesFollowingSiteSearch",
       params
     );
@@ -108,7 +127,10 @@ export class ActionsModule {
    * @param params Parameters for getting entry page URLs
    */
   async getEntryPageUrls(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getEntryPageUrls", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getEntryPageUrls", params);
+    }
+    return await this.client.request("Actions.getEntryPageUrls", params);
   }
 
   /**
@@ -117,7 +139,10 @@ export class ActionsModule {
    * @param params Parameters for getting exit page URLs
    */
   async getExitPageUrls(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getExitPageUrls", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getExitPageUrls", params);
+    }
+    return await this.client.request("Actions.getExitPageUrls", params);
   }
 
   /**
@@ -128,7 +153,10 @@ export class ActionsModule {
   async getPageUrl(
     params: SpecificPageParams & { pageUrl: string }
   ): Promise<any> {
-    return this.client.request("Actions.getPageUrl", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getPageUrl", params);
+    }
+    return await this.client.request("Actions.getPageUrl", params);
   }
 
   /**
@@ -137,7 +165,10 @@ export class ActionsModule {
    * @param params Parameters for getting page titles
    */
   async getPageTitles(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getPageTitles", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getPageTitles", params);
+    }
+    return await this.client.request("Actions.getPageTitles", params);
   }
 
   /**
@@ -146,7 +177,10 @@ export class ActionsModule {
    * @param params Parameters for getting entry page titles
    */
   async getEntryPageTitles(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getEntryPageTitles", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getEntryPageTitles", params);
+    }
+    return await this.client.request("Actions.getEntryPageTitles", params);
   }
 
   /**
@@ -155,7 +189,10 @@ export class ActionsModule {
    * @param params Parameters for getting exit page titles
    */
   async getExitPageTitles(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getExitPageTitles", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getExitPageTitles", params);
+    }
+    return await this.client.request("Actions.getExitPageTitles", params);
   }
 
   /**
@@ -166,7 +203,10 @@ export class ActionsModule {
   async getPageTitle(
     params: SpecificPageParams & { pageName: string }
   ): Promise<any> {
-    return this.client.request("Actions.getPageTitle", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getPageTitle", params);
+    }
+    return await this.client.request("Actions.getPageTitle", params);
   }
 
   /**
@@ -175,7 +215,10 @@ export class ActionsModule {
    * @param params Parameters for getting file downloads
    */
   async getDownloads(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getDownloads", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getDownloads", params);
+    }
+    return await this.client.request("Actions.getDownloads", params);
   }
 
   /**
@@ -186,7 +229,10 @@ export class ActionsModule {
   async getDownload(
     params: SpecificPageParams & { downloadUrl: string }
   ): Promise<any> {
-    return this.client.request("Actions.getDownload", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getDownload", params);
+    }
+    return await this.client.request("Actions.getDownload", params);
   }
 
   /**
@@ -195,7 +241,10 @@ export class ActionsModule {
    * @param params Parameters for getting outlinks
    */
   async getOutlinks(params: PageReportParams): Promise<any> {
-    return this.client.request("Actions.getOutlinks", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getOutlinks", params);
+    }
+    return await this.client.request("Actions.getOutlinks", params);
   }
 
   /**
@@ -206,7 +255,10 @@ export class ActionsModule {
   async getOutlink(
     params: SpecificPageParams & { outlinkUrl: string }
   ): Promise<any> {
-    return this.client.request("Actions.getOutlink", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getOutlink", params);
+    }
+    return await this.client.request("Actions.getOutlink", params);
   }
 
   /**
@@ -215,7 +267,10 @@ export class ActionsModule {
    * @param params Parameters for getting site search keywords
    */
   async getSiteSearchKeywords(params: ActionReportParams): Promise<any> {
-    return this.client.request("Actions.getSiteSearchKeywords", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getSiteSearchKeywords", params);
+    }
+    return await this.client.request("Actions.getSiteSearchKeywords", params);
   }
 
   /**
@@ -226,7 +281,16 @@ export class ActionsModule {
   async getSiteSearchNoResultKeywords(
     params: ActionReportParams
   ): Promise<any> {
-    return this.client.request("Actions.getSiteSearchNoResultKeywords", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Actions.getSiteSearchNoResultKeywords",
+        params
+      );
+    }
+    return await this.client.request(
+      "Actions.getSiteSearchNoResultKeywords",
+      params
+    );
   }
 
   /**
@@ -235,6 +299,9 @@ export class ActionsModule {
    * @param params Parameters for getting site search categories
    */
   async getSiteSearchCategories(params: ActionReportParams): Promise<any> {
-    return this.client.request("Actions.getSiteSearchCategories", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Actions.getSiteSearchCategories", params);
+    }
+    return await this.client.request("Actions.getSiteSearchCategories", params);
   }
 }

@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for site-specific operations
@@ -51,17 +52,25 @@ export interface ChannelAttributionParams extends GoalAttributionParams {
 
 export class MultiChannelConversionAttributionModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Set goal attribution for a specific site and goal
    *
    * @param params Parameters for setting goal attribution
    */
-  async setGoalAttribution(params: SetGoalAttributionParams): Promise<boolean> {
-    return this.core.request<boolean>(
+  async setGoalAttribution(
+    params: SetGoalAttributionParams
+  ): Promise<boolean | BatchRequest> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MultiChannelConversionAttribution.setGoalAttribution",
+        params
+      );
+    }
+    return await this.core.request<boolean>(
       "MultiChannelConversionAttribution.setGoalAttribution",
       params
     );
@@ -72,8 +81,16 @@ export class MultiChannelConversionAttributionModule {
    *
    * @param params Parameters for goal attribution
    */
-  async getGoalAttribution(params: GoalAttributionParams): Promise<boolean> {
-    return this.core.request<boolean>(
+  async getGoalAttribution(
+    params: GoalAttributionParams
+  ): Promise<boolean | BatchRequest> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MultiChannelConversionAttribution.getGoalAttribution",
+        params
+      );
+    }
+    return await this.core.request<boolean>(
       "MultiChannelConversionAttribution.getGoalAttribution",
       params
     );
@@ -85,7 +102,13 @@ export class MultiChannelConversionAttributionModule {
    * @param params Parameters for channel attribution data
    */
   async getChannelAttribution(params: ChannelAttributionParams): Promise<any> {
-    return this.core.request(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MultiChannelConversionAttribution.getChannelAttribution",
+        params
+      );
+    }
+    return await this.core.request(
       "MultiChannelConversionAttribution.getChannelAttribution",
       params
     );
@@ -94,8 +117,16 @@ export class MultiChannelConversionAttributionModule {
   /**
    * Get available campaign dimension combinations
    */
-  async getAvailableCampaignDimensionCombinations(): Promise<any[]> {
-    return this.core.request<any[]>(
+  async getAvailableCampaignDimensionCombinations(): Promise<
+    any[] | BatchRequest
+  > {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MultiChannelConversionAttribution.getAvailableCampaignDimensionCombinations",
+        {}
+      );
+    }
+    return await this.core.request<any[]>(
       "MultiChannelConversionAttribution.getAvailableCampaignDimensionCombinations"
     );
   }
@@ -105,8 +136,16 @@ export class MultiChannelConversionAttributionModule {
    *
    * @param params Parameters containing the site ID
    */
-  async getSiteAttributionGoals(params: SiteParams): Promise<any[]> {
-    return this.core.request<any[]>(
+  async getSiteAttributionGoals(
+    params: SiteParams
+  ): Promise<any[] | BatchRequest> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "MultiChannelConversionAttribution.getSiteAttributionGoals",
+        params
+      );
+    }
+    return await this.core.request<any[]>(
       "MultiChannelConversionAttribution.getSiteAttributionGoals",
       params
     );

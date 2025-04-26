@@ -17,6 +17,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for search engine keyword methods
@@ -39,7 +40,7 @@ export interface CrawlingErrorParams extends RequestParams {
 }
 
 export class SearchEngineKeywordsPerformanceModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get all search engine keywords
@@ -48,7 +49,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the search engine keywords data
    */
   async getKeywords(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywords",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywords",
       params
     );
@@ -61,7 +68,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the imported search engine keywords data
    */
   async getKeywordsImported(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsImported",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsImported",
       params
     );
@@ -74,7 +87,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Google search engine keywords data
    */
   async getKeywordsGoogle(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsGoogle",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogle",
       params
     );
@@ -87,7 +106,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Bing search engine keywords data
    */
   async getKeywordsBing(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsBing",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsBing",
       params
     );
@@ -100,7 +125,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Yandex search engine keywords data
    */
   async getKeywordsYandex(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsYandex",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsYandex",
       params
     );
@@ -113,7 +144,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Google Web search engine keywords data
    */
   async getKeywordsGoogleWeb(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsGoogleWeb",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleWeb",
       params
     );
@@ -126,7 +163,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Google Image search engine keywords data
    */
   async getKeywordsGoogleImage(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsGoogleImage",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleImage",
       params
     );
@@ -139,7 +182,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Google Video search engine keywords data
    */
   async getKeywordsGoogleVideo(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsGoogleVideo",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleVideo",
       params
     );
@@ -152,7 +201,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Google News search engine keywords data
    */
   async getKeywordsGoogleNews(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getKeywordsGoogleNews",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getKeywordsGoogleNews",
       params
     );
@@ -165,7 +220,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Bing crawling overview data
    */
   async getCrawlingOverviewBing(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getCrawlingOverviewBing",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingOverviewBing",
       params
     );
@@ -178,7 +239,13 @@ export class SearchEngineKeywordsPerformanceModule {
    * @returns Promise with the Yandex crawling overview data
    */
   async getCrawlingOverviewYandex(params: SearchKeywordsParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getCrawlingOverviewYandex",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingOverviewYandex",
       params
     );
@@ -193,7 +260,13 @@ export class SearchEngineKeywordsPerformanceModule {
   async getCrawlingErrorExamplesBing(
     params: CrawlingErrorParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "SearchEngineKeywordsPerformance.getCrawlingErrorExamplesBing",
+        params
+      );
+    }
+    return await this.client.request(
       "SearchEngineKeywordsPerformance.getCrawlingErrorExamplesBing",
       params
     );

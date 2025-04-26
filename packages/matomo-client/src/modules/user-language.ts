@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for UserLanguage API methods
@@ -20,7 +21,7 @@ export interface UserLanguageParams extends RequestParams {
 }
 
 export class UserLanguageModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get visitor language information
@@ -28,7 +29,10 @@ export class UserLanguageModule {
    * @param params Parameters for getting visitor language information
    */
   async getLanguage(params: UserLanguageParams): Promise<any> {
-    return this.client.request("UserLanguage.getLanguage", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserLanguage.getLanguage", params);
+    }
+    return await this.client.request("UserLanguage.getLanguage", params);
   }
 
   /**
@@ -37,6 +41,9 @@ export class UserLanguageModule {
    * @param params Parameters for getting visitor language code information
    */
   async getLanguageCode(params: UserLanguageParams): Promise<any> {
-    return this.client.request("UserLanguage.getLanguageCode", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserLanguage.getLanguageCode", params);
+    }
+    return await this.client.request("UserLanguage.getLanguageCode", params);
   }
 }

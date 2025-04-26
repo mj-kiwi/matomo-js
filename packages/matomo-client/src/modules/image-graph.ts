@@ -11,6 +11,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for generating a graph
@@ -67,7 +68,7 @@ export interface ImageGraphParams extends RequestParams {
 }
 
 export class ImageGraphModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Generate a static graph image for a specific report
@@ -75,7 +76,10 @@ export class ImageGraphModule {
    * @param params Parameters for generating the graph
    * @returns Promise with the image data
    */
-  get(params: ImageGraphParams): Promise<any> {
-    return this.client.request("ImageGraph.get", params);
+  async get(params: ImageGraphParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ImageGraph.get", params);
+    }
+    return await this.client.request("ImageGraph.get", params);
   }
 }

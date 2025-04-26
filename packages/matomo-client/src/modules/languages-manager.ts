@@ -10,6 +10,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for language availability check
@@ -52,7 +53,7 @@ export interface Set12HourClockParams extends UserLoginParams {
 }
 
 export class LanguagesManagerModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Check if a language is available in this Matomo installation
@@ -61,7 +62,16 @@ export class LanguagesManagerModule {
    * @returns Promise with boolean result indicating if the language is available
    */
   async isLanguageAvailable(params: LanguageCodeParams): Promise<any> {
-    return this.client.request("LanguagesManager.isLanguageAvailable", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.isLanguageAvailable",
+        params
+      );
+    }
+    return await this.client.request(
+      "LanguagesManager.isLanguageAvailable",
+      params
+    );
   }
 
   /**
@@ -70,7 +80,13 @@ export class LanguagesManagerModule {
    * @returns Promise with an array of available language codes
    */
   async getAvailableLanguages(): Promise<any> {
-    return this.client.request("LanguagesManager.getAvailableLanguages");
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.getAvailableLanguages",
+        {}
+      );
+    }
+    return await this.client.request("LanguagesManager.getAvailableLanguages");
   }
 
   /**
@@ -82,7 +98,13 @@ export class LanguagesManagerModule {
   async getAvailableLanguagesInfo(
     params: LanguageInfoParams = {}
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.getAvailableLanguagesInfo",
+        params
+      );
+    }
+    return await this.client.request(
       "LanguagesManager.getAvailableLanguagesInfo",
       params
     );
@@ -94,7 +116,15 @@ export class LanguagesManagerModule {
    * @returns Promise with object mapping language codes to language names
    */
   async getAvailableLanguageNames(): Promise<any> {
-    return this.client.request("LanguagesManager.getAvailableLanguageNames");
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.getAvailableLanguageNames",
+        {}
+      );
+    }
+    return await this.client.request(
+      "LanguagesManager.getAvailableLanguageNames"
+    );
   }
 
   /**
@@ -104,7 +134,13 @@ export class LanguagesManagerModule {
    * @returns Promise with all translations for the specified language
    */
   async getTranslationsForLanguage(params: LanguageCodeParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.getTranslationsForLanguage",
+        params
+      );
+    }
+    return await this.client.request(
       "LanguagesManager.getTranslationsForLanguage",
       params
     );
@@ -117,7 +153,16 @@ export class LanguagesManagerModule {
    * @returns Promise with the user's language code
    */
   async getLanguageForUser(params: UserLoginParams): Promise<any> {
-    return this.client.request("LanguagesManager.getLanguageForUser", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.getLanguageForUser",
+        params
+      );
+    }
+    return await this.client.request(
+      "LanguagesManager.getLanguageForUser",
+      params
+    );
   }
 
   /**
@@ -127,7 +172,16 @@ export class LanguagesManagerModule {
    * @returns Promise with success status
    */
   async setLanguageForUser(params: SetLanguageParams): Promise<any> {
-    return this.client.request("LanguagesManager.setLanguageForUser", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.setLanguageForUser",
+        params
+      );
+    }
+    return await this.client.request(
+      "LanguagesManager.setLanguageForUser",
+      params
+    );
   }
 
   /**
@@ -137,7 +191,13 @@ export class LanguagesManagerModule {
    * @returns Promise with boolean result indicating if the user uses 12-hour clock
    */
   async uses12HourClockForUser(params: UserLoginParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.uses12HourClockForUser",
+        params
+      );
+    }
+    return await this.client.request(
       "LanguagesManager.uses12HourClockForUser",
       params
     );
@@ -150,7 +210,13 @@ export class LanguagesManagerModule {
    * @returns Promise with success status
    */
   async set12HourClockForUser(params: Set12HourClockParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "LanguagesManager.set12HourClockForUser",
+        params
+      );
+    }
+    return await this.client.request(
       "LanguagesManager.set12HourClockForUser",
       params
     );

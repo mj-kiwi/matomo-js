@@ -4,6 +4,7 @@
  */
 
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { BatchRequest } from "../batch-request.js";
 
 export interface ReportingClientOptions {
   /**
@@ -210,5 +211,65 @@ export class CoreReportingClient {
     }
 
     return this.request<Record<string, T>>("API.getBulkRequest", requestParams);
+  }
+
+  /**
+   * Create a batch request builder for chaining multiple API requests
+   *
+   * @returns A new BatchRequest instance
+   */
+  prepareRequests(): BatchRequest {
+    return new BatchRequest(this);
+  }
+
+  /**
+   * Send multiple API requests in a single HTTP request
+   *
+   * @param requests Array of request objects with method and params
+   * @returns Promise with an array of API responses
+   * @internal Used by BatchRequest
+   */
+  async batchRequest(
+    requests: Array<{ method: string; params: Record<string, any> }>
+  ): Promise<any[]> {
+    const batchParams: RequestParams = {
+      module: "API",
+      method: "API.getBulkRequest",
+      format: this.format,
+    };
+
+    const requestParams: Record<string, string> = {};
+
+    // Build URL parameters for each request in the batch
+    requests.forEach((req, index) => {
+      let urlParams = new URLSearchParams();
+      urlParams.append("method", req.method);
+
+      // Add params for this request
+      Object.entries(req.params).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          if (Array.isArray(value)) {
+            urlParams.append(key, value.join(","));
+          } else {
+            urlParams.append(key, String(value));
+          }
+        }
+      });
+
+      requestParams[`urls[${index}]`] = `?${urlParams.toString()}`;
+    });
+
+    // Add token auth if available
+    if (this.tokenAuth) {
+      batchParams["token_auth"] = this.tokenAuth;
+    }
+
+    // Make the batch request
+    const response = await this.request<any[]>("API.getBulkRequest", {
+      ...batchParams,
+      ...requestParams,
+    });
+
+    return response;
   }
 }

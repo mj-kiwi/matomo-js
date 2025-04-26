@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Referrers API methods
@@ -76,9 +77,9 @@ export interface SocialUrlParams extends ReferrersParams {
 
 export class ReferrersModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get referrers overview data
@@ -86,7 +87,10 @@ export class ReferrersModule {
    * @param params Parameters for getting referrer overview data
    */
   async get(params: ReferrersGetParams): Promise<any> {
-    return this.core.request<any>("Referrers.get", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.get", params);
+    }
+    return await this.core.request<any>("Referrers.get", params);
   }
 
   /**
@@ -95,7 +99,10 @@ export class ReferrersModule {
    * @param params Parameters for getting referrer type data
    */
   async getReferrerType(params: ReferrerTypeParams): Promise<any> {
-    return this.core.request<any>("Referrers.getReferrerType", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getReferrerType", params);
+    }
+    return await this.core.request<any>("Referrers.getReferrerType", params);
   }
 
   /**
@@ -104,7 +111,10 @@ export class ReferrersModule {
    * @param params Parameters for getting all referrers
    */
   async getAll(params: ReferrersExpandableParams): Promise<any> {
-    return this.core.request<any>("Referrers.getAll", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getAll", params);
+    }
+    return await this.core.request<any>("Referrers.getAll", params);
   }
 
   /**
@@ -113,7 +123,10 @@ export class ReferrersModule {
    * @param params Parameters for getting direct entries
    */
   async getDirectEntry(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>("Referrers.getDirectEntry", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getDirectEntry", params);
+    }
+    return await this.core.request<any>("Referrers.getDirectEntry", params);
   }
 
   /**
@@ -122,7 +135,10 @@ export class ReferrersModule {
    * @param params Parameters for getting search engines data
    */
   async getSearchEngines(params: ReferrersExpandableParams): Promise<any> {
-    return this.core.request<any>("Referrers.getSearchEngines", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getSearchEngines", params);
+    }
+    return await this.core.request<any>("Referrers.getSearchEngines", params);
   }
 
   /**
@@ -133,7 +149,13 @@ export class ReferrersModule {
   async getKeywordsFromSearchEngineId(
     params: ReferrersSubtableParams
   ): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getKeywordsFromSearchEngineId",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getKeywordsFromSearchEngineId",
       params
     );
@@ -145,7 +167,10 @@ export class ReferrersModule {
    * @param params Parameters for getting campaigns
    */
   async getCampaigns(params: ReferrersCampaignParams): Promise<any> {
-    return this.core.request<any>("Referrers.getCampaigns", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getCampaigns", params);
+    }
+    return await this.core.request<any>("Referrers.getCampaigns", params);
   }
 
   /**
@@ -156,7 +181,13 @@ export class ReferrersModule {
   async getKeywordsFromCampaignId(
     params: ReferrersSubtableParams
   ): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getKeywordsFromCampaignId",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getKeywordsFromCampaignId",
       params
     );
@@ -168,7 +199,10 @@ export class ReferrersModule {
    * @param params Parameters for getting websites
    */
   async getWebsites(params: ReferrersExpandableParams): Promise<any> {
-    return this.core.request<any>("Referrers.getWebsites", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getWebsites", params);
+    }
+    return await this.core.request<any>("Referrers.getWebsites", params);
   }
 
   /**
@@ -177,7 +211,13 @@ export class ReferrersModule {
    * @param params Parameters for getting URLs from website
    */
   async getUrlsFromWebsiteId(params: ReferrersSubtableParams): Promise<any> {
-    return this.core.request<any>("Referrers.getUrlsFromWebsiteId", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getUrlsFromWebsiteId", params);
+    }
+    return await this.core.request<any>(
+      "Referrers.getUrlsFromWebsiteId",
+      params
+    );
   }
 
   /**
@@ -186,7 +226,10 @@ export class ReferrersModule {
    * @param params Parameters for getting social referrers
    */
   async getSocials(params: ReferrersExpandableParams): Promise<any> {
-    return this.core.request<any>("Referrers.getSocials", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getSocials", params);
+    }
+    return await this.core.request<any>("Referrers.getSocials", params);
   }
 
   /**
@@ -195,7 +238,10 @@ export class ReferrersModule {
    * @param params Parameters for getting URLs from social network
    */
   async getUrlsForSocial(params: SocialUrlParams): Promise<any> {
-    return this.core.request<any>("Referrers.getUrlsForSocial", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("Referrers.getUrlsForSocial", params);
+    }
+    return await this.core.request<any>("Referrers.getUrlsForSocial", params);
   }
 
   /**
@@ -204,7 +250,13 @@ export class ReferrersModule {
    * @param params Parameters for getting number of search engines
    */
   async getNumberOfSearchEngines(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getNumberOfDistinctSearchEngines",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctSearchEngines",
       params
     );
@@ -216,7 +268,13 @@ export class ReferrersModule {
    * @param params Parameters for getting number of keywords
    */
   async getNumberOfKeywords(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getNumberOfDistinctKeywords",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctKeywords",
       params
     );
@@ -228,7 +286,13 @@ export class ReferrersModule {
    * @param params Parameters for getting number of campaigns
    */
   async getNumberOfCampaigns(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getNumberOfDistinctCampaigns",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctCampaigns",
       params
     );
@@ -240,7 +304,13 @@ export class ReferrersModule {
    * @param params Parameters for getting number of websites
    */
   async getNumberOfWebsites(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getNumberOfDistinctWebsites",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctWebsites",
       params
     );
@@ -252,7 +322,13 @@ export class ReferrersModule {
    * @param params Parameters for getting number of website URLs
    */
   async getNumberOfWebsiteUrls(params: ReferrersParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "Referrers.getNumberOfDistinctWebsitesUrls",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "Referrers.getNumberOfDistinctWebsitesUrls",
       params
     );

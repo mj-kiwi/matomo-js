@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for UserId API methods
@@ -20,7 +21,7 @@ export interface UserIdParams extends RequestParams {
 }
 
 export class UserIdModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a list of users with their visits
@@ -28,6 +29,9 @@ export class UserIdModule {
    * @param params Parameters for getting users
    */
   async getUsers(params: UserIdParams): Promise<any> {
-    return this.client.request("UserId.getUsers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UserId.getUsers", params);
+    }
+    return await this.client.request("UserId.getUsers", params);
   }
 }

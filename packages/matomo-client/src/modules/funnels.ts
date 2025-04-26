@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for funnel reporting methods
@@ -129,7 +130,7 @@ export interface TestUrlMatchesStepsParams extends RequestParams {
 }
 
 export class FunnelsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get funnel metrics
@@ -137,8 +138,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel report
    * @returns Promise with the funnel metrics
    */
-  getMetrics(params: FunnelReportParams): Promise<any> {
-    return this.client.request("Funnels.getMetrics", params);
+  async getMetrics(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getMetrics", params);
+    }
+    return await this.client.request("Funnels.getMetrics", params);
   }
 
   /**
@@ -147,8 +151,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel report
    * @returns Promise with the funnel flow data for visualization
    */
-  getFunnelFlow(params: FunnelReportParams): Promise<any> {
-    return this.client.request("Funnels.getFunnelFlow", params);
+  async getFunnelFlow(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelFlow", params);
+    }
+    return await this.client.request("Funnels.getFunnelFlow", params);
   }
 
   /**
@@ -157,8 +164,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel report
    * @returns Promise with the funnel flow data in table format
    */
-  getFunnelFlowTable(params: FunnelReportParams): Promise<any> {
-    return this.client.request("Funnels.getFunnelFlowTable", params);
+  async getFunnelFlowTable(params: FunnelReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelFlowTable", params);
+    }
+    return await this.client.request("Funnels.getFunnelFlowTable", params);
   }
 
   /**
@@ -167,8 +177,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel step subtable
    * @returns Promise with the funnel step subtable data
    */
-  getFunnelStepSubtable(params: FunnelStepSubtableParams): Promise<any> {
-    return this.client.request("Funnels.getFunnelStepSubtable", params);
+  async getFunnelStepSubtable(params: FunnelStepSubtableParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelStepSubtable", params);
+    }
+    return await this.client.request("Funnels.getFunnelStepSubtable", params);
   }
 
   /**
@@ -177,8 +190,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel entries
    * @returns Promise with the funnel entries data
    */
-  getFunnelEntries(params: FunnelEntriesParams): Promise<any> {
-    return this.client.request("Funnels.getFunnelEntries", params);
+  async getFunnelEntries(params: FunnelEntriesParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelEntries", params);
+    }
+    return await this.client.request("Funnels.getFunnelEntries", params);
   }
 
   /**
@@ -187,8 +203,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel exits
    * @returns Promise with the funnel exits data
    */
-  getFunnelExits(params: FunnelExitsParams): Promise<any> {
-    return this.client.request("Funnels.getFunnelExits", params);
+  async getFunnelExits(params: FunnelExitsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnelExits", params);
+    }
+    return await this.client.request("Funnels.getFunnelExits", params);
   }
 
   /**
@@ -197,8 +216,11 @@ export class FunnelsModule {
    * @param params Parameters for goal funnel
    * @returns Promise with the goal funnel configuration
    */
-  getGoalFunnel(params: GoalFunnelParams): Promise<any> {
-    return this.client.request("Funnels.getGoalFunnel", params);
+  async getGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getGoalFunnel", params);
+    }
+    return await this.client.request("Funnels.getGoalFunnel", params);
   }
 
   /**
@@ -207,8 +229,11 @@ export class FunnelsModule {
    * @param params Parameters with site ID
    * @returns Promise with the sales funnel data
    */
-  getSalesFunnelForSite(params: SiteIdParams): Promise<any> {
-    return this.client.request("Funnels.getSalesFunnelForSite", params);
+  async getSalesFunnelForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getSalesFunnelForSite", params);
+    }
+    return await this.client.request("Funnels.getSalesFunnelForSite", params);
   }
 
   /**
@@ -217,8 +242,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel
    * @returns Promise with the funnel configuration
    */
-  getFunnel(params: FunnelParams): Promise<any> {
-    return this.client.request("Funnels.getFunnel", params);
+  async getFunnel(params: FunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getFunnel", params);
+    }
+    return await this.client.request("Funnels.getFunnel", params);
   }
 
   /**
@@ -227,8 +255,17 @@ export class FunnelsModule {
    * @param params Parameters with site ID
    * @returns Promise with the list of activated funnels
    */
-  getAllActivatedFunnelsForSite(params: SiteIdParams): Promise<any> {
-    return this.client.request("Funnels.getAllActivatedFunnelsForSite", params);
+  async getAllActivatedFunnelsForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Funnels.getAllActivatedFunnelsForSite",
+        params
+      );
+    }
+    return await this.client.request(
+      "Funnels.getAllActivatedFunnelsForSite",
+      params
+    );
   }
 
   /**
@@ -237,8 +274,17 @@ export class FunnelsModule {
    * @param params Parameters with site ID
    * @returns Promise with boolean result
    */
-  hasAnyActivatedFunnelForSite(params: SiteIdParams): Promise<boolean> {
-    return this.client.request("Funnels.hasAnyActivatedFunnelForSite", params);
+  async hasAnyActivatedFunnelForSite(params: SiteIdParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Funnels.hasAnyActivatedFunnelForSite",
+        params
+      );
+    }
+    return await this.client.request(
+      "Funnels.hasAnyActivatedFunnelForSite",
+      params
+    );
   }
 
   /**
@@ -247,8 +293,11 @@ export class FunnelsModule {
    * @param params Parameters for goal funnel
    * @returns Promise with the API response
    */
-  deleteGoalFunnel(params: GoalFunnelParams): Promise<any> {
-    return this.client.request("Funnels.deleteGoalFunnel", params);
+  async deleteGoalFunnel(params: GoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.deleteGoalFunnel", params);
+    }
+    return await this.client.request("Funnels.deleteGoalFunnel", params);
   }
 
   /**
@@ -257,8 +306,11 @@ export class FunnelsModule {
    * @param params Parameters for funnel
    * @returns Promise with the API response
    */
-  deleteNonGoalFunnel(params: FunnelParams): Promise<any> {
-    return this.client.request("Funnels.deleteNonGoalFunnel", params);
+  async deleteNonGoalFunnel(params: FunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.deleteNonGoalFunnel", params);
+    }
+    return await this.client.request("Funnels.deleteNonGoalFunnel", params);
   }
 
   /**
@@ -267,8 +319,11 @@ export class FunnelsModule {
    * @param params Parameters for setting a goal funnel
    * @returns Promise with the API response
    */
-  setGoalFunnel(params: SetGoalFunnelParams): Promise<any> {
-    return this.client.request("Funnels.setGoalFunnel", params);
+  async setGoalFunnel(params: SetGoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.setGoalFunnel", params);
+    }
+    return await this.client.request("Funnels.setGoalFunnel", params);
   }
 
   /**
@@ -277,8 +332,11 @@ export class FunnelsModule {
    * @param params Parameters for saving a non-goal funnel
    * @returns Promise with the API response
    */
-  saveNonGoalFunnel(params: SaveNonGoalFunnelParams): Promise<any> {
-    return this.client.request("Funnels.saveNonGoalFunnel", params);
+  async saveNonGoalFunnel(params: SaveNonGoalFunnelParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.saveNonGoalFunnel", params);
+    }
+    return await this.client.request("Funnels.saveNonGoalFunnel", params);
   }
 
   /**
@@ -286,8 +344,11 @@ export class FunnelsModule {
    *
    * @returns Promise with the list of available pattern matches
    */
-  getAvailablePatternMatches(): Promise<any> {
-    return this.client.request("Funnels.getAvailablePatternMatches");
+  async getAvailablePatternMatches(): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.getAvailablePatternMatches", {});
+    }
+    return await this.client.request("Funnels.getAvailablePatternMatches");
   }
 
   /**
@@ -296,7 +357,10 @@ export class FunnelsModule {
    * @param params Parameters for testing URL matches
    * @returns Promise with the matching results
    */
-  testUrlMatchesSteps(params: TestUrlMatchesStepsParams): Promise<any> {
-    return this.client.request("Funnels.testUrlMatchesSteps", params);
+  async testUrlMatchesSteps(params: TestUrlMatchesStepsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Funnels.testUrlMatchesSteps", params);
+    }
+    return await this.client.request("Funnels.testUrlMatchesSteps", params);
   }
 }

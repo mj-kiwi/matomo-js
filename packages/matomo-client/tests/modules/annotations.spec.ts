@@ -45,6 +45,7 @@ describe("AnnotationsModule", () => {
         idSite: 1,
         date: "2023-05-15",
         note: "Website redesign launched",
+        starred: false,
       });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.add", {
@@ -203,6 +204,7 @@ describe("AnnotationsModule", () => {
 
       const result = await annotationsModule.getAll({
         idSite: "1",
+        period: "day",
       });
 
       expect(mockClient.request).toHaveBeenCalledWith("Annotations.getAll", {
@@ -254,6 +256,7 @@ describe("AnnotationsModule", () => {
         idSite: "1",
         date: "2023-05-15,2023-05-17",
         period: "day",
+        getAnnotationText: false,
       });
 
       expect(mockClient.request).toHaveBeenCalledWith(

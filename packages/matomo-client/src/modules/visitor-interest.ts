@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for VisitorInterest API methods
@@ -21,7 +22,7 @@ export interface VisitorInterestParams extends RequestParams {
 }
 
 export class VisitorInterestModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get number of visits per visit duration
@@ -31,7 +32,13 @@ export class VisitorInterestModule {
   async getNumberOfVisitsPerVisitDuration(
     params: VisitorInterestParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitorInterest.getNumberOfVisitsPerVisitDuration",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsPerVisitDuration",
       params
     );
@@ -43,7 +50,13 @@ export class VisitorInterestModule {
    * @param params Parameters for getting visits per visited pages count
    */
   async getNumberOfVisitsPerPage(params: VisitorInterestParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitorInterest.getNumberOfVisitsPerPage",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsPerPage",
       params
     );
@@ -57,7 +70,13 @@ export class VisitorInterestModule {
   async getNumberOfVisitsByDaysSinceLast(
     params: VisitorInterestParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsByDaysSinceLast",
       params
     );
@@ -71,7 +90,13 @@ export class VisitorInterestModule {
   async getNumberOfVisitsByVisitCount(
     params: VisitorInterestParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitorInterest.getNumberOfVisitsByVisitCount",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitorInterest.getNumberOfVisitsByVisitCount",
       params
     );

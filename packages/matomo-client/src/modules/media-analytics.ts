@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for site-specific operations
@@ -76,7 +77,7 @@ export interface MediaTitlesParams extends MediaReportParams {
 }
 
 export class MediaAnalyticsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Check if there are any recorded media analytics data
@@ -84,7 +85,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters containing the site ID
    */
   async hasRecords(params: SiteParams): Promise<any> {
-    return this.client.request("MediaAnalytics.hasRecords", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.hasRecords", params);
+    }
+    return await this.client.request("MediaAnalytics.hasRecords", params);
   }
 
   /**
@@ -93,7 +97,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media analytics data
    */
   async get(params: MediaAnalyticsParams): Promise<any> {
-    return this.client.request("MediaAnalytics.get", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.get", params);
+    }
+    return await this.client.request("MediaAnalytics.get", params);
   }
 
   /**
@@ -102,7 +109,16 @@ export class MediaAnalyticsModule {
    * @param params Parameters for current media metrics
    */
   async getCurrentNumPlays(params: CurrentMediaParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getCurrentNumPlays", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getCurrentNumPlays",
+        params
+      );
+    }
+    return await this.client.request(
+      "MediaAnalytics.getCurrentNumPlays",
+      params
+    );
   }
 
   /**
@@ -111,7 +127,16 @@ export class MediaAnalyticsModule {
    * @param params Parameters for current media metrics
    */
   async getCurrentSumTimeSpent(params: CurrentMediaParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getCurrentSumTimeSpent", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getCurrentSumTimeSpent",
+        params
+      );
+    }
+    return await this.client.request(
+      "MediaAnalytics.getCurrentSumTimeSpent",
+      params
+    );
   }
 
   /**
@@ -124,7 +149,13 @@ export class MediaAnalyticsModule {
       filter_limit: "5",
       ...params,
     };
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getCurrentMostPlays",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "MediaAnalytics.getCurrentMostPlays",
       requestParams
     );
@@ -136,7 +167,13 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media resources
    */
   async getVideoResources(params: MediaResourcesParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getVideoResources", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getVideoResources", params);
+    }
+    return await this.client.request(
+      "MediaAnalytics.getVideoResources",
+      params
+    );
   }
 
   /**
@@ -145,7 +182,13 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media resources
    */
   async getAudioResources(params: MediaResourcesParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getAudioResources", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getAudioResources", params);
+    }
+    return await this.client.request(
+      "MediaAnalytics.getAudioResources",
+      params
+    );
   }
 
   /**
@@ -154,7 +197,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media titles
    */
   async getVideoTitles(params: MediaTitlesParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getVideoTitles", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getVideoTitles", params);
+    }
+    return await this.client.request("MediaAnalytics.getVideoTitles", params);
   }
 
   /**
@@ -163,7 +209,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media titles
    */
   async getAudioTitles(params: MediaTitlesParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getAudioTitles", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getAudioTitles", params);
+    }
+    return await this.client.request("MediaAnalytics.getAudioTitles", params);
   }
 
   /**
@@ -172,7 +221,13 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media titles
    */
   async getGroupedVideoResources(params: MediaTitlesParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getGroupedVideoResources",
+        params
+      );
+    }
+    return await this.client.request(
       "MediaAnalytics.getGroupedVideoResources",
       params
     );
@@ -184,7 +239,13 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media titles
    */
   async getGroupedAudioResources(params: MediaTitlesParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getGroupedAudioResources",
+        params
+      );
+    }
+    return await this.client.request(
       "MediaAnalytics.getGroupedAudioResources",
       params
     );
@@ -196,7 +257,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media report
    */
   async getVideoHours(params: MediaReportParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getVideoHours", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getVideoHours", params);
+    }
+    return await this.client.request("MediaAnalytics.getVideoHours", params);
   }
 
   /**
@@ -205,7 +269,10 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media report
    */
   async getAudioHours(params: MediaReportParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getAudioHours", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getAudioHours", params);
+    }
+    return await this.client.request("MediaAnalytics.getAudioHours", params);
   }
 
   /**
@@ -214,7 +281,16 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media report
    */
   async getVideoResolutions(params: MediaReportParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getVideoResolutions", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "MediaAnalytics.getVideoResolutions",
+        params
+      );
+    }
+    return await this.client.request(
+      "MediaAnalytics.getVideoResolutions",
+      params
+    );
   }
 
   /**
@@ -223,6 +299,9 @@ export class MediaAnalyticsModule {
    * @param params Parameters for media report
    */
   async getPlayers(params: MediaReportParams): Promise<any> {
-    return this.client.request("MediaAnalytics.getPlayers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("MediaAnalytics.getPlayers", params);
+    }
+    return await this.client.request("MediaAnalytics.getPlayers", params);
   }
 }

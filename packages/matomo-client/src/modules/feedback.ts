@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for sending feature feedback
@@ -30,7 +31,7 @@ export interface SendSurveyFeedbackParams {
 }
 
 export class FeedbackModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Send feedback for a feature
@@ -49,7 +50,13 @@ export class FeedbackModule {
     if (params.choice) requestParams.choice = params.choice;
     if (params.message) requestParams.message = params.message;
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Feedback.sendFeedbackForFeature",
+        requestParams
+      );
+    }
+    return await this.client.request(
       "Feedback.sendFeedbackForFeature",
       requestParams
     );
@@ -68,7 +75,16 @@ export class FeedbackModule {
 
     if (params.message) requestParams.message = params.message;
 
-    return this.client.request("Feedback.sendFeedbackForSurvey", requestParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Feedback.sendFeedbackForSurvey",
+        requestParams
+      );
+    }
+    return await this.client.request(
+      "Feedback.sendFeedbackForSurvey",
+      requestParams
+    );
   }
 
   /**
@@ -77,6 +93,9 @@ export class FeedbackModule {
    * @returns Promise with the API response
    */
   async updateFeedbackReminderDate(): Promise<any> {
-    return this.client.request("Feedback.updateFeedbackReminderDate", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Feedback.updateFeedbackReminderDate", {});
+    }
+    return await this.client.request("Feedback.updateFeedbackReminderDate", {});
   }
 }

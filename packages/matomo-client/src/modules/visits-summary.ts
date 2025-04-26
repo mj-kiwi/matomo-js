@@ -7,6 +7,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for VisitsSummary API methods
@@ -31,7 +32,7 @@ export interface VisitsSummaryGetParams extends VisitsSummaryParams {
 }
 
 export class VisitsSummaryModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get core web analytics metrics
@@ -40,7 +41,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing visit metrics
    */
   async get(params: VisitsSummaryGetParams): Promise<any> {
-    return this.client.request("VisitsSummary.get", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.get", params);
+    }
+    return await this.client.request("VisitsSummary.get", params);
   }
 
   /**
@@ -50,7 +54,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing visit counts
    */
   async getVisits(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getVisits", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getVisits", params);
+    }
+    return await this.client.request("VisitsSummary.getVisits", params);
   }
 
   /**
@@ -60,7 +67,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing unique visitor counts
    */
   async getUniqueVisitors(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getUniqueVisitors", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getUniqueVisitors", params);
+    }
+    return await this.client.request("VisitsSummary.getUniqueVisitors", params);
   }
 
   /**
@@ -70,7 +80,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing user counts
    */
   async getUsers(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getUsers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getUsers", params);
+    }
+    return await this.client.request("VisitsSummary.getUsers", params);
   }
 
   /**
@@ -80,7 +93,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing action counts
    */
   async getActions(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getActions", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getActions", params);
+    }
+    return await this.client.request("VisitsSummary.getActions", params);
   }
 
   /**
@@ -90,7 +106,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing maximum actions per visit
    */
   async getMaxActions(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getMaxActions", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getMaxActions", params);
+    }
+    return await this.client.request("VisitsSummary.getMaxActions", params);
   }
 
   /**
@@ -100,7 +119,10 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing bounce counts
    */
   async getBounceCount(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getBounceCount", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getBounceCount", params);
+    }
+    return await this.client.request("VisitsSummary.getBounceCount", params);
   }
 
   /**
@@ -110,7 +132,13 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing counts of converted visits
    */
   async getVisitsConverted(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getVisitsConverted", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getVisitsConverted", params);
+    }
+    return await this.client.request(
+      "VisitsSummary.getVisitsConverted",
+      params
+    );
   }
 
   /**
@@ -120,7 +148,13 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing total visit time in seconds
    */
   async getSumVisitsLength(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request("VisitsSummary.getSumVisitsLength", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitsSummary.getSumVisitsLength", params);
+    }
+    return await this.client.request(
+      "VisitsSummary.getSumVisitsLength",
+      params
+    );
   }
 
   /**
@@ -130,7 +164,13 @@ export class VisitsSummaryModule {
    * @returns Promise with the API response containing formatted total visit time
    */
   async getSumVisitsLengthPretty(params: VisitsSummaryParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitsSummary.getSumVisitsLengthPretty",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitsSummary.getSumVisitsLengthPretty",
       params
     );

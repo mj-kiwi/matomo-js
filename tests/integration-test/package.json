@@ -11,12 +11,12 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "nock": "^14.0.3",
+    "nock": "^14.0.4",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "dependencies": {
-    "axios": "catalog:",
-    "@mj-kiwi/matomo-client": "workspace:*"
+    "@mj-kiwi/matomo-client": "workspace:*",
+    "axios": "catalog:"
   }
 }

@@ -5,6 +5,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for UsersFlow API methods
@@ -61,7 +62,7 @@ export interface InteractionActionsParams extends UsersFlowParams {
 }
 
 export class UsersFlowModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a formatted user flow report
@@ -69,7 +70,10 @@ export class UsersFlowModule {
    * @param params Parameters for getting a formatted user flow
    */
   async getUsersFlowPretty(params: UsersFlowPrettyParams): Promise<any> {
-    return this.client.request("UsersFlow.getUsersFlowPretty", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getUsersFlowPretty", params);
+    }
+    return await this.client.request("UsersFlow.getUsersFlowPretty", params);
   }
 
   /**
@@ -78,7 +82,10 @@ export class UsersFlowModule {
    * @param params Parameters for getting raw user flow data
    */
   async getUsersFlow(params: GetUsersFlowParams): Promise<any> {
-    return this.client.request("UsersFlow.getUsersFlow", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getUsersFlow", params);
+    }
+    return await this.client.request("UsersFlow.getUsersFlow", params);
   }
 
   /**
@@ -87,13 +94,19 @@ export class UsersFlowModule {
    * @param params Parameters for getting interaction actions
    */
   async getInteractionActions(params: InteractionActionsParams): Promise<any> {
-    return this.client.request("UsersFlow.getInteractionActions", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getInteractionActions", params);
+    }
+    return await this.client.request("UsersFlow.getInteractionActions", params);
   }
 
   /**
    * Get the available data sources for users flow reports
    */
   async getAvailableDataSources(): Promise<any> {
-    return this.client.request("UsersFlow.getAvailableDataSources", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("UsersFlow.getAvailableDataSources", {});
+    }
+    return await this.client.request("UsersFlow.getAvailableDataSources", {});
   }
 }

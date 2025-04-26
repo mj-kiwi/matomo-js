@@ -6,6 +6,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Goals API methods
@@ -102,7 +103,7 @@ export interface GoalReportParams extends RequestParams {
 }
 
 export class GoalsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get a specific goal
@@ -110,8 +111,11 @@ export class GoalsModule {
    * @param params Parameters for retrieving a specific goal
    * @returns Promise with the goal details
    */
-  getGoal(params: GetGoalParams): Promise<any> {
-    return this.client.request("Goals.getGoal", params);
+  async getGoal(params: GetGoalParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getGoal", params);
+    }
+    return await this.client.request("Goals.getGoal", params);
   }
 
   /**
@@ -120,8 +124,11 @@ export class GoalsModule {
    * @param params Parameters for retrieving all goals
    * @returns Promise with the list of goals
    */
-  getGoals(params: GetGoalsParams): Promise<any> {
-    return this.client.request("Goals.getGoals", params);
+  async getGoals(params: GetGoalsParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getGoals", params);
+    }
+    return await this.client.request("Goals.getGoals", params);
   }
 
   /**
@@ -130,8 +137,11 @@ export class GoalsModule {
    * @param params Parameters for adding a new goal
    * @returns Promise with the API response
    */
-  addGoal(params: GoalDefinitionParams): Promise<any> {
-    return this.client.request("Goals.addGoal", params);
+  async addGoal(params: GoalDefinitionParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.addGoal", params);
+    }
+    return await this.client.request("Goals.addGoal", params);
   }
 
   /**
@@ -140,8 +150,11 @@ export class GoalsModule {
    * @param params Parameters for updating an existing goal
    * @returns Promise with the API response
    */
-  updateGoal(params: UpdateGoalParams): Promise<any> {
-    return this.client.request("Goals.updateGoal", params);
+  async updateGoal(params: UpdateGoalParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.updateGoal", params);
+    }
+    return await this.client.request("Goals.updateGoal", params);
   }
 
   /**
@@ -150,8 +163,11 @@ export class GoalsModule {
    * @param params Parameters for deleting a goal
    * @returns Promise with the API response
    */
-  deleteGoal(params: GetGoalParams): Promise<any> {
-    return this.client.request("Goals.deleteGoal", params);
+  async deleteGoal(params: GetGoalParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.deleteGoal", params);
+    }
+    return await this.client.request("Goals.deleteGoal", params);
   }
 
   /**
@@ -160,8 +176,11 @@ export class GoalsModule {
    * @param params Parameters for getting items by SKU
    * @returns Promise with the items grouped by SKU
    */
-  getItemsSku(params: ItemReportParams): Promise<any> {
-    return this.client.request("Goals.getItemsSku", params);
+  async getItemsSku(params: ItemReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getItemsSku", params);
+    }
+    return await this.client.request("Goals.getItemsSku", params);
   }
 
   /**
@@ -170,8 +189,11 @@ export class GoalsModule {
    * @param params Parameters for getting items by name
    * @returns Promise with the items grouped by name
    */
-  getItemsName(params: ItemReportParams): Promise<any> {
-    return this.client.request("Goals.getItemsName", params);
+  async getItemsName(params: ItemReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getItemsName", params);
+    }
+    return await this.client.request("Goals.getItemsName", params);
   }
 
   /**
@@ -180,8 +202,11 @@ export class GoalsModule {
    * @param params Parameters for getting items by category
    * @returns Promise with the items grouped by category
    */
-  getItemsCategory(params: ItemReportParams): Promise<any> {
-    return this.client.request("Goals.getItemsCategory", params);
+  async getItemsCategory(params: ItemReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getItemsCategory", params);
+    }
+    return await this.client.request("Goals.getItemsCategory", params);
   }
 
   /**
@@ -190,7 +215,7 @@ export class GoalsModule {
    * @param params Parameters for getting goal conversion metrics
    * @returns Promise with the goal conversion metrics
    */
-  get(params: GoalReportParams): Promise<any> {
+  async get(params: GoalReportParams): Promise<any> {
     const formattedParams = { ...params };
 
     // Handle array of columns if provided
@@ -201,7 +226,10 @@ export class GoalsModule {
       formattedParams.columns = formattedParams.columns.join(",");
     }
 
-    return this.client.request("Goals.get", formattedParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.get", formattedParams);
+    }
+    return await this.client.request("Goals.get", formattedParams);
   }
 
   /**
@@ -210,8 +238,11 @@ export class GoalsModule {
    * @param params Parameters for getting days to conversion report
    * @returns Promise with the days to conversion report
    */
-  getDaysToConversion(params: GoalReportParams): Promise<any> {
-    return this.client.request("Goals.getDaysToConversion", params);
+  async getDaysToConversion(params: GoalReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getDaysToConversion", params);
+    }
+    return await this.client.request("Goals.getDaysToConversion", params);
   }
 
   /**
@@ -220,7 +251,10 @@ export class GoalsModule {
    * @param params Parameters for getting visits until conversion report
    * @returns Promise with the visits until conversion report
    */
-  getVisitsUntilConversion(params: GoalReportParams): Promise<any> {
-    return this.client.request("Goals.getVisitsUntilConversion", params);
+  async getVisitsUntilConversion(params: GoalReportParams): Promise<any> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Goals.getVisitsUntilConversion", params);
+    }
+    return await this.client.request("Goals.getVisitsUntilConversion", params);
   }
 }

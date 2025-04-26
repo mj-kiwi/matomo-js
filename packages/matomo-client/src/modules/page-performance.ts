@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for getting page performance metrics
@@ -21,9 +22,9 @@ export interface PagePerformanceParams extends RequestParams {
 
 export class PagePerformanceModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get page performance metrics
@@ -31,6 +32,9 @@ export class PagePerformanceModule {
    * @param params Parameters for getting page performance metrics
    */
   async get(params: PagePerformanceParams): Promise<any> {
-    return this.core.request<any>("PagePerformance.get", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("PagePerformance.get", params);
+    }
+    return await this.core.request<any>("PagePerformance.get", params);
   }
 }

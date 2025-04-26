@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for getting dashboards
@@ -60,7 +61,7 @@ export interface ResetDashboardLayoutParams extends RequestParams {
 }
 
 export class DashboardModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get available dashboards
@@ -69,7 +70,10 @@ export class DashboardModule {
    * @returns Promise with the API response containing dashboards
    */
   async getDashboards(params: GetDashboardsParams = {}): Promise<any> {
-    return this.client.request("Dashboard.getDashboards", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Dashboard.getDashboards", params);
+    }
+    return await this.client.request("Dashboard.getDashboards", params);
   }
 
   /**
@@ -81,7 +85,16 @@ export class DashboardModule {
   async createNewDashboardForUser(
     params: CreateNewDashboardParams
   ): Promise<any> {
-    return this.client.request("Dashboard.createNewDashboardForUser", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "Dashboard.createNewDashboardForUser",
+        params
+      );
+    }
+    return await this.client.request(
+      "Dashboard.createNewDashboardForUser",
+      params
+    );
   }
 
   /**
@@ -91,7 +104,10 @@ export class DashboardModule {
    * @returns Promise with the API response
    */
   async removeDashboard(params: RemoveDashboardParams): Promise<any> {
-    return this.client.request("Dashboard.removeDashboard", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Dashboard.removeDashboard", params);
+    }
+    return await this.client.request("Dashboard.removeDashboard", params);
   }
 
   /**
@@ -101,7 +117,10 @@ export class DashboardModule {
    * @returns Promise with the API response
    */
   async copyDashboardToUser(params: CopyDashboardParams): Promise<any> {
-    return this.client.request("Dashboard.copyDashboardToUser", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Dashboard.copyDashboardToUser", params);
+    }
+    return await this.client.request("Dashboard.copyDashboardToUser", params);
   }
 
   /**
@@ -111,6 +130,9 @@ export class DashboardModule {
    * @returns Promise with the API response
    */
   async resetDashboardLayout(params: ResetDashboardLayoutParams): Promise<any> {
-    return this.client.request("Dashboard.resetDashboardLayout", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Dashboard.resetDashboardLayout", params);
+    }
+    return await this.client.request("Dashboard.resetDashboardLayout", params);
   }
 }

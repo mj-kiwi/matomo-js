@@ -11,6 +11,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for deleteReport method
@@ -109,7 +110,7 @@ export interface SendReportParams extends RequestParams {
 }
 
 export class ScheduledReportsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Add a new scheduled report
@@ -131,7 +132,16 @@ export class ScheduledReportsModule {
       formattedParams.parameters = JSON.stringify(formattedParams.parameters);
     }
 
-    return this.client.request("ScheduledReports.addReport", formattedParams);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "ScheduledReports.addReport",
+        formattedParams
+      );
+    }
+    return await this.client.request(
+      "ScheduledReports.addReport",
+      formattedParams
+    );
   }
 
   /**
@@ -154,7 +164,13 @@ export class ScheduledReportsModule {
       formattedParams.parameters = JSON.stringify(formattedParams.parameters);
     }
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "ScheduledReports.updateReport",
+        formattedParams
+      );
+    }
+    return await this.client.request(
       "ScheduledReports.updateReport",
       formattedParams
     );
@@ -167,7 +183,10 @@ export class ScheduledReportsModule {
    * @returns Promise with the result of the API call
    */
   async deleteReport(params: DeleteReportParams): Promise<any> {
-    return this.client.request("ScheduledReports.deleteReport", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ScheduledReports.deleteReport", params);
+    }
+    return await this.client.request("ScheduledReports.deleteReport", params);
   }
 
   /**
@@ -177,7 +196,10 @@ export class ScheduledReportsModule {
    * @returns Promise with the list of reports
    */
   async getReports(params: GetReportsParams = {}): Promise<any> {
-    return this.client.request("ScheduledReports.getReports", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ScheduledReports.getReports", params);
+    }
+    return await this.client.request("ScheduledReports.getReports", params);
   }
 
   /**
@@ -196,7 +218,13 @@ export class ScheduledReportsModule {
       formattedParams.parameters = JSON.stringify(formattedParams.parameters);
     }
 
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "ScheduledReports.generateReport",
+        formattedParams
+      );
+    }
+    return await this.client.request(
       "ScheduledReports.generateReport",
       formattedParams
     );
@@ -209,6 +237,9 @@ export class ScheduledReportsModule {
    * @returns Promise with the result of the API call
    */
   async sendReport(params: SendReportParams): Promise<any> {
-    return this.client.request("ScheduledReports.sendReport", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("ScheduledReports.sendReport", params);
+    }
+    return await this.client.request("ScheduledReports.sendReport", params);
   }
 }

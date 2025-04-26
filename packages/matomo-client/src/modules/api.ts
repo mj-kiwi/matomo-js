@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for API.get method
@@ -101,7 +102,7 @@ export interface BulkRequestParams extends RequestParams {
 export interface EmptyParams extends RequestParams {}
 
 export class ApiModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get the Matomo version
@@ -109,6 +110,13 @@ export class ApiModule {
    * @param params Empty parameters object
    */
   async getMatomoVersion(params: EmptyParams = {}): Promise<string> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "API.getMatomoVersion",
+        params
+      ) as unknown as Promise<string>;
+    }
+
     const result = await this.client.request<{ value: string }>(
       "API.getMatomoVersion",
       params
@@ -122,6 +130,13 @@ export class ApiModule {
    * @param params Empty parameters object
    */
   async getPhpVersion(params: EmptyParams = {}): Promise<string> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "API.getPhpVersion",
+        params
+      ) as unknown as Promise<string>;
+    }
+
     const result = await this.client.request<{ value: string }>(
       "API.getPhpVersion",
       params
@@ -136,6 +151,13 @@ export class ApiModule {
    * @param params Empty parameters object
    */
   async getIpFromHeader(params: EmptyParams = {}): Promise<string> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "API.getIpFromHeader",
+        params
+      ) as unknown as Promise<string>;
+    }
+
     const result = await this.client.request<{ value: string }>(
       "API.getIpFromHeader",
       params
@@ -150,7 +172,11 @@ export class ApiModule {
    * @param params Empty parameters object
    */
   async getSettings(params: EmptyParams = {}): Promise<any> {
-    return this.client.request("API.getSettings", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getSettings", params);
+    }
+
+    return await this.client.request("API.getSettings", params);
   }
 
   /**
@@ -159,7 +185,11 @@ export class ApiModule {
    * @param params Parameters with optional site IDs
    */
   async getSegmentsMetadata(params: SegmentsMetadataParams = {}): Promise<any> {
-    return this.client.request("API.getSegmentsMetadata", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getSegmentsMetadata", params);
+    }
+
+    return await this.client.request("API.getSegmentsMetadata", params);
   }
 
   /**
@@ -168,7 +198,11 @@ export class ApiModule {
    * @param params Parameters for getting metadata
    */
   async getMetadata(params: MetadataParams = {}): Promise<any> {
-    return this.client.request("API.getMetadata", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getMetadata", params);
+    }
+
+    return await this.client.request("API.getMetadata", params);
   }
 
   /**
@@ -183,7 +217,11 @@ export class ApiModule {
       showSubtableReports?: boolean;
     } = {}
   ): Promise<any> {
-    return this.client.request("API.getReportMetadata", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getReportMetadata", params);
+    }
+
+    return await this.client.request("API.getReportMetadata", params);
   }
 
   /**
@@ -206,7 +244,11 @@ export class ApiModule {
     format_metrics?: string | boolean;
     idDimension?: string | number;
   }): Promise<any> {
-    return this.client.request("API.getProcessedReport", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getProcessedReport", params);
+    }
+
+    return await this.client.request("API.getProcessedReport", params);
   }
 
   /**
@@ -216,7 +258,11 @@ export class ApiModule {
    * @param params Parameters with optional site ID
    */
   async getReportPagesMetadata(params: SiteIdParam = {}): Promise<any> {
-    return this.client.request("API.getReportPagesMetadata", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getReportPagesMetadata", params);
+    }
+
+    return await this.client.request("API.getReportPagesMetadata", params);
   }
 
   /**
@@ -226,7 +272,11 @@ export class ApiModule {
    * @param params Parameters with optional site ID
    */
   async getWidgetMetadata(params: SiteIdParam = {}): Promise<any> {
-    return this.client.request("API.getWidgetMetadata", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getWidgetMetadata", params);
+    }
+
+    return await this.client.request("API.getWidgetMetadata", params);
   }
 
   /**
@@ -235,7 +285,11 @@ export class ApiModule {
    * @param params Parameters for getting API data
    */
   async get(params: ApiGetParams): Promise<any> {
-    return this.client.request("API.get", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.get", params);
+    }
+
+    return await this.client.request("API.get", params);
   }
 
   /**
@@ -258,7 +312,11 @@ export class ApiModule {
     labelSeries?: string;
     showGoalMetricsForGoal?: string | number;
   }): Promise<any> {
-    return this.client.request("API.getRowEvolution", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getRowEvolution", params);
+    }
+
+    return await this.client.request("API.getRowEvolution", params);
   }
 
   /**
@@ -267,7 +325,15 @@ export class ApiModule {
    * @param params Parameters containing the array of API requests
    */
   async getBulkRequest(params: BulkRequestParams): Promise<any> {
-    return this.client.request("API.getBulkRequest", { urls: params.urls });
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getBulkRequest", {
+        urls: params.urls,
+      });
+    }
+
+    return await this.client.request("API.getBulkRequest", {
+      urls: params.urls,
+    });
   }
 
   /**
@@ -276,6 +342,12 @@ export class ApiModule {
    * @param params Parameters containing the plugin name
    */
   async isPluginActivated(params: PluginActivatedParams): Promise<boolean> {
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.isPluginActivated", {
+        pluginName: params.pluginName,
+      }) as unknown as Promise<boolean>;
+    }
+
     const result = await this.client.request<{ value: boolean }>(
       "API.isPluginActivated",
       { pluginName: params.pluginName }
@@ -292,7 +364,14 @@ export class ApiModule {
   async getSuggestedValuesForSegment(
     params: SegmentSuggestionParams
   ): Promise<any> {
-    return this.client.request("API.getSuggestedValuesForSegment", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getSuggestedValuesForSegment", params);
+    }
+
+    return await this.client.request(
+      "API.getSuggestedValuesForSegment",
+      params
+    );
   }
 
   /**
@@ -302,7 +381,17 @@ export class ApiModule {
    * @param params Empty parameters object
    */
   async getPagesComparisonsDisabledFor(params: EmptyParams = {}): Promise<any> {
-    return this.client.request("API.getPagesComparisonsDisabledFor", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "API.getPagesComparisonsDisabledFor",
+        params
+      );
+    }
+
+    return await this.client.request(
+      "API.getPagesComparisonsDisabledFor",
+      params
+    );
   }
 
   /**
@@ -312,7 +401,11 @@ export class ApiModule {
    * @param params Parameters containing the site ID
    */
   async getGlossaryReports(params: GlossaryParams): Promise<any> {
-    return this.client.request("API.getGlossaryReports", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getGlossaryReports", params);
+    }
+
+    return await this.client.request("API.getGlossaryReports", params);
   }
 
   /**
@@ -322,6 +415,10 @@ export class ApiModule {
    * @param params Parameters containing the site ID
    */
   async getGlossaryMetrics(params: GlossaryParams): Promise<any> {
-    return this.client.request("API.getGlossaryMetrics", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("API.getGlossaryMetrics", params);
+    }
+
+    return await this.client.request("API.getGlossaryMetrics", params);
   }
 }

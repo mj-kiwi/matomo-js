@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for MultiSites API methods
@@ -51,17 +52,20 @@ export interface GetAllWithGroupsParams extends MultiSitesParams {
 
 export class MultiSitesModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get metrics for all sites
    *
    * @param params Parameters for getting metrics for all sites
    */
-  async getAll(params: GetAllParams): Promise<any[]> {
-    return this.core.request<any[]>("MultiSites.getAll", params);
+  async getAll(params: GetAllParams): Promise<any[] | BatchRequest> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MultiSites.getAll", params);
+    }
+    return await this.core.request<any[]>("MultiSites.getAll", params);
   }
 
   /**
@@ -70,7 +74,10 @@ export class MultiSitesModule {
    * @param params Parameters for getting metrics for a specific site
    */
   async getOne(params: GetOneParams): Promise<any> {
-    return this.core.request<any>("MultiSites.getOne", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MultiSites.getOne", params);
+    }
+    return await this.core.request<any>("MultiSites.getOne", params);
   }
 
   /**
@@ -78,7 +85,15 @@ export class MultiSitesModule {
    *
    * @param params Parameters for getting metrics for all sites grouped by site groups
    */
-  async getAllWithGroups(params: GetAllWithGroupsParams = {}): Promise<any[]> {
-    return this.core.request<any[]>("MultiSites.getAllWithGroups", params);
+  async getAllWithGroups(
+    params: GetAllWithGroupsParams = {}
+  ): Promise<any[] | BatchRequest> {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("MultiSites.getAllWithGroups", params);
+    }
+    return await this.core.request<any[]>(
+      "MultiSites.getAllWithGroups",
+      params
+    );
   }
 }

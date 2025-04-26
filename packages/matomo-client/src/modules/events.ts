@@ -1,10 +1,10 @@
 /**
  * Matomo Events Module
- * This API lets you request reports about your users' Custom Events tracked using the Javascript
- * Tracker trackEvent() function or the Tracking HTTP API.
+ * Provides access to Events tracking data
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for Event module methods
@@ -41,7 +41,7 @@ export interface EventSubtableParams extends EventReportParams {
 }
 
 export class EventsModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get event categories
@@ -50,7 +50,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getCategory(params: EventDimensionParams): Promise<any> {
-    return this.client.request("Events.getCategory", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getCategory", params);
+    }
+    return await this.client.request("Events.getCategory", params);
   }
 
   /**
@@ -60,7 +63,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getAction(params: EventDimensionParams): Promise<any> {
-    return this.client.request("Events.getAction", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getAction", params);
+    }
+    return await this.client.request("Events.getAction", params);
   }
 
   /**
@@ -70,7 +76,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getName(params: EventDimensionParams): Promise<any> {
-    return this.client.request("Events.getName", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getName", params);
+    }
+    return await this.client.request("Events.getName", params);
   }
 
   /**
@@ -80,7 +89,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getActionFromCategoryId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getActionFromCategoryId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getActionFromCategoryId", params);
+    }
+    return await this.client.request("Events.getActionFromCategoryId", params);
   }
 
   /**
@@ -90,7 +102,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getNameFromCategoryId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getNameFromCategoryId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getNameFromCategoryId", params);
+    }
+    return await this.client.request("Events.getNameFromCategoryId", params);
   }
 
   /**
@@ -100,7 +115,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getCategoryFromActionId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getCategoryFromActionId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getCategoryFromActionId", params);
+    }
+    return await this.client.request("Events.getCategoryFromActionId", params);
   }
 
   /**
@@ -110,7 +128,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getNameFromActionId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getNameFromActionId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getNameFromActionId", params);
+    }
+    return await this.client.request("Events.getNameFromActionId", params);
   }
 
   /**
@@ -120,7 +141,10 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getActionFromNameId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getActionFromNameId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getActionFromNameId", params);
+    }
+    return await this.client.request("Events.getActionFromNameId", params);
   }
 
   /**
@@ -130,6 +154,9 @@ export class EventsModule {
    * @returns Promise with the API response
    */
   async getCategoryFromNameId(params: EventSubtableParams): Promise<any> {
-    return this.client.request("Events.getCategoryFromNameId", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("Events.getCategoryFromNameId", params);
+    }
+    return await this.client.request("Events.getCategoryFromNameId", params);
   }
 }

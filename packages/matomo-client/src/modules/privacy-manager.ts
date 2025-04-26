@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Parameters for data subjects operations
@@ -47,9 +48,9 @@ export interface AnonymizeRawDataParams extends RequestParams {
 
 export class PrivacyManagerModule {
   /**
-   * @param core Core reporting client instance
+   * @param core Core reporting client instance or batch request
    */
-  constructor(private core: CoreReportingClient) {}
+  constructor(private core: CoreReportingClient | BatchRequest) {}
 
   /**
    * Delete data subjects (visits)
@@ -57,7 +58,13 @@ export class PrivacyManagerModule {
    * @param params Parameters for deleting data subjects
    */
   async deleteDataSubjects(params: DataSubjectsParams): Promise<any> {
-    return this.core.request<any>("PrivacyManager.deleteDataSubjects", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("PrivacyManager.deleteDataSubjects", params);
+    }
+    return await this.core.request<any>(
+      "PrivacyManager.deleteDataSubjects",
+      params
+    );
   }
 
   /**
@@ -66,7 +73,13 @@ export class PrivacyManagerModule {
    * @param params Parameters for exporting data subjects
    */
   async exportDataSubjects(params: DataSubjectsParams): Promise<any> {
-    return this.core.request<any>("PrivacyManager.exportDataSubjects", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("PrivacyManager.exportDataSubjects", params);
+    }
+    return await this.core.request<any>(
+      "PrivacyManager.exportDataSubjects",
+      params
+    );
   }
 
   /**
@@ -75,7 +88,13 @@ export class PrivacyManagerModule {
    * @param params Parameters for finding data subjects
    */
   async findDataSubjects(params: FindDataSubjectsParams): Promise<any> {
-    return this.core.request<any>("PrivacyManager.findDataSubjects", params);
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest("PrivacyManager.findDataSubjects", params);
+    }
+    return await this.core.request<any>(
+      "PrivacyManager.findDataSubjects",
+      params
+    );
   }
 
   /**
@@ -84,7 +103,13 @@ export class PrivacyManagerModule {
    * @param params Parameters for anonymizing raw data
    */
   async anonymizeSomeRawData(params: AnonymizeRawDataParams): Promise<any> {
-    return this.core.request<any>(
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "PrivacyManager.anonymizeSomeRawData",
+        params
+      );
+    }
+    return await this.core.request<any>(
       "PrivacyManager.anonymizeSomeRawData",
       params
     );
@@ -93,8 +118,16 @@ export class PrivacyManagerModule {
   /**
    * Get available visit columns to anonymize
    */
-  async getAvailableVisitColumnsToAnonymize(): Promise<string[]> {
-    return this.core.request<string[]>(
+  async getAvailableVisitColumnsToAnonymize(): Promise<
+    string[] | BatchRequest
+  > {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "PrivacyManager.getAvailableVisitColumnsToAnonymize",
+        {}
+      );
+    }
+    return await this.core.request<string[]>(
       "PrivacyManager.getAvailableVisitColumnsToAnonymize"
     );
   }
@@ -102,8 +135,16 @@ export class PrivacyManagerModule {
   /**
    * Get available link visit action columns to anonymize
    */
-  async getAvailableLinkVisitActionColumnsToAnonymize(): Promise<string[]> {
-    return this.core.request<string[]>(
+  async getAvailableLinkVisitActionColumnsToAnonymize(): Promise<
+    string[] | BatchRequest
+  > {
+    if (this.core instanceof BatchRequest) {
+      return this.core.addRequest(
+        "PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize",
+        {}
+      );
+    }
+    return await this.core.request<string[]>(
       "PrivacyManager.getAvailableLinkVisitActionColumnsToAnonymize"
     );
   }

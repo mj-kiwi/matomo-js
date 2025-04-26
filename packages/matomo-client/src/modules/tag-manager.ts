@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Base parameters for tag manager site-specific operations
@@ -308,20 +309,26 @@ export interface ContextParams extends RequestParams {
  * Matomo TagManager module for managing containers, tags, triggers, and variables.
  */
 export class TagManagerModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get available contexts
    */
   async getAvailableContexts(): Promise<any> {
-    return this.client.request("TagManager.getAvailableContexts", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getAvailableContexts", {});
+    }
+    return await this.client.request("TagManager.getAvailableContexts", {});
   }
 
   /**
    * Get available environments
    */
   async getAvailableEnvironments(): Promise<any> {
-    return this.client.request("TagManager.getAvailableEnvironments", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getAvailableEnvironments", {});
+    }
+    return await this.client.request("TagManager.getAvailableEnvironments", {});
   }
 
   /**
@@ -330,7 +337,13 @@ export class TagManagerModule {
   async getAvailableEnvironmentsWithPublishCapability(
     params: TagManagerSiteParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getAvailableEnvironmentsWithPublishCapability",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getAvailableEnvironmentsWithPublishCapability",
       params
     );
@@ -340,21 +353,36 @@ export class TagManagerModule {
    * Get available tag fire limits
    */
   async getAvailableTagFireLimits(): Promise<any> {
-    return this.client.request("TagManager.getAvailableTagFireLimits", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getAvailableTagFireLimits", {});
+    }
+    return await this.client.request(
+      "TagManager.getAvailableTagFireLimits",
+      {}
+    );
   }
 
   /**
    * Get available comparisons
    */
   async getAvailableComparisons(): Promise<any> {
-    return this.client.request("TagManager.getAvailableComparisons", {});
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getAvailableComparisons", {});
+    }
+    return await this.client.request("TagManager.getAvailableComparisons", {});
   }
 
   /**
    * Get available tag types in a context
    */
   async getAvailableTagTypesInContext(params: ContextParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getAvailableTagTypesInContext",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getAvailableTagTypesInContext",
       params
     );
@@ -364,7 +392,13 @@ export class TagManagerModule {
    * Get available trigger types in a context
    */
   async getAvailableTriggerTypesInContext(params: ContextParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getAvailableTriggerTypesInContext",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getAvailableTriggerTypesInContext",
       params
     );
@@ -376,7 +410,13 @@ export class TagManagerModule {
   async getAvailableVariableTypesInContext(
     params: ContextParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getAvailableVariableTypesInContext",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getAvailableVariableTypesInContext",
       params
     );
@@ -386,7 +426,13 @@ export class TagManagerModule {
    * Get container embed code
    */
   async getContainerEmbedCode(params: ContainerEmbedCodeParams): Promise<any> {
-    return this.client.request("TagManager.getContainerEmbedCode", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerEmbedCode", params);
+    }
+    return await this.client.request(
+      "TagManager.getContainerEmbedCode",
+      params
+    );
   }
 
   /**
@@ -395,7 +441,13 @@ export class TagManagerModule {
   async getContainerInstallInstructions(
     params: ContainerInstallInstructionsParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getContainerInstallInstructions",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getContainerInstallInstructions",
       params
     );
@@ -405,7 +457,10 @@ export class TagManagerModule {
    * Get container tags
    */
   async getContainerTags(params: ContainerVersionParams): Promise<any> {
-    return this.client.request("TagManager.getContainerTags", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerTags", params);
+    }
+    return await this.client.request("TagManager.getContainerTags", params);
   }
 
   /**
@@ -414,7 +469,13 @@ export class TagManagerModule {
   async createDefaultContainerForSite(
     params: TagManagerSiteParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.createDefaultContainerForSite",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.createDefaultContainerForSite",
       params
     );
@@ -424,14 +485,20 @@ export class TagManagerModule {
    * Add a container tag
    */
   async addContainerTag(params: AddContainerTagParams): Promise<any> {
-    return this.client.request("TagManager.addContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.addContainerTag", params);
+    }
+    return await this.client.request("TagManager.addContainerTag", params);
   }
 
   /**
    * Update a container tag
    */
   async updateContainerTag(params: UpdateContainerTagParams): Promise<any> {
-    return this.client.request("TagManager.updateContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.updateContainerTag", params);
+    }
+    return await this.client.request("TagManager.updateContainerTag", params);
   }
 
   /**
@@ -440,7 +507,10 @@ export class TagManagerModule {
   async deleteContainerTag(
     params: ContainerTagParams & { idTag: string }
   ): Promise<any> {
-    return this.client.request("TagManager.deleteContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.deleteContainerTag", params);
+    }
+    return await this.client.request("TagManager.deleteContainerTag", params);
   }
 
   /**
@@ -449,7 +519,10 @@ export class TagManagerModule {
   async pauseContainerTag(
     params: ContainerTagParams & { idTag: string }
   ): Promise<any> {
-    return this.client.request("TagManager.pauseContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.pauseContainerTag", params);
+    }
+    return await this.client.request("TagManager.pauseContainerTag", params);
   }
 
   /**
@@ -458,7 +531,10 @@ export class TagManagerModule {
   async resumeContainerTag(
     params: ContainerTagParams & { idTag: string }
   ): Promise<any> {
-    return this.client.request("TagManager.resumeContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.resumeContainerTag", params);
+    }
+    return await this.client.request("TagManager.resumeContainerTag", params);
   }
 
   /**
@@ -467,7 +543,10 @@ export class TagManagerModule {
   async getContainerTag(
     params: ContainerTagParams & { idTag: string }
   ): Promise<any> {
-    return this.client.request("TagManager.getContainerTag", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerTag", params);
+    }
+    return await this.client.request("TagManager.getContainerTag", params);
   }
 
   /**
@@ -476,7 +555,13 @@ export class TagManagerModule {
   async getContainerTriggerReferences(
     params: ContainerTriggerParams & { idTrigger: string }
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getContainerTriggerReferences",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getContainerTriggerReferences",
       params
     );
@@ -486,14 +571,20 @@ export class TagManagerModule {
    * Get container triggers
    */
   async getContainerTriggers(params: ContainerVersionParams): Promise<any> {
-    return this.client.request("TagManager.getContainerTriggers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerTriggers", params);
+    }
+    return await this.client.request("TagManager.getContainerTriggers", params);
   }
 
   /**
    * Add a container trigger
    */
   async addContainerTrigger(params: AddContainerTriggerParams): Promise<any> {
-    return this.client.request("TagManager.addContainerTrigger", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.addContainerTrigger", params);
+    }
+    return await this.client.request("TagManager.addContainerTrigger", params);
   }
 
   /**
@@ -502,7 +593,16 @@ export class TagManagerModule {
   async updateContainerTrigger(
     params: UpdateContainerTriggerParams
   ): Promise<any> {
-    return this.client.request("TagManager.updateContainerTrigger", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.updateContainerTrigger",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.updateContainerTrigger",
+      params
+    );
   }
 
   /**
@@ -511,7 +611,16 @@ export class TagManagerModule {
   async deleteContainerTrigger(
     params: ContainerTriggerParams & { idTrigger: string }
   ): Promise<any> {
-    return this.client.request("TagManager.deleteContainerTrigger", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.deleteContainerTrigger",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.deleteContainerTrigger",
+      params
+    );
   }
 
   /**
@@ -520,7 +629,10 @@ export class TagManagerModule {
   async getContainerTrigger(
     params: ContainerTriggerParams & { idTrigger: string }
   ): Promise<any> {
-    return this.client.request("TagManager.getContainerTrigger", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerTrigger", params);
+    }
+    return await this.client.request("TagManager.getContainerTrigger", params);
   }
 
   /**
@@ -529,7 +641,13 @@ export class TagManagerModule {
   async getContainerVariableReferences(
     params: ContainerVariableParams & { idVariable: string }
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getContainerVariableReferences",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getContainerVariableReferences",
       params
     );
@@ -539,7 +657,13 @@ export class TagManagerModule {
    * Get container variables
    */
   async getContainerVariables(params: ContainerVersionParams): Promise<any> {
-    return this.client.request("TagManager.getContainerVariables", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerVariables", params);
+    }
+    return await this.client.request(
+      "TagManager.getContainerVariables",
+      params
+    );
   }
 
   /**
@@ -548,7 +672,13 @@ export class TagManagerModule {
   async getAvailableContainerVariables(
     params: ContainerVersionParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.getAvailableContainerVariables",
+        params
+      );
+    }
+    return await this.client.request(
       "TagManager.getAvailableContainerVariables",
       params
     );
@@ -558,7 +688,10 @@ export class TagManagerModule {
    * Add a container variable
    */
   async addContainerVariable(params: AddContainerVariableParams): Promise<any> {
-    return this.client.request("TagManager.addContainerVariable", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.addContainerVariable", params);
+    }
+    return await this.client.request("TagManager.addContainerVariable", params);
   }
 
   /**
@@ -567,7 +700,16 @@ export class TagManagerModule {
   async updateContainerVariable(
     params: UpdateContainerVariableParams
   ): Promise<any> {
-    return this.client.request("TagManager.updateContainerVariable", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.updateContainerVariable",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.updateContainerVariable",
+      params
+    );
   }
 
   /**
@@ -576,7 +718,16 @@ export class TagManagerModule {
   async deleteContainerVariable(
     params: ContainerVariableParams & { idVariable: string }
   ): Promise<any> {
-    return this.client.request("TagManager.deleteContainerVariable", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.deleteContainerVariable",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.deleteContainerVariable",
+      params
+    );
   }
 
   /**
@@ -585,28 +736,40 @@ export class TagManagerModule {
   async getContainerVariable(
     params: ContainerVariableParams & { idVariable: string }
   ): Promise<any> {
-    return this.client.request("TagManager.getContainerVariable", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerVariable", params);
+    }
+    return await this.client.request("TagManager.getContainerVariable", params);
   }
 
   /**
    * Get containers for a site
    */
   async getContainers(params: TagManagerSiteParams): Promise<any> {
-    return this.client.request("TagManager.getContainers", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainers", params);
+    }
+    return await this.client.request("TagManager.getContainers", params);
   }
 
   /**
    * Add a container
    */
   async addContainer(params: AddContainerParams): Promise<any> {
-    return this.client.request("TagManager.addContainer", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.addContainer", params);
+    }
+    return await this.client.request("TagManager.addContainer", params);
   }
 
   /**
    * Update a container
    */
   async updateContainer(params: UpdateContainerParams): Promise<any> {
-    return this.client.request("TagManager.updateContainer", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.updateContainer", params);
+    }
+    return await this.client.request("TagManager.updateContainer", params);
   }
 
   /**
@@ -615,7 +778,16 @@ export class TagManagerModule {
   async createContainerVersion(
     params: CreateContainerVersionParams
   ): Promise<any> {
-    return this.client.request("TagManager.createContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.createContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.createContainerVersion",
+      params
+    );
   }
 
   /**
@@ -624,28 +796,52 @@ export class TagManagerModule {
   async updateContainerVersion(
     params: UpdateContainerVersionParams
   ): Promise<any> {
-    return this.client.request("TagManager.updateContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.updateContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.updateContainerVersion",
+      params
+    );
   }
 
   /**
    * Get container versions
    */
   async getContainerVersions(params: ContainerParams): Promise<any> {
-    return this.client.request("TagManager.getContainerVersions", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerVersions", params);
+    }
+    return await this.client.request("TagManager.getContainerVersions", params);
   }
 
   /**
    * Get a specific container version
    */
   async getContainerVersion(params: ContainerVersionParams): Promise<any> {
-    return this.client.request("TagManager.getContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainerVersion", params);
+    }
+    return await this.client.request("TagManager.getContainerVersion", params);
   }
 
   /**
    * Delete a container version
    */
   async deleteContainerVersion(params: ContainerVersionParams): Promise<any> {
-    return this.client.request("TagManager.deleteContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.deleteContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.deleteContainerVersion",
+      params
+    );
   }
 
   /**
@@ -654,42 +850,66 @@ export class TagManagerModule {
   async publishContainerVersion(
     params: PublishContainerVersionParams
   ): Promise<any> {
-    return this.client.request("TagManager.publishContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.publishContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.publishContainerVersion",
+      params
+    );
   }
 
   /**
    * Delete a container
    */
   async deleteContainer(params: ContainerParams): Promise<any> {
-    return this.client.request("TagManager.deleteContainer", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.deleteContainer", params);
+    }
+    return await this.client.request("TagManager.deleteContainer", params);
   }
 
   /**
    * Get a specific container
    */
   async getContainer(params: ContainerParams): Promise<any> {
-    return this.client.request("TagManager.getContainer", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.getContainer", params);
+    }
+    return await this.client.request("TagManager.getContainer", params);
   }
 
   /**
    * Enable preview mode for a container
    */
   async enablePreviewMode(params: EnablePreviewModeParams): Promise<any> {
-    return this.client.request("TagManager.enablePreviewMode", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.enablePreviewMode", params);
+    }
+    return await this.client.request("TagManager.enablePreviewMode", params);
   }
 
   /**
    * Disable preview mode for a container
    */
   async disablePreviewMode(params: ContainerParams): Promise<any> {
-    return this.client.request("TagManager.disablePreviewMode", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.disablePreviewMode", params);
+    }
+    return await this.client.request("TagManager.disablePreviewMode", params);
   }
 
   /**
    * Change debug URL
    */
   async changeDebugUrl(params: ChangeDebugUrlParams): Promise<any> {
-    return this.client.request("TagManager.changeDebugUrl", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("TagManager.changeDebugUrl", params);
+    }
+    return await this.client.request("TagManager.changeDebugUrl", params);
   }
 
   /**
@@ -698,7 +918,16 @@ export class TagManagerModule {
   async exportContainerVersion(
     params: ExportContainerVersionParams
   ): Promise<any> {
-    return this.client.request("TagManager.exportContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.exportContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.exportContainerVersion",
+      params
+    );
   }
 
   /**
@@ -707,6 +936,15 @@ export class TagManagerModule {
   async importContainerVersion(
     params: ImportContainerVersionParams
   ): Promise<any> {
-    return this.client.request("TagManager.importContainerVersion", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "TagManager.importContainerVersion",
+        params
+      );
+    }
+    return await this.client.request(
+      "TagManager.importContainerVersion",
+      params
+    );
   }
 }

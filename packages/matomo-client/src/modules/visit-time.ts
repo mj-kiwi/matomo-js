@@ -4,6 +4,7 @@
  */
 
 import { CoreReportingClient, RequestParams } from "./core.js";
+import { BatchRequest } from "../batch-request.js";
 
 /**
  * Common parameters for VisitTime API methods
@@ -28,7 +29,7 @@ export interface ServerTimeParams extends VisitTimeParams {
 }
 
 export class VisitTimeModule {
-  constructor(private client: CoreReportingClient) {}
+  constructor(private client: CoreReportingClient | BatchRequest) {}
 
   /**
    * Get visitor times by local time (browser's local time)
@@ -36,7 +37,13 @@ export class VisitTimeModule {
    * @param params Parameters for getting visitor time by local time
    */
   async getVisitInformationPerLocalTime(params: VisitTimeParams): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitTime.getVisitInformationPerLocalTime",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitTime.getVisitInformationPerLocalTime",
       params
     );
@@ -50,7 +57,13 @@ export class VisitTimeModule {
   async getVisitInformationPerServerTime(
     params: ServerTimeParams
   ): Promise<any> {
-    return this.client.request(
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest(
+        "VisitTime.getVisitInformationPerServerTime",
+        params
+      );
+    }
+    return await this.client.request(
       "VisitTime.getVisitInformationPerServerTime",
       params
     );
@@ -62,6 +75,9 @@ export class VisitTimeModule {
    * @param params Parameters for getting visits by day of week
    */
   async getByDayOfWeek(params: VisitTimeParams): Promise<any> {
-    return this.client.request("VisitTime.getByDayOfWeek", params);
+    if (this.client instanceof BatchRequest) {
+      return this.client.addRequest("VisitTime.getByDayOfWeek", params);
+    }
+    return await this.client.request("VisitTime.getByDayOfWeek", params);
   }
 }
