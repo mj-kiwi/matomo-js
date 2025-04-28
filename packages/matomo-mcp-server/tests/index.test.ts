@@ -50,7 +50,7 @@ describe("MCP Server", () => {
     // Verify the server was created with the correct configuration
     expect(McpServer).toHaveBeenCalledWith({
       name: "matomo-mcp-server",
-      version: "0.1.1",
+      version: "0.1.3",
       capabilities: {
         resources: {},
         tools: {},
